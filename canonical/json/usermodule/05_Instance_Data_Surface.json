@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_USERMODULE_INSTANCE_DATA_SURFACE_CONTRACT",
+    "name": "UserModule Instance Data Surface",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the full UserModule instance as the isolation and addressing boundary for module-local data, input state and schema-bound values.",
+  "scope": {
+    "owns": [
+      "UserModule Instance Data Surface semantics"
+    ],
+    "does_not_own": [
+      "unrelated module types",
+      "AccessCore policy",
+      "presentation semantics outside declared view scope"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_USERMODULE_INSTANCE_DATA_SURFACE",
+      "name": "UserModule Instance Data Surface",
+      "purpose": "Define the full UserModule instance as the isolation and addressing boundary for module-local data, input state and schema-bound values.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+        "TOPIC_USERMODULE_TYPES"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_USERMODULE_INSTANCE_DATA_SURFACE_CONTRACT",
+        "TYPE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "boundary_rule": "Local module data is scoped to the full runtime UserModule instance identity.",
+    "definition_rule": "Module definition identity and instance data identity are distinct.",
+    "schema_rule": "Instance data surface follows the module's explicit schema binding.",
+    "relation_rule": "Cross-instance access requires explicit canonical relation or remote/external binding.",
+    "input_rule": "Input-type modules write only into their declared instance/input surfaces.",
+    "view_rule": "View-type modules project data and do not acquire local data ownership merely by reading it.",
+    "adapter_rule": "Adapter-type modules map between surfaces without merging their identities.",
+    "isolation_rule": "Same schema/type/name across instances never merges their local data."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TYPE_BOUNDARY_EXPLICIT",
+        "rule": "UserModule type behavior is explicit and narrow: input acquires/writes inert data, adapter translates/mounts, view projects, and no type silently acquires another type's authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "same schema merges instance data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "instance data addressed only by module definition identity where multiple instances exist",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "cross-instance data read without relation/binding",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "view reading data transfers ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "adapter mapping merges source/target identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_UM",
+      "target_ref": "AIGMOS_USERMODULE_IDENTITY_CONTRACT",
+      "purpose": "Instance data is scoped to explicit UserModule instance."
+    },
+    {
+      "id": "REF_DWH",
+      "target_ref": "AIGMOS_DWH_INSTANCE_DATA_ISOLATION_CONTRACT",
+      "purpose": "DWH uses the same full-instance isolation boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define the full UserModule instance as the isolation and addressing boundary for module-local data, input state and schema-bound values.",
+    "notes": [
+      "Unlocked pending reconciliation against existing UserModule/Input/Adapter/View contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

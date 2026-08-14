@@ -1,0 +1,140 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT",
+    "name": "DWH Federation Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for federated sources, query plans, pushdown, source governance, consistency evidence and partial-result/failure state.",
+  "scope": {
+    "owns": [
+      "DWH Federation Monitor semantics"
+    ],
+    "does_not_own": [
+      "remote source domain ownership",
+      "AccessCore policy ownership",
+      "transport implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_DWH_FEDERATION_MONITOR",
+      "name": "DWH Federation Monitor",
+      "purpose": "Define a read-only Expose monitor for federated sources, query plans, pushdown, source governance, consistency evidence and partial-result/failure state.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_FEDERATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT",
+        "FEDERATION_PRESERVES_ORIGIN",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "federated source registry",
+      "origin/endpoint/instance/schema refs",
+      "source availability/governance state",
+      "query plan/source fragments",
+      "pushdown decisions",
+      "cross-source joins/aggregations",
+      "revision/snapshot/watermark evidence",
+      "partial/completeness state",
+      "failures/timeouts"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Source origin, endpoint, plan, query execution, source fragment and result identities remain distinct.",
+    "ownership_rule": "UI shows per-origin owners/governance instead of attributing data ownership to federation.",
+    "action_rule": "query/resync/retry/change-consistency/rebind-source operations invoke separate authorized canonical workflows.",
+    "authority_rule": "Viewing federated topology grants no source data authority.",
+    "graph_rule": "Visual source/plan edges correspond only to explicit refs.",
+    "failure_rule": "Partial, stale, denied and inconsistent states are visibly distinct."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "FEDERATION_PRESERVES_ORIGIN",
+        "rule": "Federated DWH access preserves each origin's exact identity, schema, governance, lineage and consistency evidence; combining results never centralizes semantic ownership or silently expands authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor conflates endpoint and source identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "federated node displayed as owner of remote data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "partial result presented as complete",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "monitor retries denied source automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "visual graph invents data relation",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SOURCE",
+      "target_ref": "AIGMOS_DWH_FEDERATED_SOURCE_IDENTITY_CONTRACT",
+      "purpose": "Monitor projects exact origins."
+    },
+    {
+      "id": "REF_FAIL",
+      "target_ref": "AIGMOS_DWH_FEDERATED_PARTIAL_FAILURE_CONTRACT",
+      "purpose": "Monitor exposes completeness/failure semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for federated sources, query plans, pushdown, source governance, consistency evidence and partial-result/failure state.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH remote addressing, query, lineage, synchronization and AccessCore contracts."
+    ]
+  }
+}

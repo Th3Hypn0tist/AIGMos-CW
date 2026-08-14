@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_ORIGIN_INPUT_GOVERNANCE_CONTRACT",
+    "name": "DWH Origin Input Governance",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define DWH input governance at the data origin before local or remote processing, using the origin's declared input boundary independently from downstream output policy.",
+  "scope": {
+    "owns": [
+      "DWH Origin Input Governance semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "IAM identity semantics",
+      "transport cryptography semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_ORIGIN_INPUT_GOVERNANCE",
+      "name": "DWH Origin Input Governance",
+      "purpose": "Define DWH input governance at the data origin before local or remote processing, using the origin's declared input boundary independently from downstream output policy.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_ACCESSCORE_AUTHORIZATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_ORIGIN_INPUT_GOVERNANCE_CONTRACT",
+        "DWH_ORIGIN_TARGET_GOVERNANCE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "origin_rule": "Input governance is evaluated at the origin where data enters the governed DWH path.",
+    "scope_examples": [
+      "all",
+      "ext",
+      "id"
+    ],
+    "scope_rule": "Remote input scope is explicit and evaluated against the origin input classification/policy.",
+    "identity_rule": "Where identity-scoped input is used, exact resolved identity context is required.",
+    "separation_rule": "Input permission does not imply output permission.",
+    "ac_rule": "When AccessCore is active, AccessCore authorization is evaluated in addition to DWH input-boundary policy.",
+    "failure_rule": "Unclassified/unresolved governed input fails according to explicit policy rather than default expansion.",
+    "trace_rule": "Accepted/rejected input retains origin, scope, identity and policy refs."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_ORIGIN_TARGET_GOVERNANCE",
+        "rule": "DWH applies data-boundary policy at the origin and target independently; remote addressing, transport reachability and external registration never substitute for AccessCore authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "input permission implies output permission",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "identity-scoped input has no exact identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "AC-active input bypasses AccessCore",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "unresolved scope expands to all",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "origin provenance lost",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_ASSURANCE_GATED_RESOURCE_CONTRACT",
+      "purpose": "AC authorization remains orthogonal to DWH boundary policy."
+    }
+  ],
+  "prose": {
+    "summary": "Define DWH input governance at the data origin before local or remote processing, using the origin's declared input boundary independently from downstream output policy.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH, EXT, AccessCore and transport contracts."
+    ]
+  }
+}

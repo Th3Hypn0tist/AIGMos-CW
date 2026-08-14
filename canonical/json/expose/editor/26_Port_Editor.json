@@ -1,0 +1,144 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_PORT_EDITOR_CONTRACT",
+    "name": "Port Editor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Port Editor as the AC-governed Expose editor for named listener instances across web/nanoCMS, REST, OSC, WebSocket and other installed port-bound services.",
+  "scope": {
+    "owns": [
+      "Port Editor semantics"
+    ],
+    "does_not_own": [
+      "protocol business semantics",
+      "domain data semantics",
+      "presentation-only state"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_PORT_EDITOR",
+      "name": "Port Editor",
+      "purpose": "Define Port Editor as the AC-governed Expose editor for named listener instances across web/nanoCMS, REST, OSC, WebSocket and other installed port-bound services.",
+      "parent_topic_refs": [
+        "TOPIC_INSTANCE_CONFIG",
+        "TOPIC_RUNTIME_NETWORK"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_PORT_EDITOR_CONTRACT",
+        "LISTENER_IDENTITY_BINDING_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "targets": [
+      "listener identity",
+      "protocol/type",
+      "listen address",
+      "port",
+      "transport",
+      "enabled state",
+      "lifecycle operation"
+    ],
+    "scope_rule": "Port Editor owns listener/binding configuration across protocols, not protocol route/address business semantics.",
+    "name_rule": "Named listener identity is edited separately from port binding.",
+    "validation_rule": "Candidate binding/conflict/protocol compatibility validates before apply/start.",
+    "state_rule": "Declared config and current runtime listener state are displayed separately.",
+    "action_rule": "Start/stop/reload invoke explicit canonical lifecycle operations.",
+    "authority_rule": "Editor obeys normal AccessCore authorization and has no privileged bypass.",
+    "protocol_rule": "Protocol-specific route/address/channel configuration remains owned by protocol binding editors/contracts."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "LISTENER_IDENTITY_BINDING_SEPARATION",
+        "rule": "Listener/service identity is stable and separate from mutable listen binding, protocol configuration and runtime process/session state."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "Port Editor duplicates protocol route semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "port used as listener identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "Editor changes running socket before validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "config/runtime state conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "Editor bypasses AccessCore",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "conflict validator bypassed",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_FOUND",
+      "target_ref": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT",
+      "purpose": "Port Editor uses shared validate/apply pipeline."
+    },
+    {
+      "id": "REF_CONFLICT",
+      "target_ref": "AIGMOS_LISTENER_BINDING_CONFLICT_VALIDATION_CONTRACT",
+      "purpose": "Bindings validate before activation."
+    }
+  ],
+  "prose": {
+    "summary": "Define Port Editor as the AC-governed Expose editor for named listener instances across web/nanoCMS, REST, OSC, WebSocket and other installed port-bound services.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Port Editor/listener/protocol contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

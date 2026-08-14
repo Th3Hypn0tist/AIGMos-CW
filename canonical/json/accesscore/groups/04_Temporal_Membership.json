@@ -1,0 +1,128 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TEMPORAL_MEMBERSHIP_CONTRACT",
+    "name": "Temporal Group and Role Membership",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define time-bounded group/role assignments with explicit activation/expiry and authorization-time evaluation.",
+  "scope": {
+    "owns": [
+      "Temporal Group and Role Membership semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime operation implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TEMPORAL_MEMBERSHIP",
+      "name": "Temporal Group and Role Membership",
+      "purpose": "Define time-bounded group/role assignments with explicit activation/expiry and authorization-time evaluation.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE",
+        "TOPIC_GROUPS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TEMPORAL_MEMBERSHIP_CONTRACT",
+        "IDENTITY_AUTHORITY_SEPARATION",
+        "FAIL_CLOSED_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "start_rule": "Membership/role assignment start is explicit.",
+    "end_rule": "Expiry/end is explicit.",
+    "clock_rule": "Evaluation clock/timezone profile is explicit.",
+    "decision_rule": "Authorization uses membership active at decision time.",
+    "renew_rule": "Renewal is explicit and does not silently extend expired grants.",
+    "history_rule": "Expired memberships remain historical evidence.",
+    "cache_rule": "Authorization caches cannot outlive relevant membership validity without bounded invalidation."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_AUTHORITY_SEPARATION",
+        "rule": "Identity, authentication assurance, authorization policy, authorization decision, delegation and runtime execution remain separate machine-significant identities/evidence; no one layer silently substitutes for another."
+      },
+      {
+        "id": "FAIL_CLOSED_AUTHORITY",
+        "rule": "Ambiguous, missing, stale or unverifiable authority for a protected effect fails closed rather than inheriting trust from locality, transport reachability, process ownership, UI visibility or previous success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "expired role continues indefinitely",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "local timezone guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "renewal automatic",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "history deleted on expiry",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "cached allow survives membership expiry",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MEM",
+      "target_ref": "AIGMOS_GROUP_MEMBERSHIP_CONTRACT",
+      "purpose": "Membership lifecycle may be temporal."
+    }
+  ],
+  "prose": {
+    "summary": "Define time-bounded group/role assignments with explicit activation/expiry and authorization-time evaluation.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

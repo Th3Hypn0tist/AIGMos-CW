@@ -1,0 +1,140 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT",
+    "name": "Certification Validation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic certification validation over certification identity, package/hash subject, registry state, issuer/profile and cache freshness, producing explicit valid/invalid/unverifiable outcomes.",
+  "scope": {
+    "owns": [
+      "Certification Validation semantics"
+    ],
+    "does_not_own": [
+      "commercial license entitlement",
+      "runtime authorization",
+      "module semantic identity"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CERTIFICATION_VALIDATION",
+      "name": "Certification Validation",
+      "purpose": "Define deterministic certification validation over certification identity, package/hash subject, registry state, issuer/profile and cache freshness, producing explicit valid/invalid/unverifiable outcomes.",
+      "parent_topic_refs": [
+        "TOPIC_CERTIFICATION",
+        "TOPIC_DISTRIBUTION_PACKAGE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT",
+        "CERTIFICATION_EVIDENCE_BOUND",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "inputs": [
+      "certification_ref",
+      "package_snapshot_ref",
+      "package_hash_evidence",
+      "profile_ref",
+      "registry_or_valid_cache"
+    ],
+    "results": [
+      "valid",
+      "invalid",
+      "unverifiable"
+    ],
+    "valid_rule": "Valid requires exact subject/hash match and non-revoked/non-expired certification evidence.",
+    "invalid_rule": "Hash mismatch, revoked status, wrong subject/profile or invalid issuer evidence produces invalid.",
+    "unverifiable_rule": "Evidence unavailable or stale without authoritative confirmation produces unverifiable, never valid.",
+    "license_rule": "Commercial license status is not a certification-validation input unless a separate policy explicitly requires both for deployment.",
+    "runtime_rule": "Valid certification remains orthogonal to AccessCore/runtime authorization.",
+    "evidence_rule": "Validation result retains exact evidence/cache/registry refs."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "CERTIFICATION_EVIDENCE_BOUND",
+        "rule": "Certification is explicit technical evidence bound to an exact package/artifact snapshot; commercial payment, license status or runtime authorization never substitute for certification evidence."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "hash mismatch accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "unverifiable treated as valid",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "license payment substituted for technical evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "valid certification grants runtime authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "validation result lacks evidence refs",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ANCHOR",
+      "target_ref": "AIGMOS_CERTIFICATION_PACKAGE_HASH_ANCHOR_CONTRACT",
+      "purpose": "Validation checks exact package/hash anchor."
+    },
+    {
+      "id": "REF_CACHE",
+      "target_ref": "AIGMOS_CERTIFICATION_FIRST_VALIDATION_CACHE_CONTRACT",
+      "purpose": "Validation may use valid cached evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic certification validation over certification identity, package/hash subject, registry state, issuer/profile and cache freshness, producing explicit valid/invalid/unverifiable outcomes.",
+    "notes": [
+      "Unlocked pending reconciliation against existing certification/distribution/licensing contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

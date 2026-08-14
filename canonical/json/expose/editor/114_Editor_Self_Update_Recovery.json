@@ -1,0 +1,135 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_EDITOR_SELF_UPDATE_CONTRACT",
+    "name": "Editor Self-Update and Recovery",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define self-editing as edit/validate a new copy/revision, activate it, verify health and preserve rollback/recovery rather than irreversible mutation of the only active Editor definition.",
+  "scope": {
+    "owns": [
+      "Editor Self-Update and Recovery semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_EDITOR_SELF_UPDATE",
+      "name": "Editor Self-Update and Recovery",
+      "purpose": "Define self-editing as edit/validate a new copy/revision, activate it, verify health and preserve rollback/recovery rather than irreversible mutation of the only active Editor definition.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_EDITOR"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_EDITOR_SELF_UPDATE_CONTRACT",
+        "UI_NONAUTHORITY",
+        "UI_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "candidate_rule": "Self-edit produces a new candidate Editor MetaModule/site/config revision.",
+    "validation_rule": "Candidate validates before activation.",
+    "activation_rule": "Activation targets exact candidate revision.",
+    "health_rule": "New Editor health/readiness is checked explicitly.",
+    "rollback_rule": "Prior known-good revision remains recoverable.",
+    "failure_rule": "Failed self-update does not destroy the previous usable Editor.",
+    "authority_rule": "Self-update requires explicit Editor/config/site administration authority.",
+    "history_rule": "Self-update revisions remain traceable."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "UI_NONAUTHORITY",
+        "rule": "UI visibility, navigation, placement, styling, selection, focus and visual adjacency never create semantic ownership, resource identity or execution authority."
+      },
+      {
+        "id": "UI_EFFECT_BOUNDARY",
+        "rule": "Effect-capable UI actions create explicit candidate/request data and must cross canonical validation, authorization and dispatcher boundaries before effects occur."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "active Editor overwritten before validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "failed self-update leaves no recovery path",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "self-edit bypasses AC",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "new revision selected by newest file",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "rollback history deleted",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EDITOR",
+      "target_ref": "AIGMOS_EXPOSE_EDITOR_METAMODULE_CONTRACT",
+      "purpose": "Self-update operates on ordinary Editor MetaModule revisions."
+    },
+    {
+      "id": "REF_REC",
+      "target_ref": "AIGMOS_EXPOSE_BOOTSTRAP_RECOVERY_CONTRACT",
+      "purpose": "Recovery remains available if new Editor fails."
+    }
+  ],
+  "prose": {
+    "summary": "Define self-editing as edit/validate a new copy/revision, activate it, verify health and preserve rollback/recovery rather than irreversible mutation of the only active Editor definition.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

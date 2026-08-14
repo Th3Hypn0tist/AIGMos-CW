@@ -1,0 +1,131 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_T_TOOL_ROOT_CONTRACT",
+    "name": "#T Tool Root",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define `#T` as the reserved root for validated runtime Tool identities, schemas and effect declarations, distinct from MCP/server advertisement and from command namespaces.",
+  "scope": {
+    "owns": [
+      "#T Tool Root semantics"
+    ],
+    "does_not_own": [
+      "unrelated domain semantics",
+      "presentation semantics",
+      "implicit runtime authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NAMESPACE_T",
+      "name": "#T Tool Root",
+      "purpose": "Define `#T` as the reserved root for validated runtime Tool identities, schemas and effect declarations, distinct from MCP/server advertisement and from command namespaces.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NAMESPACES",
+        "TOPIC_CORE_RUNTIME_TOOLS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_T_TOOL_ROOT_CONTRACT",
+        "RESERVED_ROOT_OWNER_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "root": "#T",
+    "role": "runtime Tool semantic family/root",
+    "owner_rule": "#T resolves to validated Runtime Tool Registry entries.",
+    "schema_rule": "Each Tool exposes explicit input/output schema.",
+    "effect_rule": "Side effects/effect class are explicit.",
+    "mcp_rule": "MCP-advertised tools enter #T only after local validation/binding.",
+    "command_rule": "Tool identity and command identity are distinct unless an explicit bridge/binding declares both.",
+    "result_rule": "Tool result is inert data.",
+    "authority_rule": "Tool presence/visibility does not grant invocation authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RESERVED_ROOT_OWNER_EXPLICIT",
+        "rule": "Each reserved runtime root resolves to one explicit semantic owner/family; the root itself does not create new authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "remote MCP advertisement appears under #T without validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "tool result executes follow-up effect automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "tool presence grants invocation authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "tool identity conflated with command identity without explicit binding",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "tool lacks required schema/effect declaration",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TOOL",
+      "target_ref": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT",
+      "purpose": "#T exposes validated runtime tools."
+    },
+    {
+      "id": "REF_MCP",
+      "target_ref": "AIGMOS_MCP_TOOL_PROJECTION_CONTRACT",
+      "purpose": "MCP-to-Tool requires validated projection."
+    }
+  ],
+  "prose": {
+    "summary": "Define `#T` as the reserved root for validated runtime Tool identities, schemas and effect declarations, distinct from MCP/server advertisement and from command namespaces.",
+    "notes": [
+      "Unlocked pending reconciliation against existing namespace/module contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

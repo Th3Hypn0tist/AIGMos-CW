@@ -1,0 +1,165 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CORE_SCHEMA_SEMANTICS_CONTRACT",
+    "name": "Core Schema Semantics",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define schema as explicit semantic shape owned by the defining Meta/contract, with deterministic field requirements and no hidden schema inference from examples or payloads.",
+  "scope": {
+    "owns": [
+      "Core Schema Semantics semantics"
+    ],
+    "does_not_own": [
+      "domain-specific semantics",
+      "runtime implementation details"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CORE_SCHEMA",
+      "name": "Schema",
+      "purpose": "Define schema as explicit semantic shape owned by the defining Meta/contract, with deterministic field requirements and no hidden schema inference from examples or payloads.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_VALUES",
+        "TOPIC_CORE_META"
+      ],
+      "member_refs": [
+        "AIGMOS_CORE_SCHEMA_SEMANTICS_CONTRACT",
+        "EXPLICIT_SEMANTIC_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_SCHEMA_RESOLVE",
+        "OP_SCHEMA_VALIDATE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_SCHEMA_RESOLVE",
+        "name": "Resolve schema",
+        "inputs": [
+          "schema_ref"
+        ],
+        "outputs": [
+          "exact schema definition"
+        ],
+        "errors": [
+          "schema unresolved",
+          "schema ambiguous"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_SCHEMA_VALIDATE",
+        "name": "Validate data against schema",
+        "inputs": [
+          "schema",
+          "data"
+        ],
+        "outputs": [
+          "validated data or structured error"
+        ],
+        "errors": [
+          "unknown field",
+          "missing required field",
+          "type mismatch"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "schema_rule": "Schema defines allowed fields, required fields, value constraints and reference shapes explicitly.",
+    "unknown_field_rule": "Boundary unknown fields are rejected unless the owning schema explicitly permits extension.",
+    "example_rule": "Examples illustrate schema but do not define missing schema semantics.",
+    "payload_rule": "Observed payload shape does not mutate or extend canonical schema.",
+    "ownership_rule": "Schema semantics belong to their explicit semantic owner, commonly the owning Meta/domain contract.",
+    "version_rule": "Breaking schema semantics follow semantic identity/versioning rules."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_SEMANTIC_BOUNDARY",
+        "rule": "Machine-significant semantics are explicit and deterministic."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "schema inferred from observed payloads",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "example data treated as authoritative schema",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "unknown field silently accepted without explicit extension semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "payload mutates schema definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "breaking schema change hidden under unchanged semantic identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_VALUES",
+      "target_ref": "AIGMOS_CORE_VALUE_SEMANTICS_CONTRACT",
+      "purpose": "Schema constrains canonical inert values."
+    },
+    {
+      "id": "REF_VERSIONING",
+      "target_ref": "AIGMOS_CORE_SEMANTIC_VERSIONING_CONTRACT",
+      "purpose": "Breaking schema change follows semantic version/identity rules."
+    }
+  ],
+  "prose": {
+    "summary": "Define schema as explicit semantic shape owned by the defining Meta/contract, with deterministic field requirements and no hidden schema inference from examples or payloads.",
+    "notes": [
+      "Unlocked until repository-wide Contract Format 1.4 migration validates this boundary."
+    ]
+  }
+}

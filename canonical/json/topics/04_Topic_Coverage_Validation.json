@@ -1,0 +1,168 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT",
+    "name": "Topic Coverage Validation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic validation that every canonical node is reachable through one or more Topics or explicitly represented as outsider, including inherited and composed Topic resolution.",
+  "scope": {
+    "owns": [
+      "Topic Coverage Validation semantics"
+    ],
+    "does_not_own": [
+      "runtime implementation details",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TOPIC_VALIDATION",
+      "name": "Topic Validation",
+      "purpose": "Define deterministic validation that every canonical node is reachable through one or more Topics or explicitly represented as outsider, including inherited and composed Topic resolution.",
+      "parent_topic_refs": [
+        "TOPIC_TOPIC_SYSTEM",
+        "TOPIC_CORE_VALIDATION"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_TOPIC_INHERITANCE",
+        "TOPIC_TOPIC_COMPOSITION",
+        "TOPIC_TOPIC_OUTSIDER"
+      ],
+      "member_refs": [
+        "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT",
+        "TOPIC_GRAPH_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_TOPIC_COVERAGE_SCAN",
+        "OP_TOPIC_COVERAGE_VALIDATE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_TOPIC_COVERAGE_SCAN",
+        "name": "Scan Topic coverage",
+        "inputs": [
+          "canonical graph"
+        ],
+        "outputs": [
+          "covered nodes",
+          "outsiders",
+          "invalid nodes"
+        ],
+        "errors": [
+          "graph unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_TOPIC_COVERAGE_VALIDATE",
+        "name": "Validate Topic graph",
+        "inputs": [
+          "Topic graph",
+          "canonical graph"
+        ],
+        "outputs": [
+          "coverage report"
+        ],
+        "errors": [
+          "unclassified node",
+          "unresolved Topic ref",
+          "invalid Topic cycle"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "coverage_rule": "Every machine-significant canonical node resolves to >=1 Topic or explicit outsider.",
+    "multi_topic_rule": "All memberships are preserved; validation never chooses a single preferred Topic unless a separate rule requires it.",
+    "inheritance_rule": "Inherited memberships are included in coverage resolution.",
+    "composition_rule": "Composed Topic components remain recursively traceable.",
+    "reference_rule": "All Topic/member/parent/component refs resolve exactly.",
+    "report_rule": "Validation reports direct membership, inherited membership, composed membership and outsider state separately."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TOPIC_GRAPH_EXPLICIT",
+        "rule": "Every machine-significant canonical node is classified by explicit Topic membership or explicitly marked outsider; Topics may inherit and compose other Topics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "canonical node absent from both Topic graph and outsider set",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "validator collapses multi-Topic membership to one Topic",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "unresolved parent/component/member ref accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "inheritance/composition omitted from recursive coverage",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "coverage requires filesystem heuristic",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TOPIC",
+      "target_ref": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT",
+      "purpose": "Coverage validates Topic classification."
+    },
+    {
+      "id": "REF_OUTSIDER",
+      "target_ref": "AIGMOS_TOPIC_OUTSIDER_CONTRACT",
+      "purpose": "Explicit outsider state satisfies visible classification requirement."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic validation that every canonical node is reachable through one or more Topics or explicitly represented as outsider, including inherited and composed Topic resolution.",
+    "notes": [
+      "Unlocked until reconciled against the assembled 1.4 Topic graph and repository-wide validation."
+    ]
+  }
+}

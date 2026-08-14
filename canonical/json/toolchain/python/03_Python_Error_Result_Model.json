@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_PYTHON_TOOLCHAIN_ERROR_RESULT_CONTRACT",
+    "name": "Python Error and Result Model",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define reference pattern separating expected validation findings/results from exceptional toolchain execution failures.",
+  "scope": {
+    "owns": [
+      "Python Error and Result Model semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime application authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_PYTHON_TOOLCHAIN_ERROR_RESULT",
+      "name": "Python Error and Result Model",
+      "purpose": "Define reference pattern separating expected validation findings/results from exceptional toolchain execution failures.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_TOOLCHAIN",
+        "TOPIC_PYTHON_REFERENCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_PYTHON_TOOLCHAIN_ERROR_RESULT_CONTRACT",
+        "TOOLING_NONAUTHORITY",
+        "DETERMINISTIC_EXACT_INPUTS",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "finding_rule": "Invalid user/repository content produces structured findings/results.",
+    "exception_rule": "I/O/programming/environment failures use typed exceptions/errors.",
+    "boundary_rule": "Exceptions are caught at stage/CLI boundaries and converted to explicit run error evidence.",
+    "trace_rule": "Internal traceback is diagnostic and not canonical finding identity.",
+    "exit_rule": "CLI maps result/error classes deterministically to exit status.",
+    "secret_rule": "Errors redact protected values."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TOOLING_NONAUTHORITY",
+        "rule": "Toolchain code, scans, indexes, reports and generated artifacts remain implementation/evidence surfaces; they never become canonical semantic authority unless an explicit accepted canonical definition says so."
+      },
+      {
+        "id": "DETERMINISTIC_EXACT_INPUTS",
+        "rule": "Every toolchain execution binds exact bootstrap/source/profile/input revisions and must not resolve ambiguity through filesystem order, newest-wins, mtime, fuzzy names or UI layout."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "all findings thrown as generic exceptions",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "traceback shown as canonical report",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "exception swallowed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "secret in traceback exported",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "exit code random",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define reference pattern separating expected validation findings/results from exceptional toolchain execution failures.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Implementation contracts operationalize canonical semantics but do not replace canonical source authority."
+    ]
+  }
+}

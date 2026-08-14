@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_PROTOCOL_INSTANCE_CONTRACT",
+    "name": "Protocol Instance",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each installed port-bound protocol service as a named logical protocol instance bound to a listener, with identity separate from port, route, socket and runtime session.",
+  "scope": {
+    "owns": [
+      "Protocol Instance semantics"
+    ],
+    "does_not_own": [
+      "domain business semantics",
+      "AccessCore policy ownership",
+      "listener binding ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_PROTOCOL_INSTANCE",
+      "name": "Protocol Instance",
+      "purpose": "Define each installed port-bound protocol service as a named logical protocol instance bound to a listener, with identity separate from port, route, socket and runtime session.",
+      "parent_topic_refs": [
+        "TOPIC_PROTOCOL_BINDINGS",
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_PROTOCOL_INSTANCE_CONTRACT",
+        "PROTOCOL_BINDING_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each protocol instance has an explicit stable logical identity.",
+    "type_rule": "Protocol type such as REST, OSC or WebSocket is explicit.",
+    "listener_rule": "Protocol instance references an exact named listener instance.",
+    "binding_rule": "Port/address/transport belong to the listener binding, not protocol semantic identity.",
+    "route_rule": "Routes/addresses/channels are child protocol bindings and do not replace protocol instance identity.",
+    "state_rule": "Configured/enabled/running/session states remain distinct.",
+    "authority_rule": "Protocol exposure or reachability grants no domain-operation authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PROTOCOL_BINDING_SEPARATION",
+        "rule": "Protocol identity, named listener instance, route/address/channel binding and domain operation identity remain separate; protocol exposure never creates semantic ownership or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "port used as protocol identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "route used as protocol identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "protocol reachability grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "listener/protocol identity conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "runtime session becomes protocol instance identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LIST",
+      "target_ref": "AIGMOS_LISTENER_INSTANCE_CONTRACT",
+      "purpose": "Protocol instances bind to named listeners."
+    }
+  ],
+  "prose": {
+    "summary": "Define each installed port-bound protocol service as a named logical protocol instance bound to a listener, with identity separate from port, route, socket and runtime session.",
+    "notes": [
+      "Unlocked pending reconciliation against listener, REST/OSC/WebSocket and Expose contracts."
+    ]
+  }
+}

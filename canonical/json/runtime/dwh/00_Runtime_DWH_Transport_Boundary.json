@@ -1,0 +1,201 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT",
+    "name": "Runtime DWH Transport Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the transport-only boundary for DWH peer exchange, keeping DWH semantic ownership, data authorization and schema resolution outside the WebRTC transport layer.",
+  "scope": {
+    "owns": [
+      "Runtime DWH Transport Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "remote authorization policy",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_DWH_TRANSPORT",
+      "name": "DWH Transport",
+      "purpose": "Define the transport-only boundary for DWH peer exchange, keeping DWH semantic ownership, data authorization and schema resolution outside the WebRTC transport layer.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_WEBRTC",
+        "TOPIC_CORE_VALUES"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT",
+        "NETWORK_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_DWH_TRANSPORT_VALIDATE",
+        "OP_DWH_TRANSPORT_SEND",
+        "OP_DWH_TRANSPORT_RECEIVE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_DWH_TRANSPORT_VALIDATE",
+        "name": "Validate DWH transport payload",
+        "inputs": [
+          "DWH payload",
+          "transport policy"
+        ],
+        "outputs": [
+          "validated transport payload"
+        ],
+        "errors": [
+          "unsupported payload type",
+          "size exceeded"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_DWH_TRANSPORT_SEND",
+        "name": "Send DWH payload",
+        "inputs": [
+          "validated payload",
+          "resolved peer/session"
+        ],
+        "outputs": [
+          "send result"
+        ],
+        "errors": [
+          "transport failure",
+          "timeout"
+        ],
+        "side_effects": [
+          "P2P transport interaction"
+        ]
+      },
+      {
+        "id": "OP_DWH_TRANSPORT_RECEIVE",
+        "name": "Receive DWH payload",
+        "inputs": [
+          "transport frame",
+          "origin metadata"
+        ],
+        "outputs": [
+          "validated inert DWH input"
+        ],
+        "errors": [
+          "payload invalid",
+          "origin invalid"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "payload_types": [
+      "text",
+      "binary_file"
+    ],
+    "transport": "WebRTC",
+    "transport_scope": "serialization, bounded transfer, origin/session metadata",
+    "does_not_define": [
+      "DWH schema semantics",
+      "remote authorization",
+      "origin data policy",
+      "output schema selection"
+    ],
+    "input_rule": "Received payload is inert input until DWH validates origin, scope and schema.",
+    "output_rule": "Transport sends already-authorized/resolved DWH output; transport does not choose what data may leave.",
+    "crypto_boundary": "Transport may carry encrypted/session-protected payloads according to the owning DWH security contract; transport framing itself is not authorization.",
+    "failure_rule": "Transport failure does not mutate DWH semantic state as if transfer succeeded."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "NETWORK_BOUNDARY_EXPLICIT",
+        "rule": "Network identity, transport, remote authority and payload semantics remain explicit and separate."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "transport layer decides DWH data authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "transport layer invents/resolves DWH schema semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "received payload becomes active semantic data before DWH validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "transport failure reported as successful DWH transfer",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "unsupported payload type accepted silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "transport connection grants DWH rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_WEBRTC",
+      "target_ref": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT",
+      "purpose": "DWH peer payload transport uses WebRTC."
+    },
+    {
+      "id": "REF_VALUES",
+      "target_ref": "AIGMOS_CORE_VALUE_SEMANTICS_CONTRACT",
+      "purpose": "Received transport payload remains inert until validated."
+    }
+  ],
+  "prose": {
+    "summary": "Define the transport-only boundary for DWH peer exchange, keeping DWH semantic ownership, data authorization and schema resolution outside the WebRTC transport layer.",
+    "notes": [
+      "Unlocked until reconciled against DWH, messaging, transport and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

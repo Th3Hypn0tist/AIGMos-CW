@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MERIT_RECORD_CONTRACT",
+    "name": "Merit Record",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a MeritCore record as identity-bound evidence derived from an explicit Project/work outcome and recorded by authorized backend semantics rather than self-authored profile content.",
+  "scope": {
+    "owns": [
+      "Merit Record semantics"
+    ],
+    "does_not_own": [
+      "IdentityCore authentication",
+      "PortfolioCore source evidence",
+      "Project execution semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MERIT_RECORD",
+      "name": "Merit Record",
+      "purpose": "Define a MeritCore record as identity-bound evidence derived from an explicit Project/work outcome and recorded by authorized backend semantics rather than self-authored profile content.",
+      "parent_topic_refs": [
+        "TOPIC_MERITCORE",
+        "TOPIC_FREEMARKET"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MERIT_RECORD_CONTRACT",
+        "MERIT_EVIDENCE_BOUND",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "required": [
+      "merit_id",
+      "identity_ref",
+      "project_ref",
+      "evidence_refs",
+      "time_bucket",
+      "tier_or_competence_context"
+    ],
+    "identity_rule": "Every merit belongs to exactly one IdentityCore identity.",
+    "project_rule": "Merit references the universal Project primitive.",
+    "write_rule": "Merit evidence is written through authorized backend operations; profile/UI content cannot mint merit.",
+    "evidence_rule": "Merit retains exact evidence/provenance refs supporting the recorded outcome.",
+    "calculation_rule": "Raw merit evidence is distinct from points/Tier calculations derived from it.",
+    "merge_rule": "Merit records belonging to separate identities cannot be merged into one merit history."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MERIT_EVIDENCE_BOUND",
+        "rule": "MeritCore-derived points, Tier, recommendations and trust remain bound to one identity and explicit Project/evidence history; they cannot be manufactured by presentation, identity merging or time-splitting."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "self-authored portfolio content creates merit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "merit lacks identity or Project ref",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "separate identities' merits merged",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "points conflated with raw merit evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "merit written without authorized backend operation",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROJECT",
+      "target_ref": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT",
+      "purpose": "Merit evidence is Project-linked."
+    },
+    {
+      "id": "REF_PORT",
+      "target_ref": "AIGMOS_PORTFOLIO_REGISTRY_CONTRACT",
+      "purpose": "Portfolio may display merit but cannot mint it."
+    }
+  ],
+  "prose": {
+    "summary": "Define a MeritCore record as identity-bound evidence derived from an explicit Project/work outcome and recorded by authorized backend semantics rather than self-authored profile content.",
+    "notes": [
+      "Unlocked pending reconciliation against existing MeritCore/FreeMarket contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

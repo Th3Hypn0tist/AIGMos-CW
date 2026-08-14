@@ -1,0 +1,132 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_LOCK_ACQUIRE_RELEASE_CONTRACT",
+    "name": "Lock Acquire and Release",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define exact acquisition/release lifecycle, contention behavior and ownership checks for runtime locks.",
+  "scope": {
+    "owns": [
+      "Lock Acquire and Release semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_LOCK_ACQUIRE_RELEASE",
+      "name": "Lock Acquire and Release",
+      "purpose": "Define exact acquisition/release lifecycle, contention behavior and ownership checks for runtime locks.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME",
+        "TOPIC_COORDINATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_LOCK_ACQUIRE_RELEASE_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "states": [
+      "available",
+      "acquiring",
+      "held",
+      "releasing",
+      "expired",
+      "failed",
+      "unknown"
+    ],
+    "acquire_rule": "Acquire targets exact lock/resource identity and requested mode.",
+    "holder_rule": "Successful acquire records exact holder execution/context.",
+    "release_rule": "Release must reference/authorize the current holder or explicit administrative override.",
+    "contention_rule": "Wait/fail/queue behavior is explicit.",
+    "timeout_rule": "Acquire timeout is explicit failure evidence.",
+    "cleanup_rule": "Execution termination interacts with lock release according to explicit policy.",
+    "authority_rule": "Acquire success does not replace operation authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "non-holder releases lock silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "timeout treated acquired",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "contention policy implicit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "lock acquired by filename race only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "acquire success grants write rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LOCK",
+      "target_ref": "AIGMOS_LOCK_IDENTITY_CONTRACT",
+      "purpose": "Lifecycle applies to exact locks."
+    }
+  ],
+  "prose": {
+    "summary": "Define exact acquisition/release lifecycle, contention behavior and ownership checks for runtime locks.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

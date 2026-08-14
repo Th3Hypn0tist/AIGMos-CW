@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT",
+    "name": "Command Module Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define command-type UserModules as explicit one-shot operation surfaces with validated inputs and bounded effects, never as persistent input streams or UI ownership.",
+  "scope": {
+    "owns": [
+      "Command Module Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain data semantics",
+      "AccessCore policy ownership",
+      "protocol transport ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_COMMAND_MODULE_BOUNDARY",
+      "name": "Command Module Boundary",
+      "purpose": "Define command-type UserModules as explicit one-shot operation surfaces with validated inputs and bounded effects, never as persistent input streams or UI ownership.",
+      "parent_topic_refs": [
+        "TOPIC_USERMODULE_TYPES",
+        "TOPIC_INPUT_ADAPTER_VIEW"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT",
+        "MODULE_TYPE_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "type": "command",
+    "execution_rule": "A command invocation is a discrete one-shot operation.",
+    "input_rule": "Arguments are validated before dispatch.",
+    "effect_rule": "Effects occur only through the command's declared canonical operation semantics.",
+    "state_rule": "Persistent state belongs to declared data owners, not to the command invocation identity.",
+    "stream_rule": "Continuous input/listener behavior is not command-type semantics.",
+    "view_rule": "Rendering/UI projection is not command ownership.",
+    "authority_rule": "Command existence/visibility does not grant invocation authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MODULE_TYPE_BOUNDARY",
+        "rule": "Command, input, adapter and view module types have distinct effect boundaries: command is one-shot operation, input writes declared instance data, adapter mounts/translates symbols without owning them, and view is UI-only."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "command silently behaves as persistent input stream",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "command owns UI state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "arguments unvalidated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "command visibility grants execution authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "undeclared side effect",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DISPATCH",
+      "target_ref": "AIGMOS_OPERATION_DISPATCH_TRACE_CONTRACT",
+      "purpose": "Command invocation crosses normal dispatch boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define command-type UserModules as explicit one-shot operation surfaces with validated inputs and bounded effects, never as persistent input streams or UI ownership.",
+    "notes": [
+      "Unlocked pending reconciliation against UserModule type, DWH, protocol and Expose contracts."
+    ]
+  }
+}

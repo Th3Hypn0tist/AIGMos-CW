@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT",
+    "name": "DWH Query Result Cache Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define query-result caching as an explicitly keyed, revision-aware derived projection that never becomes authoritative data or bypasses current governance.",
+  "scope": {
+    "owns": [
+      "DWH Query Result Cache Boundary semantics"
+    ],
+    "does_not_own": [
+      "source schema ownership",
+      "AccessCore policy ownership",
+      "query semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY",
+      "name": "DWH Query Result Cache Boundary",
+      "purpose": "Define query-result caching as an explicitly keyed, revision-aware derived projection that never becomes authoritative data or bypasses current governance.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_QUERY_OPTIMIZATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT",
+        "OPTIMIZATION_NONSEMANTIC",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "key_rule": "Cache key includes exact query/profile/parameter identity plus applicable source revision/snapshot/governance context.",
+    "identity_rule": "Cache entry identity is distinct from query definition/execution/result-set/source data identities.",
+    "source_rule": "Cached result retains source query and revision/snapshot provenance.",
+    "authority_rule": "Cache hit does not bypass current applicable authorization/visibility checks.",
+    "classification_rule": "Cached values retain source/output classification and redaction constraints.",
+    "freshness_rule": "Freshness/TTL/invalidation profile is explicit.",
+    "source_truth_rule": "Cache is never the canonical source of truth merely because it is faster/available.",
+    "materialize_rule": "Persistent materialized views follow the separate materialization boundary, not ordinary result-cache semantics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "OPTIMIZATION_NONSEMANTIC",
+        "rule": "Indexes, statistics, caches and optimizer plans may change execution strategy only; they never change canonical query semantics, data identity, ownership, classification or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "cache hit bypasses AccessCore",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "cache becomes source of truth",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "cache key ignores source revision",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "cached restricted data served under broader context",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "cache conflated with materialized view",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MAT",
+      "target_ref": "AIGMOS_DWH_PROJECTION_MATERIALIZATION_BOUNDARY_CONTRACT",
+      "purpose": "Cache and materialization remain distinct."
+    },
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_ASSURANCE_GATED_RESOURCE_CONTRACT",
+      "purpose": "Cache delivery remains governed."
+    }
+  ],
+  "prose": {
+    "summary": "Define query-result caching as an explicitly keyed, revision-aware derived projection that never becomes authoritative data or bypasses current governance.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH query, persistence, changefeed and schema-migration contracts."
+    ]
+  }
+}

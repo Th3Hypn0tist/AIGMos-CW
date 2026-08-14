@@ -1,0 +1,181 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RELATION_CONTRACT",
+    "name": "Canonical Relation Contract",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define canonical relations as explicit typed semantic edges with stable identity, endpoints, cardinality and constraints, distinct from containment, ownership, authority and dependency.",
+  "scope": {
+    "owns": [
+      "Canonical Relation Contract semantics"
+    ],
+    "does_not_own": [
+      "runtime implementation details",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RELATIONS",
+      "name": "Relations",
+      "purpose": "Define canonical relations as explicit typed semantic edges with stable identity, endpoints, cardinality and constraints, distinct from containment, ownership, authority and dependency.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_STRUCTURE",
+        "TOPIC_META"
+      ],
+      "member_refs": [
+        "AIGMOS_RELATION_CONTRACT",
+        "ARCHITECTURE_COMPOSITION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_RELATION_DEFINE",
+        "OP_RELATION_VALIDATE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_RELATION_DEFINE",
+        "name": "Define canonical relation",
+        "inputs": [
+          "relation identity",
+          "source type/ref",
+          "target type/ref",
+          "cardinality/constraints"
+        ],
+        "outputs": [
+          "relation definition"
+        ],
+        "errors": [
+          "endpoint unresolved",
+          "relation collision"
+        ],
+        "side_effects": [
+          "relation registry updated"
+        ]
+      },
+      {
+        "id": "OP_RELATION_VALIDATE",
+        "name": "Validate relation instance",
+        "inputs": [
+          "relation definition",
+          "source instance",
+          "target instance"
+        ],
+        "outputs": [
+          "valid relation edge"
+        ],
+        "errors": [
+          "cardinality violation",
+          "type mismatch"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "dimension": "relation",
+    "required": [
+      "relation identity",
+      "source semantics",
+      "target semantics"
+    ],
+    "optional": [
+      "cardinality",
+      "direction",
+      "constraints",
+      "metadata"
+    ],
+    "dimension_rule": "Relation edges remain relation edges and are not collapsed into containment/ownership/authority/dependency.",
+    "endpoint_rule": "Endpoints resolve through exact canonical identities/types.",
+    "instance_rule": "Runtime/domain relation instances must conform to a predeclared relation semantic where required.",
+    "fk_rule": "Foreign-key style instance bindings require an explicitly declared relation.",
+    "projection_rule": "Graph/UI lines do not create relations unless backed by relation definitions."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ARCHITECTURE_COMPOSITION_EXPLICIT",
+        "rule": "Universal substrates, domain compositions, Meta ownership and relations remain explicit and non-duplicated."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "relation inferred from UI graph adjacency",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "relation dimension collapsed into containment or ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "relation endpoint resolved fuzzily",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "relation-backed instance binding lacks declared relation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "cardinality/type constraints ignored",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_STRUCTURE",
+      "target_ref": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+      "purpose": "Relation is a distinct structural dimension."
+    },
+    {
+      "id": "REF_META",
+      "target_ref": "AIGMOS_META_OWNERSHIP_CONTRACT",
+      "purpose": "Meta/semantic owners declare relation semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define canonical relations as explicit typed semantic edges with stable identity, endpoints, cardinality and constraints, distinct from containment, ownership, authority and dependency.",
+    "notes": [
+      "Unlocked until reconciled against existing universal_module/domain/Meta/relation contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RELEASE_MANIFEST_CONTRACT",
+    "name": "Release Manifest",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the machine-readable top-level release manifest linking release identity, canonical snapshot, repository manifest, validation evidence, compatibility declarations, distributions and predecessor/rollback metadata.",
+  "scope": {
+    "owns": [
+      "Release Manifest semantics"
+    ],
+    "does_not_own": [
+      "underlying canonical domain semantics",
+      "runtime implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RELEASE_MANIFEST",
+      "name": "Release Manifest",
+      "purpose": "Define the machine-readable top-level release manifest linking release identity, canonical snapshot, repository manifest, validation evidence, compatibility declarations, distributions and predecessor/rollback metadata.",
+      "parent_topic_refs": [
+        "TOPIC_RELEASE_RECORD",
+        "TOPIC_RELEASE_SNAPSHOT",
+        "TOPIC_VALIDATION_EVIDENCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RELEASE_MANIFEST_CONTRACT",
+        "RELEASE_TRACEABILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "required_refs": [
+      "release_record_ref",
+      "snapshot_ref",
+      "repository_manifest_ref",
+      "evidence_bundle_ref"
+    ],
+    "optional_refs": [
+      "compatibility_refs",
+      "distribution_package_refs",
+      "certification_refs",
+      "predecessor_release_ref",
+      "rollback_target_refs"
+    ],
+    "role": "release index/entry point",
+    "nonauthority_rule": "Manifest links authoritative records but does not duplicate/redefine their semantics.",
+    "closure_rule": "All required refs resolve exactly within the release evidence/distribution graph.",
+    "reader_rule": "A generic reader can begin from Release Manifest and deterministically discover the released canonical snapshot and its evidence.",
+    "serialization_rule": "Manifest filename/path is not release identity."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_TRACEABILITY",
+        "rule": "Release, replacement, rollback, deprecation and compatibility decisions remain explicit, snapshot-bound and traceable; no lifecycle label silently changes canonical semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "required release ref unresolved",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "manifest duplicates conflicting authoritative semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "reader requires undocumented path heuristic",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "filename/path used as release identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "manifest points to stale/mismatched evidence snapshot",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RELEASE",
+      "target_ref": "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT",
+      "purpose": "Manifest indexes immutable release record."
+    },
+    {
+      "id": "REF_EVID",
+      "target_ref": "AIGMOS_VALIDATION_EVIDENCE_BUNDLE_CONTRACT",
+      "purpose": "Release evidence is directly discoverable."
+    }
+  ],
+  "prose": {
+    "summary": "Define the machine-readable top-level release manifest linking release identity, canonical snapshot, repository manifest, validation evidence, compatibility declarations, distributions and predecessor/rollback metadata.",
+    "notes": [
+      "Unlocked pending reconciliation against the assembled 1.4 release/migration tree and whole-tree validation."
+    ]
+  }
+}

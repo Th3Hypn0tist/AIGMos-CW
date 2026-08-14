@@ -1,0 +1,140 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_LATENCY_BUDGET_CONTRACT",
+    "name": "DWH Latency Budget",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit latency budgets and measurement boundaries for query, ingest, replication, changefeed and mutation paths without allowing performance goals to weaken semantic or governance requirements.",
+  "scope": {
+    "owns": [
+      "DWH Latency Budget semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "AccessCore policy ownership",
+      "runtime execution authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_LATENCY_BUDGET",
+      "name": "DWH Latency Budget",
+      "purpose": "Define explicit latency budgets and measurement boundaries for query, ingest, replication, changefeed and mutation paths without allowing performance goals to weaken semantic or governance requirements.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_SERVICE_LEVELS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_LATENCY_BUDGET_CONTRACT",
+        "SLO_EVIDENCE_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "path_types": [
+      "query",
+      "ingest",
+      "write",
+      "replication",
+      "changefeed",
+      "federated_query",
+      "materialization",
+      "other declared path"
+    ],
+    "budget_rule": "Each latency budget has explicit start/end measurement boundaries and threshold/window.",
+    "scope_rule": "Budget binds exact operation/query/profile/source/destination scope.",
+    "measurement_rule": "Queue, network, execution, validation and governance segments may be measured separately.",
+    "optimization_rule": "Latency optimization cannot bypass validation, authorization, lineage, quality or consistency contracts.",
+    "timeout_rule": "Timeout policy is explicit and distinct from successful completion.",
+    "partial_rule": "Returning partial data to meet latency budget is allowed only under explicit partial-result policy.",
+    "clock_rule": "Measurement clock/profile is explicit where cross-node timing affects evidence.",
+    "authority_rule": "Meeting latency target grants no authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SLO_EVIDENCE_NONAUTHORITY",
+        "rule": "Freshness, availability, completeness, latency and SLO results are derived service-health evidence over exact data/runtime scopes; they never change data identity, ownership, classification, authorization or execution authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "timeout counted as successful low latency",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "security check skipped to meet budget",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "partial result returned as complete for speed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "measurement boundaries undocumented",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "latency target changes query semantics",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_QUERY",
+      "target_ref": "AIGMOS_DWH_QUERY_IDENTITY_CONTRACT",
+      "purpose": "Query latency binds exact query execution."
+    },
+    {
+      "id": "REF_FED",
+      "target_ref": "AIGMOS_DWH_FEDERATED_PARTIAL_FAILURE_CONTRACT",
+      "purpose": "Partial results remain explicit."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit latency budgets and measurement boundaries for query, ingest, replication, changefeed and mutation paths without allowing performance goals to weaken semantic or governance requirements.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH quality, replication, changefeed, query and monitoring contracts."
+    ]
+  }
+}

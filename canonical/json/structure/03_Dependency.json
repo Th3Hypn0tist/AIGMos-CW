@@ -1,0 +1,176 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT",
+    "name": "Canonical Dependency",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define dependency as the explicit structural dimension expressing required semantic/capability prerequisites without auto-enabling or implying ownership, containment or execution order.",
+  "scope": {
+    "owns": [
+      "Canonical Dependency semantics"
+    ],
+    "does_not_own": [
+      "runtime implementation details",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_STRUCTURE_DEPENDENCY",
+      "name": "Dependency",
+      "purpose": "Define dependency as the explicit structural dimension expressing required semantic/capability prerequisites without auto-enabling or implying ownership, containment or execution order.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_STRUCTURE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_BOOT_PROFILE",
+        "TOPIC_CORE_CAUSALITY"
+      ],
+      "member_refs": [
+        "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT",
+        "STRUCTURAL_DIMENSION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_DEPENDENCY_DEFINE",
+        "OP_DEPENDENCY_VALIDATE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_DEPENDENCY_DEFINE",
+        "name": "Define dependency edge",
+        "inputs": [
+          "consumer_ref",
+          "required_ref",
+          "dependency_type",
+          "required flag"
+        ],
+        "outputs": [
+          "dependency edge"
+        ],
+        "errors": [
+          "endpoint unresolved"
+        ],
+        "side_effects": [
+          "dependency graph updated"
+        ]
+      },
+      {
+        "id": "OP_DEPENDENCY_VALIDATE",
+        "name": "Validate dependency graph",
+        "inputs": [
+          "active definitions",
+          "dependency edges",
+          "boot/profile state"
+        ],
+        "outputs": [
+          "satisfied/unsatisfied dependencies"
+        ],
+        "errors": [
+          "required dependency missing",
+          "forbidden cycle"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "dimension": "dependency",
+    "required_rule": "Required dependencies must resolve in the active graph.",
+    "optional_rule": "Optional dependencies are explicit and may remain absent.",
+    "boot_rule": "Missing runtime capability dependencies hard-fail when required; they are never silently auto-enabled.",
+    "ownership_rule": "Depending on a semantic owner does not transfer ownership.",
+    "ordering_rule": "Dependency does not automatically define execution order unless an owning causal contract says so.",
+    "cycle_rule": "Dependency cycles are validated according to the owning dependency semantics and cannot be silently broken."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "STRUCTURAL_DIMENSION_EXPLICIT",
+        "rule": "Structural dimensions and registries remain explicit and are never collapsed into generic hierarchy."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "required dependency missing but consumer remains valid",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "missing dependency silently auto-enabled",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "dependency transfers semantic ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "dependency edge treated as execution order without explicit causality",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "dependency inferred only from filesystem/import proximity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "forbidden dependency cycle silently broken",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_BOOT",
+      "target_ref": "AIGMOS_RUNTIME_BOOT_PROFILE_CONTRACT",
+      "purpose": "Runtime dependencies validate without auto-enable."
+    },
+    {
+      "id": "REF_CAUSALITY",
+      "target_ref": "AIGMOS_CORE_EXPLICIT_CAUSALITY_CONTRACT",
+      "purpose": "Dependency does not substitute for execution causality."
+    }
+  ],
+  "prose": {
+    "summary": "Define dependency as the explicit structural dimension expressing required semantic/capability prerequisites without auto-enabling or implying ownership, containment or execution order.",
+    "notes": [
+      "Unlocked until reconciled against the assembled 1.4 architecture tree and reference/trace closure."
+    ]
+  }
+}

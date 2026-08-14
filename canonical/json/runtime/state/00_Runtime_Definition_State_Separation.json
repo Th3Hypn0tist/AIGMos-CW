@@ -1,0 +1,183 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_DEFINITION_STATE_SEPARATION_CONTRACT",
+    "name": "Runtime Definition and State Separation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define authored/canonical runtime definitions as inert semantics distinct from mutable runtime state created while the system is operating.",
+  "scope": {
+    "owns": [
+      "Runtime Definition and State Separation semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_DEFINITION_STATE",
+      "name": "Definition vs State",
+      "purpose": "Define authored/canonical runtime definitions as inert semantics distinct from mutable runtime state created while the system is operating.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_VALUES",
+        "TOPIC_CORE_CHANGE_CONTROL"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_DEFINITION_STATE_SEPARATION_CONTRACT",
+        "RUNTIME_SEMANTICS_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_STATE_INSTANTIATE",
+        "OP_STATE_MUTATE",
+        "OP_STATE_DISCARD"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_STATE_INSTANTIATE",
+        "name": "Instantiate runtime state from definition",
+        "inputs": [
+          "inert definition",
+          "runtime context"
+        ],
+        "outputs": [
+          "runtime state instance"
+        ],
+        "errors": [
+          "definition invalid"
+        ],
+        "side_effects": [
+          "runtime state created"
+        ]
+      },
+      {
+        "id": "OP_STATE_MUTATE",
+        "name": "Mutate runtime state",
+        "inputs": [
+          "state instance",
+          "validated runtime operation"
+        ],
+        "outputs": [
+          "updated state"
+        ],
+        "errors": [
+          "mutation denied",
+          "invalid transition"
+        ],
+        "side_effects": [
+          "runtime state changed"
+        ]
+      },
+      {
+        "id": "OP_STATE_DISCARD",
+        "name": "Discard runtime state",
+        "inputs": [
+          "state instance"
+        ],
+        "outputs": [
+          "state removed"
+        ],
+        "errors": [],
+        "side_effects": [
+          "runtime state removed"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "definition": "Stable declarative semantics/metadata loaded from authoritative sources.",
+    "runtime_state": "Mutable operational state produced while resolving/executing definitions.",
+    "separation_rule": "Runtime state changes do not silently rewrite authoritative definitions.",
+    "timing_state_rule": "Trigger timing, inflight gates, queue state, runner lifecycle and similar operational state belong to runtime state unless explicitly defined otherwise.",
+    "reload_rule": "Reload of definitions reconciles source-owned definition state without silently destroying unrelated runtime-owned state.",
+    "persistence_rule": "Persistence of runtime state requires an explicit owning contract; persistence is not implied by existence."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RUNTIME_SEMANTICS_EXPLICIT",
+        "rule": "Runtime-significant semantics are explicit and do not arise from payload, path, projection or implementation heuristics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "runtime mutation silently rewrites authoritative definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "ephemeral timing/gate/queue state stored as definition semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "definition read causes runtime state mutation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "reload destroys unrelated runtime-owned state without explicit lifecycle rule",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "runtime state becomes persistent canonical semantics merely because it exists",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_VALUES",
+      "target_ref": "AIGMOS_CORE_VALUE_SEMANTICS_CONTRACT",
+      "purpose": "Definitions are inert data."
+    },
+    {
+      "id": "REF_CHANGE",
+      "target_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+      "purpose": "Runtime state changes are not canonical writes."
+    }
+  ],
+  "prose": {
+    "summary": "Define authored/canonical runtime definitions as inert semantics distinct from mutable runtime state created while the system is operating.",
+    "notes": [
+      "Unlocked until reconciled against the existing runtime contracts and repository-wide 1.4 traceability validation."
+    ]
+  }
+}

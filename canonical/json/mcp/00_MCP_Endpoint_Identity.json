@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MCP_ENDPOINT_IDENTITY_CONTRACT",
+    "name": "MCP Endpoint Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each configured MCP server/endpoint under `#MCP` as an explicit logical identity separate from transport address, process identity, advertised tools and runtime connection state.",
+  "scope": {
+    "owns": [
+      "MCP Endpoint Identity semantics"
+    ],
+    "does_not_own": [
+      "external MCP implementation semantics",
+      "AccessCore policy ownership",
+      "domain business semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MCP_ENDPOINT_IDENTITY",
+      "name": "MCP Endpoint Identity",
+      "purpose": "Define each configured MCP server/endpoint under `#MCP` as an explicit logical identity separate from transport address, process identity, advertised tools and runtime connection state.",
+      "parent_topic_refs": [
+        "TOPIC_MCP",
+        "TOPIC_TOOLS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MCP_ENDPOINT_IDENTITY_CONTRACT",
+        "MCP_TOOL_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "root": "#MCP",
+    "identity_rule": "Each configured MCP endpoint has a stable logical identity.",
+    "transport_rule": "URL/socket/process/transport binding is configuration, not endpoint semantic identity.",
+    "connection_rule": "configured, reachable, connected and failed states remain distinct.",
+    "capability_rule": "Advertised capabilities are child observations of the endpoint and do not become endpoint identity.",
+    "tool_rule": "An MCP-advertised tool is not automatically a validated `#T` tool.",
+    "authority_rule": "Endpoint reachability does not grant invocation or target authority.",
+    "lifecycle_rule": "Reconnect/restart preserves logical endpoint identity unless explicitly replaced."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MCP_TOOL_SEPARATION",
+        "rule": "MCP endpoint identity, advertised capability, validated #T tool identity, concrete invocation and returned result are separate identities; advertisement or availability never grants execution authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "transport address used as endpoint identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "reachable endpoint treated as authorized",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "advertised tool auto-registered into #T",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "runtime process id becomes endpoint identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "connection state conflated with configuration",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MCPROOT",
+      "target_ref": "AIGMOS_MCP_ROOT_CONTRACT",
+      "purpose": "#MCP owns configured MCP identities."
+    }
+  ],
+  "prose": {
+    "summary": "Define each configured MCP server/endpoint under `#MCP` as an explicit logical identity separate from transport address, process identity, advertised tools and runtime connection state.",
+    "notes": [
+      "Unlocked pending reconciliation against #MCP, #T, q-family and command-dispatch contracts."
+    ]
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CORE_ERROR_SEMANTICS_CONTRACT",
+    "name": "Core Error Semantics",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define visible structured error semantics for canonical reading, validation and runtime-boundary failures so failures preserve cause, affected refs and cleanup state instead of collapsing into silent fallback behavior.",
+  "scope": {
+    "owns": [
+      "Core Error Semantics semantics"
+    ],
+    "does_not_own": [
+      "domain-specific semantics",
+      "runtime implementation details"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CORE_ERRORS",
+      "name": "Errors",
+      "purpose": "Define visible structured error semantics for canonical reading, validation and runtime-boundary failures so failures preserve cause, affected refs and cleanup state instead of collapsing into silent fallback behavior.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CORE_ERROR_SEMANTICS_CONTRACT",
+        "EXPLICIT_MACHINE_SEMANTICS",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_ERROR_CLASSIFY",
+        "OP_ERROR_ATTACH_CONTEXT",
+        "OP_ERROR_VALIDATE_VISIBILITY"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_ERROR_CLASSIFY",
+        "name": "Classify canonical/runtime error",
+        "inputs": [
+          "failure",
+          "owning semantic context"
+        ],
+        "outputs": [
+          "structured error class"
+        ],
+        "errors": [],
+        "side_effects": []
+      },
+      {
+        "id": "OP_ERROR_ATTACH_CONTEXT",
+        "name": "Attach error context",
+        "inputs": [
+          "error class",
+          "affected refs",
+          "cause refs"
+        ],
+        "outputs": [
+          "structured error"
+        ],
+        "errors": [],
+        "side_effects": []
+      },
+      {
+        "id": "OP_ERROR_VALIDATE_VISIBILITY",
+        "name": "Validate failure visibility",
+        "inputs": [
+          "structured error",
+          "cleanup result"
+        ],
+        "outputs": [
+          "visible bounded failure"
+        ],
+        "errors": [
+          "hidden failure",
+          "cleanup missing"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "error_required": [
+      "id",
+      "class",
+      "message",
+      "affected_refs",
+      "cause_refs",
+      "cleanup_state"
+    ],
+    "classes": [
+      "format",
+      "identity",
+      "reference",
+      "topic",
+      "structure",
+      "causality",
+      "authority",
+      "resource",
+      "runtime",
+      "external",
+      "validation"
+    ],
+    "visibility_rule": "Boundary failures remain visible to the caller/validator.",
+    "fallback_rule": "Error handling does not silently invent semantics or broaden authority.",
+    "cleanup_rule": "If runtime state/gates/resources were acquired before failure, cleanup state is explicit.",
+    "provenance_rule": "Errors preserve machine-readable affected refs and causal provenance."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_MACHINE_SEMANTICS",
+        "rule": "Machine-significant meaning is explicit structured canonical data and is not reconstructed by hidden heuristics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "failure is silently swallowed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "fallback invents missing canonical semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "error handling broadens authority or capability",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "runtime failure leaves acquired gate/resource without visible cleanup state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "structured error lacks affected refs for a machine-significant canonical failure",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_GAPS",
+      "target_ref": "AIGMOS_CORE_SEMANTIC_GAP_CONTRACT",
+      "purpose": "Some canonical errors become explicit semantic gaps."
+    },
+    {
+      "id": "REF_PROVENANCE",
+      "target_ref": "AIGMOS_CORE_PROVENANCE_EVIDENCE_CONTRACT",
+      "purpose": "Errors retain affected refs and provenance."
+    }
+  ],
+  "prose": {
+    "summary": "Define visible structured error semantics for canonical reading, validation and runtime-boundary failures so failures preserve cause, affected refs and cleanup state instead of collapsing into silent fallback behavior.",
+    "notes": [
+      "Unlocked until repository-wide 1.4 migration validates this boundary against the assembled active canonical graph."
+    ]
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_GROUP_MESSAGING_CONTRACT",
+    "name": "Group Messaging",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define invite-only group messaging with explicit group identity, immutable owner identity and bounded participant membership over P2P messaging semantics.",
+  "scope": {
+    "owns": [
+      "Group Messaging semantics"
+    ],
+    "does_not_own": [
+      "transport identity",
+      "AccessCore authorization",
+      "unrelated MeritCore semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MESSAGING_GROUP",
+      "name": "Group Messaging",
+      "purpose": "Define invite-only group messaging with explicit group identity, immutable owner identity and bounded participant membership over P2P messaging semantics.",
+      "parent_topic_refs": [
+        "TOPIC_MESSAGING",
+        "TOPIC_IDENTITYCORE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_GROUP_MESSAGING_CONTRACT",
+        "MESSAGING_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "group_rule": "Group has explicit stable semantic identity.",
+    "membership_rule": "Membership is invite-only by default.",
+    "owner_rule": "Group owner identity is immutable for the lifetime of the group under the current model.",
+    "transport_rule": "Group messaging may use peer-to-peer transport arrangements but transport topology does not redefine group identity.",
+    "payload_rule": "Group messages are inert payloads scoped to the group conversation.",
+    "membership_visibility_rule": "Current participant membership is explicitly readable by authorized group participants.",
+    "ui_rule": "Commands such as /msg users are client projections over canonical/current group membership state."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MESSAGING_BOUNDARY_EXPLICIT",
+        "rule": "Messaging identity, conversation state, throttling, group governance and transport semantics remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "group has no stable semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "owner identity changes silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "membership inferred from transport topology only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "non-member receives group payload without explicit policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "UI participant list becomes membership authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MSG",
+      "target_ref": "AIGMOS_P2P_MESSAGING_CONTRACT",
+      "purpose": "Group messages reuse P2P messaging."
+    }
+  ],
+  "prose": {
+    "summary": "Define invite-only group messaging with explicit group identity, immutable owner identity and bounded participant membership over P2P messaging semantics.",
+    "notes": [
+      "Unlocked pending reconciliation against existing msg/WebRTC/rendezvous contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

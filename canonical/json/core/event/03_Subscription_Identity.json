@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EVENT_SUBSCRIPTION_IDENTITY_CONTRACT",
+    "name": "Event Subscription Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define subscription to exact Event types/sources/filters with delivery target, backpressure and lifecycle semantics.",
+  "scope": {
+    "owns": [
+      "Event Subscription Identity semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "domain-specific semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EVENT_SUBSCRIPTION_IDENTITY",
+      "name": "Event Subscription Identity",
+      "purpose": "Define subscription to exact Event types/sources/filters with delivery target, backpressure and lifecycle semantics.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_SEMANTICS",
+        "TOPIC_EVENTS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EVENT_SUBSCRIPTION_IDENTITY_CONTRACT",
+        "EXPLICIT_IDENTITY_AND_MEANING",
+        "DERIVED_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each subscription has explicit identity.",
+    "type_rule": "Subscribed Event type/source scopes are exact.",
+    "filter_rule": "Filter semantics are explicit.",
+    "target_rule": "Delivery target/listener/queue/handler identity is exact.",
+    "lifecycle_rule": "Active/paused/expired/revoked states are explicit.",
+    "delivery_rule": "Subscription delivery does not imply Event processing success.",
+    "authority_rule": "Subscription requires exact read/receive authority and does not grant producer rights."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_IDENTITY_AND_MEANING",
+        "rule": "Machine-significant identity, type, relation, state and meaning are explicit and never inferred solely from display text, path, layout, file order, timestamp or implementation accident."
+      },
+      {
+        "id": "DERIVED_NONAUTHORITY",
+        "rule": "Resolved, projected, indexed, cached, formatted or derived representations never become source-of-truth or authority merely because they are convenient or available."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "subscription wildcard unbounded",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "handler guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "delivery ACK means processed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "expired subscription receives forever",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "subscription grants Event emission rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define subscription to exact Event types/sources/filters with delivery target, backpressure and lifecycle semantics.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

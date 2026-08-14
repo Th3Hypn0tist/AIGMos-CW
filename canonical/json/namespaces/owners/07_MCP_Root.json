@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MCP_ROOT_CONTRACT",
+    "name": "#MCP Root",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define `#MCP` as the reserved root for configured MCP server identities and validated MCP surfaces, distinct from local Tool identities under `#T`.",
+  "scope": {
+    "owns": [
+      "#MCP Root semantics"
+    ],
+    "does_not_own": [
+      "unrelated domain semantics",
+      "presentation semantics",
+      "implicit runtime authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NAMESPACE_MCP",
+      "name": "#MCP Root",
+      "purpose": "Define `#MCP` as the reserved root for configured MCP server identities and validated MCP surfaces, distinct from local Tool identities under `#T`.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NAMESPACES",
+        "TOPIC_MCP_REGISTRY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MCP_ROOT_CONTRACT",
+        "RESERVED_ROOT_OWNER_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "root": "#MCP",
+    "role": "MCP server/configuration family/root",
+    "owner_rule": "#MCP resolves to the MCP Registry.",
+    "server_rule": "Children identify configured MCP servers by explicit logical identity.",
+    "tool_rule": "Remote tool advertisements remain MCP-origin data until validated and projected into #T.",
+    "transport_rule": "Process/URL/socket/session is binding/runtime state, not MCP semantic identity.",
+    "inert_rule": "Configured MCP definitions are inert until explicit lifecycle/connect operations.",
+    "authority_rule": "MCP connectivity or advertisement visibility does not grant invocation/data authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RESERVED_ROOT_OWNER_EXPLICIT",
+        "rule": "Each reserved runtime root resolves to one explicit semantic owner/family; the root itself never creates semantic ownership or runtime authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "#MCP remote advertisement automatically becomes #T tool",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "server transport endpoint used as semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "MCP config executes on read",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "MCP connectivity grants local authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "MCP server identity inferred from display name only",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MCP",
+      "target_ref": "AIGMOS_MCP_REGISTRY_CONTRACT",
+      "purpose": "#MCP exposes configured MCP identities."
+    },
+    {
+      "id": "REF_TOOL",
+      "target_ref": "AIGMOS_MCP_TOOL_PROJECTION_CONTRACT",
+      "purpose": "Validated projection is required before MCP tools enter #T."
+    }
+  ],
+  "prose": {
+    "summary": "Define `#MCP` as the reserved root for configured MCP server identities and validated MCP surfaces, distinct from local Tool identities under `#T`.",
+    "notes": [
+      "Unlocked pending reconciliation against existing namespace/runtime/domain contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

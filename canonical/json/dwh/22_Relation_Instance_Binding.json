@@ -1,0 +1,131 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_RELATION_INSTANCE_BINDING_CONTRACT",
+    "name": "DWH Relation Instance Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define `relation` instance binding as traversal to another instance/resource only through a predeclared exact relation and foreign-key/reference binding.",
+  "scope": {
+    "owns": [
+      "DWH Relation Instance Binding semantics"
+    ],
+    "does_not_own": [
+      "module domain model ownership",
+      "AccessCore policy ownership",
+      "transport implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_RELATION_INSTANCE_BINDING",
+      "name": "DWH Relation Instance Binding",
+      "purpose": "Define `relation` instance binding as traversal to another instance/resource only through a predeclared exact relation and foreign-key/reference binding.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_SCHEMA_BINDING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_RELATION_INSTANCE_BINDING_CONTRACT",
+        "DWH_SCHEMA_OWNERSHIP_PRESERVED",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "binding_type": "relation",
+    "source_rule": "Relation binding starts from an exact source instance/schema/record identity.",
+    "relation_rule": "Binding references an exact predeclared canonical relation identity.",
+    "fk_rule": "Required foreign-key/reference field binding must already be declared and schema-valid.",
+    "target_rule": "Relation resolution yields exact target instance/record/resource identity according to the relation contract.",
+    "inference_rule": "Relations are never inferred from matching names, values or physical proximity.",
+    "cardinality_rule": "Resolution obeys declared relation cardinality.",
+    "ownership_rule": "Traversing a relation does not transfer ownership.",
+    "authority_rule": "Each target data access remains independently governed."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_SCHEMA_OWNERSHIP_PRESERVED",
+        "rule": "DWH resolves and projects schemas/relations but never becomes the semantic owner of module domain models; local/relation bindings require exact declared identities and cannot be inferred from names or proximity."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "relation inferred from equal field names",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "undeclared FK used",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "target instance guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "relation cardinality ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "source authorization automatically grants target access",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CARD",
+      "target_ref": "AIGMOS_RELATION_CARDINALITY_FK_CONTRACT",
+      "purpose": "Relation binding requires declared FK/cardinality."
+    },
+    {
+      "id": "REF_LOCAL",
+      "target_ref": "AIGMOS_DWH_LOCAL_INSTANCE_BINDING_CONTRACT",
+      "purpose": "Source/target instances retain exact identity."
+    }
+  ],
+  "prose": {
+    "summary": "Define `relation` instance binding as traversal to another instance/resource only through a predeclared exact relation and foreign-key/reference binding.",
+    "notes": [
+      "Unlocked pending reconciliation against Schema/Relation, UserModule isolation and DWH access/lineage contracts."
+    ]
+  }
+}

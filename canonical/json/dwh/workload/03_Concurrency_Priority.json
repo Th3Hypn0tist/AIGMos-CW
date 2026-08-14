@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_CONCURRENCY_PRIORITY_CONTRACT",
+    "name": "DWH Concurrency and Priority",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define workload concurrency classes, queueing and scheduling priority explicitly while preventing priority metadata from bypassing dependency, authorization, transaction or consistency rules.",
+  "scope": {
+    "owns": [
+      "DWH Concurrency and Priority semantics"
+    ],
+    "does_not_own": [
+      "query semantic ownership",
+      "AccessCore policy ownership",
+      "runtime scheduler implementation details"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_CONCURRENCY_PRIORITY",
+      "name": "DWH Concurrency and Priority",
+      "purpose": "Define workload concurrency classes, queueing and scheduling priority explicitly while preventing priority metadata from bypassing dependency, authorization, transaction or consistency rules.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_WORKLOAD_CONTROL"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_CONCURRENCY_PRIORITY_CONTRACT",
+        "WORKLOAD_CONTROL_NONSEMANTIC",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "concurrency_rule": "Maximum concurrent executions are explicit per workload/profile/resource scope.",
+    "priority_rule": "Scheduling priority/class is explicit and bounded.",
+    "fairness_rule": "Starvation/fairness handling is explicit where relevant.",
+    "dependency_rule": "Priority cannot violate transaction, migration, schema or causality dependencies.",
+    "authorization_rule": "High priority never bypasses AccessCore/governance.",
+    "consistency_rule": "Scheduling optimization cannot weaken requested consistency profile.",
+    "order_rule": "Arrival time alone does not define semantic precedence.",
+    "preemption_rule": "Preemption, if supported, follows the explicit cancellation/preemption profile."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "WORKLOAD_CONTROL_NONSEMANTIC",
+        "rule": "Admission, quotas, concurrency, priority, cancellation and resource budgets may control when/how work executes but never change canonical query/write semantics, data ownership, classification or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "high priority bypasses authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "scheduler violates transaction dependency",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "arrival order treated as business priority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "concurrency limit implicit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "priority weakens consistency semantics",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TX",
+      "target_ref": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT",
+      "purpose": "Scheduling cannot violate transaction semantics."
+    },
+    {
+      "id": "REF_ADMIT",
+      "target_ref": "AIGMOS_DWH_ADMISSION_CONTROL_CONTRACT",
+      "purpose": "Admission/queueing uses explicit workload classes."
+    }
+  ],
+  "prose": {
+    "summary": "Define workload concurrency classes, queueing and scheduling priority explicitly while preventing priority metadata from bypassing dependency, authorization, transaction or consistency rules.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH query, mutation, service-level and runtime execution contracts."
+    ]
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT",
+    "name": "Canonical Release Record",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the immutable record that promotes one approved canonical snapshot to a named/versioned release while preserving approval, evidence, predecessor and distribution references.",
+  "scope": {
+    "owns": [
+      "Canonical Release Record semantics"
+    ],
+    "does_not_own": [
+      "underlying canonical domain semantics",
+      "runtime implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RELEASE_RECORD",
+      "name": "Canonical Release Record",
+      "purpose": "Define the immutable record that promotes one approved canonical snapshot to a named/versioned release while preserving approval, evidence, predecessor and distribution references.",
+      "parent_topic_refs": [
+        "TOPIC_RELEASE_SNAPSHOT",
+        "TOPIC_DISTRIBUTION_PACKAGE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT",
+        "RELEASE_TRACEABILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "required": [
+      "release_id",
+      "release_version",
+      "snapshot_ref",
+      "approval_ref",
+      "evidence_ref",
+      "released_at"
+    ],
+    "predecessor_rule": "Release records predecessor release/snapshot when applicable.",
+    "version_rule": "Release version labels the released snapshot; it does not redefine contract identities.",
+    "distribution_rule": "Release may reference one or more physical distribution packages/hashes.",
+    "immutability_rule": "Published release record is immutable; correction creates a superseding record/release according to policy.",
+    "authority_rule": "Release publication does not grant runtime authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_TRACEABILITY",
+        "rule": "Release, replacement, rollback, deprecation and compatibility decisions remain explicit, snapshot-bound and traceable; no lifecycle label silently changes canonical semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "release references unapproved snapshot",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "release record mutated after publication",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "version label changes underlying contract identity implicitly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "release lacks evidence/approval trace",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SNAP",
+      "target_ref": "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT",
+      "purpose": "Release promotes an immutable accepted snapshot."
+    },
+    {
+      "id": "REF_GATE",
+      "target_ref": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT",
+      "purpose": "Snapshot must be explicitly approved."
+    }
+  ],
+  "prose": {
+    "summary": "Define the immutable record that promotes one approved canonical snapshot to a named/versioned release while preserving approval, evidence, predecessor and distribution references.",
+    "notes": [
+      "Unlocked pending reconciliation against the assembled 1.4 release/migration tree and whole-tree validation."
+    ]
+  }
+}

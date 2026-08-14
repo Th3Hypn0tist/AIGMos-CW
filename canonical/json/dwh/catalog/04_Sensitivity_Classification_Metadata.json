@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_CATALOG_SENSITIVITY_METADATA_CONTRACT",
+    "name": "DWH Catalog Sensitivity and Classification Metadata",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define catalog projection of data classification, sensitivity and handling metadata while preserving the owning classification policy as authority and preventing catalog labels from independently declassifying or reclassifying data.",
+  "scope": {
+    "owns": [
+      "DWH Catalog Sensitivity and Classification Metadata semantics"
+    ],
+    "does_not_own": [
+      "source domain semantics",
+      "AccessCore policy ownership",
+      "physical storage ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_CATALOG_SENSITIVITY_METADATA",
+      "name": "DWH Catalog Sensitivity and Classification Metadata",
+      "purpose": "Define catalog projection of data classification, sensitivity and handling metadata while preserving the owning classification policy as authority and preventing catalog labels from independently declassifying or reclassifying data.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_CATALOG_METADATA"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_CATALOG_SENSITIVITY_METADATA_CONTRACT",
+        "CATALOG_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "source_rule": "Catalog classification metadata references exact owning classification/policy evidence.",
+    "projection_rule": "Catalog may project sensitivity/classification labels for discovery/governance UX.",
+    "authority_rule": "Catalog metadata is not the classification authority; owning schema/policy remains authoritative.",
+    "declassification_rule": "Editing catalog metadata cannot lower classification without the explicit declassification boundary.",
+    "inheritance_rule": "Dataset/field classification summaries are derived from exact underlying classifications and explicit join/summary rules.",
+    "redaction_rule": "Sensitive metadata itself may be hidden/redacted according to policy.",
+    "conflict_rule": "Catalog-versus-source classification mismatch is an explicit validation finding and never silently reconciled in favor of catalog.",
+    "lineage_rule": "Derived dataset classification can retain source/lineage refs."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "CATALOG_NONAUTHORITY",
+        "rule": "Catalog and metadata records describe exact DWH resources and evidence; discovery, labels, annotations, ranking or catalog visibility never replace canonical resource identity, semantic ownership, classification policy or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "catalog label declassifies data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "catalog classification overrides source policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "sensitive classification metadata always public",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "mismatch silently picks newest label",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "dataset summary classification guessed",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TAINT",
+      "target_ref": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT",
+      "purpose": "Catalog classification summaries derive from explicit propagation."
+    },
+    {
+      "id": "REF_DECL",
+      "target_ref": "AIGMOS_DWH_DECLASSIFICATION_BOUNDARY_CONTRACT",
+      "purpose": "Lowering classification remains separately authorized."
+    }
+  ],
+  "prose": {
+    "summary": "Define catalog projection of data classification, sensitivity and handling metadata while preserving the owning classification policy as authority and preventing catalog labels from independently declassifying or reclassifying data.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH schema, lineage, classification and discovery contracts."
+    ]
+  }
+}

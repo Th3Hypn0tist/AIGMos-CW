@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ROUNDTRIP_EQUIVALENCE_CONTRACT",
+    "name": "Roundtrip Equivalence",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define semantic equivalence for parse/write/normalize cycles so implementations may serialize differently while preserving the same Contract Format 1.4 meaning.",
+  "scope": {
+    "owns": [
+      "Roundtrip Equivalence semantics"
+    ],
+    "does_not_own": [
+      "domain-specific semantics",
+      "implementation language",
+      "presentation formatting"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ROUNDTRIP_EQUIVALENCE",
+      "name": "Roundtrip Equivalence",
+      "purpose": "Define semantic equivalence for parse/write/normalize cycles so implementations may serialize differently while preserving the same Contract Format 1.4 meaning.",
+      "parent_topic_refs": [
+        "TOPIC_CONTRACT_FORMAT_CONFORMANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_ROUNDTRIP_EQUIVALENCE_CONTRACT",
+        "CONFORMANCE_EVIDENCE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "pipeline": "source -> read -> semantic graph -> write -> read -> normalize -> compare",
+    "equivalence_rule": "Equivalence compares normalized machine-significant semantics, not byte identity.",
+    "preserve": [
+      "identity",
+      "ownership",
+      "Topics",
+      "structure",
+      "behavior",
+      "constraints",
+      "refs",
+      "source_role/status",
+      "semantic ordering",
+      "null-empty-missing distinctions"
+    ],
+    "ignore": [
+      "whitespace",
+      "object key order",
+      "declared non-semantic collection order"
+    ],
+    "extension_rule": "Supported unknown extensions survive roundtrip according to extension policy.",
+    "failure_rule": "Any lost/created/changed machine-significant semantic node makes the roundtrip non-equivalent."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "CONFORMANCE_EVIDENCE_EXPLICIT",
+        "rule": "A Contract Format 1.4 conformance claim is backed by reproducible machine-readable fixtures, validation results and exact profile/version identity."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "roundtrip equivalence defined as byte equality only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "semantic ordering lost",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "Topic membership lost",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "unknown preserved extension silently dropped",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "null/empty/missing collapsed",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_NORM",
+      "target_ref": "AIGMOS_SEMANTIC_NORMALIZATION_CONTRACT",
+      "purpose": "Equivalence uses semantic normalization."
+    }
+  ],
+  "prose": {
+    "summary": "Define semantic equivalence for parse/write/normalize cycles so implementations may serialize differently while preserving the same Contract Format 1.4 meaning.",
+    "notes": [
+      "Unlocked pending implementation of executable conformance fixtures and whole-tree validation."
+    ]
+  }
+}

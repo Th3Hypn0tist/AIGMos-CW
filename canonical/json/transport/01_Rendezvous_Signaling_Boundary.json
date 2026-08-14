@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RENDEZVOUS_SIGNALING_CONTRACT",
+    "name": "Rendezvous and Signaling Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define rendezvous/signaling as explicit bootstrap metadata exchange for peer establishment, with official licensed relay and private relay options, and no ownership of application payload semantics.",
+  "scope": {
+    "owns": [
+      "Rendezvous and Signaling Boundary semantics"
+    ],
+    "does_not_own": [
+      "application payload semantics",
+      "IdentityCore identity ownership",
+      "AccessCore authorization policy"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RENDEZVOUS_SIGNALING",
+      "name": "Rendezvous and Signaling Boundary",
+      "purpose": "Define rendezvous/signaling as explicit bootstrap metadata exchange for peer establishment, with official licensed relay and private relay options, and no ownership of application payload semantics.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NETWORK",
+        "TOPIC_DWH_BOUNDARY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RENDEZVOUS_SIGNALING_CONTRACT",
+        "TRANSPORT_SECURITY_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "role": "peer discovery/bootstrap/signaling",
+    "official_rule": "Official rendezvous/signaling service may be available to applicable license holders.",
+    "private_rule": "Private rendezvous/signaling service is permitted where supported.",
+    "metadata_rule": "Service carries only metadata required for peer discovery/session establishment.",
+    "payload_rule": "Application payload is not owned by or semantically terminated at rendezvous.",
+    "cleanup_rule": "Bootstrap records are removed or expired after establishment/cancellation according to explicit policy.",
+    "identity_rule": "Rendezvous record/session identity is not the peer's semantic identity.",
+    "availability_rule": "Relay availability is service state and not license or peer identity."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TRANSPORT_SECURITY_SEPARATION",
+        "rule": "Transport session, cryptographic material, signaling metadata and semantic identity remain separate; secure transport never implies application authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "rendezvous stores application payload by default",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "rendezvous record becomes peer semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "private relay forbidden without explicit rule",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "bootstrap metadata retained indefinitely without policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "relay availability treated as authorization",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CLEAN",
+      "target_ref": "AIGMOS_MESSAGING_RENDEZVOUS_CLEANUP_CONTRACT",
+      "purpose": "Bootstrap metadata is bounded and cleaned."
+    },
+    {
+      "id": "REF_LICENSE",
+      "target_ref": "AIGMOS_LICENSED_SHARED_SERVICES_CONTRACT",
+      "purpose": "Official rendezvous is a licensed shared service where applicable."
+    }
+  ],
+  "prose": {
+    "summary": "Define rendezvous/signaling as explicit bootstrap metadata exchange for peer establishment, with official licensed relay and private relay options, and no ownership of application payload semantics.",
+    "notes": [
+      "Unlocked pending reconciliation against existing WebRTC/PGP/rendezvous contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_USERMODULE_INSTANCE_BINDING_CONTRACT",
+    "name": "Runtime UserModule Instance Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define runtime UserModule instances as stable logical instances bound explicitly to local or relation-backed data/context without conflating the instance with its module definition.",
+  "scope": {
+    "owns": [
+      "Runtime UserModule Instance Binding semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_USERMODULE_INSTANCES",
+      "name": "UserModule Instances",
+      "purpose": "Define runtime UserModule instances as stable logical instances bound explicitly to local or relation-backed data/context without conflating the instance with its module definition.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_USER_MODULES"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+        "TOPIC_CORE_STRUCTURE_RELATION",
+        "TOPIC_RUNTIME_DEFINITION_STATE"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_USERMODULE_INSTANCE_BINDING_CONTRACT",
+        "USERMODULE_SEMANTICS_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_INSTANCE_BIND",
+        "OP_INSTANCE_RESOLVE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_INSTANCE_BIND",
+        "name": "Bind module instance",
+        "inputs": [
+          "module definition",
+          "instance identity",
+          "binding declaration"
+        ],
+        "outputs": [
+          "bound instance"
+        ],
+        "errors": [
+          "binding invalid",
+          "relation unresolved",
+          "instance collision"
+        ],
+        "side_effects": [
+          "instance registry updated"
+        ]
+      },
+      {
+        "id": "OP_INSTANCE_RESOLVE",
+        "name": "Resolve module instance",
+        "inputs": [
+          "instance identity"
+        ],
+        "outputs": [
+          "exact bound instance"
+        ],
+        "errors": [
+          "instance unresolved",
+          "instance ambiguous"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "definition_instance_rule": "UserModule definition identity and instance identity are distinct.",
+    "binding_modes": [
+      "local",
+      "relation"
+    ],
+    "local_rule": "local binds the instance to its own local data/context.",
+    "relation_rule": "relation binding requires an explicitly predeclared relation/FK semantic owned by the relevant Meta/schema.",
+    "no_implicit_relation_rule": "Runtime does not invent relation semantics to satisfy a binding.",
+    "instance_scope_rule": "Local data isolation is scoped to the full #UM instance.",
+    "multiple_instances_rule": "Multiple instances are allowed only when the module/owning contract explicitly supports them."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "USERMODULE_SEMANTICS_EXPLICIT",
+        "rule": "UserModule identity, type, lifecycle, bindings and visibility are explicit canonical/runtime semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "instance identity conflated with module definition identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "relation binding created without predeclared relation/FK semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "runtime invents relation semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "local instance data leaks across instance boundaries",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "multiple instances created where module semantics do not permit them",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REGISTRY",
+      "target_ref": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT",
+      "purpose": "Instances derive from registered module definitions."
+    },
+    {
+      "id": "REF_STRUCTURE",
+      "target_ref": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+      "purpose": "relation-backed bindings rely on explicit structural relation semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define runtime UserModule instances as stable logical instances bound explicitly to local or relation-backed data/context without conflating the instance with its module definition.",
+    "notes": [
+      "Unlocked until reconciled against existing UserModule contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

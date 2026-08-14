@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_SANITIZATION_DECLASSIFICATION_CONTRACT",
+    "name": "DWH Sanitization and Declassification",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the only explicit path for reducing or transforming DWH taint: an authorized declared sanitization/declassification operation with evidence, scope and resulting classification.",
+  "scope": {
+    "owns": [
+      "DWH Sanitization and Declassification semantics"
+    ],
+    "does_not_own": [
+      "domain value semantics",
+      "transport implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_DECLASSIFICATION",
+      "name": "DWH Sanitization and Declassification",
+      "purpose": "Define the only explicit path for reducing or transforming DWH taint: an authorized declared sanitization/declassification operation with evidence, scope and resulting classification.",
+      "parent_topic_refs": [
+        "TOPIC_DWH_TAINT_PROPAGATION",
+        "TOPIC_STRUCTURE_AUTHORITY",
+        "TOPIC_CORE_PROVENANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_SANITIZATION_DECLASSIFICATION_CONTRACT",
+        "DWH_LINEAGE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "default_rule": "Taint cannot disappear implicitly.",
+    "operation_rule": "Sanitization/declassification is an explicit canonical operation/transformation identity.",
+    "authority_rule": "Operation requires explicit authority/policy approval for the affected classification.",
+    "evidence_rule": "Result records source taint, transformation, authority/policy and resulting taint state.",
+    "scope_rule": "Declassification applies only to the exact transformed output scope.",
+    "partial_rule": "An operation may remove one taint dimension while preserving others.",
+    "failure_rule": "If sanitization cannot prove its declared post-condition, output retains applicable source taint or operation fails."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_LINEAGE_EXPLICIT",
+        "rule": "DWH lineage and taint state remain explicit, monotonic unless an authorized transformation says otherwise, and traceable to source evidence."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "taint disappears without explicit sanitization/declassification operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "declassification occurs without applicable authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "result lacks source/result taint evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "declassification broadens beyond exact transformed output",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "failed sanitization still emits clean-classified output",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROP",
+      "target_ref": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT",
+      "purpose": "Default propagation remains monotonic unless explicitly declassified."
+    },
+    {
+      "id": "REF_AUTH",
+      "target_ref": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT",
+      "purpose": "Declassification authority is explicit."
+    }
+  ],
+  "prose": {
+    "summary": "Define the only explicit path for reducing or transforming DWH taint: an authorized declared sanitization/declassification operation with evidence, scope and resulting classification.",
+    "notes": [
+      "Unlocked pending reconciliation against existing DWH/provenance/security semantics and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

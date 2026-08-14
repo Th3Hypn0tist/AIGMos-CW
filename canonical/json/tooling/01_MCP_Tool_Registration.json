@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MCP_TOOL_REGISTRATION_CONTRACT",
+    "name": "MCP to Tool Registration",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define exact advertise→normalize→validate→map→authorize registration→register transition from MCP endpoint advertisement into the runtime Tool registry.",
+  "scope": {
+    "owns": [
+      "MCP to Tool Registration semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MCP_TOOL_REGISTRATION",
+      "name": "MCP to Tool Registration",
+      "purpose": "Define exact advertise→normalize→validate→map→authorize registration→register transition from MCP endpoint advertisement into the runtime Tool registry.",
+      "parent_topic_refs": [
+        "TOPIC_TOOLS",
+        "TOPIC_MCP"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MCP_TOOL_REGISTRATION_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "flow": [
+      "receive advertisement",
+      "normalize metadata/schema",
+      "validate capability/schema",
+      "map endpoint capability to local tool identity/profile",
+      "authorize registration",
+      "register tool"
+    ],
+    "advertisement_rule": "MCP advertisement is untrusted descriptive input.",
+    "endpoint_rule": "Exact MCP endpoint identity is preserved.",
+    "mapping_rule": "Local tool identity/binding is explicit.",
+    "authorization_rule": "Tool registration requires explicit applicable authority/policy.",
+    "execution_rule": "Registration never invokes the tool.",
+    "failure_rule": "Invalid/unresolved advertisement stays unregistered."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "advertised tool becomes invocable instantly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "registration executes health test with side effects silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "endpoint name becomes tool identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "schema mismatch ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "registration authority omitted",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MCP",
+      "target_ref": "AIGMOS_MCP_TOOL_REGISTRATION_BOUNDARY_CONTRACT",
+      "purpose": "MCP advertisements cross explicit registry boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define exact advertise→normalize→validate→map→authorize registration→register transition from MCP endpoint advertisement into the runtime Tool registry.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_QUERY_PUSHDOWN_BOUNDARY_CONTRACT",
+    "name": "DWH Query Pushdown Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define which filters, projections, aggregations and other query fragments may be delegated to remote origins without changing semantics, leaking unauthorized data or weakening lineage/classification handling.",
+  "scope": {
+    "owns": [
+      "DWH Query Pushdown Boundary semantics"
+    ],
+    "does_not_own": [
+      "remote source domain ownership",
+      "AccessCore policy ownership",
+      "transport implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_QUERY_PUSHDOWN_BOUNDARY",
+      "name": "DWH Query Pushdown Boundary",
+      "purpose": "Define which filters, projections, aggregations and other query fragments may be delegated to remote origins without changing semantics, leaking unauthorized data or weakening lineage/classification handling.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_FEDERATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_QUERY_PUSHDOWN_BOUNDARY_CONTRACT",
+        "FEDERATION_PRESERVES_ORIGIN",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "pushdown_types": [
+      "filter",
+      "projection",
+      "aggregation",
+      "limit/order where semantically safe",
+      "other declared compatible operation"
+    ],
+    "capability_rule": "Pushdown requires explicit source capability support.",
+    "semantic_rule": "Delegated operation must be semantically equivalent under the source profile.",
+    "governance_rule": "Pushdown must not require unauthorized hidden fields/data exposure.",
+    "classification_rule": "Remote/local processing preserves equivalent classification/taint semantics.",
+    "lineage_rule": "Pushed-down derived results retain origin and transformation provenance.",
+    "fallback_rule": "If safe pushdown is unavailable, planner may process locally only if authorized data projection permits it.",
+    "authority_rule": "Remote execution capability does not grant query authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "FEDERATION_PRESERVES_ORIGIN",
+        "rule": "Federated DWH access preserves each origin's exact identity, schema, governance, lineage and consistency evidence; combining results never centralizes semantic ownership or silently expands authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "filter pushdown changes null semantics silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "aggregation pushdown declassifies data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "remote capability treated as authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "hidden restricted field fetched for local filtering without governance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "fallback silently broadens projected data",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_FILTER",
+      "target_ref": "AIGMOS_DWH_FILTER_PROJECTION_CONTRACT",
+      "purpose": "Pushdown preserves filter/projection semantics."
+    },
+    {
+      "id": "REF_AGG",
+      "target_ref": "AIGMOS_DWH_QUERY_AGGREGATION_CONTRACT",
+      "purpose": "Aggregate pushdown preserves classification/lineage."
+    }
+  ],
+  "prose": {
+    "summary": "Define which filters, projections, aggregations and other query fragments may be delegated to remote origins without changing semantics, leaking unauthorized data or weakening lineage/classification handling.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH remote addressing, query, lineage, synchronization and AccessCore contracts."
+    ]
+  }
+}

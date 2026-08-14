@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_ACCESSCORE_ACTIVATION_MONITOR_CONTRACT",
+    "name": "AccessCore Activation Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for AC configuration, runtime active state, authenticated identity/assurance, policy version, reauthentication requirements and remote authorization traces.",
+  "scope": {
+    "owns": [
+      "AccessCore Activation Monitor semantics"
+    ],
+    "does_not_own": [
+      "IdentityCore identity semantics",
+      "commercial licensing",
+      "domain business semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_ACCESSCORE_ACTIVATION_MONITOR",
+      "name": "AccessCore Activation Monitor",
+      "purpose": "Define a read-only Expose monitor for AC configuration, runtime active state, authenticated identity/assurance, policy version, reauthentication requirements and remote authorization traces.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE_AUTHORIZATION",
+        "TOPIC_RUNTIME_ACTIVATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_ACCESSCORE_ACTIVATION_MONITOR_CONTRACT",
+        "ACCESSCORE_ACTIVATION_GOVERNED",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "AC config flag",
+      "runtime AC state",
+      "current identity/session",
+      "assurance level",
+      "loaded policy/version",
+      "authorization decisions",
+      "reauth-required state",
+      "remote authorization traces"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "separation_rule": "Configured enablement, runtime active state, authenticated identity, assurance and authorization decision are visibly distinct.",
+    "action_rule": "reload ac, login, reauth, policy edit and config changes invoke separate authorized operations.",
+    "authority_rule": "Viewing AC state grants no policy-admin or governed-resource rights.",
+    "secret_rule": "Credentials, tokens, session secrets and reauthentication secrets are never displayed.",
+    "failure_rule": "Protected/error states are displayed explicitly and never represented as AC disabled/off.",
+    "trace_rule": "Displayed allow/deny/reauth results retain exact identity/resource/policy refs."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ACCESSCORE_ACTIVATION_GOVERNED",
+        "rule": "AccessCore activation, login, assurance and runtime protection are explicit lifecycle semantics; once active, AccessCore cannot be silently bypassed or disabled by an ungoverned runtime/config mutation."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor conflates AC enabled with authenticated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "policy error displayed as AC off",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "monitor exposes credentials/secrets",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "viewing grants admin authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "authorization result lacks exact policy/resource refs",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_STATE",
+      "target_ref": "AIGMOS_ACCESSCORE_RUNTIME_ACTIVE_STATE_CONTRACT",
+      "purpose": "Monitor projects AC lifecycle state."
+    },
+    {
+      "id": "REF_GATE",
+      "target_ref": "AIGMOS_ACCESSCORE_ASSURANCE_GATED_RESOURCE_CONTRACT",
+      "purpose": "Monitor exposes authorization/assurance separation."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for AC configuration, runtime active state, authenticated identity/assurance, policy version, reauthentication requirements and remote authorization traces.",
+    "notes": [
+      "Unlocked pending reconciliation against existing AccessCore/IAM/runtime activation contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

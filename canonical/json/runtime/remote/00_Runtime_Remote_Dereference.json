@@ -1,0 +1,192 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_REMOTE_DEREFERENCE_CONTRACT",
+    "name": "Runtime Remote Dereference",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit remote semantic dereference through declared peer/external identities and DWH-style remote addressing, preventing direct transport endpoints or raw external handles from bypassing canonical authorization boundaries.",
+  "scope": {
+    "owns": [
+      "Runtime Remote Dereference semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "remote authorization policy",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_REMOTE_DEREFERENCE",
+      "name": "Remote Dereference",
+      "purpose": "Define explicit remote semantic dereference through declared peer/external identities and DWH-style remote addressing, preventing direct transport endpoints or raw external handles from bypassing canonical authorization boundaries.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_ADDRESSING",
+        "TOPIC_CORE_EXTERNAL_BOUNDARY",
+        "TOPIC_RUNTIME_DWH_TRANSPORT"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_REMOTE_DEREFERENCE_CONTRACT",
+        "NETWORK_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_REMOTE_REF_PARSE",
+        "OP_REMOTE_REF_RESOLVE",
+        "OP_REMOTE_REF_DISPATCH"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_REMOTE_REF_PARSE",
+        "name": "Parse remote reference",
+        "inputs": [
+          "remote semantic address"
+        ],
+        "outputs": [
+          "typed remote ref"
+        ],
+        "errors": [
+          "invalid remote grammar"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_REMOTE_REF_RESOLVE",
+        "name": "Resolve remote endpoint identity",
+        "inputs": [
+          "typed remote ref",
+          "declared external peer registry"
+        ],
+        "outputs": [
+          "resolved remote peer + semantic target"
+        ],
+        "errors": [
+          "peer unresolved",
+          "target unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_REMOTE_REF_DISPATCH",
+        "name": "Dispatch remote semantic access",
+        "inputs": [
+          "resolved remote ref",
+          "validated authorization context"
+        ],
+        "outputs": [
+          "remote read/write request"
+        ],
+        "errors": [
+          "authorization denied",
+          "remote unavailable"
+        ],
+        "side_effects": [
+          "declared remote interaction"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "remote_marker": ">",
+    "example": "#DWH:>warehouse:lights",
+    "identity_rule": "Remote peer identity is declared semantic identity; IP/port/session id is transport binding only.",
+    "address_rule": "Remote marker/address resolves through an owning remote/DWH contract, not direct filesystem/network dereference.",
+    "authorization_rule": "Remote rights are evaluated at the remote semantic authority boundary.",
+    "ac_rule": "When AccessCore is active, direct raw $EXT dereference is not an alternate bypass path; governed remote access uses the declared DWH/remote route.",
+    "read_only_default": "External/remote surfaces default read-only unless explicit write authority exists.",
+    "payload_rule": "Remote payload cannot dynamically select a broader root/authority scope."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "NETWORK_BOUNDARY_EXPLICIT",
+        "rule": "Network identity, transport, remote authority and payload semantics remain explicit and separate."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "raw transport endpoint used as semantic remote identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "direct external handle bypasses governed remote path when policy requires DWH route",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "remote reference grants write authority by existence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "remote payload selects broader semantic root dynamically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "remote peer rights inferred from local ownership only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "remote target resolved by fuzzy endpoint/name matching",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ADDRESS",
+      "target_ref": "AIGMOS_CORE_ADDRESSING_CONTRACT",
+      "purpose": "Remote refs use explicit semantic addressing."
+    },
+    {
+      "id": "REF_EXTERNAL",
+      "target_ref": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT",
+      "purpose": "Remote peers are explicit external identities."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit remote semantic dereference through declared peer/external identities and DWH-style remote addressing, preventing direct transport endpoints or raw external handles from bypassing canonical authorization boundaries.",
+    "notes": [
+      "Unlocked until reconciled against DWH, messaging, transport and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_OPERATION_CAPABILITY_BINDING_CONTRACT",
+    "name": "Operation to Capability Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define exact declared capability requirements and provided capabilities for operation implementations.",
+  "scope": {
+    "owns": [
+      "Operation to Capability Binding semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_OPERATION_CAPABILITY_BINDING",
+      "name": "Operation to Capability Binding",
+      "purpose": "Define exact declared capability requirements and provided capabilities for operation implementations.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME",
+        "TOPIC_CAPABILITIES"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_OPERATION_CAPABILITY_BINDING_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "require_rule": "Operation implementation declares exact required capabilities.",
+    "provide_rule": "Implementation may expose exact provided capabilities.",
+    "binding_rule": "Binding is explicit and version/profile-aware.",
+    "availability_rule": "Missing required capability blocks execution.",
+    "fallback_rule": "Fallback implementation requires explicit semantically compatible binding.",
+    "authority_rule": "Satisfied capability requirements do not imply authorization.",
+    "validation_rule": "Capability compatibility is checked before dispatch."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "missing capability ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "fallback chosen by nearest name",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "capability requirement grants rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "version incompatibility ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "implementation guessed from installed package",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CAP",
+      "target_ref": "AIGMOS_CAPABILITY_IDENTITY_CONTRACT",
+      "purpose": "Operations bind exact capabilities."
+    },
+    {
+      "id": "REF_OP",
+      "target_ref": "AIGMOS_OPERATION_IDENTITY_CONTRACT",
+      "purpose": "Capability requirements specialize operation execution."
+    }
+  ],
+  "prose": {
+    "summary": "Define exact declared capability requirements and provided capabilities for operation implementations.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

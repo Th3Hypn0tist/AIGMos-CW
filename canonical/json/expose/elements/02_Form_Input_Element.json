@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_FORM_INPUT_ELEMENT_CONTRACT",
+    "name": "Form Input Element",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define schema-driven input primitives for text, number, boolean, enum/select, date/time and structured values, keeping edit buffers separate from accepted canonical state.",
+  "scope": {
+    "owns": [
+      "Form Input Element semantics"
+    ],
+    "does_not_own": [
+      "domain business semantics",
+      "AccessCore policy ownership",
+      "canonical style ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_FORM_INPUT_ELEMENT",
+      "name": "Form Input Element",
+      "purpose": "Define schema-driven input primitives for text, number, boolean, enum/select, date/time and structured values, keeping edit buffers separate from accepted canonical state.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_ELEMENTS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_FORM_INPUT_ELEMENT_CONTRACT",
+        "ELEMENT_PRESENTATION_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "input_types": [
+      "text",
+      "number",
+      "boolean",
+      "enum/select",
+      "date",
+      "time",
+      "datetime",
+      "structured"
+    ],
+    "schema_rule": "Input type, constraints and validation derive from explicit schema/field semantics.",
+    "buffer_rule": "User-edited value is a local candidate/edit buffer until explicit submit/apply.",
+    "validation_rule": "Client-side validation is advisory UX; authoritative validation occurs at canonical operation boundary.",
+    "binding_rule": "Input binds to exact field/parameter identity.",
+    "label_rule": "Label/help/error text uses localization/context metadata.",
+    "secret_rule": "Secret/sensitive inputs declare appropriate display/logging/redaction profile.",
+    "authority_rule": "Ability to edit a field in UI does not grant submit/write authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ELEMENT_PRESENTATION_NONAUTHORITY",
+        "rule": "Expose Elements are reusable human-interface primitives that project or invoke explicitly bound semantics; visual form, nesting, focus, color, position or enabled-looking state never creates ownership, authority or domain meaning."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "typing immediately mutates canonical state without declared live-update operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "input field selected by label only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "client validation treated as authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "secret value exposed in normal logs",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "editable appearance grants write authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_FORM",
+      "target_ref": "AIGMOS_EXPOSE_FORM_EDITOR_CONTRACT",
+      "purpose": "Form Editor composes schema-driven inputs."
+    },
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_SCHEMA_FIELD_IDENTITY_CONTRACT",
+      "purpose": "Inputs bind exact field identities."
+    }
+  ],
+  "prose": {
+    "summary": "Define schema-driven input primitives for text, number, boolean, enum/select, date/time and structured values, keeping edit buffers separate from accepted canonical state.",
+    "notes": [
+      "Unlocked pending reconciliation against Web Base, Form/GUI Editor, localization and canonical style contracts."
+    ]
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RELEASE_GATE_CONTRACT",
+    "name": "Release Acceptance Gate",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define candidate→collect evidence→evaluate profile→review deviations→authorize release acceptance→accept release as explicit lifecycle separate from deployment.",
+  "scope": {
+    "owns": [
+      "Release Acceptance Gate semantics"
+    ],
+    "does_not_own": [
+      "production runtime authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RELEASE_GATE",
+      "name": "Release Acceptance Gate",
+      "purpose": "Define candidate→collect evidence→evaluate profile→review deviations→authorize release acceptance→accept release as explicit lifecycle separate from deployment.",
+      "parent_topic_refs": [
+        "TOPIC_VERIFICATION",
+        "TOPIC_RELEASE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RELEASE_GATE_CONTRACT",
+        "TEST_NONAUTHORITY",
+        "EVIDENCE_REPRODUCIBILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "flow": [
+      "resolve release candidate",
+      "collect exact verification/conformance/certification evidence",
+      "evaluate acceptance profile",
+      "review known deviations",
+      "authorize release acceptance",
+      "record accepted release identity/state"
+    ],
+    "result_states": [
+      "accepted",
+      "rejected",
+      "blocked",
+      "conditional",
+      "unknown"
+    ],
+    "atomic_rule": "Acceptance refers to one immutable exact release candidate.",
+    "evidence_rule": "All material evidence/profile/deviation refs are preserved.",
+    "deployment_rule": "Accepted release is deployment-eligible only; deployment is a separate runtime/operations workflow.",
+    "failure_rule": "Missing required evidence blocks acceptance.",
+    "authority_rule": "Test/conformance pass alone does not authorize release."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TEST_NONAUTHORITY",
+        "rule": "Test definitions, fixtures, results, coverage, simulations and release evidence never become production semantic authority or grant production execution rights merely by existing or passing."
+      },
+      {
+        "id": "EVIDENCE_REPRODUCIBILITY",
+        "rule": "Verification evidence binds exact test/profile/source/runtime revisions and declared environment inputs so a pass/fail result cannot silently float across unrelated versions or targets."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "one passing suite releases product",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "accepted candidate changes contents later",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "release acceptance deploys runtime",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "missing evidence ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "conditional release shown unconditional",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROFILE",
+      "target_ref": "AIGMOS_RELEASE_ACCEPTANCE_PROFILE_CONTRACT",
+      "purpose": "Gate evaluates exact acceptance requirements."
+    }
+  ],
+  "prose": {
+    "summary": "Define candidate→collect evidence→evaluate profile→review deviations→authorize release acceptance→accept release as explicit lifecycle separate from deployment.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

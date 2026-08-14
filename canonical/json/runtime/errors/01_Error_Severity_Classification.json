@@ -1,0 +1,133 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_ERROR_SEVERITY_CONTRACT",
+    "name": "Runtime Error Severity and Classification",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit severity, category and recoverability metadata for errors without conflating operational severity with security classification or authorization.",
+  "scope": {
+    "owns": [
+      "Runtime Error Severity and Classification semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_ERROR_SEVERITY",
+      "name": "Runtime Error Severity and Classification",
+      "purpose": "Define explicit severity, category and recoverability metadata for errors without conflating operational severity with security classification or authorization.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_ERRORS",
+        "TOPIC_OBSERVABILITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RUNTIME_ERROR_SEVERITY_CONTRACT",
+        "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "severity_levels": [
+      "info",
+      "warning",
+      "error",
+      "critical"
+    ],
+    "recoverability": [
+      "retryable",
+      "non_retryable",
+      "unknown",
+      "manual_review"
+    ],
+    "category_rule": "Error category/type is explicit.",
+    "severity_rule": "Severity is operational impact evidence, not AccessCore/classification state.",
+    "security_rule": "Security/privacy classification of error payload is separate metadata.",
+    "unknown_rule": "Unknown severity/recoverability remains explicit.",
+    "mapping_rule": "Component-specific errors may map to shared categories through explicit mappings."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "rule": "Machine-significant definitions, executions, evidence and runtime state use explicit identities and boundaries; visibility, file order, timestamps, transport reachability or UI placement never silently create semantic authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "critical severity grants admin authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "security classification inferred from severity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "unknown treated retryable",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "component error guessed to nearest category",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "severity derived from UI color alone",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ERR",
+      "target_ref": "AIGMOS_RUNTIME_ERROR_IDENTITY_CONTRACT",
+      "purpose": "Severity classifies exact error occurrences/types."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit severity, category and recoverability metadata for errors without conflating operational severity with security classification or authorization.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,256 @@
+{
+  "behavior": {
+    "events": [],
+    "flows": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "errors": [
+          "unknown module type",
+          "type semantics violated"
+        ],
+        "id": "OP_UM_TYPE_VALIDATE",
+        "inputs": [
+          "module definition",
+          "declared module type"
+        ],
+        "name": "Validate UserModule type",
+        "outputs": [
+          "validated type contract"
+        ],
+        "side_effects": []
+      }
+    ],
+    "states": []
+  },
+  "constraints": {
+    "hard_gates": [
+      {
+        "id": "GATE_F63F581685",
+        "condition": "unknown UserModule type accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_C7263412EC",
+        "condition": "view module gains private backend/write authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6C770702C0",
+        "condition": "adapter module gains private command authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_65EB50E9A9",
+        "condition": "input module writes unrelated symbol surface",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_506705FA19",
+        "condition": "command module bypasses dispatcher",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "module type silently widened by implementation behavior",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2E51AD82E3",
+        "condition": "view mutates backend directly without explicit operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_91163AE28F",
+        "condition": "adapter executes hidden commands",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_F3B66B059C",
+        "condition": "input payload directly executes effects",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_CF44C0BE5B",
+        "condition": "command type used as undeclared persistent input source",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_74482390DE",
+        "condition": "primary type omitted/ambiguous",
+        "result": "hard_fail"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "USERMODULE_SEMANTICS_EXPLICIT",
+        "rule": "UserModule identity, type, lifecycle, bindings and visibility are explicit canonical/runtime semantics."
+      },
+      {
+        "id": "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
+        "rule": "UserModule identity, primary type, schema, instance identity and lifecycle state are explicit and never inferred from filesystem location or implementation behavior."
+      }
+    ]
+  },
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT",
+    "name": "UserModule Type",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "members": [],
+  "prose": {
+    "notes": [
+      "Unlocked until reconciled against existing UserModule contracts and repository-wide Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against existing UserModule runtime contracts and whole-tree Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: runtime/usermodule/01_Runtime_UserModule_Types.json, usermodule/01_UserModule_Type.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define the canonical UserModule type set command, input, adapter and view, with non-overlapping responsibilities and no implicit authority transfer between types. [2] Define the four primary UserModule types `command`, `input`, `adapter` and `view`, each with a narrow canonical responsibility and no implicit cross-type authority."
+  },
+  "purpose": "Reconciled source purposes: [1] Define the canonical UserModule type set command, input, adapter and view, with non-overlapping responsibilities and no implicit authority transfer between types. [2] Define the four primary UserModule types `command`, `input`, `adapter` and `view`, each with a narrow canonical responsibility and no implicit cross-type authority.",
+  "references": [
+    {
+      "id": "REF_REGISTRY",
+      "target_ref": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT",
+      "purpose": "Types apply to registered UserModules."
+    },
+    {
+      "id": "REF_IO",
+      "target_ref": "AIGMOS_RUNTIME_INPUT_ADAPTER_BOUNDARY_CONTRACT",
+      "purpose": "Input and adapter semantics."
+    },
+    {
+      "id": "REF_PROJECTION",
+      "target_ref": "AIGMOS_CORE_PROJECTION_BOUNDARY_CONTRACT",
+      "purpose": "View semantics remain projection-only."
+    },
+    {
+      "id": "REF_INPUT",
+      "target_ref": "AIGMOS_I_INPUT_ROOT_CONTRACT",
+      "purpose": "Input type maps to explicit Input semantics."
+    },
+    {
+      "id": "REF_ADAPTER",
+      "target_ref": "AIGMOS_A_ADAPTER_ROOT_CONTRACT",
+      "purpose": "Adapter type remains non-authoritative."
+    }
+  ],
+  "scope": {
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics",
+      "domain semantics not declared by the module",
+      "AccessCore policy",
+      "presentation-only placement"
+    ],
+    "owns": [
+      "Runtime UserModule Types semantics",
+      "UserModule Type semantics"
+    ]
+  },
+  "semantics": {
+    "adapter_rule": "Reconciled source clauses: [1] Adapter type is a symbol mount/translation boundary. [2] Adapter translates/mounts but does not own source/target semantics.",
+    "command_rule": "Reconciled source clauses: [1] Command type executes only through Core dispatch. [2] Command type does not become a persistent input source.",
+    "composition_rule": "Reconciled source clauses: [1] Combining capabilities uses explicit composition rather than silently widening one module type. [2] Higher-level compositions reference these type semantics instead of weakening their boundaries.",
+    "input_rule": "Reconciled source clauses: [1] Input type writes only owned validated data. [2] Input payload remains inert until another explicit operation consumes it.",
+    "single_primary_rule": "Every UserModule declares one primary type unless an explicit composition contract permits a multi-surface Meta composition.",
+    "single_primary_type_rule": "A module declares one primary runtime type unless an explicit composition contract defines otherwise.",
+    "types": {
+      "adapter": "Reconciled source clauses: [1] Mounts/translates symbols only; it is not an independent command authority. [2] mounts/translates symbols/protocol/data shape and has no hidden execution authority",
+      "command": "Reconciled source clauses: [1] One-shot invokable module capability resolved through canonical command/operation dispatch. [2] one-shot explicit operation surface executed through normal dispatch",
+      "input": "Reconciled source clauses: [1] Receives/validates data and writes its owned #UM module surface. [2] acquires/receives data and writes validated inert data into its declared #UM/#INPUT surface",
+      "view": "Reconciled source clauses: [1] UI/read projection only; it owns no backend semantics or write authority. [2] UI/projection only and owns no backend/runtime mutation semantics"
+    },
+    "view_rule": "Reconciled source clauses: [1] View type is read-only/projection-only unless it explicitly invokes canonical write operations owned elsewhere. [2] View does not become an execution/backend authority."
+  },
+  "source_role": "definition",
+  "status": "locked",
+  "structure": {
+    "authority": [],
+    "containment": [],
+    "dependencies": [],
+    "ownership": [],
+    "relations": []
+  },
+  "topics": [
+    {
+      "child_topics": [],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+        "TOPIC_RUNTIME_INPUT_ADAPTERS",
+        "TOPIC_CORE_PROJECTION",
+        "TOPIC_RUNTIME_COMMAND_REGISTRY"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_RUNTIME_USERMODULE_TYPES",
+      "member_refs": [
+        "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT",
+        "USERMODULE_SEMANTICS_EXPLICIT",
+        "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
+        "GATE_F63F581685",
+        "GATE_C7263412EC",
+        "GATE_6C770702C0",
+        "GATE_65EB50E9A9",
+        "GATE_506705FA19",
+        "GATE_6",
+        "GATE_2E51AD82E3",
+        "GATE_91163AE28F",
+        "GATE_F3B66B059C",
+        "GATE_CF44C0BE5B",
+        "GATE_74482390DE"
+      ],
+      "metadata": {},
+      "name": "UserModule Types",
+      "operation_refs": [
+        "OP_UM_TYPE_VALIDATE"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_USER_MODULES"
+      ],
+      "purpose": "Define the canonical UserModule type set command, input, adapter and view, with non-overlapping responsibilities and no implicit authority transfer between types.",
+      "relation_refs": []
+    },
+    {
+      "child_topics": [],
+      "composed_topic_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_RUNTIME_USERMODULE_TYPE",
+      "member_refs": [
+        "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT",
+        "USERMODULE_SEMANTICS_EXPLICIT",
+        "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
+        "GATE_F63F581685",
+        "GATE_C7263412EC",
+        "GATE_6C770702C0",
+        "GATE_65EB50E9A9",
+        "GATE_506705FA19",
+        "GATE_6",
+        "GATE_2E51AD82E3",
+        "GATE_91163AE28F",
+        "GATE_F3B66B059C",
+        "GATE_CF44C0BE5B",
+        "GATE_74482390DE"
+      ],
+      "metadata": {},
+      "name": "UserModule Type",
+      "operation_refs": [
+        "OP_UM_TYPE_VALIDATE"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+        "TOPIC_NAMESPACE_UM"
+      ],
+      "purpose": "Define the four primary UserModule types `command`, `input`, `adapter` and `view`, each with a narrow canonical responsibility and no implicit cross-type authority.",
+      "relation_refs": []
+    }
+  ]
+}

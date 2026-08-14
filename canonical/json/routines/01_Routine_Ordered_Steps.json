@@ -1,0 +1,133 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ROUTINE_ORDERED_STEPS_CONTRACT",
+    "name": "Routine Ordered Steps",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Routine steps as explicit ordered/dependency-bound references to commands, operations, nested routines or control constructs.",
+  "scope": {
+    "owns": [
+      "Routine Ordered Steps semantics"
+    ],
+    "does_not_own": [
+      "Runner execution state",
+      "AccessCore policy ownership",
+      "domain operation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ROUTINE_ORDERED_STEPS",
+      "name": "Routine Ordered Steps",
+      "purpose": "Define Routine steps as explicit ordered/dependency-bound references to commands, operations, nested routines or control constructs.",
+      "parent_topic_refs": [
+        "TOPIC_ROUTINES",
+        "TOPIC_RUNNERS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_ROUTINE_ORDERED_STEPS_CONTRACT",
+        "ROUTINE_DEFINITION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "step_rule": "Every step has an explicit step identity within the Routine definition.",
+    "target_types": [
+      "command",
+      "operation",
+      "routine",
+      "condition",
+      "branch",
+      "wait",
+      "explicit control primitive"
+    ],
+    "target_rule": "Executable step targets resolve exact canonical identities.",
+    "order_rule": "Sequential order is explicit semantic data and never inferred only from JSON array position unless the field contract explicitly defines that array as ordered.",
+    "dependency_rule": "Nonlinear step dependencies are explicit.",
+    "input_rule": "Step input bindings are explicit.",
+    "output_rule": "Named outputs/references available to later steps are explicit.",
+    "side_effect_rule": "Side effects belong to the invoked operation, not to Routine text itself."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ROUTINE_DEFINITION_EXPLICIT",
+        "rule": "Routine definitions are explicit canonical ordered compositions of exact commands/operations/routines; runtime execution state is never embedded into the reusable definition."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "step target fuzzy/unresolved",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "execution order inferred accidentally from serialization order",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "implicit dependency exists only in prose",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "Routine text itself executes arbitrary payload",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "step output consumed without explicit binding",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DISPATCH",
+      "target_ref": "AIGMOS_OPERATION_DISPATCH_TRACE_CONTRACT",
+      "purpose": "Executable steps dispatch exact operations."
+    }
+  ],
+  "prose": {
+    "summary": "Define Routine steps as explicit ordered/dependency-bound references to commands, operations, nested routines or control constructs.",
+    "notes": [
+      "Unlocked pending reconciliation against existing #R, &, Runner and command contracts."
+    ]
+  }
+}

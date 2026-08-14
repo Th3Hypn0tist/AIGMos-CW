@@ -1,0 +1,131 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT",
+    "name": "Messaging Privacy Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the separation of discovery metadata, peer transport metadata, conversation membership and message payload exposure across Hello and messaging surfaces.",
+  "scope": {
+    "owns": [
+      "Messaging Privacy Boundary semantics"
+    ],
+    "does_not_own": [
+      "Hello rendezvous identity",
+      "IdentityCore identity ownership",
+      "transport cryptographic implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MSG_PRIVACY_BOUNDARY",
+      "name": "Messaging Privacy Boundary",
+      "purpose": "Define the separation of discovery metadata, peer transport metadata, conversation membership and message payload exposure across Hello and messaging surfaces.",
+      "parent_topic_refs": [
+        "TOPIC_MESSAGING",
+        "TOPIC_HELLO"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT",
+        "MESSAGING_PEER_GOVERNED",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "layers": [
+      "discovery metadata",
+      "transport/session metadata",
+      "conversation governance",
+      "message envelope",
+      "message payload"
+    ],
+    "minimum_rule": "Each layer exposes only metadata required for its own responsibility.",
+    "hello_rule": "Hello service can observe only permitted bootstrap/discovery metadata, not normal message payload.",
+    "peer_rule": "Conversation peers receive payload according to conversation membership and messaging policy.",
+    "monitor_rule": "Operational monitors redact payload/content unless explicitly authorized for that surface.",
+    "identity_rule": "Identity references may be pseudonymous/limited according to owning IAM/privacy policy without breaking exact internal refs.",
+    "retention_rule": "Retention of message payload/history is explicit and separate from rendezvous-record TTL.",
+    "authority_rule": "Metadata visibility at one layer does not grant visibility at another."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MESSAGING_PEER_GOVERNED",
+        "rule": "Messaging is explicit peer/group communication over governed peer transport; rendezvous, transport, conversation policy and message payload remain separate semantic layers."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "Hello gains normal payload visibility",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "rendezvous TTL used as message retention policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "transport metadata visibility grants payload access",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "monitor exposes payload without authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "layer boundaries undocumented/implicit",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_HELLO",
+      "target_ref": "AIGMOS_HELLO_IDENTITY_CONTRACT",
+      "purpose": "Discovery metadata is isolated from payload."
+    }
+  ],
+  "prose": {
+    "summary": "Define the separation of discovery metadata, peer transport metadata, conversation membership and message payload exposure across Hello and messaging surfaces.",
+    "notes": [
+      "Unlocked pending reconciliation against existing msg/WebRTC/Hello contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

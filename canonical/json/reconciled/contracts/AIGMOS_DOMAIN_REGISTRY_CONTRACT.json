@@ -1,0 +1,229 @@
+{
+  "behavior": {
+    "events": [],
+    "flows": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "errors": [
+          "identity collision",
+          "contract unresolved"
+        ],
+        "id": "OP_DOMAIN_REGISTER",
+        "inputs": [
+          "Domain identity",
+          "Domain contract ref",
+          "composition refs"
+        ],
+        "name": "Register Domain",
+        "outputs": [
+          "Domain registry entry"
+        ],
+        "side_effects": [
+          "Domain registry updated"
+        ]
+      },
+      {
+        "errors": [
+          "Domain unresolved",
+          "Domain ambiguous"
+        ],
+        "id": "OP_DOMAIN_RESOLVE",
+        "inputs": [
+          "Domain identity"
+        ],
+        "name": "Resolve Domain",
+        "outputs": [
+          "authoritative Domain contract"
+        ],
+        "side_effects": []
+      }
+    ],
+    "states": []
+  },
+  "constraints": {
+    "hard_gates": [
+      {
+        "id": "GATE_1E8202A176",
+        "condition": "Domain has no explicit substrate composition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_471AABD5AF",
+        "condition": "Domain copies Universal Module semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_305A22BC4D",
+        "condition": "Domain identity conflated with substrate",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_B572465F32",
+        "condition": "unresolved substrate accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_A2E9382108",
+        "condition": "Domain registration grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_427734CD05",
+        "condition": "Domain registry duplicates Domain semantic content",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_564AC92349",
+        "condition": "directory presence automatically registers Domain",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_042C7677A2",
+        "condition": "same active Domain identity resolves to multiple contracts",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_06D025E174",
+        "condition": "registry selected authority by version/path heuristic",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2FDF405C23",
+        "condition": "catalog projection becomes registry authority",
+        "result": "hard_fail"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "UNIVERSAL_DOMAIN_COMPOSITION",
+        "rule": "Universal Modules are reusable substrates and Domains are explicit compositions of those substrates plus domain-specific deltas; composition never duplicates substrate ownership."
+      },
+      {
+        "id": "STRUCTURAL_DIMENSION_EXPLICIT",
+        "rule": "Structural dimensions and registries remain explicit and are never collapsed into generic hierarchy."
+      }
+    ]
+  },
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DOMAIN_REGISTRY_CONTRACT",
+    "name": "Domain Registry",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "members": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending reconciliation against existing universal_module/domain contracts and whole-tree Contract Format 1.4 validation.",
+      "Unlocked until reconciled against the assembled 1.4 architecture tree and reference/trace closure.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: domain/00_Domain_Registry.json, domains/01_Domain_Registry.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define the registry of Domain identities and their explicit Universal Module compositions, relation sets and domain-specific semantic deltas. [2] Define the Domain Registry as the explicit index of active Domain identities and their authoritative composition contracts, without absorbing Domain semantics."
+  },
+  "purpose": "Reconciled source purposes: [1] Define the registry of Domain identities and their explicit Universal Module compositions, relation sets and domain-specific semantic deltas. [2] Define the Domain Registry as the explicit index of active Domain identities and their authoritative composition contracts, without absorbing Domain semantics.",
+  "references": [
+    {
+      "id": "REF_COMP",
+      "target_ref": "AIGMOS_DOMAIN_COMPOSITION_CONTRACT",
+      "purpose": "Registry entries implement Domain composition semantics."
+    },
+    {
+      "id": "REF_DELTA",
+      "target_ref": "AIGMOS_COMPOSITION_DELTA_CONTRACT",
+      "purpose": "Domains own only their semantic delta."
+    },
+    {
+      "id": "REF_DOMAIN",
+      "target_ref": "AIGMOS_DOMAIN_COMPOSITION_CONTRACT",
+      "purpose": "Registry points to authoritative Domain compositions."
+    },
+    {
+      "id": "REF_SOURCE",
+      "target_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+      "purpose": "Registry is not semantic owner."
+    }
+  ],
+  "scope": {
+    "does_not_own": [
+      "component semantics owned elsewhere",
+      "presentation-only grouping",
+      "runtime authorization",
+      "runtime implementation details",
+      "presentation semantics"
+    ],
+    "owns": [
+      "Domain Registry semantics"
+    ]
+  },
+  "semantics": {
+    "authority_rule": "Domain registration/visibility does not grant runtime authority.",
+    "closure_rule": "Domain registry entry resolves all required substrate and delta refs.",
+    "composition_rule": "Domain declares the Universal Module substrate refs it composes.",
+    "delta_rule": "Domain declares only domain-specific relations, constraints, roles, operations, policies and behavior not already owned by substrates.",
+    "filesystem_rule": "Directory presence alone does not register a Domain.",
+    "identity_rule": "Reconciled source clauses: [1] Domain identity is separate from every component module identity. [2] Domain identity resolves exactly to its authoritative Domain composition contract.",
+    "membership_rule": "Only explicitly registered active Domains participate in registry-based discovery.",
+    "ownership_rule": "Registry does not own or redefine Domain semantics.",
+    "projection_rule": "Domain catalogs/maps are projections of the registry.",
+    "registry_rule": "Every Domain has an explicit stable canonical identity.",
+    "reuse_rule": "A Universal Module can be shared across Domains without semantic duplication.",
+    "role": "membership registry/index",
+    "source_role": "membership_registry"
+  },
+  "source_role": "membership_registry",
+  "status": "locked",
+  "structure": {
+    "authority": [],
+    "containment": [],
+    "dependencies": [],
+    "ownership": [],
+    "relations": []
+  },
+  "topics": [
+    {
+      "child_topics": [],
+      "composed_topic_refs": [
+        "TOPIC_DOMAIN_COMPOSITION",
+        "TOPIC_CORE_SOURCE_ROLES"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_DOMAIN_REGISTRY",
+      "member_refs": [
+        "AIGMOS_DOMAIN_REGISTRY_CONTRACT",
+        "UNIVERSAL_DOMAIN_COMPOSITION",
+        "STRUCTURAL_DIMENSION_EXPLICIT",
+        "GATE_1E8202A176",
+        "GATE_471AABD5AF",
+        "GATE_305A22BC4D",
+        "GATE_B572465F32",
+        "GATE_A2E9382108",
+        "GATE_427734CD05",
+        "GATE_564AC92349",
+        "GATE_042C7677A2",
+        "GATE_06D025E174",
+        "GATE_2FDF405C23"
+      ],
+      "metadata": {},
+      "name": "Domain Registry",
+      "operation_refs": [
+        "OP_DOMAIN_REGISTER",
+        "OP_DOMAIN_RESOLVE"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_UNIVERSAL_MODULE",
+        "TOPIC_DOMAIN",
+        "TOPIC_CORE_STRUCTURE"
+      ],
+      "purpose": "Reconciled source clauses: [1] Define the registry of Domain identities and their explicit Universal Module compositions, relation sets and domain-specific semantic deltas. [2] Define the Domain Registry as the explicit index of active Domain identities and their authoritative composition contracts, without absorbing Domain semantics.",
+      "relation_refs": []
+    }
+  ]
+}

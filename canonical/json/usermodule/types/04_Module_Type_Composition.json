@@ -1,0 +1,135 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MODULE_TYPE_COMPOSITION_CONTRACT",
+    "name": "UserModule Type Composition",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define composition rules between command, input, adapter and view module types so combined features preserve each type's authority/effect boundary instead of collapsing them into one ambiguous module behavior.",
+  "scope": {
+    "owns": [
+      "UserModule Type Composition semantics"
+    ],
+    "does_not_own": [
+      "domain data semantics",
+      "AccessCore policy ownership",
+      "protocol transport ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MODULE_TYPE_COMPOSITION",
+      "name": "UserModule Type Composition",
+      "purpose": "Define composition rules between command, input, adapter and view module types so combined features preserve each type's authority/effect boundary instead of collapsing them into one ambiguous module behavior.",
+      "parent_topic_refs": [
+        "TOPIC_USERMODULE_TYPES",
+        "TOPIC_INPUT_ADAPTER_VIEW"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MODULE_TYPE_COMPOSITION_CONTRACT",
+        "MODULE_TYPE_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "types": [
+      "command",
+      "input",
+      "adapter",
+      "view"
+    ],
+    "composition_rule": "A feature may compose multiple typed modules, but each constituent retains its declared type boundary.",
+    "reference_rule": "Cross-type composition uses explicit refs/bindings.",
+    "input_command_rule": "Input may request/emit Event leading to a command, but input payload does not directly inherit command authority.",
+    "adapter_rule": "Adapter may expose command/input symbols but does not become their semantic owner.",
+    "view_rule": "View may invoke commands through explicit authorized operations but remains UI-only.",
+    "identity_rule": "Composite feature identity does not erase constituent module identities.",
+    "validation_rule": "Type-incompatible bindings hard-fail."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MODULE_TYPE_BOUNDARY",
+        "rule": "Command, input, adapter and view module types have distinct effect boundaries: command is one-shot operation, input writes declared instance data, adapter mounts/translates symbols without owning them, and view is UI-only."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "composite module erases constituent type boundaries",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "input payload directly executes command",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "view gains mutation authority by composition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "adapter becomes owner by exposure",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "incompatible binding accepted",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CMD",
+      "target_ref": "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT",
+      "purpose": "Composition preserves command boundary."
+    },
+    {
+      "id": "REF_VIEW",
+      "target_ref": "AIGMOS_VIEW_MODULE_UI_ONLY_CONTRACT",
+      "purpose": "Composition preserves view non-authority."
+    }
+  ],
+  "prose": {
+    "summary": "Define composition rules between command, input, adapter and view module types so combined features preserve each type's authority/effect boundary instead of collapsing them into one ambiguous module behavior.",
+    "notes": [
+      "Unlocked pending reconciliation against UserModule type, DWH, protocol and Expose contracts."
+    ]
+  }
+}

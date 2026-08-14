@@ -1,0 +1,131 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_CAPABILITY_BOUNDS_MONITOR_CONTRACT",
+    "name": "Capability and Bounds Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for capabilities, operation bindings, bounds profiles, effect classes and destructive gates.",
+  "scope": {
+    "owns": [
+      "Capability and Bounds Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_CAPABILITY_BOUNDS_MONITOR",
+      "name": "Capability and Bounds Monitor",
+      "purpose": "Define a read-only Expose monitor for capabilities, operation bindings, bounds profiles, effect classes and destructive gates.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_CAPABILITIES"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_CAPABILITY_BOUNDS_MONITOR_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "capability registry",
+      "operation→capability bindings",
+      "runtime availability",
+      "execution bounds",
+      "side-effect class",
+      "destructive-gate requirements",
+      "validation failures"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Capability, operation, bounds profile, validation and authorization identities remain distinct.",
+    "authority_rule": "Capability visibility grants no execution authority.",
+    "action_rule": "edit-binding/edit-bounds operations invoke separate authorized workflows.",
+    "graph_rule": "Capability/bounds edges correspond only to explicit refs.",
+    "failure_rule": "missing/incompatible/unknown capability or bounds remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor treats capability as permission",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "monitor edits bounds by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "visual adjacency creates binding",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "destructive gate hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "unknown shown available",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CAP",
+      "target_ref": "AIGMOS_CAPABILITY_IDENTITY_CONTRACT",
+      "purpose": "Monitor projects exact capability identities."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for capabilities, operation bindings, bounds profiles, effect classes and destructive gates.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_Q_BACKEND_BINDING_CONTRACT",
+    "name": "q Backend Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit selection of model/backend implementation for q-family operations while preserving q-family semantics independently from provider/runtime choice.",
+  "scope": {
+    "owns": [
+      "q Backend Binding semantics"
+    ],
+    "does_not_own": [
+      "model-provider semantics",
+      "AccessCore policy ownership",
+      "domain source semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_Q_BACKEND_BINDING",
+      "name": "q Backend Binding",
+      "purpose": "Define explicit selection of model/backend implementation for q-family operations while preserving q-family semantics independently from provider/runtime choice.",
+      "parent_topic_refs": [
+        "TOPIC_Q_FAMILY",
+        "TOPIC_AI_EXECUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_Q_BACKEND_BINDING_CONTRACT",
+        "MODEL_OUTPUT_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "example_backends": [
+      "dummyLLM",
+      "doubleword",
+      "nvidia"
+    ],
+    "binding_rule": "Each q-family invocation/profile resolves an explicit configured backend identity.",
+    "model_rule": "Backend may resolve one or more model identities/configurations.",
+    "semantic_rule": "Switching backend does not silently change canonical q-family command identity.",
+    "capability_rule": "Backend capabilities/limits are explicit and validated before use.",
+    "availability_rule": "Unavailable backend fails explicitly and is never silently replaced unless fallback policy is declared.",
+    "config_rule": "Backend selection is explicit configuration/profile state.",
+    "authority_rule": "Backend capability does not grant AIGMos operation authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MODEL_OUTPUT_NONAUTHORITY",
+        "rule": "q/qc/qt model execution produces inert candidate data; models may request or propose operations but only AIGMos canonical validation, authorization and dispatch can create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "backend silently substituted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "backend name becomes q command identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "capability inferred after execution",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "backend availability grants operation authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "provider-specific behavior silently changes canonical command semantics",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CAP",
+      "target_ref": "AIGMOS_RUNTIME_CAPABILITY_RESOLUTION_CONTRACT",
+      "purpose": "Backend availability is an explicit runtime capability."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit selection of model/backend implementation for q-family operations while preserving q-family semantics independently from provider/runtime choice.",
+    "notes": [
+      "Unlocked pending reconciliation against q-family, command runtime, memory and Studio/QC contracts."
+    ]
+  }
+}

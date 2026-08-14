@@ -1,0 +1,187 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT",
+    "name": "Library and Install Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for user/system libraries, discovery findings, install plans, dependency closure, installed-artifact registry and lifecycle state.",
+  "scope": {
+    "owns": [
+      "Library and Install Monitor semantics"
+    ],
+    "does_not_own": [
+      "module semantic identity",
+      "AccessCore policy ownership",
+      "runtime business semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR",
+      "name": "Library and Install Monitor",
+      "purpose": "Define a read-only Expose monitor for user/system libraries, discovery findings, install plans, dependency closure, installed-artifact registry and lifecycle state.",
+      "parent_topic_refs": [
+        "TOPIC_LIBRARY",
+        "TOPIC_INSTALLATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT",
+        "LIBRARY_INSTALL_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_INSTALLATION",
+      "name": "Installation",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_INSTALLATION already referenced by 6 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 6,
+        "distinct_child_topics": 6,
+        "host_contract_ref": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    },
+    {
+      "id": "TOPIC_LIBRARY",
+      "name": "Library",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_LIBRARY already referenced by 6 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 6,
+        "distinct_child_topics": 6,
+        "host_contract_ref": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "user/system library roots",
+      "discovered artifacts",
+      "duplicate/source conflicts",
+      "install order/plan",
+      "dependency validation",
+      "installed registry",
+      "integrity/certification refs",
+      "enabled/running separation"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Physical artifact, package, canonical module/resource and runtime instance identities remain distinct.",
+    "action_rule": "Install/remove/validate/enable/start operations invoke separate authorized canonical workflows.",
+    "authority_rule": "Viewing artifacts grants no install/load/execute authority.",
+    "trace_rule": "Every installed/error state retains source/package/dependency refs.",
+    "layout_rule": "Visual order never establishes install/source precedence.",
+    "failure_rule": "Missing/incompatible dependencies are shown explicitly with deterministic remediation where known."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "LIBRARY_INSTALL_EXPLICIT",
+        "rule": "Library discovery and installation are explicit source/package lifecycle semantics; filesystem presence, discovery order or installation never silently changes canonical identity, enables dependencies or activates runtime effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor directly installs without explicit operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "visual order creates install precedence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "artifact/package/module identities conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "viewing grants execute authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "dependency error lacks provenance",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DISC",
+      "target_ref": "AIGMOS_LIBRARY_DISCOVERY_CONTRACT",
+      "purpose": "Monitor projects discovery state."
+    },
+    {
+      "id": "REF_DEP",
+      "target_ref": "AIGMOS_INSTALL_DEPENDENCY_VALIDATION_CONTRACT",
+      "purpose": "Monitor exposes dependency closure."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for user/system libraries, discovery findings, install plans, dependency closure, installed-artifact registry and lifecycle state.",
+    "notes": [
+      "Unlocked pending reconciliation against UserModule, boot profile, repository and distribution contracts.",
+      "Pass 6 hosts grouping-only Topic TOPIC_INSTALLATION solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership.",
+      "Pass 6 hosts grouping-only Topic TOPIC_LIBRARY solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

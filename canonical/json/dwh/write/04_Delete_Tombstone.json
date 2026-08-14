@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_DELETE_TOMBSTONE_CONTRACT",
+    "name": "DWH Delete and Tombstone Semantics",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define exact deletion semantics, tombstones and retention so removal of an active value/record does not silently erase provenance, related source objects or unrelated relation targets.",
+  "scope": {
+    "owns": [
+      "DWH Delete and Tombstone Semantics semantics"
+    ],
+    "does_not_own": [
+      "source domain model ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_DELETE_TOMBSTONE",
+      "name": "DWH Delete and Tombstone Semantics",
+      "purpose": "Define exact deletion semantics, tombstones and retention so removal of an active value/record does not silently erase provenance, related source objects or unrelated relation targets.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_MUTATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_DELETE_TOMBSTONE_CONTRACT",
+        "DWH_MUTATION_EXACT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "delete_rule": "Delete targets an exact record/resource/value identity.",
+    "soft_rule": "Soft-delete/tombstone state is explicit when used.",
+    "hard_rule": "Physical/hard deletion is a separately declared retention/destruction operation where supported.",
+    "relation_rule": "Delete cascade/restrict/nullify behavior is explicit per relation and never inferred.",
+    "lineage_rule": "Required audit/lineage/tombstone evidence may remain without presenting deleted content as active data.",
+    "source_rule": "Deleting a materialized/cached copy never deletes its upstream source unless a separate exact authorized operation targets that source.",
+    "authorization_rule": "Delete may require stronger/different authority than update.",
+    "failure_rule": "Partial/failed deletion state is explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_MUTATION_EXACT",
+        "rule": "Every DWH mutation resolves an exact destination instance/schema/record/field identity, validates intended change, evaluates authorization and conflict state, and records provenance; no write is inferred from query/display context or silently overwrites conflicting accepted state."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "delete cascades to relation targets without declared policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "copy deletion removes upstream source",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "soft-deleted record presented as active",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "hard delete inferred from ordinary remove",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "failed delete reported complete",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REL",
+      "target_ref": "AIGMOS_RELATION_CARDINALITY_FK_CONTRACT",
+      "purpose": "Relation delete behavior must be explicitly declared."
+    },
+    {
+      "id": "REF_LINE",
+      "target_ref": "AIGMOS_DWH_DATA_LINEAGE_IDENTITY_CONTRACT",
+      "purpose": "Deletion preserves required provenance evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define exact deletion semantics, tombstones and retention so removal of an active value/record does not silently erase provenance, related source objects or unrelated relation targets.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH schema binding, lineage, AccessCore and canonical change-boundary contracts."
+    ]
+  }
+}

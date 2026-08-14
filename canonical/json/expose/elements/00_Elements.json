@@ -1,0 +1,169 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT",
+    "name": "Expose Elements",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Elements as reusable human-interface primitives shared across Expose views, carrying presentation and interaction contracts but not duplicating domain or runtime semantics.",
+  "scope": {
+    "owns": [
+      "Expose Elements semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "unrelated domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_ELEMENTS",
+      "name": "Elements",
+      "purpose": "Define Elements as reusable human-interface primitives shared across Expose views, carrying presentation and interaction contracts but not duplicating domain or runtime semantics.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_EXPOSE_WEB_BASE",
+        "TOPIC_EXPOSE_STYLE",
+        "TOPIC_CORE_STRUCTURAL_CLOSURE"
+      ],
+      "member_refs": [
+        "AIGMOS_EXPOSE_ELEMENTS_CONTRACT",
+        "EXPOSE_COMPONENT_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_ELEMENT_DEFINE",
+        "OP_ELEMENT_COMPOSE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_ELEMENT_DEFINE",
+        "name": "Define reusable element",
+        "inputs": [
+          "element identity",
+          "semantic role",
+          "presentation contract"
+        ],
+        "outputs": [
+          "Element definition"
+        ],
+        "errors": [
+          "identity collision"
+        ],
+        "side_effects": [
+          "Element registry updated"
+        ]
+      },
+      {
+        "id": "OP_ELEMENT_COMPOSE",
+        "name": "Compose element into view",
+        "inputs": [
+          "element_ref",
+          "binding refs"
+        ],
+        "outputs": [
+          "composed view element"
+        ],
+        "errors": [
+          "element unresolved",
+          "binding invalid"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "role": "reusable UI primitives",
+    "identity_rule": "Elements have explicit stable identities.",
+    "composition_rule": "Elements bind to existing values, schemas and canonical operations.",
+    "semantic_rule": "Element type/presentation does not redefine source data semantics.",
+    "authority_rule": "Element availability or enabled visual state does not grant authority.",
+    "style_rule": "Elements consume canonical site style/tokens.",
+    "extension_rule": "New shared primitive is added when multiple surfaces benefit or an irreducible UI semantic is needed."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPOSE_COMPONENT_EXPLICIT",
+        "rule": "Expose components reuse canonical semantics and remain non-privileged projection/composition surfaces."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "Element owns duplicated domain semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "enabled element grants runtime authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "Element presentation changes source field meaning",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "Element invokes hidden backend operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "duplicate private primitive created instead of shared Element without explicit reason",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_WEBBASE",
+      "target_ref": "AIGMOS_EXPOSE_WEB_BASE_CONTRACT",
+      "purpose": "Elements reuse the common web foundation."
+    },
+    {
+      "id": "REF_CLOSURE",
+      "target_ref": "AIGMOS_CORE_STRUCTURAL_CLOSURE_1_4_CONTRACT",
+      "purpose": "Shared reusable UI primitives follow reuse-before-extension."
+    }
+  ],
+  "prose": {
+    "summary": "Define Elements as reusable human-interface primitives shared across Expose views, carrying presentation and interaction contracts but not duplicating domain or runtime semantics.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ENVIRONMENT_VARIABLE_BINDING_CONTRACT",
+    "name": "Environment Variable Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define OS/process environment variables as explicit optional configuration/secret bindings rather than canonical configuration authority.",
+  "scope": {
+    "owns": [
+      "Environment Variable Binding semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "domain-specific semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ENVIRONMENT_VARIABLE_BINDING",
+      "name": "Environment Variable Binding",
+      "purpose": "Define OS/process environment variables as explicit optional configuration/secret bindings rather than canonical configuration authority.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_SEMANTICS",
+        "TOPIC_CONFIGURATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_ENVIRONMENT_VARIABLE_BINDING_CONTRACT",
+        "EXPLICIT_IDENTITY_AND_MEANING",
+        "DERIVED_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "binding_rule": "Variable name maps explicitly to exact config/secret field identity.",
+    "parse_rule": "String value parsing/type conversion is explicit.",
+    "missing_rule": "Missing required variable fails according to exact config profile.",
+    "secret_rule": "Secret-valued bindings use secret refs/redaction semantics.",
+    "precedence_rule": "Environment layer precedence is explicit.",
+    "canonical_rule": "Environment variable existence never becomes canonical definition.",
+    "authority_rule": "Process environment cannot silently grant permissions."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_IDENTITY_AND_MEANING",
+        "rule": "Machine-significant identity, type, relation, state and meaning are explicit and never inferred solely from display text, path, layout, file order, timestamp or implementation accident."
+      },
+      {
+        "id": "DERIVED_NONAUTHORITY",
+        "rule": "Resolved, projected, indexed, cached, formatted or derived representations never become source-of-truth or authority merely because they are convenient or available."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "any matching env var overrides config",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "secret env logged",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "boolean parsed heuristically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "missing required value defaults insecurely",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "env var creates AccessCore role",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define OS/process environment variables as explicit optional configuration/secret bindings rather than canonical configuration authority.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NAMESPACE_TOPIC_BINDING_CONTRACT",
+    "name": "Namespace Topic Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit Topic classification for namespace roots and owner contracts so recursive namespace reading also resolves semantic concern/grouping without treating Topic membership as ownership.",
+  "scope": {
+    "owns": [
+      "Namespace Topic Binding semantics"
+    ],
+    "does_not_own": [
+      "unrelated domain semantics",
+      "presentation semantics",
+      "implicit runtime authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NAMESPACE_TOPIC_BINDING",
+      "name": "Namespace Topic Binding",
+      "purpose": "Define explicit Topic classification for namespace roots and owner contracts so recursive namespace reading also resolves semantic concern/grouping without treating Topic membership as ownership.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NAMESPACES",
+        "TOPIC_TOPIC_SYSTEM"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_NAMESPACE_TOPIC_BINDING_CONTRACT",
+        "NAMESPACE_OWNER_CLOSURE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "rule": "Every reserved root/owner contract belongs to one or more Topics or is explicitly outsider.",
+    "multi_topic_rule": "A namespace owner may belong to multiple Topics.",
+    "separation_rule": "Topic membership does not select or transfer namespace ownership.",
+    "recursive_rule": "Root introspection may expose direct, inherited and composed Topic context.",
+    "locality_rule": "Topic declarations remain with the semantic owner/root contract for recursive readability.",
+    "reader_rule": "A generic reader can resolve root -> owner -> Topic graph without filesystem heuristics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "NAMESPACE_OWNER_CLOSURE",
+        "rule": "Every active reserved runtime root has exactly one explicit owner contract and remains distinguishable from runtime availability, Topic grouping and physical implementation location."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "namespace owner has neither Topic nor outsider classification",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Topic membership used to infer namespace owner",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "multi-Topic membership collapsed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "Topic lookup requires undocumented filesystem heuristic",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "Topic overlay erases namespace identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TOPIC",
+      "target_ref": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT",
+      "purpose": "Namespace owners use the common Topic model."
+    },
+    {
+      "id": "REF_OWNER",
+      "target_ref": "AIGMOS_NAMESPACE_OWNER_REGISTRY_CONTRACT",
+      "purpose": "Owner identity remains independent from Topic classification."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit Topic classification for namespace roots and owner contracts so recursive namespace reading also resolves semantic concern/grouping without treating Topic membership as ownership.",
+    "notes": [
+      "Unlocked pending reconciliation against the complete reserved-root set and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

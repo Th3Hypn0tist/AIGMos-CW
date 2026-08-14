@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_CANONICAL_REGISTRY_MONITOR_CONTRACT",
+    "name": "Canonical Identity and Reference Registry Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for identity registry, ref resolution, aliases, ownership and registry snapshots.",
+  "scope": {
+    "owns": [
+      "Canonical Identity and Reference Registry Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_CANONICAL_REGISTRY_MONITOR",
+      "name": "Canonical Identity and Reference Registry Monitor",
+      "purpose": "Define a read-only Expose monitor for identity registry, ref resolution, aliases, ownership and registry snapshots.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_CANONICAL_CONTRACTS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_CANONICAL_REGISTRY_MONITOR_CONTRACT",
+        "BOOTSTRAP_AUTHORITY_EXPLICIT",
+        "VALIDATE_BEFORE_ACCEPT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "canonical identity registry",
+      "source locations",
+      "reference graph",
+      "alias mappings",
+      "ownership registry",
+      "collisions/dangling refs",
+      "snapshot metadata"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Canonical identity, alias entry, ownership edge, reference edge and registry snapshot identities remain distinct.",
+    "action_rule": "rebuild-registry/validate-alias operations use separate workflows.",
+    "authority_rule": "Viewing registry grants no canonical edit/runtime authority.",
+    "failure_rule": "collision/ambiguous-alias/dangling-ref/ownership-conflict states remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOTSTRAP_AUTHORITY_EXPLICIT",
+        "rule": "Contract Format bootstrap authority, canonical contract sources, generated projections, historical artifacts and runtime state remain separate identities/roles; no file becomes authoritative merely by name, path order, timestamp or discovery order."
+      },
+      {
+        "id": "VALIDATE_BEFORE_ACCEPT",
+        "rule": "Candidate canonical changes remain inert until exact format validation, identity/reference resolution, semantic diff, applicable governance/authorization and repository acceptance succeed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor resolves fuzzy refs",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "registry view edits source",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "alias/canonical identities conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "ownership conflict hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "viewing grants edit rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SNAP",
+      "target_ref": "AIGMOS_CANONICAL_REGISTRY_SNAPSHOT_CONTRACT",
+      "purpose": "Monitor projects exact reproducible registry snapshot."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for identity registry, ref resolution, aliases, ownership and registry snapshots.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

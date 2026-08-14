@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_MASTER_SCHEMA_ROOT_CONTRACT",
+    "name": "DWH Master Schema Root",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the DWH master schema as the common resolvable schema graph/root over module-owned schemas and relations without centralizing ownership of those domain models.",
+  "scope": {
+    "owns": [
+      "DWH Master Schema Root semantics"
+    ],
+    "does_not_own": [
+      "module domain model ownership",
+      "AccessCore policy ownership",
+      "transport implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_MASTER_SCHEMA_ROOT",
+      "name": "DWH Master Schema Root",
+      "purpose": "Define the DWH master schema as the common resolvable schema graph/root over module-owned schemas and relations without centralizing ownership of those domain models.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_SCHEMA_BINDING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_MASTER_SCHEMA_ROOT_CONTRACT",
+        "DWH_SCHEMA_OWNERSHIP_PRESERVED",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "root_rule": "DWH exposes one common resolvable schema graph/root for participating module schemas.",
+    "ownership_rule": "Each module/schema owner retains ownership of its own domain model and declared relations.",
+    "reference_rule": "Master schema composes exact schema/relation refs rather than copied definitions.",
+    "identity_rule": "Master schema root identity is distinct from every constituent schema identity.",
+    "extension_rule": "Adding a module/domain extends the graph through explicit refs/bindings.",
+    "conflict_rule": "Same-identity conflicting schema semantics hard-fail/reconcile explicitly.",
+    "authority_rule": "Presence in master schema grants no data access authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_SCHEMA_OWNERSHIP_PRESERVED",
+        "rule": "DWH resolves and projects schemas/relations but never becomes the semantic owner of module domain models; local/relation bindings require exact declared identities and cannot be inferred from names or proximity."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "DWH master schema claims ownership of module models",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "constituent schema copied/shadowed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "same identity conflict resolved by file order",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "schema name used instead of exact ref",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "master schema presence grants data access",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_SCHEMA_IDENTITY_CONTRACT",
+      "purpose": "Master graph references exact schemas."
+    },
+    {
+      "id": "REF_REL",
+      "target_ref": "AIGMOS_RELATION_IDENTITY_CONTRACT",
+      "purpose": "Master graph includes explicit relations."
+    }
+  ],
+  "prose": {
+    "summary": "Define the DWH master schema as the common resolvable schema graph/root over module-owned schemas and relations without centralizing ownership of those domain models.",
+    "notes": [
+      "Unlocked pending reconciliation against Schema/Relation, UserModule isolation and DWH access/lineage contracts."
+    ]
+  }
+}

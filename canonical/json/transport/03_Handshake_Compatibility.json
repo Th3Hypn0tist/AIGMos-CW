@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TRANSPORT_HANDSHAKE_COMPATIBILITY_CONTRACT",
+    "name": "Transport Handshake Compatibility",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit handshake/version compatibility metadata, including any currently required MD5 handshake field, without treating a compatibility digest as cryptographic identity or authorization.",
+  "scope": {
+    "owns": [
+      "Transport Handshake Compatibility semantics"
+    ],
+    "does_not_own": [
+      "application payload semantics",
+      "IdentityCore identity ownership",
+      "AccessCore authorization policy"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TRANSPORT_HANDSHAKE_COMPATIBILITY",
+      "name": "Transport Handshake Compatibility",
+      "purpose": "Define explicit handshake/version compatibility metadata, including any currently required MD5 handshake field, without treating a compatibility digest as cryptographic identity or authorization.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NETWORK",
+        "TOPIC_DWH_BOUNDARY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TRANSPORT_HANDSHAKE_COMPATIBILITY_CONTRACT",
+        "TRANSPORT_SECURITY_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "role": "handshake compatibility and protocol negotiation",
+    "version_rule": "Handshake declares protocol/profile/version compatibility explicitly.",
+    "md5_rule": "Where the current compatibility profile requires MD5, MD5 is treated only as compatibility/integrity metadata for that handshake field.",
+    "security_rule": "MD5 is not treated as a modern identity proof, authorization proof or semantic identifier.",
+    "negotiation_rule": "Unsupported mandatory profile/version fails before payload exchange.",
+    "upgrade_rule": "Handshake fields/algorithms may be superseded only by an explicit compatible/new profile contract.",
+    "trace_rule": "Handshake result retains negotiated profile/version and peer binding provenance."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TRANSPORT_SECURITY_SEPARATION",
+        "rule": "Transport session, cryptographic material, signaling metadata and semantic identity remain separate; secure transport never implies application authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "MD5 digest treated as semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "MD5 handshake field treated as sole authorization proof",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "unsupported protocol version continues anyway",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "handshake algorithm silently changed without profile/version semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "negotiated profile unavailable for trace",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_WEBRTC",
+      "target_ref": "AIGMOS_WEBRTC_TRANSPORT_CONTRACT",
+      "purpose": "Handshake precedes governed peer transport use."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit handshake/version compatibility metadata, including any currently required MD5 handshake field, without treating a compatibility digest as cryptographic identity or authorization.",
+    "notes": [
+      "Unlocked pending reconciliation against existing WebRTC/PGP/rendezvous contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

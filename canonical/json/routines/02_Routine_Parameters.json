@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ROUTINE_PARAMETER_CONTRACT",
+    "name": "Routine Parameters",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define schema-validated Routine input parameters, defaults, required values and explicit binding into step arguments without hidden context injection.",
+  "scope": {
+    "owns": [
+      "Routine Parameters semantics"
+    ],
+    "does_not_own": [
+      "Runner execution state",
+      "AccessCore policy ownership",
+      "domain operation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ROUTINE_PARAMETER",
+      "name": "Routine Parameters",
+      "purpose": "Define schema-validated Routine input parameters, defaults, required values and explicit binding into step arguments without hidden context injection.",
+      "parent_topic_refs": [
+        "TOPIC_ROUTINES",
+        "TOPIC_RUNNERS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_ROUTINE_PARAMETER_CONTRACT",
+        "ROUTINE_DEFINITION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "parameter_rule": "Every parameter has explicit identity/name/type/schema semantics.",
+    "required_rule": "Required/optional/default status is explicit.",
+    "default_rule": "Defaults are explicit inert values and never hidden environment-dependent behavior.",
+    "binding_rule": "Parameter-to-step argument mapping is explicit.",
+    "context_rule": "Runtime/session/context values may be referenced only through declared context bindings.",
+    "validation_rule": "Routine invocation validates inputs before Runner creation/step dispatch.",
+    "secret_rule": "Secret parameter handling/redaction follows explicit policy and is never embedded in ordinary execution traces.",
+    "unknown_rule": "Unknown supplied parameters fail or follow explicit extension policy."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ROUTINE_DEFINITION_EXPLICIT",
+        "rule": "Routine definitions are explicit canonical ordered compositions of exact commands/operations/routines; runtime execution state is never embedded into the reusable definition."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "hidden ambient context injected into parameter",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "unknown parameter silently accepted with new meaning",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "secret exposed in ordinary trace",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "invalid input reaches execution",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "default depends on undocumented environment state",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ARGS",
+      "target_ref": "AIGMOS_COMMAND_ARGUMENT_SCHEMA_CONTRACT",
+      "purpose": "Routine bindings feed validated command arguments."
+    }
+  ],
+  "prose": {
+    "summary": "Define schema-validated Routine input parameters, defaults, required values and explicit binding into step arguments without hidden context injection.",
+    "notes": [
+      "Unlocked pending reconciliation against existing #R, &, Runner and command contracts."
+    ]
+  }
+}

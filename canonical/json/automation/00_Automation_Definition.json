@@ -1,0 +1,158 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_AUTOMATION_DEFINITION_CONTRACT",
+    "name": "Automation Definition",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a reusable scheduled or condition-driven automation as an explicit definition identity composing schedule/condition, action binding, execution policy and lifecycle state.",
+  "scope": {
+    "owns": [
+      "Automation Definition semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_AUTOMATION_DEFINITION",
+      "name": "Automation Definition",
+      "purpose": "Define a reusable scheduled or condition-driven automation as an explicit definition identity composing schedule/condition, action binding, execution policy and lifecycle state.",
+      "parent_topic_refs": [
+        "TOPIC_AUTOMATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_AUTOMATION_DEFINITION_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_AUTOMATION",
+      "name": "Automation",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_AUTOMATION already referenced by 6 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 6,
+        "distinct_child_topics": 6,
+        "host_contract_ref": "AIGMOS_AUTOMATION_DEFINITION_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each automation definition has an explicit identity.",
+    "trigger_mode": [
+      "schedule",
+      "condition_watch",
+      "manual_plus_schedule",
+      "other declared mode"
+    ],
+    "schedule_rule": "Schedule identity/ref is exact where used.",
+    "condition_rule": "Condition/Trigger identity is exact where used.",
+    "action_rule": "Action target Routine/operation is exact.",
+    "policy_rule": "Retry/missed-run/concurrency/deadline policies are explicit.",
+    "definition_rule": "Automation definition is separate from occurrences/executions.",
+    "authority_rule": "Enabled automation does not bypass operation authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "automation definition itself executes continuously",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "action inferred from description text",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "schedule and execution conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "enabled means authorized",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "condition chosen heuristically",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SCHED",
+      "target_ref": "AIGMOS_SCHEDULE_IDENTITY_CONTRACT",
+      "purpose": "Scheduled automation uses exact Schedule identity."
+    }
+  ],
+  "prose": {
+    "summary": "Define a reusable scheduled or condition-driven automation as an explicit definition identity composing schedule/condition, action binding, execution policy and lifecycle state.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_AUTOMATION solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

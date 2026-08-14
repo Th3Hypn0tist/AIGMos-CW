@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MSG_PRECONVERSATION_THROTTLE_CONTRACT",
+    "name": "Pre-Conversation Request Throttle",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define bounded unsolicited conversation-request throttling before a conversation relationship exists, with configurable policy and requester blocking.",
+  "scope": {
+    "owns": [
+      "Pre-Conversation Request Throttle semantics"
+    ],
+    "does_not_own": [
+      "Hello rendezvous identity",
+      "IdentityCore identity ownership",
+      "transport cryptographic implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MSG_PRECONVERSATION_THROTTLE",
+      "name": "Pre-Conversation Request Throttle",
+      "purpose": "Define bounded unsolicited conversation-request throttling before a conversation relationship exists, with configurable policy and requester blocking.",
+      "parent_topic_refs": [
+        "TOPIC_MESSAGING",
+        "TOPIC_HELLO"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MSG_PRECONVERSATION_THROTTLE_CONTRACT",
+        "MESSAGING_PEER_GOVERNED",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "scope_rule": "Throttle applies to pre-conversation/request state rather than established conversation traffic unless separate policy says otherwise.",
+    "default_example": "Policy may use a default such as one request per requester per week; exact deployed value is configuration, not hard-coded universal truth.",
+    "identity_rule": "Throttle key resolves requester/recipient identities according to messaging identity policy.",
+    "block_rule": "Recipient may block a requester; blocked request attempts do not establish conversation.",
+    "reset_rule": "Throttle windows/reset semantics are explicit.",
+    "bypass_rule": "Creating a new rendezvous/transport session does not reset requester throttle identity.",
+    "authority_rule": "Passing throttle does not itself grant conversation acceptance or data authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MESSAGING_PEER_GOVERNED",
+        "rule": "Messaging is explicit peer/group communication over governed peer transport; rendezvous, transport, conversation policy and message payload remain separate semantic layers."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "new transport session bypasses throttle",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "passing throttle auto-accepts conversation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "blocked requester establishes conversation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "throttle key uses only transient rendezvous id",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "window/reset semantics undefined",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CONV",
+      "target_ref": "AIGMOS_MSG_CONVERSATION_IDENTITY_CONTRACT",
+      "purpose": "Throttle precedes explicit conversation establishment."
+    }
+  ],
+  "prose": {
+    "summary": "Define bounded unsolicited conversation-request throttling before a conversation relationship exists, with configurable policy and requester blocking.",
+    "notes": [
+      "Unlocked pending reconciliation against existing msg/WebRTC/Hello contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

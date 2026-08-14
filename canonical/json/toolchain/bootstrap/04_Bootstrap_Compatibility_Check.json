@@ -1,0 +1,134 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TOOLCHAIN_BOOTSTRAP_COMPATIBILITY_CHECK_CONTRACT",
+    "name": "Bootstrap Compatibility Check",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define exact toolchain-version versus Contract Format compatibility check before repository scan.",
+  "scope": {
+    "owns": [
+      "Bootstrap Compatibility Check semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime application authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TOOLCHAIN_BOOTSTRAP_COMPATIBILITY_CHECK",
+      "name": "Bootstrap Compatibility Check",
+      "purpose": "Define exact toolchain-version versus Contract Format compatibility check before repository scan.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_TOOLCHAIN",
+        "TOPIC_RECONCILIATION_EXECUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TOOLCHAIN_BOOTSTRAP_COMPATIBILITY_CHECK_CONTRACT",
+        "TOOLING_NONAUTHORITY",
+        "DETERMINISTIC_EXACT_INPUTS",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "tool_rule": "Toolchain parser/validator capability profile is explicit.",
+    "format_rule": "Bootstrap format/profile is exact.",
+    "result_states": [
+      "compatible",
+      "migration_required",
+      "incompatible",
+      "unknown"
+    ],
+    "unknown_rule": "Unknown required compatibility blocks run.",
+    "migration_rule": "Migration mode is explicit and separate from normal validation.",
+    "version_rule": "Numeric version order alone never proves compatibility."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TOOLING_NONAUTHORITY",
+        "rule": "Toolchain code, scans, indexes, reports and generated artifacts remain implementation/evidence surfaces; they never become canonical semantic authority unless an explicit accepted canonical definition says so."
+      },
+      {
+        "id": "DETERMINISTIC_EXACT_INPUTS",
+        "rule": "Every toolchain execution binds exact bootstrap/source/profile/input revisions and must not resolve ambiguity through filesystem order, newest-wins, mtime, fuzzy names or UI layout."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "tool silently accepts newer format",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "unknown treated compatible",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "migration runs automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "version number only comparison",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "feature requirements ignored",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CF",
+      "target_ref": "AIGMOS_CF_FORMAT_COMPATIBILITY_PROFILE_CONTRACT",
+      "purpose": "Compatibility follows Contract Format profile."
+    }
+  ],
+  "prose": {
+    "summary": "Define exact toolchain-version versus Contract Format compatibility check before repository scan.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Implementation contracts operationalize canonical semantics but do not replace canonical source authority."
+    ]
+  }
+}

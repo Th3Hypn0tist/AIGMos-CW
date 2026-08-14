@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_FREEMARKET_MONITOR_CONTRACT",
+    "name": "FreeMarket Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the Expose monitor for published Projects, Broker matches, ranking evidence and assignment state as a provenance-backed projection with mutations routed through explicit canonical operations.",
+  "scope": {
+    "owns": [
+      "FreeMarket Monitor semantics"
+    ],
+    "does_not_own": [
+      "Project work semantics",
+      "MeritCore scoring",
+      "IdentityCore authentication",
+      "AccessCore authorization"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_FREEMARKET_MONITOR",
+      "name": "FreeMarket Monitor",
+      "purpose": "Define the Expose monitor for published Projects, Broker matches, ranking evidence and assignment state as a provenance-backed projection with mutations routed through explicit canonical operations.",
+      "parent_topic_refs": [
+        "TOPIC_FREEMARKET",
+        "TOPIC_PROJECT"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_FREEMARKET_MONITOR_CONTRACT",
+        "FREEMARKET_DERIVED_MATCHING",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "published Projects",
+      "candidate/project matches",
+      "Broker relevance explanation",
+      "assignment/participation state",
+      "public Project ranking"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "trace_rule": "Displayed match/ranking items retain Project, identity, evidence and policy refs.",
+    "action_rule": "Publish/unpublish/assign/accept controls invoke separate explicit canonical operations.",
+    "authority_rule": "Viewing or ranking a candidate does not grant assignment authority.",
+    "merit_rule": "Monitor cannot directly modify MeritCore points/Tier/trust.",
+    "layout_rule": "Visual ordering/grouping does not create market or Project semantics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "FREEMARKET_DERIVED_MATCHING",
+        "rule": "FreeMarket/Broker matching and ranking operate over explicit Project, identity, PortfolioCore and MeritCore semantics without creating duplicate work, identity or merit authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor directly assigns candidate without explicit operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "monitor edits MeritCore values",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "ranking display grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "displayed result loses evidence/policy refs",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "UI order becomes semantic ranking without policy",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MATCH",
+      "target_ref": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT",
+      "purpose": "Monitor projects Broker results."
+    },
+    {
+      "id": "REF_ASSIGN",
+      "target_ref": "AIGMOS_FREEMARKET_PROJECT_ASSIGNMENT_CONTRACT",
+      "purpose": "Assignment uses explicit Project relations."
+    }
+  ],
+  "prose": {
+    "summary": "Define the Expose monitor for published Projects, Broker matches, ranking evidence and assignment state as a provenance-backed projection with mutations routed through explicit canonical operations.",
+    "notes": [
+      "Unlocked pending reconciliation against existing FreeMarket/Broker contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

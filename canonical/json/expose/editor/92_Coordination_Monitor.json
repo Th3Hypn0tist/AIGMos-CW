@@ -1,0 +1,133 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_COORDINATION_MONITOR_CONTRACT",
+    "name": "Locks, Leases and Coordination Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for locks, holders, leases, epochs, contention, expiry and coordination failure state.",
+  "scope": {
+    "owns": [
+      "Locks, Leases and Coordination Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_COORDINATION_MONITOR",
+      "name": "Locks, Leases and Coordination Monitor",
+      "purpose": "Define a read-only Expose monitor for locks, holders, leases, epochs, contention, expiry and coordination failure state.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_COORDINATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_COORDINATION_MONITOR_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "lock/lease registry",
+      "protected resource",
+      "holder execution",
+      "mode",
+      "lease expiry",
+      "epoch/fencing token metadata",
+      "contention",
+      "partition/quorum state",
+      "stale-holder rejection"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Lock, lease, holder, resource and execution identities remain distinct.",
+    "action_rule": "release/revoke/reacquire operations invoke separate authorized workflows.",
+    "authority_rule": "Viewing coordination state grants no resource authority.",
+    "redaction_rule": "Sensitive fencing material may be metadata-redacted.",
+    "failure_rule": "unknown ownership/split-brain risk remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor releases by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "holder displayed as owner",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "visual adjacency invents resource lock",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "unknown ownership shown free",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "fencing value leaked unnecessarily",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_FAIL",
+      "target_ref": "AIGMOS_DISTRIBUTED_COORDINATION_FAILURE_CONTRACT",
+      "purpose": "Monitor exposes fail-closed coordination state."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for locks, holders, leases, epochs, contention, expiry and coordination failure state.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_HELLO_PEER_DISCOVERY_LIFECYCLE_CONTRACT",
+    "name": "Hello Peer Discovery Lifecycle",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define bounded peer discovery from publish/register through lookup, rendezvous match, signaling handoff and cleanup.",
+  "scope": {
+    "owns": [
+      "Hello Peer Discovery Lifecycle semantics"
+    ],
+    "does_not_own": [
+      "application payload semantics",
+      "IdentityCore ownership",
+      "AccessCore authorization"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_HELLO_PEER_DISCOVERY_LIFECYCLE",
+      "name": "Hello Peer Discovery Lifecycle",
+      "purpose": "Define bounded peer discovery from publish/register through lookup, rendezvous match, signaling handoff and cleanup.",
+      "parent_topic_refs": [
+        "TOPIC_HELLO",
+        "TOPIC_RENDEZVOUS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_HELLO_PEER_DISCOVERY_LIFECYCLE_CONTRACT",
+        "HELLO_BOOTSTRAP_ONLY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "states": [
+      "unregistered",
+      "discoverable",
+      "lookup",
+      "matched",
+      "signaling_handoff",
+      "established",
+      "expired",
+      "cancelled",
+      "failed"
+    ],
+    "publish_rule": "Peer/service discoverability is explicit and policy-governed.",
+    "lookup_rule": "Lookup resolves discovery metadata, not application authority.",
+    "match_rule": "Matched state identifies candidate peer/session handoff only.",
+    "handoff_rule": "Successful match hands off to WebRTC/other configured peer transport establishment.",
+    "cleanup_rule": "Bootstrap metadata is removed/expired after establishment/cancel/timeout.",
+    "timeout_rule": "Lookup/match/signaling phases are bounded.",
+    "identity_rule": "Lifecycle state/session identity does not redefine peer semantic identity.",
+    "failure_rule": "Discovery failure does not silently substitute an unrelated peer."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "HELLO_BOOTSTRAP_ONLY",
+        "rule": "Hello/Rendezvous performs peer discovery/bootstrap only; it never becomes application-payload owner, semantic peer identity, or authorization authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "discovery lifecycle unbounded",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "matched state treated as authorized application session",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "failed lookup substitutes unrelated peer",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "bootstrap record survives indefinitely",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "peer identity changes across discovery states",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_WEBRTC",
+      "target_ref": "AIGMOS_WEBRTC_TRANSPORT_CONTRACT",
+      "purpose": "Discovery hands off to peer transport."
+    },
+    {
+      "id": "REF_REC",
+      "target_ref": "AIGMOS_HELLO_RENDEZVOUS_RECORD_CONTRACT",
+      "purpose": "Lifecycle owns bounded bootstrap-record cleanup."
+    }
+  ],
+  "prose": {
+    "summary": "Define bounded peer discovery from publish/register through lookup, rendezvous match, signaling handoff and cleanup.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Hello/Rendezvous/licensing/messaging contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

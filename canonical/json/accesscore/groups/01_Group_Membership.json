@@ -1,0 +1,134 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_GROUP_MEMBERSHIP_CONTRACT",
+    "name": "Group Membership Evidence",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define membership as explicit evidence linking an IAM identity or group to an exact group with lifecycle and provenance.",
+  "scope": {
+    "owns": [
+      "Group Membership Evidence semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime operation implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_GROUP_MEMBERSHIP",
+      "name": "Group Membership Evidence",
+      "purpose": "Define membership as explicit evidence linking an IAM identity or group to an exact group with lifecycle and provenance.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE",
+        "TOPIC_GROUPS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_GROUP_MEMBERSHIP_CONTRACT",
+        "IDENTITY_AUTHORITY_SEPARATION",
+        "FAIL_CLOSED_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each machine-significant membership has an explicit membership identity/evidence record.",
+    "member_rule": "Member identity/group ref is exact.",
+    "group_rule": "Target group ref is exact.",
+    "state_values": [
+      "active",
+      "pending",
+      "expired",
+      "revoked",
+      "removed"
+    ],
+    "lifetime_rule": "Effective start/end are explicit where temporal membership applies.",
+    "source_rule": "Approval/issuer/provenance is explicit where required.",
+    "rights_rule": "Membership gains only rights explicitly assigned through applicable policy/role bindings."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_AUTHORITY_SEPARATION",
+        "rule": "Identity, authentication assurance, authorization policy, authorization decision, delegation and runtime execution remain separate machine-significant identities/evidence; no one layer silently substitutes for another."
+      },
+      {
+        "id": "FAIL_CLOSED_AUTHORITY",
+        "rule": "Ambiguous, missing, stale or unverifiable authority for a protected effect fails closed rather than inheriting trust from locality, transport reachability, process ownership, UI visibility or previous success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "membership inferred from email domain",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "removed membership still active",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "membership grants unspecified rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "member selected by name only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "membership history overwritten",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_GROUP",
+      "target_ref": "AIGMOS_ACCESS_GROUP_IDENTITY_CONTRACT",
+      "purpose": "Membership binds exact groups."
+    }
+  ],
+  "prose": {
+    "summary": "Define membership as explicit evidence linking an IAM identity or group to an exact group with lifecycle and provenance.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

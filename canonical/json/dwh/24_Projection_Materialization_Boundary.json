@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_PROJECTION_MATERIALIZATION_BOUNDARY_CONTRACT",
+    "name": "DWH Projection and Materialization Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the distinction between transient/read-only DWH projections and explicitly materialized/copied data with new local identity, provenance and governance.",
+  "scope": {
+    "owns": [
+      "DWH Projection and Materialization Boundary semantics"
+    ],
+    "does_not_own": [
+      "module domain model ownership",
+      "AccessCore policy ownership",
+      "transport implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_PROJECTION_MATERIALIZATION_BOUNDARY",
+      "name": "DWH Projection and Materialization Boundary",
+      "purpose": "Define the distinction between transient/read-only DWH projections and explicitly materialized/copied data with new local identity, provenance and governance.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_SCHEMA_BINDING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_PROJECTION_MATERIALIZATION_BOUNDARY_CONTRACT",
+        "DWH_SCHEMA_OWNERSHIP_PRESERVED",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "projection_rule": "A normal DWH query/projection is transient/read-only unless an explicit write/materialize operation is invoked.",
+    "identity_rule": "Projection does not create a new owned semantic data identity merely by rendering/serializing it.",
+    "materialize_rule": "Materialization/copy creates an explicit destination data identity under an exact owning schema/instance.",
+    "lineage_rule": "Materialized/derived data retains source lineage and transformation provenance.",
+    "classification_rule": "Classification/taint propagates to materialized output according to policy.",
+    "cache_rule": "A cache may store a projection only under an explicit cache profile and never becomes source-of-truth ownership by existence.",
+    "refresh_rule": "Refresh/invalidation semantics are explicit for caches/materialized views.",
+    "authority_rule": "Read access to source does not automatically grant materialization/write authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_SCHEMA_OWNERSHIP_PRESERVED",
+        "rule": "DWH resolves and projects schemas/relations but never becomes the semantic owner of module domain models; local/relation bindings require exact declared identities and cannot be inferred from names or proximity."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "query projection silently becomes owned persistent data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "cache treated as canonical source of truth",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "materialized copy loses lineage",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "read authorization grants destination write",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "classification dropped on copy",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LINE",
+      "target_ref": "AIGMOS_DWH_DATA_LINEAGE_IDENTITY_CONTRACT",
+      "purpose": "Materialized data retains lineage."
+    },
+    {
+      "id": "REF_TAINT",
+      "target_ref": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT",
+      "purpose": "Classification propagates through materialization."
+    }
+  ],
+  "prose": {
+    "summary": "Define the distinction between transient/read-only DWH projections and explicitly materialized/copied data with new local identity, provenance and governance.",
+    "notes": [
+      "Unlocked pending reconciliation against Schema/Relation, UserModule isolation and DWH access/lineage contracts."
+    ]
+  }
+}

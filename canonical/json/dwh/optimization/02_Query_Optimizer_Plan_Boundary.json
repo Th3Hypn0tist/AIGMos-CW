@@ -1,0 +1,131 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_QUERY_OPTIMIZER_PLAN_BOUNDARY_CONTRACT",
+    "name": "DWH Query Optimizer Plan Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define optimizer plans as derived execution strategies that may choose indexes, join order, pushdown and algorithms only when semantically and governance equivalent to the canonical query.",
+  "scope": {
+    "owns": [
+      "DWH Query Optimizer Plan Boundary semantics"
+    ],
+    "does_not_own": [
+      "source schema ownership",
+      "AccessCore policy ownership",
+      "query semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_QUERY_OPTIMIZER_PLAN_BOUNDARY",
+      "name": "DWH Query Optimizer Plan Boundary",
+      "purpose": "Define optimizer plans as derived execution strategies that may choose indexes, join order, pushdown and algorithms only when semantically and governance equivalent to the canonical query.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_QUERY_OPTIMIZATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_QUERY_OPTIMIZER_PLAN_BOUNDARY_CONTRACT",
+        "OPTIMIZATION_NONSEMANTIC",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "input_rule": "Optimizer consumes exact canonical query definition, resolved schemas/relations, capabilities and statistics evidence.",
+    "plan_rule": "Generated plan has a distinct execution-plan identity.",
+    "semantic_rule": "Every plan transformation must preserve canonical query semantics.",
+    "join_rule": "Join reordering is permitted only where declared relation/operator semantics are equivalent.",
+    "pushdown_rule": "Remote pushdown follows the explicit federation pushdown boundary.",
+    "index_rule": "Index use is optional execution strategy and never changes result meaning.",
+    "governance_rule": "Optimizer cannot introduce reads of unauthorized fields/resources merely for cost/performance.",
+    "fallback_rule": "If optimized plan cannot be proven compatible, execution falls back to a valid explicit plan or fails.",
+    "authority_rule": "Optimizer cost preference is not authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "OPTIMIZATION_NONSEMANTIC",
+        "rule": "Indexes, statistics, caches and optimizer plans may change execution strategy only; they never change canonical query semantics, data identity, ownership, classification or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "optimizer changes query result semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "optimizer reads unauthorized field for selectivity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "index availability changes ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "join reordered where semantics are not equivalent",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "cheapest plan bypasses governance",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_QUERY",
+      "target_ref": "AIGMOS_DWH_QUERY_IDENTITY_CONTRACT",
+      "purpose": "Plans derive from canonical query semantics."
+    },
+    {
+      "id": "REF_FED",
+      "target_ref": "AIGMOS_DWH_QUERY_PUSHDOWN_BOUNDARY_CONTRACT",
+      "purpose": "Federated pushdown remains governed."
+    }
+  ],
+  "prose": {
+    "summary": "Define optimizer plans as derived execution strategies that may choose indexes, join order, pushdown and algorithms only when semantically and governance equivalent to the canonical query.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH query, persistence, changefeed and schema-migration contracts."
+    ]
+  }
+}

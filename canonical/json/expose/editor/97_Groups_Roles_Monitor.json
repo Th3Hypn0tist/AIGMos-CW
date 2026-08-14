@@ -1,0 +1,138 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_GROUPS_ROLES_MONITOR_CONTRACT",
+    "name": "Groups, Roles and Membership Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for groups, memberships, roles, nesting, effective closure and temporal assignment state.",
+  "scope": {
+    "owns": [
+      "Groups, Roles and Membership Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime operation implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_GROUPS_ROLES_MONITOR",
+      "name": "Groups, Roles and Membership Monitor",
+      "purpose": "Define a read-only Expose monitor for groups, memberships, roles, nesting, effective closure and temporal assignment state.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_GROUPS",
+        "TOPIC_ROLES"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_GROUPS_ROLES_MONITOR_CONTRACT",
+        "IDENTITY_AUTHORITY_SEPARATION",
+        "FAIL_CLOSED_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "group registry",
+      "direct membership",
+      "nested-group edges",
+      "role registry",
+      "role→right bindings",
+      "identity/group assignments",
+      "effective closure/path",
+      "start/expiry state"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Identity, group, membership, role, right and authorization-decision identities remain distinct.",
+    "action_rule": "add/remove-member/assign-role/revoke-role operations use separate authorized workflows.",
+    "authority_rule": "Viewing membership grants no membership-management authority.",
+    "graph_rule": "Effective paths correspond only to explicit membership/binding refs.",
+    "failure_rule": "cycle/expired/revoked/pending state remains explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_AUTHORITY_SEPARATION",
+        "rule": "Identity, authentication assurance, authorization policy, authorization decision, delegation and runtime execution remain separate machine-significant identities/evidence; no one layer silently substitutes for another."
+      },
+      {
+        "id": "FAIL_CLOSED_AUTHORITY",
+        "rule": "Ambiguous, missing, stale or unverifiable authority for a protected effect fails closed rather than inheriting trust from locality, transport reachability, process ownership, UI visibility or previous success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor changes membership by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "group/role conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "effective rights inferred from visual nesting",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "expired membership hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "same label merges identities",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CLOSE",
+      "target_ref": "AIGMOS_NESTED_GROUP_CLOSURE_CONTRACT",
+      "purpose": "Monitor projects deterministic membership closure."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for groups, memberships, roles, nesting, effective closure and temporal assignment state.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

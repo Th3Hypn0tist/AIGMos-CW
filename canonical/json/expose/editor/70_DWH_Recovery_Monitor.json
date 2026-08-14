@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_DWH_RECOVERY_MONITOR_CONTRACT",
+    "name": "DWH Persistence and Recovery Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for storage bindings, record revisions, snapshots/checkpoints, audit/recovery evidence, backups and restore candidates/results.",
+  "scope": {
+    "owns": [
+      "DWH Persistence and Recovery Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain schema ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation internals"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_DWH_RECOVERY_MONITOR",
+      "name": "DWH Persistence and Recovery Monitor",
+      "purpose": "Define a read-only Expose monitor for storage bindings, record revisions, snapshots/checkpoints, audit/recovery evidence, backups and restore candidates/results.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_PERSISTENCE_RECOVERY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_DWH_RECOVERY_MONITOR_CONTRACT",
+        "PERSISTENCE_NONIDENTITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "storage profile/binding",
+      "instance/schema scope",
+      "record revision history",
+      "snapshot/checkpoint registry",
+      "consistency/watermark",
+      "write-ahead/audit evidence",
+      "backup integrity/profile",
+      "restore candidate/diff/result"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Record, revision, storage binding, snapshot, backup and restore-execution identities remain distinct.",
+    "candidate_rule": "Restore candidate is visibly distinct from accepted/live state.",
+    "action_rule": "snapshot/backup/restore/rollback/migrate-storage operations invoke separate authorized canonical workflows.",
+    "authority_rule": "Viewing backup/recovery artifacts grants no restore or mutation authority.",
+    "trace_rule": "Every backup/restore result retains exact source snapshot/target/integrity refs.",
+    "failure_rule": "Inconsistent snapshots, integrity failures and partial recovery states are surfaced explicitly."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PERSISTENCE_NONIDENTITY",
+        "rule": "Physical storage location, file name, engine page, snapshot artifact or backup copy never replaces canonical data/schema/instance identity; persistence and recovery operate on exact semantic identities with explicit version/provenance evidence."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor conflates snapshot and live data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "restore candidate shown as accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "monitor directly restores by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "backup possession grants restore authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "revision/storage identities conflated",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SNAP",
+      "target_ref": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT",
+      "purpose": "Monitor projects snapshots/checkpoints."
+    },
+    {
+      "id": "REF_RESTORE",
+      "target_ref": "AIGMOS_DWH_BACKUP_RESTORE_BOUNDARY_CONTRACT",
+      "purpose": "Monitor shows restore boundary/results."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for storage bindings, record revisions, snapshots/checkpoints, audit/recovery evidence, backups and restore candidates/results.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH mutation, runtime snapshot, repository acceptance and retention contracts."
+    ]
+  }
+}

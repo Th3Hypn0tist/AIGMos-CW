@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_METAMODULE_MONITOR_CONTRACT",
+    "name": "MetaModule Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for MetaModule definitions, composition closure, dependency bindings, nanoCMS placements and runtime activation state.",
+  "scope": {
+    "owns": [
+      "MetaModule Monitor semantics"
+    ],
+    "does_not_own": [
+      "constituent module domain semantics",
+      "nanoCMS site-tree ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_METAMODULE_MONITOR",
+      "name": "MetaModule Monitor",
+      "purpose": "Define a read-only Expose monitor for MetaModule definitions, composition closure, dependency bindings, nanoCMS placements and runtime activation state.",
+      "parent_topic_refs": [
+        "TOPIC_METAMODULE",
+        "TOPIC_COMPOSITION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_METAMODULE_MONITOR_CONTRACT",
+        "METAMODULE_COMPOSITION_NONOWNERSHIP",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "MetaModule registry",
+      "constituent refs",
+      "composition delta",
+      "dependency closure",
+      "nanoCMS placements/routes",
+      "accepted snapshot ref",
+      "runtime activation state",
+      "validation failures"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "MetaModule definition, constituent, placement, route and runtime activation identities remain distinct.",
+    "ownership_rule": "UI exposes which owner retains each constituent semantic responsibility.",
+    "action_rule": "edit/place/remove-placement/activate/reload/deactivate operations invoke separate authorized canonical workflows.",
+    "authority_rule": "Viewing MetaModule topology grants no constituent or lifecycle authority.",
+    "graph_rule": "Visual composition/dependency/placement edges correspond only to explicit relations.",
+    "failure_rule": "Missing dependencies, ownership conflicts and activation errors are shown explicitly."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "METAMODULE_COMPOSITION_NONOWNERSHIP",
+        "rule": "A MetaModule is an explicit composition of existing semantic capabilities; composition, placement or runtime activation never silently transfers ownership, identity or authority from constituent modules/resources."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor conflates placement and MetaModule identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "visual adjacency invents constituent relation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "monitor directly activates without explicit operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "ownership provenance hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "inactive placement shown as active capability",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MM",
+      "target_ref": "AIGMOS_METAMODULE_IDENTITY_CONTRACT",
+      "purpose": "Monitor projects exact MetaModule identities."
+    },
+    {
+      "id": "REF_ACT",
+      "target_ref": "AIGMOS_METAMODULE_RUNTIME_ACTIVATION_CONTRACT",
+      "purpose": "Monitor shows activation state."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for MetaModule definitions, composition closure, dependency bindings, nanoCMS placements and runtime activation state.",
+    "notes": [
+      "Unlocked pending reconciliation against composition, nanoCMS, UserModule, Editor and runtime activation contracts."
+    ]
+  }
+}

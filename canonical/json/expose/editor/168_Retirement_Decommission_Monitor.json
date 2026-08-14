@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_RETIREMENT_DECOMMISSION_MONITOR_CONTRACT",
+    "name": "Retirement and Decommission Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for retirement plans, dependency drain, data disposition, endpoint/credential decommission and completion evidence.",
+  "scope": {
+    "owns": [
+      "Retirement and Decommission Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "canonical documentation ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_RETIREMENT_DECOMMISSION_MONITOR",
+      "name": "Retirement and Decommission Monitor",
+      "purpose": "Define a read-only Expose monitor for retirement plans, dependency drain, data disposition, endpoint/credential decommission and completion evidence.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_RETIREMENT"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_RETIREMENT_DECOMMISSION_MONITOR_CONTRACT",
+        "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "OPERATIONS_FAIL_SAFE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "retirement plan",
+      "dependency graph/drain",
+      "successor mappings",
+      "traffic/endpoints",
+      "data disposition",
+      "credential revocation",
+      "service stop state",
+      "completion checks"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Service, dependency, dataset, endpoint, credential, retirement plan and completion identities remain distinct.",
+    "action_rule": "drain/decommission/purge/complete-retirement operations use separate authorized workflows.",
+    "authority_rule": "Viewing retirement plan grants no destructive authority.",
+    "failure_rule": "blocked-dependency/data-hold/live-credential/incomplete states remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "rule": "Release candidate, accepted release, deployment plan, deployment execution, installed artifact, active runtime instance and observed health remain separate identities/states."
+      },
+      {
+        "id": "OPERATIONS_FAIL_SAFE",
+        "rule": "Operational convenience, availability pressure, maintenance state, automation, recovery or rollback never silently bypass validation, authorization, integrity, governance or dispatcher boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor purges by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "service/data ownership conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "hold hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "same-name successor merged",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "viewing grants decommission admin",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DONE",
+      "target_ref": "AIGMOS_RETIREMENT_COMPLETION_EVIDENCE_CONTRACT",
+      "purpose": "Monitor projects exact completion evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for retirement plans, dependency drain, data disposition, endpoint/credential decommission and completion evidence.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

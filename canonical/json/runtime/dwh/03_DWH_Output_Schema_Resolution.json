@@ -1,0 +1,174 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT",
+    "name": "DWH Output Schema Resolution",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define DWH output from the resolved semantic schema and applicable authorization context rather than mirroring arbitrary input shape or transport payload.",
+  "scope": {
+    "owns": [
+      "DWH Output Schema Resolution semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "transport implementation details",
+      "remote policy owned elsewhere"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_OUTPUT_SCHEMA",
+      "name": "DWH Output Schema",
+      "purpose": "Define DWH output from the resolved semantic schema and applicable authorization context rather than mirroring arbitrary input shape or transport payload.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_SCHEMA",
+        "TOPIC_DWH_ORIGIN_SCOPE",
+        "TOPIC_CORE_PROVENANCE"
+      ],
+      "member_refs": [
+        "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT",
+        "DWH_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_DWH_RESOLVE_OUTPUT_SCHEMA",
+        "OP_DWH_VALIDATE_OUTPUT"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_DWH_RESOLVE_OUTPUT_SCHEMA",
+        "name": "Resolve DWH output schema",
+        "inputs": [
+          "semantic target",
+          "schema ownership context"
+        ],
+        "outputs": [
+          "exact output schema"
+        ],
+        "errors": [
+          "schema unresolved",
+          "schema ambiguous"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_DWH_VALIDATE_OUTPUT",
+        "name": "Validate DWH output",
+        "inputs": [
+          "candidate output",
+          "resolved schema",
+          "authorization context"
+        ],
+        "outputs": [
+          "validated output"
+        ],
+        "errors": [
+          "schema violation",
+          "authorization denied"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "schema_rule": "Output schema is resolved from the owning semantic schema/Meta context.",
+    "input_output_rule": "Input shape does not determine output shape.",
+    "authorization_rule": "Output is filtered by applicable data/remote authorization after schema resolution.",
+    "unknown_field_rule": "Fields outside resolved schema are not emitted unless explicit extension semantics permit them.",
+    "projection_rule": "Projection may select a subset but may not invent fields.",
+    "trace_rule": "Output retains schema provenance and authorization provenance."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_BOUNDARY_EXPLICIT",
+        "rule": "DWH local/remote, origin, schema, external identity, access path and transport-security semantics remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "output shape mirrors arbitrary input payload",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "output includes fields outside resolved schema without extension semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "projection invents output fields",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "schema provenance lost",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "authorization provenance lost",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "transport layer selects output schema",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_CORE_SCHEMA_SEMANTICS_CONTRACT",
+      "purpose": "DWH output schema is explicitly owned/resolved."
+    },
+    {
+      "id": "REF_ORIGIN",
+      "target_ref": "AIGMOS_DWH_ORIGIN_INPUT_SCOPE_CONTRACT",
+      "purpose": "Input and output scopes remain separate."
+    }
+  ],
+  "prose": {
+    "summary": "Define DWH output from the resolved semantic schema and applicable authorization context rather than mirroring arbitrary input shape or transport payload.",
+    "notes": [
+      "Unlocked until reconciled against existing DWH/IAM/AC contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

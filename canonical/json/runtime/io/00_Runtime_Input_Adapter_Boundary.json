@@ -1,0 +1,191 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_INPUT_ADAPTER_BOUNDARY_CONTRACT",
+    "name": "Runtime Input and Adapter Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define input modules and adapters as bounded translation/mount boundaries: inputs validate and write owned inert data, while adapters mount symbols without creating private execution authority.",
+  "scope": {
+    "owns": [
+      "Runtime Input and Adapter Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_INPUT_ADAPTERS",
+      "name": "Inputs and Adapters",
+      "purpose": "Define input modules and adapters as bounded translation/mount boundaries: inputs validate and write owned inert data, while adapters mount symbols without creating private execution authority.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_SCHEMA",
+        "TOPIC_CORE_VALUES",
+        "TOPIC_RUNTIME_SYMBOL_REGISTRY"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_INPUT_ADAPTER_BOUNDARY_CONTRACT",
+        "RUNTIME_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_INPUT_RECEIVE",
+        "OP_INPUT_VALIDATE",
+        "OP_INPUT_WRITE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_INPUT_RECEIVE",
+        "name": "Receive input",
+        "inputs": [
+          "input source",
+          "raw payload"
+        ],
+        "outputs": [
+          "bounded raw input"
+        ],
+        "errors": [
+          "input too large",
+          "source unavailable"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_INPUT_VALIDATE",
+        "name": "Validate input",
+        "inputs": [
+          "raw input",
+          "declared schema"
+        ],
+        "outputs": [
+          "validated inert input"
+        ],
+        "errors": [
+          "schema mismatch",
+          "unknown field"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_INPUT_WRITE",
+        "name": "Write validated input to owned symbol surface",
+        "inputs": [
+          "validated input",
+          "owned symbol target"
+        ],
+        "outputs": [
+          "updated input symbol data"
+        ],
+        "errors": [
+          "target unauthorized",
+          "target unresolved"
+        ],
+        "side_effects": [
+          "owned input state updated"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "input_rule": "Input modules receive external/local data, validate it, and write only their owned symbol surface.",
+    "adapter_rule": "Adapter is a symbol mount/translation boundary, not an independent command or authority owner.",
+    "data_rule": "Input payload remains inert until explicit Trigger/operation/dispatcher semantics act on it.",
+    "schema_rule": "Boundary data uses explicit schema and unknown-field policy.",
+    "ownership_rule": "Input/adapters cannot write arbitrary unrelated symbol roots.",
+    "effect_rule": "Receiving data is not itself permission to perform external effects."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RUNTIME_BOUNDARY_EXPLICIT",
+        "rule": "Runtime capabilities, dispatch and mutable state remain explicit, bounded and Core-governed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "input payload directly executes command/effect",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "adapter gains private runtime authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "input writes unrelated symbol root outside owned target",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "unknown fields silently accepted without schema rule",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "input size unbounded",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "payload dynamically selects target root",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_CORE_SCHEMA_SEMANTICS_CONTRACT",
+      "purpose": "Boundary payloads validate against explicit schema."
+    },
+    {
+      "id": "REF_SYMBOLS",
+      "target_ref": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
+      "purpose": "Inputs write owned registered symbol surfaces."
+    }
+  ],
+  "prose": {
+    "summary": "Define input modules and adapters as bounded translation/mount boundaries: inputs validate and write owned inert data, while adapters mount symbols without creating private execution authority.",
+    "notes": [
+      "Unlocked until reconciled against existing runtime contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

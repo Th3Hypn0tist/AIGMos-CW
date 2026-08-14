@@ -1,0 +1,141 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_SCHEDULE_MONITOR_CONTRACT",
+    "name": "Schedule Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor/editor projection for `#CAL` schedules, recurrence/timezone, occurrence history, emitted Events, Trigger bindings and missed-run policy.",
+  "scope": {
+    "owns": [
+      "Schedule Monitor semantics"
+    ],
+    "does_not_own": [
+      "Runner execution semantics",
+      "AccessCore policy ownership",
+      "external calendar provider semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_SCHEDULE_MONITOR",
+      "name": "Schedule Monitor",
+      "purpose": "Define a read-only Expose monitor/editor projection for `#CAL` schedules, recurrence/timezone, occurrence history, emitted Events, Trigger bindings and missed-run policy.",
+      "parent_topic_refs": [
+        "TOPIC_CALENDAR",
+        "TOPIC_SCHEDULING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_SCHEDULE_MONITOR_CONTRACT",
+        "SCHEDULE_NONEXECUTION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "schedule registry",
+      "enabled/paused/expired state",
+      "recurrence/timezone",
+      "next derived occurrence",
+      "occurrence history",
+      "missed/catch-up status",
+      "emitted scheduling Events",
+      "Trigger bindings",
+      "downstream causal trace"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Schedule, occurrence, Event, Trigger and Runner execution identities remain distinct.",
+    "derived_rule": "Next occurrence is visibly presented as derived runtime state rather than canonical identity.",
+    "action_rule": "create/edit/enable/pause/resume/delete/catch-up operations invoke separate authorized canonical operations.",
+    "authority_rule": "Viewing schedule state grants no edit or execution authority.",
+    "graph_rule": "Visual Schedule→Event→Trigger→Runner edges correspond only to explicit bindings/causality.",
+    "timezone_rule": "Display may localize times but retains canonical timezone/instant evidence.",
+    "failure_rule": "Missed/failed/duplicate-prevented occurrences are visible explicitly."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SCHEDULE_NONEXECUTION",
+        "rule": "A schedule determines when a scheduling occurrence may be emitted; it never directly executes a Routine, command or operation. Execution requires the normal explicit Event→Trigger→Runner/operation causality chain."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor conflates schedule with Event",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "next occurrence shown as canonical source identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "monitor directly executes downstream target",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "visual adjacency invents Trigger binding",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "localized display loses timezone evidence",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_BOUND",
+      "target_ref": "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT",
+      "purpose": "Monitor projects schedule→Event boundary."
+    },
+    {
+      "id": "REF_MISS",
+      "target_ref": "AIGMOS_SCHEDULE_MISSED_OCCURRENCE_CONTRACT",
+      "purpose": "Monitor exposes catch-up policy/status."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor/editor projection for `#CAL` schedules, recurrence/timezone, occurrence history, emitted Events, Trigger bindings and missed-run policy.",
+    "notes": [
+      "Unlocked pending reconciliation against #CAL, Event/Trigger causality, Runner and timezone/runtime contracts."
+    ]
+  }
+}

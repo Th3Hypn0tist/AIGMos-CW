@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_OUTPUT_SCHEMA_GOVERNANCE_CONTRACT",
+    "name": "DWH Output Schema Governance",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define DWH output governance from the resolved output schema/field boundary, independently from how the input was obtained.",
+  "scope": {
+    "owns": [
+      "DWH Output Schema Governance semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "IAM identity semantics",
+      "transport cryptography semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_OUTPUT_SCHEMA_GOVERNANCE",
+      "name": "DWH Output Schema Governance",
+      "purpose": "Define DWH output governance from the resolved output schema/field boundary, independently from how the input was obtained.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_ACCESSCORE_AUTHORIZATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_OUTPUT_SCHEMA_GOVERNANCE_CONTRACT",
+        "DWH_ORIGIN_TARGET_GOVERNANCE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "schema_rule": "Output eligibility is evaluated from the resolved canonical schema/field classification.",
+    "separation_rule": "Successful input/read resolution never implies that every resolved field may be emitted.",
+    "projection_rule": "Output is projected to the allowed schema/field subset.",
+    "identity_rule": "Identity-sensitive output may apply exact identity/context policy.",
+    "remote_rule": "Remote output additionally obeys target/local AccessCore and remote-path policy.",
+    "binary_rule": "Binary/file payload output remains governed as an explicit payload type.",
+    "failure_rule": "Unknown/unclassified output fields do not silently escape governed boundaries.",
+    "trace_rule": "Emitted output retains source schema and applied output-policy refs."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_ORIGIN_TARGET_GOVERNANCE",
+        "rule": "DWH applies data-boundary policy at the origin and target independently; remote addressing, transport reachability and external registration never substitute for AccessCore authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "input permission emits all fields",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "unknown field exported silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "schema classification bypassed for remote output",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "binary payload treated as ungoverned",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "output loses schema provenance",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_DWH_MASTER_SCHEMA_ROOT_CONTRACT",
+      "purpose": "Output governance consumes resolved canonical schema."
+    }
+  ],
+  "prose": {
+    "summary": "Define DWH output governance from the resolved output schema/field boundary, independently from how the input was obtained.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH, EXT, AccessCore and transport contracts."
+    ]
+  }
+}

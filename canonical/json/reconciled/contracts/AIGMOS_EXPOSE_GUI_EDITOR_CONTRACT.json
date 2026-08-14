@@ -1,0 +1,236 @@
+{
+  "behavior": {
+    "events": [],
+    "flows": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "errors": [
+          "source unresolved"
+        ],
+        "id": "OP_GUI_DEFINE_CONTROL",
+        "inputs": [
+          "canonical operation/data ref",
+          "control semantics"
+        ],
+        "name": "Define operational control",
+        "outputs": [
+          "GUI control definition"
+        ],
+        "side_effects": [
+          "GUI definition updated"
+        ]
+      },
+      {
+        "errors": [
+          "authority denied",
+          "operation failure"
+        ],
+        "id": "OP_GUI_INVOKE",
+        "inputs": [
+          "control",
+          "validated user input"
+        ],
+        "name": "Invoke control operation",
+        "outputs": [
+          "canonical operation result"
+        ],
+        "side_effects": [
+          "only invoked canonical operation effects"
+        ]
+      }
+    ],
+    "states": []
+  },
+  "constraints": {
+    "hard_gates": [
+      {
+        "id": "GATE_3E98E00A0C",
+        "condition": "GUI control invokes target by display label only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_9EABEA7A36",
+        "condition": "GUI Editor becomes owner of runtime semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_1508260198",
+        "condition": "control visibility used as sole authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_7B0FA47E8B",
+        "condition": "data-entry schema duplicated instead of Form reuse",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_C05F4F6ED4",
+        "condition": "widget order becomes execution order",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_B4DB2168A5",
+        "condition": "GUI control implements private backend mutation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_DB4C9D58A4",
+        "condition": "visible control grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_BB5F51D6F6",
+        "condition": "GUI transport binding treated as semantic operation identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_AD863E23B7",
+        "condition": "GUI Editor duplicates Form Editor schema-entry semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_909C84A4BE",
+        "condition": "transient widget state silently becomes canonical state",
+        "result": "hard_fail"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "EDITOR_NONAUTHORITY",
+        "rule": "Editor surfaces project and mutate canonical semantics only through explicit validated operations; editor layout or widget state never becomes semantic or runtime authority."
+      },
+      {
+        "id": "EDITOR_TOOL_BOUNDARY_EXPLICIT",
+        "rule": "Editor subtools are projections/operation surfaces over canonical semantics and do not become independent authorities."
+      }
+    ]
+  },
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_GUI_EDITOR_CONTRACT",
+    "name": "GUI Editor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "members": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending reconciliation against existing Expose/editor contracts and whole-tree Contract Format 1.4 validation.",
+      "Unlocked until reconciled against existing Expose Editor contracts and repository-wide Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: expose/editor/01_GUI_Editor.json, expose/editor/03_GUI_Editor.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define GUI Editor for operational/control surfaces bound to canonical operations, REST/OSC/protocol controls and runtime-state views, distinct from structured data-entry Form semantics. [2] Define GUI Editor for operational controls and live control surfaces over canonical operations such as REST/OSC-driven controls, separate from structured data-entry forms."
+  },
+  "purpose": "Reconciled source purposes: [1] Define GUI Editor for operational/control surfaces bound to canonical operations, REST/OSC/protocol controls and runtime-state views, distinct from structured data-entry Form semantics. [2] Define GUI Editor for operational controls and live control surfaces over canonical operations such as REST/OSC-driven controls, separate from structured data-entry forms.",
+  "references": [
+    {
+      "id": "REF_FOUND",
+      "target_ref": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT",
+      "purpose": "GUI Editor reuses shared editor foundation."
+    },
+    {
+      "id": "REF_PROTO",
+      "target_ref": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
+      "purpose": "Operational protocol controls bind canonically."
+    },
+    {
+      "id": "REF_EDITOR",
+      "target_ref": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT",
+      "purpose": "GUI Editor is an ordinary Editor MetaModule surface."
+    },
+    {
+      "id": "REF_OPERATION",
+      "target_ref": "AIGMOS_CORE_CANONICAL_OPERATION_CONTRACT",
+      "purpose": "Controls invoke canonical operations."
+    }
+  ],
+  "scope": {
+    "does_not_own": [
+      "domain semantics",
+      "runtime authority",
+      "unrelated persistence semantics",
+      "runtime execution authority",
+      "unrelated domain semantics"
+    ],
+    "owns": [
+      "GUI Editor semantics",
+      "Expose GUI Editor semantics"
+    ]
+  },
+  "semantics": {
+    "authority_rule": "Reconciled source clauses: [1] Control visibility/enabled state is projection only; actual enforcement remains canonical. [2] Visible/enabled control does not bypass AccessCore.",
+    "binding_rule": "Control target, direction and schema are explicit.",
+    "control_rule": "Each UI control binds to an explicit canonical operation/state source.",
+    "form_boundary": "GUI Editor is not the primary data-entry schema/form editor.",
+    "form_rule": "Structured record/data entry belongs to Form Editor unless a control explicitly owns simple scalar input.",
+    "layout_rule": "Widget position/order is presentation only.",
+    "protocol_rule": "REST/OSC bindings are transport surfaces; GUI semantics reference operations rather than transport implementation details.",
+    "role": "Reconciled source clauses: [1] operational/control editor [2] operational controls / live interaction",
+    "runtime_rule": "GUI Editor may expose runtime state and controls but does not own their semantics.",
+    "source_rule": "Controls bind to explicit canonical operations, states or protocol-exposed surfaces.",
+    "state_rule": "Transient widget state is presentation state unless explicitly bound to canonical/runtime state.",
+    "targets": [
+      "canonical operations",
+      "runtime controls",
+      "REST/OSC/WebSocket bindings",
+      "operational status/control surfaces"
+    ],
+    "write_rule": "Control actions invoke canonical operations; no private backend mutation."
+  },
+  "source_role": "definition",
+  "status": "locked",
+  "structure": {
+    "authority": [],
+    "containment": [],
+    "dependencies": [],
+    "ownership": [],
+    "relations": []
+  },
+  "topics": [
+    {
+      "child_topics": [],
+      "composed_topic_refs": [
+        "TOPIC_EXPOSE_EDITOR",
+        "TOPIC_CORE_OPERATIONS",
+        "TOPIC_RUNTIME_PROTOCOL_BINDINGS"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_EXPOSE_GUI_EDITOR",
+      "member_refs": [
+        "AIGMOS_EXPOSE_GUI_EDITOR_CONTRACT",
+        "EDITOR_NONAUTHORITY",
+        "EDITOR_TOOL_BOUNDARY_EXPLICIT",
+        "GATE_3E98E00A0C",
+        "GATE_9EABEA7A36",
+        "GATE_1508260198",
+        "GATE_7B0FA47E8B",
+        "GATE_C05F4F6ED4",
+        "GATE_B4DB2168A5",
+        "GATE_DB4C9D58A4",
+        "GATE_BB5F51D6F6",
+        "GATE_AD863E23B7",
+        "GATE_909C84A4BE"
+      ],
+      "metadata": {},
+      "name": "GUI Editor",
+      "operation_refs": [
+        "OP_GUI_DEFINE_CONTROL",
+        "OP_GUI_INVOKE"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE_EDITOR",
+        "TOPIC_EXPOSE"
+      ],
+      "purpose": "Reconciled source clauses: [1] Define GUI Editor for operational/control surfaces bound to canonical operations, REST/OSC/protocol controls and runtime-state views, distinct from structured data-entry Form semantics. [2] Define GUI Editor for operational controls and live control surfaces over canonical operations such as REST/OSC-driven controls, separate from structured data-entry forms.",
+      "relation_refs": []
+    }
+  ]
+}

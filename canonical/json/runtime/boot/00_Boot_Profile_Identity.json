@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_BOOT_PROFILE_IDENTITY_CONTRACT",
+    "name": "Boot Profile Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a boot profile as an explicit stable configuration identity that selects the runtime component set for an instance without changing the identities of selected components.",
+  "scope": {
+    "owns": [
+      "Boot Profile Identity semantics"
+    ],
+    "does_not_own": [
+      "component semantic identity",
+      "AccessCore policy ownership",
+      "component runtime implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_BOOT_PROFILE_IDENTITY",
+      "name": "Boot Profile Identity",
+      "purpose": "Define a boot profile as an explicit stable configuration identity that selects the runtime component set for an instance without changing the identities of selected components.",
+      "parent_topic_refs": [
+        "TOPIC_BOOT_PROFILE",
+        "TOPIC_RUNTIME_ACTIVATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_BOOT_PROFILE_IDENTITY_CONTRACT",
+        "BOOT_PROFILE_EXPLICIT_SELECTION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Every named boot profile has an explicit stable identity.",
+    "instance_rule": "An instance references an exact boot profile/profile version or inline exact profile definition according to configuration contract.",
+    "selection_rule": "Profile selects component identities/capability groups explicitly.",
+    "component_rule": "Selected component identities remain independent from profile identity.",
+    "state_rule": "Profile definition, resolved closure and active runtime state are separate.",
+    "path_rule": "Profile filename/path is not semantic identity.",
+    "authority_rule": "Selecting a component does not grant callers use/access authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOT_PROFILE_EXPLICIT_SELECTION",
+        "rule": "Boot/runtime availability is derived only from explicit profile selection plus validated dependency closure; discovery, installation, dependency presence or historical activation never silently enables a component."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "profile path used as semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "profile identity replaces component identities",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "selected means authorized",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "resolved runtime state written back as canonical profile definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "profile silently inherited from previous boot",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ACT",
+      "target_ref": "AIGMOS_BOOT_PROFILE_ACTIVATION_CONTRACT",
+      "purpose": "Runtime activation consumes an exact boot profile."
+    }
+  ],
+  "prose": {
+    "summary": "Define a boot profile as an explicit stable configuration identity that selects the runtime component set for an instance without changing the identities of selected components.",
+    "notes": [
+      "Unlocked pending reconciliation against runtime activation, install dependency and instance configuration contracts."
+    ]
+  }
+}

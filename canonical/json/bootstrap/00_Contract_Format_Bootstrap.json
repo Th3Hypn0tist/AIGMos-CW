@@ -1,0 +1,111 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CONTRACT_FORMAT_BOOTSTRAP_CONTRACT",
+    "name": "Contract Format Bootstrap",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the bootstrap relationship to the root-level `AIGMos_Canonical_Contract_Format_v1.4.0.json` that must be loaded before reading ordinary canonical contracts.",
+  "scope": {
+    "owns": [
+      "Contract Format Bootstrap semantics"
+    ],
+    "does_not_own": [
+      "canonical contract domain semantics",
+      "filesystem semantics beyond declared bootstrap bindings",
+      "runtime business authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CONTRACT_FORMAT_BOOTSTRAP",
+      "name": "Contract Format Bootstrap",
+      "purpose": "Define the bootstrap relationship to the root-level `AIGMos_Canonical_Contract_Format_v1.4.0.json` that must be loaded before reading ordinary canonical contracts.",
+      "parent_topic_refs": [
+        "TOPIC_CONTRACT_FORMAT",
+        "TOPIC_CANONICAL_SOURCE_RESOLUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CONTRACT_FORMAT_BOOTSTRAP_CONTRACT",
+        "BOOTSTRAP_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "bootstrap_filename": "AIGMos_Canonical_Contract_Format_v1.4.0.json",
+    "location_rule": "The active Contract Format bootstrap artifact is located at the project/package root.",
+    "ordering_rule": "Bootstrap Contract Format first; only then parse/validate canonical/json/**.",
+    "type_rule": "The bootstrap artifact defines the contract format and is not an ordinary canonical contract contained by the tree it defines.",
+    "authority_rule": "The bootstrapped Contract Format is authoritative for structural interpretation of Contract Format 1.4 artifacts.",
+    "path_rule": "`canonical/json/00_Contract_Format.json` is not an active 1.4 bootstrap path."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOTSTRAP_SEPARATION",
+        "rule": "Contract Format bootstrap authority is resolved before the canonical contract tree and is never treated as an ordinary canonical contract inside canonical/json/**."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "bootstrap resolver starts from canonical/json/00_Contract_Format.json",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "canonical contracts parsed authoritatively before Contract Format bootstrap",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "root Contract Format treated as ordinary contained canonical contract",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "bootstrap authority ambiguous",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define the bootstrap relationship to the root-level `AIGMos_Canonical_Contract_Format_v1.4.0.json` that must be loaded before reading ordinary canonical contracts.",
+    "notes": [
+      "Bootstrap correction: project-root Contract Format authority is intentionally outside canonical/json/**."
+    ]
+  }
+}

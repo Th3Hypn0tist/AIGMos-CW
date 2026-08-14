@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT",
+    "name": "UserModule Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for UserModule registry, type, schema/domain bindings, dependencies, instances and lifecycle/reload state.",
+  "scope": {
+    "owns": [
+      "UserModule Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantics not declared by the module",
+      "AccessCore policy",
+      "presentation-only placement"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_USERMODULE_MONITOR",
+      "name": "UserModule Monitor",
+      "purpose": "Define a read-only Expose monitor for UserModule registry, type, schema/domain bindings, dependencies, instances and lifecycle/reload state.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+        "TOPIC_NAMESPACE_UM"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT",
+        "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "module registry",
+      "module type",
+      "definition/version",
+      "schema/domain refs",
+      "dependencies",
+      "instances",
+      "lifecycle state",
+      "load/reload errors"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Definition and runtime instance identities are shown separately.",
+    "state_rule": "Installed/registered/enabled/running states remain separately visible.",
+    "action_rule": "Enable/disable/start/stop/reload/edit controls invoke separate explicit canonical operations.",
+    "authority_rule": "Viewing a module does not grant lifecycle/edit authority.",
+    "redaction_rule": "Restricted config/secret values are redacted according to policy.",
+    "trace_rule": "Load/reload failures link exact module, dependency and validation refs."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
+        "rule": "UserModule identity, primary type, schema, instance identity and lifecycle state are explicit and never inferred from filesystem location or implementation behavior."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor conflates definition and instance identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "installed shown as running",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "monitor directly mutates lifecycle",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "viewing grants reload/start authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "error loses exact dependency/module refs",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LIFE",
+      "target_ref": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT",
+      "purpose": "Monitor projects explicit lifecycle."
+    },
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_USERMODULE_SCHEMA_BINDING_CONTRACT",
+      "purpose": "Monitor exposes schema/domain bindings."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for UserModule registry, type, schema/domain bindings, dependencies, instances and lifecycle/reload state.",
+    "notes": [
+      "Unlocked pending reconciliation against existing UserModule runtime contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

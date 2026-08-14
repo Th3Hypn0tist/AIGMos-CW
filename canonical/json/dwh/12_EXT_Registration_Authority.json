@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXT_REGISTRATION_AUTHORITY_CONTRACT",
+    "name": "EXT Registration Authority",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define `$EXT` as explicit registration/addressing metadata for external peers/resources, read-only by default and never itself an authorization grant.",
+  "scope": {
+    "owns": [
+      "EXT Registration Authority semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "IAM identity semantics",
+      "transport cryptography semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXT_REGISTRATION_AUTHORITY",
+      "name": "EXT Registration Authority",
+      "purpose": "Define `$EXT` as explicit registration/addressing metadata for external peers/resources, read-only by default and never itself an authorization grant.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_ACCESSCORE_AUTHORIZATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXT_REGISTRATION_AUTHORITY_CONTRACT",
+        "DWH_ORIGIN_TARGET_GOVERNANCE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "operations": [
+      "add",
+      "edit",
+      "remove",
+      "ping"
+    ],
+    "uniqueness_rule": "External identity/address registration is unique according to declared EXT identity constraints.",
+    "readonly_rule": "Registered external resources are read-only by default unless explicit governed mutation semantics exist.",
+    "address_rule": "EXT registration supplies external addressing/discovery metadata.",
+    "authority_rule": "Registration or successful ping does not grant DWH or AccessCore rights.",
+    "ac_rule": "When AccessCore is active, direct `$EXT` dereference cannot bypass the governed DWH remote path.",
+    "mutation_rule": "EXT registry mutations are explicit governed operations.",
+    "trace_rule": "Registration changes retain actor, old/new binding and result."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_ORIGIN_TARGET_GOVERNANCE",
+        "rule": "DWH applies data-boundary policy at the origin and target independently; remote addressing, transport reachability and external registration never substitute for AccessCore authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "EXT registration grants remote rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "successful ping grants authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "AC-active direct EXT dereference bypasses DWH",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "external mutators enabled by default",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "duplicate external identity accepted ambiguously",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REMOTE",
+      "target_ref": "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT",
+      "purpose": "Remote authority is evaluated separately."
+    }
+  ],
+  "prose": {
+    "summary": "Define `$EXT` as explicit registration/addressing metadata for external peers/resources, read-only by default and never itself an authorization grant.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH, EXT, AccessCore and transport contracts."
+    ]
+  }
+}

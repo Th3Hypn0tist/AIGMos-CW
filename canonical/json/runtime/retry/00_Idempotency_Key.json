@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_IDEMPOTENCY_KEY_CONTRACT",
+    "name": "Idempotency Key",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit idempotency keys scoped to exact operation/target/requester contexts so retries can identify equivalent effect requests without merging unrelated executions.",
+  "scope": {
+    "owns": [
+      "Idempotency Key semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_IDEMPOTENCY_KEY",
+      "name": "Idempotency Key",
+      "purpose": "Define explicit idempotency keys scoped to exact operation/target/requester contexts so retries can identify equivalent effect requests without merging unrelated executions.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME",
+        "TOPIC_RETRY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_IDEMPOTENCY_KEY_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "key_rule": "Idempotency key is explicit request metadata.",
+    "scope_rule": "Key scope includes exact operation and target plus declared requester/domain scope.",
+    "equivalence_rule": "Same key is equivalent only under the exact declared scope/profile.",
+    "execution_rule": "Idempotency key does not replace request/execution identities.",
+    "result_rule": "Previously accepted result/effect may be returned/referenced according to operation profile.",
+    "expiry_rule": "Key retention/expiry is explicit.",
+    "collision_rule": "Same key with non-equivalent payload is conflict/hard-fail."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "same key merges different targets",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "idempotency key reused as execution identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "payload mismatch accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "key scope omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "expired key silently treated permanently valid",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REQ",
+      "target_ref": "AIGMOS_OPERATION_REQUEST_CONTRACT",
+      "purpose": "Requests may carry exact idempotency keys."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit idempotency keys scoped to exact operation/target/requester contexts so retries can identify equivalent effect requests without merging unrelated executions.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_SCHEMA_COMPATIBILITY_PROFILE_CONTRACT",
+    "name": "DWH Schema Compatibility Profile",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define machine-readable compatibility classes and checks between schema versions so additive, restrictive and breaking changes are distinguished explicitly.",
+  "scope": {
+    "owns": [
+      "DWH Schema Compatibility Profile semantics"
+    ],
+    "does_not_own": [
+      "domain ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation details"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_SCHEMA_COMPATIBILITY_PROFILE",
+      "name": "DWH Schema Compatibility Profile",
+      "purpose": "Define machine-readable compatibility classes and checks between schema versions so additive, restrictive and breaking changes are distinguished explicitly.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_SCHEMA_EVOLUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_SCHEMA_COMPATIBILITY_PROFILE_CONTRACT",
+        "SCHEMA_EVOLUTION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "classes": [
+      "backward_compatible",
+      "forward_compatible",
+      "bidirectionally_compatible",
+      "migration_required",
+      "breaking_new_identity"
+    ],
+    "field_rule": "Add/remove/rename/type/cardinality/default/nullability changes are classified explicitly.",
+    "relation_rule": "Relation/FK/cardinality changes participate in compatibility analysis.",
+    "identity_rule": "Breaking semantic identity change requires a new identity when additive evolution cannot preserve meaning.",
+    "default_rule": "Missing compatibility metadata never defaults to compatible.",
+    "consumer_rule": "Compatibility is evaluated against exact consumer/profile requirements.",
+    "order_rule": "Version string ordering alone does not prove compatibility.",
+    "validation_rule": "Compatibility result is derived evidence tied to exact source/target schema versions."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SCHEMA_EVOLUTION_EXPLICIT",
+        "rule": "Schema evolution is an explicit versioned migration between exact schema identities/versions with validated compatibility and data transformation provenance; runtime/file order never silently changes active data meaning."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "version number increase assumed compatible",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "breaking semantic change kept under same identity without explicit policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "missing metadata treated compatible",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "relation change ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "compatibility decided by file order",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MIG",
+      "target_ref": "AIGMOS_DWH_SCHEMA_MIGRATION_IDENTITY_CONTRACT",
+      "purpose": "Migration planning uses explicit compatibility evidence."
+    },
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_SCHEMA_IDENTITY_CONTRACT",
+      "purpose": "Compatibility compares exact schema identities/versions."
+    }
+  ],
+  "prose": {
+    "summary": "Define machine-readable compatibility classes and checks between schema versions so additive, restrictive and breaking changes are distinguished explicitly.",
+    "notes": [
+      "Unlocked pending reconciliation against Schema Evolution, DWH mutation, persistence and runtime activation contracts."
+    ]
+  }
+}

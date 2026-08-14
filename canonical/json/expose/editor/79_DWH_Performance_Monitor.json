@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_DWH_PERFORMANCE_MONITOR_CONTRACT",
+    "name": "DWH Query Performance Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for indexes, statistics freshness, optimizer plans, cache use, invalidation/rebuild state and execution performance evidence.",
+  "scope": {
+    "owns": [
+      "DWH Query Performance Monitor semantics"
+    ],
+    "does_not_own": [
+      "source schema ownership",
+      "AccessCore policy ownership",
+      "query semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_DWH_PERFORMANCE_MONITOR",
+      "name": "DWH Query Performance Monitor",
+      "purpose": "Define a read-only Expose monitor for indexes, statistics freshness, optimizer plans, cache use, invalidation/rebuild state and execution performance evidence.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_QUERY_OPTIMIZATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_DWH_PERFORMANCE_MONITOR_CONTRACT",
+        "OPTIMIZATION_NONSEMANTIC",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "index registry/targets/state",
+      "statistics source revision/freshness",
+      "query plan",
+      "index/scan/join strategy",
+      "pushdown decisions",
+      "cache hit/miss/freshness",
+      "rebuild/invalidation state",
+      "query duration/resource evidence"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Query, plan, index, statistics set, cache entry, execution and source identities remain distinct.",
+    "semantic_rule": "UI clearly distinguishes optimization strategy from canonical query meaning.",
+    "action_rule": "collect-stats/rebuild-index/invalidate-cache/replan operations invoke separate authorized maintenance workflows.",
+    "authority_rule": "Viewing/optimizing grants no data access or mutation authority.",
+    "graph_rule": "Plan/index/cache dependency edges correspond only to explicit refs/evidence.",
+    "failure_rule": "Stale stats, invalid indexes, stale caches and fallback plans are surfaced explicitly."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "OPTIMIZATION_NONSEMANTIC",
+        "rule": "Indexes, statistics, caches and optimizer plans may change execution strategy only; they never change canonical query semantics, data identity, ownership, classification or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor shows plan as canonical query definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "monitor rebuilds by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "index/cache identities conflated with source data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "stale optimization state hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "viewing grants data authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PLAN",
+      "target_ref": "AIGMOS_DWH_QUERY_OPTIMIZER_PLAN_BOUNDARY_CONTRACT",
+      "purpose": "Monitor projects derived execution plans."
+    },
+    {
+      "id": "REF_INV",
+      "target_ref": "AIGMOS_DWH_INDEX_CACHE_INVALIDATION_CONTRACT",
+      "purpose": "Monitor exposes maintenance state."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for indexes, statistics freshness, optimizer plans, cache use, invalidation/rebuild state and execution performance evidence.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH query, persistence, changefeed and schema-migration contracts."
+    ]
+  }
+}

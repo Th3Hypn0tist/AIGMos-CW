@@ -1,0 +1,134 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EVENT_TRIGGER_RUNNER_FLOW_CONTRACT",
+    "name": "Event-Trigger-Runner Flow",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the canonical automation causality chain from Event occurrence through Trigger evaluation to Runner/Routine dispatch, including explicit provenance and no-reentry boundaries.",
+  "scope": {
+    "owns": [
+      "Event-Trigger-Runner Flow semantics"
+    ],
+    "does_not_own": [
+      "domain payload semantics",
+      "transport implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_AUTOMATION_CAUSALITY",
+      "name": "Event-Trigger-Runner Flow",
+      "purpose": "Define the canonical automation causality chain from Event occurrence through Trigger evaluation to Runner/Routine dispatch, including explicit provenance and no-reentry boundaries.",
+      "parent_topic_refs": [
+        "TOPIC_AUTOMATION_EVENTS",
+        "TOPIC_AUTOMATION_TRIGGERS",
+        "TOPIC_AUTOMATION_RUNNERS",
+        "TOPIC_RUNTIME_INFLIGHT"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EVENT_TRIGGER_RUNNER_FLOW_CONTRACT",
+        "AUTOMATION_CAUSALITY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "flow": [
+      "Event occurrence",
+      "Trigger source match",
+      "predicate evaluation",
+      "authorization/target validation",
+      "Runner/Routine dispatch",
+      "tracked execution",
+      "terminal outcome/cleanup"
+    ],
+    "causality_rule": "Every edge in the automation chain is explicit and traceable.",
+    "ordering_rule": "Execution order comes from flow/target semantics, not Topic/containment/file ordering.",
+    "payload_rule": "Event/Trigger context remains inert until consumed by the explicit target operation.",
+    "reentry_rule": "Recursive automation paths use explicit inflight/no-reentry gates where applicable.",
+    "provenance_rule": "Execution trace retains Event occurrence, Trigger, target and Runner/Routine refs.",
+    "failure_rule": "Failure at any pre-dispatch step produces no hidden partial target execution."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "AUTOMATION_CAUSALITY_EXPLICIT",
+        "rule": "Automation semantics remain explicit across Event, Trigger, Runner and Routine identities, and execution order never derives from incidental structure or serialization order."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "automation execution inferred from structural adjacency",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "payload dynamically selects arbitrary target",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "recursive path lacks required inflight gate",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "trace loses event/trigger/runner provenance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "failed validation still partially dispatches target",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_INFLIGHT",
+      "target_ref": "AIGMOS_RUNTIME_INFLIGHT_GATE_CONTRACT",
+      "purpose": "Recursive automation uses explicit no-reentry gates."
+    }
+  ],
+  "prose": {
+    "summary": "Define the canonical automation causality chain from Event occurrence through Trigger evaluation to Runner/Routine dispatch, including explicit provenance and no-reentry boundaries.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Trigger/Event/Runner/Routine contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

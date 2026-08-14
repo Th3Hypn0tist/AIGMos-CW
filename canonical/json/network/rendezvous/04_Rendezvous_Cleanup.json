@@ -1,0 +1,128 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RENDEZVOUS_CLEANUP_CONTRACT",
+    "name": "Rendezvous Bootstrap Cleanup",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define cleanup of rendezvous/signaling state after peer connection establishment, expiry or failure so bootstrap metadata does not become persistent application state.",
+  "scope": {
+    "owns": [
+      "Rendezvous Bootstrap Cleanup semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "application operation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RENDEZVOUS_CLEANUP",
+      "name": "Rendezvous Bootstrap Cleanup",
+      "purpose": "Define cleanup of rendezvous/signaling state after peer connection establishment, expiry or failure so bootstrap metadata does not become persistent application state.",
+      "parent_topic_refs": [
+        "TOPIC_NETWORK",
+        "TOPIC_RENDEZVOUS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RENDEZVOUS_CLEANUP_CONTRACT",
+        "TRANSPORT_NONAUTHORITY",
+        "INGRESS_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "cleanup_rule": "Signaling transaction and transient candidate state expire explicitly.",
+    "connected_rule": "After P2P connection establishment, obsolete rendezvous state may be removed according to profile.",
+    "history_rule": "Minimal audit/provenance evidence may remain without preserving unnecessary transient payload.",
+    "application_rule": "Cleanup never deletes peer identity, IAM identity or application messages.",
+    "failure_rule": "Failed connection cleanup is explicit.",
+    "privacy_rule": "Transient address metadata retention is bounded."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TRANSPORT_NONAUTHORITY",
+        "rule": "Listener, route, endpoint, connection, channel, peer reachability and cryptographic transport evidence never by themselves grant application, data or operation authority."
+      },
+      {
+        "id": "INGRESS_EFFECT_BOUNDARY",
+        "rule": "Inbound network data remains inert until explicit protocol parsing, validation, identity/context resolution, authorization and dispatcher routing succeed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "rendezvous cleanup deletes peer identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "signaling metadata retained forever",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "cleanup deletes P2P messages",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "connection success leaves stale offers active indefinitely",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "cleanup inferred from file age only",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SIG",
+      "target_ref": "AIGMOS_SIGNALING_EXCHANGE_CONTRACT",
+      "purpose": "Cleanup removes bounded signaling transaction state."
+    }
+  ],
+  "prose": {
+    "summary": "Define cleanup of rendezvous/signaling state after peer connection establishment, expiry or failure so bootstrap metadata does not become persistent application state.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

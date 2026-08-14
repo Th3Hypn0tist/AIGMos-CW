@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_AUTHORIZATION_NEGATIVE_TEST_CONTRACT",
+    "name": "Authorization Negative Verification",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit tests proving protected operations fail closed for missing, insufficient, expired, revoked, wrong-scope and remote-expanded authority.",
+  "scope": {
+    "owns": [
+      "Authorization Negative Verification semantics"
+    ],
+    "does_not_own": [
+      "production runtime authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_AUTHORIZATION_NEGATIVE_TEST",
+      "name": "Authorization Negative Verification",
+      "purpose": "Define explicit tests proving protected operations fail closed for missing, insufficient, expired, revoked, wrong-scope and remote-expanded authority.",
+      "parent_topic_refs": [
+        "TOPIC_VERIFICATION",
+        "TOPIC_SECURITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_AUTHORIZATION_NEGATIVE_TEST_CONTRACT",
+        "TEST_NONAUTHORITY",
+        "EVIDENCE_REPRODUCIBILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "test_cases": [
+      "unauthenticated",
+      "insufficient_right",
+      "wrong_resource",
+      "wrong_operation",
+      "expired_session",
+      "revoked_delegation",
+      "insufficient_assurance",
+      "remote_nonexpansion",
+      "other declared negative case"
+    ],
+    "target_rule": "Protected operation/resource is exact.",
+    "expected_rule": "Expected result is deny/challenge according to exact policy.",
+    "side_effect_rule": "Denied request must produce no protected effect.",
+    "audit_rule": "Expected denial/audit evidence may be verified.",
+    "cache_rule": "Stale authorization cache scenarios are explicitly testable.",
+    "authority_rule": "Negative-test harness does not receive hidden bypass rights."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TEST_NONAUTHORITY",
+        "rule": "Test definitions, fixtures, results, coverage, simulations and release evidence never become production semantic authority or grant production execution rights merely by existing or passing."
+      },
+      {
+        "id": "EVIDENCE_REPRODUCIBILITY",
+        "rule": "Verification evidence binds exact test/profile/source/runtime revisions and declared environment inputs so a pass/fail result cannot silently float across unrelated versions or targets."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "test harness bypasses AccessCore to test it",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "denied request changes state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "expired session accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "wrong-resource allow considered acceptable",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "audit denial leaks source data",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AUTH",
+      "target_ref": "AIGMOS_AUTHORIZATION_DECISION_CONTRACT",
+      "purpose": "Negative tests verify exact fail-closed authorization behavior."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit tests proving protected operations fail closed for missing, insufficient, expired, revoked, wrong-scope and remote-expanded authority.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

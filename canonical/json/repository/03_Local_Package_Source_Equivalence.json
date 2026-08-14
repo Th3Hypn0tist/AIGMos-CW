@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_LOCAL_PACKAGE_SOURCE_EQUIVALENCE_CONTRACT",
+    "name": "Local and Package Source Equivalence",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define semantic equivalence requirements so reading the same accepted snapshot from a local repository tree or distribution package yields the same normalized canonical graph.",
+  "scope": {
+    "owns": [
+      "Local and Package Source Equivalence semantics"
+    ],
+    "does_not_own": [
+      "Contract Format bootstrap semantics",
+      "canonical contract domain semantics",
+      "runtime business authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_LOCAL_PACKAGE_SOURCE_EQUIVALENCE",
+      "name": "Local and Package Source Equivalence",
+      "purpose": "Define semantic equivalence requirements so reading the same accepted snapshot from a local repository tree or distribution package yields the same normalized canonical graph.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_SOURCE_RESOLUTION",
+        "TOPIC_REPOSITORY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_LOCAL_PACKAGE_SOURCE_EQUIVALENCE_CONTRACT",
+        "SOURCE_RESOLUTION_DETERMINISTIC",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "local_sequence": [
+      "resolve root Contract Format bootstrap",
+      "read active canonical source tree",
+      "apply source-role/authority resolution",
+      "resolve references/Topics/compositions"
+    ],
+    "package_sequence": [
+      "resolve packaged root Contract Format bootstrap",
+      "read packaged canonical source manifest/tree",
+      "apply the same source-role/authority resolution",
+      "resolve references/Topics/compositions"
+    ],
+    "equivalence_rule": "Equivalent accepted snapshot yields semantically equivalent normalized graphs regardless of local/package carrier.",
+    "bootstrap_rule": "Both modes use the same Contract Format version/profile semantics.",
+    "identity_rule": "Physical carrier/path differences do not change canonical identity.",
+    "manifest_rule": "Package manifests preserve the source set and role information required to reproduce local semantics.",
+    "failure_rule": "Any local/package graph divergence for the same accepted snapshot is a conformance failure."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SOURCE_RESOLUTION_DETERMINISTIC",
+        "rule": "Canonical source resolution is deterministic, exact-identity based and provenance-preserving; filesystem location, transport or freshness never silently changes semantic authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "local and package readers use different bootstrap semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "package drops source-role metadata required by local reader",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "physical carrier changes canonical identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "same accepted snapshot normalizes to different semantic graphs",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "package reconstruction relies on archive order",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LOCAL",
+      "target_ref": "AIGMOS_LOCAL_SOURCE_BOOTSTRAP_PROFILE_CONTRACT",
+      "purpose": "Local source uses the corrected root bootstrap."
+    },
+    {
+      "id": "REF_NORM",
+      "target_ref": "AIGMOS_SEMANTIC_NORMALIZATION_CONTRACT",
+      "purpose": "Equivalence compares normalized semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define semantic equivalence requirements so reading the same accepted snapshot from a local repository tree or distribution package yields the same normalized canonical graph.",
+    "notes": [
+      "Unlocked pending reconciliation against BootstrapResolution, source-role and repository validation contracts."
+    ]
+  }
+}

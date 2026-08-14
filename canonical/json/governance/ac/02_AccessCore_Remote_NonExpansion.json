@@ -1,0 +1,172 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ACCESSCORE_REMOTE_NONEXPANSION_CONTRACT",
+    "name": "AccessCore Remote Non-Expansion",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define delegated remote authorization as non-expanding: local owner/admin rights may be broader locally, but delegated remote access cannot silently acquire broader rights than the explicit remote delegation.",
+  "scope": {
+    "owns": [
+      "AccessCore Remote Non-Expansion semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "transport implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ACCESSCORE_REMOTE_NONEXPANSION",
+      "name": "Remote Non-Expansion",
+      "purpose": "Define delegated remote authorization as non-expanding: local owner/admin rights may be broader locally, but delegated remote access cannot silently acquire broader rights than the explicit remote delegation.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE_AUTHORIZATION"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_DWH_GOVERNED_REMOTE",
+        "TOPIC_IAM_ASSURANCE"
+      ],
+      "member_refs": [
+        "AIGMOS_ACCESSCORE_REMOTE_NONEXPANSION_CONTRACT",
+        "GOVERNANCE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_REMOTE_DELEGATION_RESOLVE",
+        "OP_REMOTE_DELEGATION_VALIDATE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_REMOTE_DELEGATION_RESOLVE",
+        "name": "Resolve delegated remote rights",
+        "inputs": [
+          "origin identity",
+          "remote target",
+          "delegation policy"
+        ],
+        "outputs": [
+          "explicit delegated rights"
+        ],
+        "errors": [
+          "delegation unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_REMOTE_DELEGATION_VALIDATE",
+        "name": "Validate non-expansion",
+        "inputs": [
+          "delegated rights",
+          "requested remote operation"
+        ],
+        "outputs": [
+          "allow | deny"
+        ],
+        "errors": [
+          "requested right exceeds delegation"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "local_rule": "Local owner may grant broader local rights according to local policy.",
+    "remote_rule": "Delegated remote path is bounded by explicit remote delegation.",
+    "non_expansion_rule": "Remote delegated rights are never broadened by local ownership, local group membership, transport reachability or successful authentication alone.",
+    "identity_rule": "Origin identity remains explicit through the remote path.",
+    "write_rule": "Remote write requires explicit delegated write authority.",
+    "composition_rule": "Combining multiple remote paths does not union rights unless an explicit policy says so.",
+    "dwh_rule": "Governed DWH remote path enforces remote-side rights."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "GOVERNANCE_BOUNDARY_EXPLICIT",
+        "rule": "Identity assurance, authorization, remote delegation and activation state remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "local ownership broadens delegated remote rights automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "transport reachability broadens remote rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "successful authentication alone grants remote operation rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "remote write occurs without explicit delegated write authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "multiple delegated paths silently union rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "origin identity lost across remote hop",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DWH",
+      "target_ref": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT",
+      "purpose": "Governed remote path enforces remote target policy."
+    },
+    {
+      "id": "REF_IAM",
+      "target_ref": "AIGMOS_IAM_ASSURANCE_CONTRACT",
+      "purpose": "Authentication/assurance remains separate from delegated rights."
+    }
+  ],
+  "prose": {
+    "summary": "Define delegated remote authorization as non-expanding: local owner/admin rights may be broader locally, but delegated remote access cannot silently acquire broader rights than the explicit remote delegation.",
+    "notes": [
+      "Unlocked until reconciled against existing IAM/AC/DWH contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

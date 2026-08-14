@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_INGEST_SOURCE_PROFILE_CONTRACT",
+    "name": "DWH Ingest Source Profile Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each external/input data source profile as an explicit identity describing source format, schema/version, origin and transport/adapter binding without using transport or filename as semantic identity.",
+  "scope": {
+    "owns": [
+      "DWH Ingest Source Profile Identity semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "destination schema ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_INGEST_SOURCE_PROFILE",
+      "name": "DWH Ingest Source Profile Identity",
+      "purpose": "Define each external/input data source profile as an explicit identity describing source format, schema/version, origin and transport/adapter binding without using transport or filename as semantic identity.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_INGEST_MAPPING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_INGEST_SOURCE_PROFILE_CONTRACT",
+        "INGEST_MAPPING_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Every machine-significant ingest source profile has an explicit stable identity.",
+    "origin_rule": "Source origin/provider/device/system identity is explicit where known.",
+    "format_rule": "Source serialization/schema/profile/version is explicit.",
+    "binding_rule": "Transport, adapter, endpoint or file binding is separate from source-profile identity.",
+    "scope_rule": "Applicable input scope and destination mapping profile are explicit refs.",
+    "trust_rule": "Source data is untrusted/inert input until validation completes.",
+    "ownership_rule": "Source profile does not transfer source or destination semantic ownership.",
+    "authority_rule": "Source reachability does not grant destination write authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "INGEST_MAPPING_EXPLICIT",
+        "rule": "External/input data enters DWH only through explicit source profiles, exact field/schema mappings and validated transformations; mapping never transfers ownership, fabricates missing semantics or bypasses origin governance."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "filename used as source semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "transport endpoint replaces source profile identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "source reachability grants write authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "unknown format guessed silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "source data treated as trusted canonical data",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ORIGIN",
+      "target_ref": "AIGMOS_DWH_ORIGIN_INPUT_GOVERNANCE_CONTRACT",
+      "purpose": "Ingest source is governed at origin."
+    },
+    {
+      "id": "REF_ADAPTER",
+      "target_ref": "AIGMOS_ADAPTER_SYMBOL_MOUNT_CONTRACT",
+      "purpose": "Adapters may bind source transport without owning semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define each external/input data source profile as an explicit identity describing source format, schema/version, origin and transport/adapter binding without using transport or filename as semantic identity.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH origin governance, schema binding, transformation provenance and adapter contracts."
+    ]
+  }
+}

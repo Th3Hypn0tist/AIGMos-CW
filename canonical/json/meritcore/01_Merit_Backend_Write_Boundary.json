@@ -1,0 +1,128 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MERIT_BACKEND_WRITE_CONTRACT",
+    "name": "MeritCore Backend Write Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define authorized backend creation/update of merit evidence while keeping MeritCore point/Tier calculation separate from raw evidence writes.",
+  "scope": {
+    "owns": [
+      "MeritCore Backend Write Boundary semantics"
+    ],
+    "does_not_own": [
+      "IAM authentication/session semantics",
+      "AccessCore authorization policy",
+      "Project semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MERIT_BACKEND_WRITE",
+      "name": "MeritCore Backend Write Boundary",
+      "purpose": "Define authorized backend creation/update of merit evidence while keeping MeritCore point/Tier calculation separate from raw evidence writes.",
+      "parent_topic_refs": [
+        "TOPIC_MERITCORE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MERIT_BACKEND_WRITE_CONTRACT",
+        "EVIDENCE_NONFABRICATION",
+        "IDENTITY_ISOLATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "writer_rule": "Backend writer/source identity is explicit.",
+    "input_rule": "Writes target exact subject, Project, evidence type and time atom.",
+    "validation_rule": "Evidence validates against MeritCore schema/rules before acceptance.",
+    "authorization_rule": "Only authorized backend/workflow may write merit evidence.",
+    "calculation_rule": "Backend writes merit evidence; MeritCore computes points/Tier according to canonical rules.",
+    "model_rule": "AI/model output cannot directly persist merit.",
+    "history_rule": "Corrections/revocations preserve evidence history."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EVIDENCE_NONFABRICATION",
+        "rule": "Identity, portfolio, merit, recommendation, trust and competence states derive only from explicit provenance-bearing evidence; display text, self-authored claims, ranking position or AI inference never become verified evidence by themselves."
+      },
+      {
+        "id": "IDENTITY_ISOLATION",
+        "rule": "Distinct canonical identities maintain independent evidence histories; merit, Tier, trust and recommendation histories are not mergeable across identities unless a future explicit canonical identity-merger contract exists."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "model directly awards merit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "backend writes final Tier arbitrarily",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "evidence bypasses validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "writer identity omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "correction overwrites history",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EVID",
+      "target_ref": "AIGMOS_MERIT_EVIDENCE_IDENTITY_CONTRACT",
+      "purpose": "Backend writes exact merit evidence records."
+    }
+  ],
+  "prose": {
+    "summary": "Define authorized backend creation/update of merit evidence while keeping MeritCore point/Tier calculation separate from raw evidence writes.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

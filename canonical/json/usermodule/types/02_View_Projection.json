@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_USERMODULE_VIEW_PROJECTION_CONTRACT",
+    "name": "UserModule View Projection",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define View-type UserModule behavior as read/projection-only presentation over explicit canonical/runtime sources, with mutations routed through separate explicit commands/operations.",
+  "scope": {
+    "owns": [
+      "UserModule View Projection semantics"
+    ],
+    "does_not_own": [
+      "unrelated module types",
+      "AccessCore policy",
+      "presentation semantics outside declared view scope"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_USERMODULE_VIEW_PROJECTION",
+      "name": "UserModule View Projection",
+      "purpose": "Define View-type UserModule behavior as read/projection-only presentation over explicit canonical/runtime sources, with mutations routed through separate explicit commands/operations.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+        "TOPIC_USERMODULE_TYPES"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_USERMODULE_VIEW_PROJECTION_CONTRACT",
+        "TYPE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "type": "view",
+    "source_rule": "View reads explicit semantic/runtime source refs.",
+    "projection_rule": "View transforms source data into presentation state only.",
+    "write_rule": "View itself owns no backend mutation semantics.",
+    "action_rule": "Interactive actions may invoke separate explicit canonical commands/operations.",
+    "authority_rule": "Visibility/renderability does not grant read/write/invoke authority beyond evaluated policy.",
+    "state_rule": "UI-local state is separate from canonical source/runtime state.",
+    "identity_rule": "View identity is distinct from the source semantic identity it presents."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TYPE_BOUNDARY_EXPLICIT",
+        "rule": "UserModule type behavior is explicit and narrow: input acquires/writes inert data, adapter translates/mounts, view projects, and no type silently acquires another type's authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "view directly mutates backend outside explicit operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "render visibility grants write authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "UI-local state written as canonical source implicitly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "view identity conflated with presented source",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "view hides mutation behind presentation callback",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_FOUND",
+      "target_ref": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT",
+      "purpose": "Interactive view actions use normal operation boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define View-type UserModule behavior as read/projection-only presentation over explicit canonical/runtime sources, with mutations routed through separate explicit commands/operations.",
+    "notes": [
+      "Unlocked pending reconciliation against existing UserModule/Input/Adapter/View contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

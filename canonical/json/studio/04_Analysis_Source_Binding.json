@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_STUDIO_ANALYSIS_SOURCE_BINDING_CONTRACT",
+    "name": "Studio Analysis Source Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define exact source binding for Studio/Lens analysis, including local/external source choice and QC/other analysis backend selection without confusing analysis engine with semantic source ownership.",
+  "scope": {
+    "owns": [
+      "Studio Analysis Source Binding semantics"
+    ],
+    "does_not_own": [
+      "source domain semantics",
+      "runtime authorization",
+      "projection source ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_STUDIO_ANALYSIS_SOURCE_BINDING",
+      "name": "Studio Analysis Source Binding",
+      "purpose": "Define exact source binding for Studio/Lens analysis, including local/external source choice and QC/other analysis backend selection without confusing analysis engine with semantic source ownership.",
+      "parent_topic_refs": [
+        "TOPIC_STUDIO",
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_STUDIO_ANALYSIS_SOURCE_BINDING_CONTRACT",
+        "STUDIO_PROJECTION_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "source_kinds": [
+      "local canonical source",
+      "governed external source",
+      "DWH projection",
+      "Project/Portfolio/Merit source",
+      "other explicit canonical source"
+    ],
+    "source_rule": "Analysis source resolves by exact canonical or governed external identity.",
+    "backend_rule": "Analysis backend such as QC is explicitly selected/configured and remains separate from the source identity.",
+    "local_external_rule": "Local/external mode is explicit and governed by its owning boundary.",
+    "read_rule": "Analysis reads source data according to authorization and does not gain mutation authority.",
+    "result_rule": "Analysis output is derived projection/evidence unless an explicit accepted-write operation persists it.",
+    "provenance_rule": "Output retains source refs, Lens/preset refs and backend/rule provenance.",
+    "no_guess_rule": "Analysis never infers source from UI proximity, working directory or filename alone."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "STUDIO_PROJECTION_NONAUTHORITY",
+        "rule": "Studio and Lens compose and project existing canonical semantics; analysis, presets and visualizations never silently become source semantic authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "analysis engine becomes source owner",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "source inferred from UI/cwd only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "external reachability grants write authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "analysis output automatically mutates canonical source",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "output loses source/backend provenance",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_QC",
+      "target_ref": "AIGMOS_QC_TARGET_CONTRACT",
+      "purpose": "QC target is explicit."
+    },
+    {
+      "id": "REF_QCMODE",
+      "target_ref": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT",
+      "purpose": "QC locality is explicit."
+    }
+  ],
+  "prose": {
+    "summary": "Define exact source binding for Studio/Lens analysis, including local/external source choice and QC/other analysis backend selection without confusing analysis engine with semantic source ownership.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Studio/Strategy/Lens contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

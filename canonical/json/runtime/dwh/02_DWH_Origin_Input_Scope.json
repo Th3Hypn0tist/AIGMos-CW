@@ -1,0 +1,170 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_ORIGIN_INPUT_SCOPE_CONTRACT",
+    "name": "DWH Origin and Input Scope",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define DWH input authorization at the data origin and preserve explicit remote input scopes such as all, ext and id before data enters local semantic handling.",
+  "scope": {
+    "owns": [
+      "DWH Origin and Input Scope semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "transport implementation details",
+      "remote policy owned elsewhere"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_DWH_ORIGIN_INPUT_SCOPE",
+      "name": "DWH Origin Scope",
+      "purpose": "Define DWH input authorization at the data origin and preserve explicit remote input scopes such as all, ext and id before data enters local semantic handling.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_DWH_LOCAL_REMOTE",
+        "TOPIC_CORE_PROVENANCE",
+        "TOPIC_DWH_ORIGIN_SCOPE"
+      ],
+      "member_refs": [
+        "AIGMOS_DWH_ORIGIN_INPUT_SCOPE_CONTRACT",
+        "DWH_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_DWH_RESOLVE_ORIGIN",
+        "OP_DWH_APPLY_INPUT_SCOPE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_DWH_RESOLVE_ORIGIN",
+        "name": "Resolve DWH input origin",
+        "inputs": [
+          "incoming data",
+          "origin metadata"
+        ],
+        "outputs": [
+          "explicit origin identity"
+        ],
+        "errors": [
+          "origin unresolved",
+          "origin ambiguous"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_DWH_APPLY_INPUT_SCOPE",
+        "name": "Apply DWH input scope",
+        "inputs": [
+          "origin identity",
+          "configured remote input scope"
+        ],
+        "outputs": [
+          "accepted/rejected input fields"
+        ],
+        "errors": [
+          "scope violation"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "origin_rule": "Input policy is evaluated at the origin context before downstream composition.",
+    "remote_input_scopes": {
+      "all": "All explicitly allowed remote input surfaces.",
+      "ext": "Only explicitly externalized input surfaces.",
+      "id": "Only explicitly identity-scoped input surfaces."
+    },
+    "identity_rule": "Origin identity is explicit and cannot be reconstructed from payload claims alone.",
+    "payload_rule": "Payload cannot self-declare broader input scope.",
+    "trace_rule": "Accepted data retains origin identity and applied scope provenance.",
+    "separation_rule": "Input origin scope is separate from output authorization/schema resolution."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_BOUNDARY_EXPLICIT",
+        "rule": "DWH local/remote, origin, schema, external identity, access path and transport-security semantics remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "payload self-declares trusted origin",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "payload broadens input scope",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "origin scope evaluated only after data has already mutated local state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "input origin provenance lost",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "input scope conflated with output policy",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LOCAL_REMOTE",
+      "target_ref": "AIGMOS_DWH_LOCAL_REMOTE_SEPARATION_CONTRACT",
+      "purpose": "Origin scope applies across explicit local/remote boundary."
+    },
+    {
+      "id": "REF_PROVENANCE",
+      "target_ref": "AIGMOS_CORE_PROVENANCE_EVIDENCE_CONTRACT",
+      "purpose": "Origin and scope provenance are retained."
+    }
+  ],
+  "prose": {
+    "summary": "Define DWH input authorization at the data origin and preserve explicit remote input scopes such as all, ext and id before data enters local semantic handling.",
+    "notes": [
+      "Unlocked until reconciled against existing DWH/IAM/AC contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

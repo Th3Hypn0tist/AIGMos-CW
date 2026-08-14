@@ -1,0 +1,117 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_LEASE_IDENTITY_CONTRACT",
+    "name": "Lease Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define time-bounded coordination leases with explicit holder, resource, epoch/fencing token and expiry semantics.",
+  "scope": {
+    "owns": [
+      "Lease Identity semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_LEASE_IDENTITY",
+      "name": "Lease Identity",
+      "purpose": "Define time-bounded coordination leases with explicit holder, resource, epoch/fencing token and expiry semantics.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME",
+        "TOPIC_COORDINATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_LEASE_IDENTITY_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each lease instance has an explicit identity.",
+    "resource_rule": "Lease protects exact resource/scope.",
+    "holder_rule": "Holder identity is explicit.",
+    "expiry_rule": "Expiry instant/duration and clock profile are explicit.",
+    "epoch_rule": "Renewal/acquisition may advance explicit epoch/fencing token.",
+    "clock_rule": "Clock source/monotonicity assumptions are explicit.",
+    "authority_rule": "Lease possession is coordination evidence, not domain authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "lease expiry inferred from file mtime",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "lease holder grants authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "epoch omitted where stale-holder fencing required",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "clock source ambiguous",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "lease id reused as resource id",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define time-bounded coordination leases with explicit holder, resource, epoch/fencing token and expiry semantics.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

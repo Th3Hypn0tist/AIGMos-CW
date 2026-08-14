@@ -1,0 +1,135 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_FORM_CANDIDATE_BINDING_CONTRACT",
+    "name": "Expose Form Candidate Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define form editing as a candidate buffer over exact fields/resources with parsing, validation and semantic diff before any write.",
+  "scope": {
+    "owns": [
+      "Expose Form Candidate Binding semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_FORM_CANDIDATE_BINDING",
+      "name": "Expose Form Candidate Binding",
+      "purpose": "Define form editing as a candidate buffer over exact fields/resources with parsing, validation and semantic diff before any write.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_ELEMENTS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_FORM_CANDIDATE_BINDING_CONTRACT",
+        "UI_NONAUTHORITY",
+        "UI_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "target_rule": "Form fields bind exact destination resource/schema/field identities.",
+    "candidate_rule": "Typing/editing changes candidate state only.",
+    "parse_rule": "UI text/input parses into typed candidate values.",
+    "validation_rule": "Schema/form validation occurs before apply.",
+    "diff_rule": "Candidate semantic diff is explicit.",
+    "write_rule": "Apply creates exact Operation Request/DWH mutation through normal governance.",
+    "cancel_rule": "Cancel discards candidate without mutating source.",
+    "authority_rule": "Editing candidate grants no write authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "UI_NONAUTHORITY",
+        "rule": "UI visibility, navigation, placement, styling, selection, focus and visual adjacency never create semantic ownership, resource identity or execution authority."
+      },
+      {
+        "id": "UI_EFFECT_BOUNDARY",
+        "rule": "Effect-capable UI actions create explicit candidate/request data and must cross canonical validation, authorization and dispatcher boundaries before effects occur."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "typing writes live data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "label used as field identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "cancel leaves partial write",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "valid form auto-saves without explicit operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "candidate grants write rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_FORM",
+      "target_ref": "AIGMOS_EXPOSE_FORM_INPUT_ELEMENT_CONTRACT",
+      "purpose": "Form Elements edit candidate state only."
+    },
+    {
+      "id": "REF_REQ",
+      "target_ref": "AIGMOS_OPERATION_REQUEST_CONTRACT",
+      "purpose": "Apply creates explicit operation request."
+    }
+  ],
+  "prose": {
+    "summary": "Define form editing as a candidate buffer over exact fields/resources with parsing, validation and semantic diff before any write.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

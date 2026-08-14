@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EVENT_CAUSALITY_EDGE_CONTRACT",
+    "name": "Event Causality Edge",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit causality relations connecting source Event, Trigger match, Runner/operation execution and resulting Events so causal graphs are machine-readable rather than reconstructed heuristically.",
+  "scope": {
+    "owns": [
+      "Event Causality Edge semantics"
+    ],
+    "does_not_own": [
+      "runner implementation semantics",
+      "domain payload semantics",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EVENT_CAUSALITY_EDGE",
+      "name": "Event Causality Edge",
+      "purpose": "Define explicit causality relations connecting source Event, Trigger match, Runner/operation execution and resulting Events so causal graphs are machine-readable rather than reconstructed heuristically.",
+      "parent_topic_refs": [
+        "TOPIC_EVENTS",
+        "TOPIC_TRIGGERS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EVENT_CAUSALITY_EDGE_CONTRACT",
+        "CAUSALITY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "edge_kinds": [
+      "event_triggered",
+      "trigger_created_runner",
+      "runner_invoked_operation",
+      "operation_emitted_event",
+      "runner_emitted_event",
+      "event_correlated"
+    ],
+    "source_rule": "Each causality edge has exact source identity.",
+    "target_rule": "Each edge has exact target identity.",
+    "type_rule": "Causation and correlation are distinct edge semantics.",
+    "provenance_rule": "Edge records originating rule/Trigger/operation where applicable.",
+    "ordering_rule": "Timestamp/order alone never proves causality.",
+    "graph_rule": "Causal graph is built only from explicit edges.",
+    "ownership_rule": "Causality edge does not transfer semantic ownership between nodes."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "CAUSALITY_EXPLICIT",
+        "rule": "Event, Trigger, Runner and resulting Event are separate explicit identities connected only by declared causality edges; matching or adjacency never implies execution."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "causality inferred solely from timestamps",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "correlation treated as causation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "edge endpoints fuzzy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "visual adjacency creates causality",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "causal edge transfers ownership",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EVENT",
+      "target_ref": "AIGMOS_EVENT_IDENTITY_CONTRACT",
+      "purpose": "Events are causal graph nodes."
+    },
+    {
+      "id": "REF_TRIGGER",
+      "target_ref": "AIGMOS_TRIGGER_IDENTITY_CONTRACT",
+      "purpose": "Trigger matches are explicit causal nodes/edges."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit causality relations connecting source Event, Trigger match, Runner/operation execution and resulting Events so causal graphs are machine-readable rather than reconstructed heuristically.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Event/Trigger/Runner contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

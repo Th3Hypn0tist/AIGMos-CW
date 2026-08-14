@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_PGP_SESSION_PROTECTION_CONTRACT",
+    "name": "PGP Session Protection",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define PGP-based protection for session-key exchange or protected DWH/message payload envelopes while keeping cryptographic keys separate from identity, authority and domain semantics.",
+  "scope": {
+    "owns": [
+      "PGP Session Protection semantics"
+    ],
+    "does_not_own": [
+      "application payload semantics",
+      "IdentityCore identity ownership",
+      "AccessCore authorization policy"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_PGP_SESSION_PROTECTION",
+      "name": "PGP Session Protection",
+      "purpose": "Define PGP-based protection for session-key exchange or protected DWH/message payload envelopes while keeping cryptographic keys separate from identity, authority and domain semantics.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NETWORK",
+        "TOPIC_DWH_BOUNDARY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_PGP_SESSION_PROTECTION_CONTRACT",
+        "TRANSPORT_SECURITY_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "role": "cryptographic protection",
+    "session_key_rule": "Session keys are generated/negotiated per explicit transport/security lifecycle.",
+    "pgp_rule": "PGP protects the session key and/or payload envelope according to the owning transport profile.",
+    "identity_rule": "Cryptographic key identity/fingerprint may bind to an identity through explicit trust configuration but is not automatically the semantic identity itself.",
+    "rotation_rule": "Session keys are bounded and rotated/replaced according to explicit lifecycle policy.",
+    "secret_rule": "Private keys/session secrets are never emitted into ordinary canonical data, logs or projections.",
+    "failure_rule": "Failed verification/decryption prevents payload acceptance.",
+    "authority_rule": "Successful cryptographic verification proves the declared cryptographic property only; it does not grant application authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TRANSPORT_SECURITY_SEPARATION",
+        "rule": "Transport session, cryptographic material, signaling metadata and semantic identity remain separate; secure transport never implies application authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "private/session key exposed in ordinary logs",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "successful crypto verification grants application authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "key fingerprint used as semantic identity without explicit binding",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "failed verification still dispatches payload",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "session key lifetime unbounded without policy",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DWH",
+      "target_ref": "AIGMOS_DWH_TRANSPORT_ENVELOPE_CONTRACT",
+      "purpose": "DWH envelope may use PGP/session-key protection."
+    }
+  ],
+  "prose": {
+    "summary": "Define PGP-based protection for session-key exchange or protected DWH/message payload envelopes while keeping cryptographic keys separate from identity, authority and domain semantics.",
+    "notes": [
+      "Unlocked pending reconciliation against existing WebRTC/PGP/rendezvous contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CALENDAR_ROOT_CONTRACT",
+    "name": "#CAL Calendar Root",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define `#CAL` as the reserved root for canonical calendar/time-scheduling data and operations, without equating scheduled time with automatic execution authority.",
+  "scope": {
+    "owns": [
+      "#CAL Calendar Root semantics"
+    ],
+    "does_not_own": [
+      "unrelated domain semantics",
+      "presentation semantics",
+      "implicit runtime authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NAMESPACE_CAL",
+      "name": "#CAL Calendar Root",
+      "purpose": "Define `#CAL` as the reserved root for canonical calendar/time-scheduling data and operations, without equating scheduled time with automatic execution authority.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NAMESPACES",
+        "TOPIC_AUTOMATION_EVENTS",
+        "TOPIC_AUTOMATION_TRIGGERS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CALENDAR_ROOT_CONTRACT",
+        "RESERVED_ROOT_OWNER_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "root": "#CAL",
+    "role": "calendar/scheduling semantic family/root",
+    "owner_rule": "#CAL resolves to explicit calendar/scheduling identities and operations.",
+    "entry_rule": "Calendar entries/events have explicit identities, time semantics and owning source/context.",
+    "time_rule": "Date/time/timezone semantics are explicit where machine-significant.",
+    "trigger_rule": "A scheduled time may produce an Event/Trigger condition only through explicit automation binding.",
+    "execution_rule": "Calendar occurrence alone does not directly execute arbitrary operation.",
+    "projection_rule": "Agenda/day/week/month views are projections of calendar semantics.",
+    "authority_rule": "Calendar visibility or event ownership does not automatically grant target-operation authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RESERVED_ROOT_OWNER_EXPLICIT",
+        "rule": "Each reserved runtime root resolves to one explicit semantic owner/family; the root itself never creates semantic ownership or runtime authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "calendar time directly executes arbitrary operation without explicit Trigger/Runner binding",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "timezone omitted where required for deterministic machine scheduling",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "calendar UI ordering becomes execution order",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "calendar entry identity inferred solely from display text",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "#CAL visibility grants unrelated operation authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EVENT",
+      "target_ref": "AIGMOS_EVENT_REGISTRY_CONTRACT",
+      "purpose": "Scheduled occurrences may emit explicit Events."
+    },
+    {
+      "id": "REF_TRIGGER",
+      "target_ref": "AIGMOS_TRIGGER_BINDING_CONTRACT",
+      "purpose": "Time conditions trigger work only through explicit Trigger bindings."
+    }
+  ],
+  "prose": {
+    "summary": "Define `#CAL` as the reserved root for canonical calendar/time-scheduling data and operations, without equating scheduled time with automatic execution authority.",
+    "notes": [
+      "Unlocked pending reconciliation against existing namespace/runtime/domain contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

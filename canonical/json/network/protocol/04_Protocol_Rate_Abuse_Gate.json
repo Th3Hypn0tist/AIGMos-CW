@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_PROTOCOL_RATE_ABUSE_GATE_CONTRACT",
+    "name": "Protocol Rate and Abuse Gate",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define per-peer/session/route bounds, malformed-request controls and temporary blocking before expensive application processing.",
+  "scope": {
+    "owns": [
+      "Protocol Rate and Abuse Gate semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "application operation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_PROTOCOL_RATE_ABUSE_GATE",
+      "name": "Protocol Rate and Abuse Gate",
+      "purpose": "Define per-peer/session/route bounds, malformed-request controls and temporary blocking before expensive application processing.",
+      "parent_topic_refs": [
+        "TOPIC_NETWORK",
+        "TOPIC_PROTOCOLS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_PROTOCOL_RATE_ABUSE_GATE_CONTRACT",
+        "TRANSPORT_NONAUTHORITY",
+        "INGRESS_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "scope_rule": "Rate limit binds exact peer/session/route/protocol scope.",
+    "rate_rule": "Window/burst/limit semantics are explicit.",
+    "malformed_rule": "Repeated malformed traffic may trigger bounded abuse policy.",
+    "block_rule": "Temporary block/quarantine state is explicit and expires/revokes according to profile.",
+    "identity_rule": "IP address alone is not always semantic peer identity; transport metadata may still be used as a bounded network defense dimension.",
+    "authorization_rule": "Passing abuse gate does not grant application authorization.",
+    "failure_rule": "Rate-limited requests do not masquerade as accepted application operations."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TRANSPORT_NONAUTHORITY",
+        "rule": "Listener, route, endpoint, connection, channel, peer reachability and cryptographic transport evidence never by themselves grant application, data or operation authority."
+      },
+      {
+        "id": "INGRESS_EFFECT_BOUNDARY",
+        "rule": "Inbound network data remains inert until explicit protocol parsing, validation, identity/context resolution, authorization and dispatcher routing succeed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "rate limit clearance means authorized",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "IP permanently blacklisted as user identity without policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "rejected request shown executed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "limits unbounded/implicit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "malformed request reaches dispatcher",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PARSE",
+      "target_ref": "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT",
+      "purpose": "Abuse gate protects protocol parse/application boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define per-peer/session/route bounds, malformed-request controls and temporary blocking before expensive application processing.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

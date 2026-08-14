@@ -1,0 +1,132 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_LISTEN_BINDING_CONTRACT",
+    "name": "Listen Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit network binding tuples for listeners, including port and where applicable transport/address, with validation independent from logical service identity.",
+  "scope": {
+    "owns": [
+      "Listen Binding semantics"
+    ],
+    "does_not_own": [
+      "protocol business semantics",
+      "domain data semantics",
+      "presentation-only state"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_LISTEN_BINDING",
+      "name": "Listen Binding",
+      "purpose": "Define explicit network binding tuples for listeners, including port and where applicable transport/address, with validation independent from logical service identity.",
+      "parent_topic_refs": [
+        "TOPIC_INSTANCE_CONFIG",
+        "TOPIC_RUNTIME_NETWORK"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_LISTEN_BINDING_CONTRACT",
+        "LISTENER_IDENTITY_BINDING_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "binding_fields": [
+      "listen_address",
+      "port",
+      "transport"
+    ],
+    "transport_examples": [
+      "TCP",
+      "UDP"
+    ],
+    "port_rule": "Port is an integer binding within valid platform/protocol limits.",
+    "address_rule": "Listen address/interface is explicit where machine-significant.",
+    "transport_rule": "TCP/UDP or other transport is explicit where the protocol allows alternatives.",
+    "identity_rule": "Changing binding does not change listener semantic identity.",
+    "reservation_rule": "Reserved/default bindings such as nanoCMS `public` port 80 are explicit configuration semantics.",
+    "validation_rule": "Binding validates platform range, protocol compatibility and conflicts before activation."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "LISTENER_IDENTITY_BINDING_SEPARATION",
+        "rule": "Listener/service identity is stable and separate from mutable listen binding, protocol configuration and runtime process/session state."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "port outside valid range accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "transport omitted where ambiguous",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "binding change creates new listener identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "reserved binding lost without explicit change",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "invalid binding activated",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LISTENER",
+      "target_ref": "AIGMOS_LISTENER_INSTANCE_CONTRACT",
+      "purpose": "Bindings belong to named listener identities."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit network binding tuples for listeners, including port and where applicable transport/address, with validation independent from logical service identity.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Port Editor/listener/protocol contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

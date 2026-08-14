@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MCP_TOOL_SCHEMA_BINDING_CONTRACT",
+    "name": "MCP Tool Schema Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define how an MCP-advertised tool becomes an AIGMos runtime tool through explicit identity mapping, schema validation and effect/authority declaration rather than blind import of remote metadata.",
+  "scope": {
+    "owns": [
+      "MCP Tool Schema Binding semantics"
+    ],
+    "does_not_own": [
+      "remote server internal semantics",
+      "unrelated runtime authority",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MCP_TOOL_SCHEMA",
+      "name": "MCP Tool Schema Binding",
+      "purpose": "Define how an MCP-advertised tool becomes an AIGMos runtime tool through explicit identity mapping, schema validation and effect/authority declaration rather than blind import of remote metadata.",
+      "parent_topic_refs": [
+        "TOPIC_MCP_REGISTRY",
+        "TOPIC_RUNTIME_TOOL_REGISTRY",
+        "TOPIC_CORE_SCHEMA"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MCP_TOOL_SCHEMA_BINDING_CONTRACT",
+        "MCP_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "binding_rule": "MCP tool advertisement must bind to an explicit local runtime tool identity or validated generated identity under a declared namespace.",
+    "schema_rule": "Input/output schemas are validated before registration.",
+    "effect_rule": "AIGMos-facing side effects/effect class are explicit locally and are not trusted solely from remote advertisement.",
+    "authority_rule": "Remote metadata cannot grant local authority.",
+    "identity_rule": "Remote tool name is not automatically the final local tool identity.",
+    "update_rule": "Advertisement/schema change invalidates or revalidates the binding before continued use.",
+    "result_rule": "Tool result remains inert data after invocation."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MCP_BOUNDARY_EXPLICIT",
+        "rule": "MCP server identity, transport, tool schema, lifecycle and authority remain explicit and do not inherit trust from connectivity or advertised metadata."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "remote tool advertisement auto-registers executable tool without validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "remote schema trusted without validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "remote metadata grants local authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "remote tool name becomes local identity automatically without explicit mapping policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "schema/effect change accepted without revalidation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "tool result directly executes follow-up effect",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TOOL",
+      "target_ref": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT",
+      "purpose": "Bound MCP tools become canonical runtime tools."
+    },
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_CORE_SCHEMA_SEMANTICS_CONTRACT",
+      "purpose": "Tool schemas validate explicitly."
+    }
+  ],
+  "prose": {
+    "summary": "Define how an MCP-advertised tool becomes an AIGMos runtime tool through explicit identity mapping, schema validation and effect/authority declaration rather than blind import of remote metadata.",
+    "notes": [
+      "Unlocked pending reconciliation against existing MCP/tool/runtime contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

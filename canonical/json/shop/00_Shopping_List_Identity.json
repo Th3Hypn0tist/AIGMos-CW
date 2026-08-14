@@ -1,0 +1,135 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_SHOPPING_LIST_IDENTITY_CONTRACT",
+    "name": "Shopping List Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each `#SHOP` shopping list as an explicit planning identity with stable ownership/scope, lifecycle and item membership separate from any merchant cart or purchase transaction.",
+  "scope": {
+    "owns": [
+      "Shopping List Identity semantics"
+    ],
+    "does_not_own": [
+      "payment execution",
+      "merchant catalog truth",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_SHOPPING_LIST_IDENTITY",
+      "name": "Shopping List Identity",
+      "purpose": "Define each `#SHOP` shopping list as an explicit planning identity with stable ownership/scope, lifecycle and item membership separate from any merchant cart or purchase transaction.",
+      "parent_topic_refs": [
+        "TOPIC_SHOP",
+        "TOPIC_STUDIO_EVERYDAY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_SHOPPING_LIST_IDENTITY_CONTRACT",
+        "SHOPPING_NONPURCHASE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "root": "#SHOP",
+    "identity_rule": "Every shopping list has an explicit stable identity.",
+    "scope_rule": "Owner/user/project/household or other list scope is explicit.",
+    "membership_rule": "Items are explicit members/refs of the list.",
+    "lifecycle_states": [
+      "active",
+      "archived",
+      "completed",
+      "deleted"
+    ],
+    "merchant_rule": "Shopping-list identity is separate from merchant/cart/order identity.",
+    "studio_rule": "Studio Everyday may project/edit shopping lists but does not own #SHOP semantics.",
+    "authority_rule": "List ownership/visibility does not grant purchase/payment authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SHOPPING_NONPURCHASE",
+        "rule": "Shopping-list data expresses planning intent only; list/item existence, ranking, recommendation or selection never authorizes purchase, payment or external order execution."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "merchant cart used as canonical shopping-list identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Studio becomes owner of #SHOP data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "list visibility grants purchase authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "item membership inferred only from UI nesting",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "archiving list deletes external order",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SHOP",
+      "target_ref": "AIGMOS_SHOP_ROOT_CONTRACT",
+      "purpose": "#SHOP owns shopping data semantics."
+    },
+    {
+      "id": "REF_STUDIO",
+      "target_ref": "AIGMOS_STUDIO_EVERYDAY_CONTRACT",
+      "purpose": "Studio Everyday may expose #SHOP projections."
+    }
+  ],
+  "prose": {
+    "summary": "Define each `#SHOP` shopping list as an explicit planning identity with stable ownership/scope, lifecycle and item membership separate from any merchant cart or purchase transaction.",
+    "notes": [
+      "Unlocked pending reconciliation against #SHOP owner, Studio Everyday, units and external procurement/payment contracts."
+    ]
+  }
+}

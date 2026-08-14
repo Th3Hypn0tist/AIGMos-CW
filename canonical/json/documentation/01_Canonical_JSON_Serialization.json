@@ -1,0 +1,131 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CANONICAL_JSON_SERIALIZATION_CONTRACT",
+    "name": "Canonical JSON Serialization",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define JSON as one canonical serialization/data representation for Contract Format 1.4 while keeping semantic meaning independent from JSON syntax, object-key order and incidental array order.",
+  "scope": {
+    "owns": [
+      "Canonical JSON Serialization semantics"
+    ],
+    "does_not_own": [
+      "source semantic authority",
+      "runtime execution authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DOCUMENTATION_JSON",
+      "name": "Canonical JSON Serialization",
+      "purpose": "Define JSON as one canonical serialization/data representation for Contract Format 1.4 while keeping semantic meaning independent from JSON syntax, object-key order and incidental array order.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_ORDERING",
+        "TOPIC_CORE_VALUES",
+        "TOPIC_CORE_ROUND_TRIP"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CANONICAL_JSON_SERIALIZATION_CONTRACT",
+        "PROJECTION_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "format": "JSON",
+    "role": "data serialization",
+    "semantic_rule": "JSON is a representation of canonical semantics, not the semantics themselves.",
+    "key_order_rule": "Object key order is non-semantic.",
+    "array_rule": "Array order is non-semantic unless the owning field explicitly defines ordering.",
+    "encoding_rule": "UTF-8 is the baseline text encoding for canonical JSON artifacts.",
+    "identity_rule": "JSON filename/path does not define canonical identity.",
+    "null_empty_missing_rule": "Serialization preserves the semantic distinction between null, empty, missing and not_applicable as defined by owning contracts.",
+    "roundtrip_rule": "A canonical JSON parser/serializer must preserve the declared semantic surface across supported round-trip."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PROJECTION_NONAUTHORITY",
+        "rule": "Documentation, diagrams, serializers and projection tools derive from canonical semantics and never become semantic authority by convenience."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "JSON key order interpreted as semantic precedence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "array position used as execution order without explicit field semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "filename/path used as semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "null/empty/missing collapsed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "serialization loses machine-significant refs or Topic memberships",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ORDER",
+      "target_ref": "AIGMOS_CORE_DETERMINISTIC_ORDERING_CONTRACT",
+      "purpose": "Serialization ordering is not semantic by default."
+    },
+    {
+      "id": "REF_COMPLETENESS",
+      "target_ref": "AIGMOS_CORE_SEMANTIC_COMPLETENESS_CONTRACT",
+      "purpose": "Serialization must preserve meaningful empty/missing distinctions."
+    }
+  ],
+  "prose": {
+    "summary": "Define JSON as one canonical serialization/data representation for Contract Format 1.4 while keeping semantic meaning independent from JSON syntax, object-key order and incidental array order.",
+    "notes": [
+      "Unlocked pending reconciliation against documentation/UML/projector artifacts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

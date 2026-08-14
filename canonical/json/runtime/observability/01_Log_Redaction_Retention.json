@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_LOG_REDACTION_RETENTION_CONTRACT",
+    "name": "Log Redaction and Retention",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define privacy-aware log field redaction, classification and retention independently from source-data deletion or declassification.",
+  "scope": {
+    "owns": [
+      "Log Redaction and Retention semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_LOG_REDACTION_RETENTION",
+      "name": "Log Redaction and Retention",
+      "purpose": "Define privacy-aware log field redaction, classification and retention independently from source-data deletion or declassification.",
+      "parent_topic_refs": [
+        "TOPIC_OBSERVABILITY",
+        "TOPIC_LOGGING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_LOG_REDACTION_RETENTION_CONTRACT",
+        "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "field_rule": "Structured log fields are explicit.",
+    "redaction_rule": "Secrets/sensitive values are omitted, masked or redacted according to explicit profiles.",
+    "classification_rule": "Logs may inherit classification from source/context.",
+    "retention_rule": "Log retention/expiry is explicit.",
+    "source_rule": "Deleting a log record never deletes referenced source data.",
+    "declassification_rule": "Redaction does not automatically declassify underlying source.",
+    "authority_rule": "Log access is separately governed."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "rule": "Machine-significant definitions, executions, evidence and runtime state use explicit identities and boundaries; visibility, file order, timestamps, transport reachability or UI placement never silently create semantic authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "secret logged in clear",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "log delete cascades to source",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "redaction silently declassifies source",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "retention inferred from disk pressure",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "log access implies source access",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SECRET",
+      "target_ref": "AIGMOS_SECRET_REFERENCE_CONTRACT",
+      "purpose": "Secret values must not leak into logs."
+    }
+  ],
+  "prose": {
+    "summary": "Define privacy-aware log field redaction, classification and retention independently from source-data deletion or declassification.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

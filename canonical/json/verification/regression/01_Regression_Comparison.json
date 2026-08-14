@@ -1,0 +1,135 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_REGRESSION_COMPARISON_CONTRACT",
+    "name": "Regression Comparison",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic comparison of candidate behavior against exact baseline with allowed/intended change declarations and regression findings.",
+  "scope": {
+    "owns": [
+      "Regression Comparison semantics"
+    ],
+    "does_not_own": [
+      "production runtime authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_REGRESSION_COMPARISON",
+      "name": "Regression Comparison",
+      "purpose": "Define deterministic comparison of candidate behavior against exact baseline with allowed/intended change declarations and regression findings.",
+      "parent_topic_refs": [
+        "TOPIC_VERIFICATION",
+        "TOPIC_REGRESSION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_REGRESSION_COMPARISON_CONTRACT",
+        "TEST_NONAUTHORITY",
+        "EVIDENCE_REPRODUCIBILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "base_rule": "Exact regression baseline is referenced.",
+    "candidate_rule": "Exact candidate target/test result is referenced.",
+    "comparison_rule": "Per-check byte/semantic/performance equivalence criteria are explicit.",
+    "allowed_rule": "Known intended changes are explicitly declared and reviewed.",
+    "finding_states": [
+      "unchanged",
+      "improved",
+      "intended_change",
+      "regression",
+      "unknown"
+    ],
+    "unknown_rule": "Uncomparable/unknown result never silently passes.",
+    "authority_rule": "No-regression result does not itself release/deploy."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TEST_NONAUTHORITY",
+        "rule": "Test definitions, fixtures, results, coverage, simulations and release evidence never become production semantic authority or grant production execution rights merely by existing or passing."
+      },
+      {
+        "id": "EVIDENCE_REPRODUCIBILITY",
+        "rule": "Verification evidence binds exact test/profile/source/runtime revisions and declared environment inputs so a pass/fail result cannot silently float across unrelated versions or targets."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "all differences marked regression despite declared semantic profile",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "unknown comparison treated unchanged",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "intended change auto-approved",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "baseline selected by timestamp",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "no regression auto-deploys",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_BASE",
+      "target_ref": "AIGMOS_REGRESSION_BASELINE_CONTRACT",
+      "purpose": "Comparison uses exact baseline."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic comparison of candidate behavior against exact baseline with allowed/intended change declarations and regression findings.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

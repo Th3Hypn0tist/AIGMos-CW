@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_INSTANCE_IAM_PARENT_BINDING_CONTRACT",
+    "name": "Instance IAM Parent Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the explicit IAM parent relationship of an AIGMos instance, separate from AccessCore parent and from descriptive organization membership.",
+  "scope": {
+    "owns": [
+      "Instance IAM Parent Binding semantics"
+    ],
+    "does_not_own": [
+      "IdentityCore identity semantics",
+      "AccessCore policy semantics",
+      "runtime business-domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_INSTANCE_IAM_PARENT_BINDING",
+      "name": "Instance IAM Parent Binding",
+      "purpose": "Define the explicit IAM parent relationship of an AIGMos instance, separate from AccessCore parent and from descriptive organization membership.",
+      "parent_topic_refs": [
+        "TOPIC_INSTANCE_CONFIG",
+        "TOPIC_RUNTIME_ACTIVATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_INSTANCE_IAM_PARENT_BINDING_CONTRACT",
+        "INSTANCE_CONFIG_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "binding_rule": "Instance references one explicit IAM parent identity according to deployment policy.",
+    "identity_rule": "IAM parent resolves to an exact IdentityCore/IAM identity.",
+    "separation_rule": "IAM parent binding is independent from AccessCore parent binding.",
+    "inheritance_rule": "Parent relation does not silently copy MeritCore/PortfolioCore data or runtime authorization.",
+    "change_rule": "Changing IAM parent is an explicit governed configuration operation.",
+    "validation_rule": "Candidate parent must resolve and satisfy parent-type/policy constraints before apply.",
+    "history_rule": "Parent changes retain provenance/history."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "INSTANCE_CONFIG_SEPARATION",
+        "rule": "AIGMos instance identity, configuration, IAM parent, AccessCore parent and runtime state remain explicit separate dimensions; configuration never silently changes semantic ownership or authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "IAM parent inferred from organization name",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "IAM parent silently becomes AC parent",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "parent change rewrites identity history",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "unresolved parent accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "parent binding grants runtime rights automatically",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ID",
+      "target_ref": "AIGMOS_IDENTITYCORE_IDENTITY_CONTRACT",
+      "purpose": "IAM parent is an exact identity."
+    },
+    {
+      "id": "REF_IAM",
+      "target_ref": "AIGMOS_IAM_COMPOSITION_CONTRACT",
+      "purpose": "Binding targets IAM/IdentityCore context."
+    }
+  ],
+  "prose": {
+    "summary": "Define the explicit IAM parent relationship of an AIGMos instance, separate from AccessCore parent and from descriptive organization membership.",
+    "notes": [
+      "Unlocked pending reconciliation against existing instance-config/IAM/AccessCore/runtime contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

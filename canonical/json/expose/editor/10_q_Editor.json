@@ -1,0 +1,190 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_Q_EDITOR_CONTRACT",
+    "name": "Expose q Editor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define q Editor as the configuration/editor surface for q-family AI backends and aliases, using explicit backend identities and bounded tests without embedding provider-specific semantics into the UI.",
+  "scope": {
+    "owns": [
+      "Expose q Editor semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "unrelated domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_Q_EDITOR",
+      "name": "q Editor",
+      "purpose": "Define q Editor as the configuration/editor surface for q-family AI backends and aliases, using explicit backend identities and bounded tests without embedding provider-specific semantics into the UI.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_EXPOSE_EDITOR",
+        "TOPIC_RUNTIME_BACKEND_ALIASES",
+        "TOPIC_RUNTIME_QUEUE_PROFILES"
+      ],
+      "member_refs": [
+        "AIGMOS_EXPOSE_Q_EDITOR_CONTRACT",
+        "EXPOSE_COMPONENT_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_Q_EDITOR_READ",
+        "OP_Q_EDITOR_BIND_BACKEND",
+        "OP_Q_EDITOR_TEST"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_Q_EDITOR_READ",
+        "name": "Read q backend/config",
+        "inputs": [
+          "q configuration ref"
+        ],
+        "outputs": [
+          "q edit model"
+        ],
+        "errors": [
+          "config unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_Q_EDITOR_BIND_BACKEND",
+        "name": "Bind q logical backend",
+        "inputs": [
+          "q surface",
+          "backend alias"
+        ],
+        "outputs": [
+          "updated backend binding"
+        ],
+        "errors": [
+          "alias unresolved",
+          "authority denied"
+        ],
+        "side_effects": [
+          "q configuration updated"
+        ]
+      },
+      {
+        "id": "OP_Q_EDITOR_TEST",
+        "name": "Test q configuration",
+        "inputs": [
+          "candidate q config",
+          "bounded test input"
+        ],
+        "outputs": [
+          "test result"
+        ],
+        "errors": [
+          "backend unavailable",
+          "timeout"
+        ],
+        "side_effects": [
+          "bounded backend interaction only"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "initial_backends": [
+      "dummyLLM",
+      "doubleword",
+      "nvidia"
+    ],
+    "alias_rule": "q Editor binds q surfaces to stable logical backend aliases.",
+    "provider_rule": "Provider/model binding belongs to backend configuration, not UI control identity.",
+    "queue_rule": "q/qc/qt queue semantics remain Runtime Queue Profile semantics.",
+    "test_rule": "Configuration tests are bounded explicit backend calls and do not become permanent authority/config unless saved.",
+    "authority_rule": "Backend configuration changes are explicitly authorized.",
+    "response_rule": "Backend test response is inert and cannot modify configuration by itself."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPOSE_COMPONENT_EXPLICIT",
+        "rule": "Expose components reuse canonical semantics and remain non-privileged projection/composition surfaces."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "UI display name used as backend semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "backend test response mutates config automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "q Editor redefines q/qc/qt queue semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "provider endpoint hard-coded as caller semantic identity where alias is required",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "backend configuration changed without authorization",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_BACKEND",
+      "target_ref": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT",
+      "purpose": "q Editor binds stable backend aliases."
+    },
+    {
+      "id": "REF_QUEUE",
+      "target_ref": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT",
+      "purpose": "q/qc/qt scheduling remains runtime-owned."
+    }
+  ],
+  "prose": {
+    "summary": "Define q Editor as the configuration/editor surface for q-family AI backends and aliases, using explicit backend identities and bounded tests without embedding provider-specific semantics into the UI.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

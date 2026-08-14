@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_STORAGE_BINDING_CONTRACT",
+    "name": "DWH Storage Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit physical persistence bindings for DWH instance/schema data while keeping storage engine, path and file layout separate from canonical data identity and ownership.",
+  "scope": {
+    "owns": [
+      "DWH Storage Binding semantics"
+    ],
+    "does_not_own": [
+      "domain schema ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation internals"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_STORAGE_BINDING",
+      "name": "DWH Storage Binding",
+      "purpose": "Define explicit physical persistence bindings for DWH instance/schema data while keeping storage engine, path and file layout separate from canonical data identity and ownership.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_PERSISTENCE_RECOVERY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_STORAGE_BINDING_CONTRACT",
+        "PERSISTENCE_NONIDENTITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "binding_rule": "Each persisted DWH scope binds to an explicit storage profile/backend identity.",
+    "scope_rule": "Storage binding references exact owning instance/schema/data scope.",
+    "identity_rule": "File path, table name, bucket, database or engine object is a physical binding and never canonical semantic identity.",
+    "backend_rule": "Backend type/profile/version is explicit where behavior affects semantics.",
+    "migration_rule": "Changing storage backend/binding is an explicit migration operation.",
+    "ownership_rule": "Storage backend never becomes owner of domain semantics by persistence.",
+    "availability_rule": "Storage availability and data authorization remain distinct.",
+    "failure_rule": "Missing/unavailable storage fails explicitly rather than silently switching backend unless a declared failover profile exists."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PERSISTENCE_NONIDENTITY",
+        "rule": "Physical storage location, file name, engine page, snapshot artifact or backup copy never replaces canonical data/schema/instance identity; persistence and recovery operate on exact semantic identities with explicit version/provenance evidence."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "path/table name used as canonical data identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "backend silently changed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "storage backend claims domain ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "missing storage silently falls back",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "storage reachability grants data authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ISO",
+      "target_ref": "AIGMOS_DWH_INSTANCE_DATA_ISOLATION_CONTRACT",
+      "purpose": "Storage binding preserves exact instance scope."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit physical persistence bindings for DWH instance/schema data while keeping storage engine, path and file layout separate from canonical data identity and ownership.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH mutation, runtime snapshot, repository acceptance and retention contracts."
+    ]
+  }
+}

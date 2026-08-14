@@ -1,0 +1,131 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_SCHEDULE_IDENTITY_CONTRACT",
+    "name": "Schedule Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each `#CAL` schedule as a stable declarative temporal identity separate from its next occurrence, emitted Event, Trigger binding and downstream execution.",
+  "scope": {
+    "owns": [
+      "Schedule Identity semantics"
+    ],
+    "does_not_own": [
+      "Runner execution semantics",
+      "AccessCore policy ownership",
+      "external calendar provider semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_SCHEDULE_IDENTITY",
+      "name": "Schedule Identity",
+      "purpose": "Define each `#CAL` schedule as a stable declarative temporal identity separate from its next occurrence, emitted Event, Trigger binding and downstream execution.",
+      "parent_topic_refs": [
+        "TOPIC_CALENDAR",
+        "TOPIC_SCHEDULING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_SCHEDULE_IDENTITY_CONTRACT",
+        "SCHEDULE_NONEXECUTION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "root": "#CAL",
+    "identity_rule": "Every machine-significant schedule has an explicit stable canonical identity.",
+    "definition_rule": "Schedule definition contains temporal recurrence/occurrence semantics only.",
+    "occurrence_rule": "Each concrete scheduled occurrence has its own occurrence identity/time evidence.",
+    "event_rule": "Occurrence may emit an explicit scheduling Event; Event identity is distinct from schedule identity.",
+    "trigger_rule": "Trigger binding is a separate explicit relation.",
+    "execution_rule": "Schedule never directly owns or performs Runner/command execution.",
+    "state_rule": "configured/enabled/paused/expired runtime states are separate from canonical schedule identity.",
+    "authority_rule": "Schedule existence/visibility grants no downstream execution authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SCHEDULE_NONEXECUTION",
+        "rule": "A schedule determines when a scheduling occurrence may be emitted; it never directly executes a Routine, command or operation. Execution requires the normal explicit Event→Trigger→Runner/operation causality chain."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "schedule identity reused as Event identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "schedule directly executes Routine",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "next-run timestamp becomes schedule identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "schedule visibility grants execution authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "runtime paused state rewrites canonical identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CAL",
+      "target_ref": "AIGMOS_CALENDAR_ROOT_CONTRACT",
+      "purpose": "#CAL owns scheduling identities."
+    },
+    {
+      "id": "REF_EVENT",
+      "target_ref": "AIGMOS_EVENT_IDENTITY_CONTRACT",
+      "purpose": "Occurrences may emit distinct Events."
+    }
+  ],
+  "prose": {
+    "summary": "Define each `#CAL` schedule as a stable declarative temporal identity separate from its next occurrence, emitted Event, Trigger binding and downstream execution.",
+    "notes": [
+      "Unlocked pending reconciliation against #CAL, Event/Trigger causality, Runner and timezone/runtime contracts."
+    ]
+  }
+}

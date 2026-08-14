@@ -1,0 +1,185 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT",
+    "name": "Runtime Queue Profiles",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define alias-scoped q/qc/qt runtime queue identity, FIFO semantics and explicit q priority without conflating queue order with generic canonical array ordering.",
+  "scope": {
+    "owns": [
+      "Runtime Queue Profiles semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_QUEUE_PROFILES",
+      "name": "Queue Profiles",
+      "purpose": "Define alias-scoped q/qc/qt runtime queue identity, FIFO semantics and explicit q priority without conflating queue order with generic canonical array ordering.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_QUEUE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_ORDERING",
+        "TOPIC_CORE_BOUNDED_OPERATION"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT",
+        "RUNTIME_SEMANTICS_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_QUEUE_RESOLVE",
+        "OP_QUEUE_ENQUEUE",
+        "OP_QUEUE_SCHEDULE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_QUEUE_RESOLVE",
+        "name": "Resolve queue identity",
+        "inputs": [
+          "resolved backend alias",
+          "queue profile"
+        ],
+        "outputs": [
+          "queue identity"
+        ],
+        "errors": [
+          "queue profile unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_QUEUE_ENQUEUE",
+        "name": "Enqueue job",
+        "inputs": [
+          "validated job",
+          "queue identity",
+          "priority semantics"
+        ],
+        "outputs": [
+          "queued job"
+        ],
+        "errors": [
+          "queue full"
+        ],
+        "side_effects": [
+          "queue state updated"
+        ]
+      },
+      {
+        "id": "OP_QUEUE_SCHEDULE",
+        "name": "Schedule next queue job",
+        "inputs": [
+          "queue state"
+        ],
+        "outputs": [
+          "next job"
+        ],
+        "errors": [],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "queue_key": "resolved backend alias",
+    "default_members": [
+      "q",
+      "qc",
+      "qt"
+    ],
+    "same_alias_share_queue": true,
+    "different_aliases_independent": true,
+    "ordering": "FIFO except explicit q non-preemptive priority within the same queue",
+    "q_priority": "q may be selected ahead of waiting qc/qt jobs but does not preempt a job already executing",
+    "tool_loop_default_max_rounds": 3,
+    "canonical_ordering_boundary": "Queue scheduling order is runtime semantic state, not JSON-array ordering semantics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RUNTIME_SEMANTICS_EXPLICIT",
+        "rule": "Runtime-significant semantics are explicit and do not arise from payload, path, projection or implementation heuristics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "queues are global instead of alias-scoped",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "different aliases incorrectly share queue state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "q preempts an already running job",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "queue order inferred from serialization array order",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "queue depth or tool-loop rounds unbounded",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ORDER",
+      "target_ref": "AIGMOS_CORE_DETERMINISTIC_ORDERING_CONTRACT",
+      "purpose": "Separates runtime scheduling order from incidental serialization order."
+    },
+    {
+      "id": "REF_BOUNDS",
+      "target_ref": "AIGMOS_CORE_BOUNDED_OPERATION_CONTRACT",
+      "purpose": "Queue depth/tool loops are bounded."
+    }
+  ],
+  "prose": {
+    "summary": "Define alias-scoped q/qc/qt runtime queue identity, FIFO semantics and explicit q priority without conflating queue order with generic canonical array ordering.",
+    "notes": [
+      "Unlocked until reconciled against the existing runtime contracts and repository-wide 1.4 traceability validation."
+    ]
+  }
+}

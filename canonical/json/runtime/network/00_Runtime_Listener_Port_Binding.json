@@ -1,0 +1,196 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_LISTENER_BINDING_CONTRACT",
+    "name": "Runtime Listener and Port Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define listener/port bindings as mutable configuration/runtime bindings attached to stable named service instances across HTTP, REST, OSC, WebSocket and other installed protocols.",
+  "scope": {
+    "owns": [
+      "Runtime Listener and Port Binding semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "presentation layout unless explicitly stated"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_LISTENERS",
+      "name": "Listeners",
+      "purpose": "Define listener/port bindings as mutable configuration/runtime bindings attached to stable named service instances across HTTP, REST, OSC, WebSocket and other installed protocols.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_SERVICE_INSTANCES",
+        "TOPIC_RUNTIME_DEFINITION_STATE"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_LISTENER_BINDING_CONTRACT",
+        "SERVICE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_LISTENER_BIND",
+        "OP_LISTENER_REBIND",
+        "OP_LISTENER_UNBIND"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_LISTENER_BIND",
+        "name": "Bind named listener",
+        "inputs": [
+          "service instance",
+          "protocol",
+          "transport",
+          "listen address",
+          "port"
+        ],
+        "outputs": [
+          "listener binding"
+        ],
+        "errors": [
+          "port unavailable",
+          "invalid transport",
+          "binding conflict"
+        ],
+        "side_effects": [
+          "runtime listener state created"
+        ]
+      },
+      {
+        "id": "OP_LISTENER_REBIND",
+        "name": "Rebind named listener",
+        "inputs": [
+          "service instance",
+          "new binding"
+        ],
+        "outputs": [
+          "updated listener binding"
+        ],
+        "errors": [
+          "binding unavailable"
+        ],
+        "side_effects": [
+          "listener runtime/config state updated"
+        ]
+      },
+      {
+        "id": "OP_LISTENER_UNBIND",
+        "name": "Unbind listener",
+        "inputs": [
+          "service instance"
+        ],
+        "outputs": [
+          "listener removed"
+        ],
+        "errors": [],
+        "side_effects": [
+          "runtime listener state removed"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "binding_fields": [
+      "protocol",
+      "transport",
+      "listen_address",
+      "port"
+    ],
+    "transport_examples": [
+      "TCP",
+      "UDP"
+    ],
+    "identity_rule": "Listener binding is not service semantic identity.",
+    "port_rule": "Port is a binding value only.",
+    "collision_rule": "Conflicting active bindings hard-fail unless protocol/transport semantics explicitly permit coexistence.",
+    "editor_rule": "Port/listener editors edit canonical configuration/lifecycle operations; they do not own service semantics.",
+    "runtime_rule": "Running listener state is runtime state; declared binding is configuration semantics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SERVICE_BOUNDARY_EXPLICIT",
+        "rule": "Network/service identity, binding, lifecycle and authority remain explicit and separate."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "port treated as service semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "conflicting active listener bindings accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "listener editor creates private runtime authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "running state conflated with declared binding",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "protocol/transport omitted where required for deterministic binding",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SERVICE",
+      "target_ref": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT",
+      "purpose": "Bindings attach to stable named instances."
+    },
+    {
+      "id": "REF_STATE",
+      "target_ref": "AIGMOS_RUNTIME_DEFINITION_STATE_SEPARATION_CONTRACT",
+      "purpose": "Declared binding and runtime state remain separate."
+    }
+  ],
+  "prose": {
+    "summary": "Define listener/port bindings as mutable configuration/runtime bindings attached to stable named service instances across HTTP, REST, OSC, WebSocket and other installed protocols.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose/REST/web contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

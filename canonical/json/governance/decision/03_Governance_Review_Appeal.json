@@ -1,0 +1,160 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_GOVERNANCE_REVIEW_APPEAL_CONTRACT",
+    "name": "Governance Review and Appeal",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit review/appeal workflow for disputed governance, disclosure, classification, consent or privacy decisions while preserving original decision history.",
+  "scope": {
+    "owns": [
+      "Governance Review and Appeal semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "runtime execution authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_GOVERNANCE_REVIEW_APPEAL",
+      "name": "Governance Review and Appeal",
+      "purpose": "Define explicit review/appeal workflow for disputed governance, disclosure, classification, consent or privacy decisions while preserving original decision history.",
+      "parent_topic_refs": [
+        "TOPIC_GOVERNANCE",
+        "TOPIC_REVIEW"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_GOVERNANCE_REVIEW_APPEAL_CONTRACT",
+        "GOVERNANCE_EVIDENCE_SEPARATION",
+        "FAIL_CLOSED_PROTECTED_DATA",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_REVIEW",
+      "name": "Review",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_REVIEW already referenced by 1 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 1,
+        "distinct_child_topics": 1,
+        "host_contract_ref": "AIGMOS_GOVERNANCE_REVIEW_APPEAL_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each review/appeal case has explicit identity.",
+    "decision_rule": "Case references exact disputed governance decision.",
+    "requester_rule": "Requester/subject/authorized representative is exact.",
+    "reviewer_rule": "Reviewer/authority identity is explicit.",
+    "evidence_rule": "New and original evidence refs are exact.",
+    "result_states": [
+      "uphold",
+      "modify",
+      "reverse",
+      "insufficient_evidence",
+      "withdrawn"
+    ],
+    "history_rule": "Original decision remains immutable history; new decision supersedes only through explicit relation.",
+    "authority_rule": "Submitting appeal grants no protected-resource access."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "GOVERNANCE_EVIDENCE_SEPARATION",
+        "rule": "Policy, decision, evidence, audit record, consent, incident and compliance result remain separate machine-significant identities; no evidence artifact silently becomes source data, authorization or runtime authority."
+      },
+      {
+        "id": "FAIL_CLOSED_PROTECTED_DATA",
+        "rule": "Ambiguous or unresolved governance for protected data fails closed; UI visibility, transport reachability, cache presence, role title, prior access or audit-log presence never substitute for an explicit valid policy decision."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "appeal overwrites original decision",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "requester inferred",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "reviewer omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "filing appeal grants temporary access",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "new evidence not linked",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DEC",
+      "target_ref": "AIGMOS_GOVERNANCE_DECISION_IDENTITY_CONTRACT",
+      "purpose": "Appeal reviews exact decision."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit review/appeal workflow for disputed governance, disclosure, classification, consent or privacy decisions while preserving original decision history.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_REVIEW solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_QC_LOCAL_EXTERNAL_EXECUTION_CONTRACT",
+    "name": "QC Local and External Execution Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit local/external QC analysis/execution mode and target scope so code analysis/edit proposals never cross environment boundaries implicitly.",
+  "scope": {
+    "owns": [
+      "QC Local and External Execution Boundary semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_QC_LOCAL_EXTERNAL_EXECUTION",
+      "name": "QC Local and External Execution Boundary",
+      "purpose": "Define explicit local/external QC analysis/execution mode and target scope so code analysis/edit proposals never cross environment boundaries implicitly.",
+      "parent_topic_refs": [
+        "TOPIC_AI",
+        "TOPIC_Q"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_QC_LOCAL_EXTERNAL_EXECUTION_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "mode_values": [
+      "local",
+      "external"
+    ],
+    "mode_rule": "QC mode is explicit per request/session/profile.",
+    "target_rule": "Exact source/code/project target is explicit.",
+    "external_rule": "External mode uses exact external endpoint/repository/target binding and applicable remote authority.",
+    "local_rule": "Local mode cannot silently dereference remote targets.",
+    "write_rule": "QC analysis/result remains inert; code/file changes use explicit candidate diff→validate→authorize→apply.",
+    "secret_rule": "External requests minimize/redact local secrets/context.",
+    "authority_rule": "Mode selection grants no extra source/write rights."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "external QC chosen automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "local secrets sent externally",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "QC output edits file immediately",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "external endpoint gains repo rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "target inferred from current editor tab",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_QC",
+      "target_ref": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT",
+      "purpose": "Formalizes explicit local/external QC mode."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit local/external QC analysis/execution mode and target scope so code analysis/edit proposals never cross environment boundaries implicitly.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

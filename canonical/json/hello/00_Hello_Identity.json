@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_HELLO_IDENTITY_CONTRACT",
+    "name": "Hello Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define `Hello` as the canonical rendezvous/discovery shared-service surface used to locate peers/services for subsequent direct transport establishment.",
+  "scope": {
+    "owns": [
+      "Hello Identity semantics"
+    ],
+    "does_not_own": [
+      "application payload semantics",
+      "IdentityCore ownership",
+      "AccessCore authorization"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_HELLO_IDENTITY",
+      "name": "Hello Identity",
+      "purpose": "Define `Hello` as the canonical rendezvous/discovery shared-service surface used to locate peers/services for subsequent direct transport establishment.",
+      "parent_topic_refs": [
+        "TOPIC_HELLO",
+        "TOPIC_RENDEZVOUS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_HELLO_IDENTITY_CONTRACT",
+        "HELLO_BOOTSTRAP_ONLY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "name": "Hello",
+    "role": "peer/service discovery and rendezvous",
+    "identity_rule": "Hello service identity is explicit and separate from the identity of peers it helps discover.",
+    "bootstrap_rule": "Hello exchanges only bootstrap/discovery metadata required to establish the next transport/session step.",
+    "payload_rule": "Application payload is not semantically owned by Hello.",
+    "peer_rule": "A discovered peer retains its own IdentityCore/external identity.",
+    "authority_rule": "Discovery success never grants application/data authority.",
+    "transport_rule": "Hello does not replace WebRTC or other negotiated peer transport."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "HELLO_BOOTSTRAP_ONLY",
+        "rule": "Hello/Rendezvous performs peer discovery/bootstrap only; it never becomes application-payload owner, semantic peer identity, or authorization authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "Hello becomes application payload relay by default",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Hello service identity used as peer identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "successful discovery grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "peer identity inferred only from rendezvous session id",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "Hello replaces peer transport semantics",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REND",
+      "target_ref": "AIGMOS_RENDEZVOUS_SIGNALING_CONTRACT",
+      "purpose": "Hello specializes rendezvous/bootstrap semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define `Hello` as the canonical rendezvous/discovery shared-service surface used to locate peers/services for subsequent direct transport establishment.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Hello/Rendezvous/licensing/messaging contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

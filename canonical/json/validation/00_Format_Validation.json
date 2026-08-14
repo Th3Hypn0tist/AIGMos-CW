@@ -1,0 +1,142 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_FORMAT_VALIDATION_CONTRACT",
+    "name": "Contract Format Validation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define structural validation that every canonical artifact conforms to Contract Format 1.4 required sections, field shapes and source-role rules before deeper semantic validation.",
+  "scope": {
+    "owns": [
+      "Contract Format Validation semantics"
+    ],
+    "does_not_own": [
+      "source semantic content",
+      "runtime implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_VALIDATION_FORMAT",
+      "name": "Contract Format Validation",
+      "purpose": "Define structural validation that every canonical artifact conforms to Contract Format 1.4 required sections, field shapes and source-role rules before deeper semantic validation.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_VALIDATION",
+        "TOPIC_SOURCE_ROLE_REGISTRY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_FORMAT_VALIDATION_CONTRACT",
+        "VALIDATION_NONAUTHORITATIVE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "checks": [
+      "format marker/version",
+      "identity block",
+      "status",
+      "source_role",
+      "purpose",
+      "scope",
+      "structure",
+      "topics",
+      "behavior",
+      "constraints",
+      "references",
+      "prose"
+    ],
+    "version_rule": "Artifact must explicitly declare Contract Format 1.4 compatibility.",
+    "shape_rule": "Required fields use the declared 1.4 data shapes.",
+    "source_role_rule": "source_role must resolve through the canonical Source Role Registry.",
+    "unknown_field_rule": "Unknown fields follow explicit extension policy; validator never silently treats them as semantics.",
+    "ordering_rule": "Validation does not infer meaning from object key order or ordinary array position.",
+    "failure_rule": "Format failure stops semantic lock eligibility but preserves machine-readable diagnostics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "VALIDATION_NONAUTHORITATIVE",
+        "rule": "Validation proves or rejects conformance; it never invents missing semantics or becomes semantic owner."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "artifact claims 1.4 without required structure",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "source_role missing/unregistered",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "validator infers semantics from unknown field",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "field shape mismatch ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "format failure still considered lock-eligible",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SOURCE",
+      "target_ref": "AIGMOS_CANONICAL_SOURCE_ROLE_REGISTRY_CONTRACT",
+      "purpose": "Validates source-role classification."
+    },
+    {
+      "id": "REF_JSON",
+      "target_ref": "AIGMOS_CANONICAL_JSON_SERIALIZATION_CONTRACT",
+      "purpose": "Format validation respects JSON serialization non-semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define structural validation that every canonical artifact conforms to Contract Format 1.4 required sections, field shapes and source-role rules before deeper semantic validation.",
+    "notes": [
+      "Unlocked until exercised against the complete assembled Contract Format 1.4 tree."
+    ]
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_BREAKING_CHANGE_IDENTITY_CONTRACT",
+    "name": "Breaking Change Requires New Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the canonical rule that incompatible semantic change creates a new identity rather than silently mutating the meaning of an existing identity.",
+  "scope": {
+    "owns": [
+      "Breaking Change Requires New Identity semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_BREAKING_CHANGE_IDENTITY",
+      "name": "Breaking Change Requires New Identity",
+      "purpose": "Define the canonical rule that incompatible semantic change creates a new identity rather than silently mutating the meaning of an existing identity.",
+      "parent_topic_refs": [
+        "TOPIC_VERSIONING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_BREAKING_CHANGE_IDENTITY_CONTRACT",
+        "PACKAGE_IDENTITY_INTEGRITY",
+        "ENTITLEMENT_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "breaking_rule": "Semantic incompatibility that cannot preserve prior meaning requires an explicit new canonical identity.",
+    "migration_rule": "Old→new migration/mapping may be declared separately.",
+    "alias_rule": "Legacy alias may point to new identity only with explicit compatibility/migration semantics.",
+    "history_rule": "Old identity remains historically interpretable.",
+    "version_rule": "Merely incrementing a version is insufficient when identity meaning breaks.",
+    "authority_rule": "New identity does not inherit old runtime/AccessCore rights automatically."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PACKAGE_IDENTITY_INTEGRITY",
+        "rule": "Package, artifact, module, certification, license and installed-instance identities remain distinct; hashes prove content integrity only within their declared profile and never grant runtime authority."
+      },
+      {
+        "id": "ENTITLEMENT_NONAUTHORITY",
+        "rule": "License or certification entitlement permits declared product/service use only; it never substitutes for IAM identity, AccessCore authorization, runtime validation or dispatcher gating."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "breaking semantics hidden in version bump",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "new identity inherits rights automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "old identity deleted from history",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "alias masks incompatibility",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "migration assumed automatically",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_VER",
+      "target_ref": "AIGMOS_SEMANTIC_VERSION_IDENTITY_CONTRACT",
+      "purpose": "Breaking changes leave stable prior identities intact."
+    }
+  ],
+  "prose": {
+    "summary": "Define the canonical rule that incompatible semantic change creates a new identity rather than silently mutating the meaning of an existing identity.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

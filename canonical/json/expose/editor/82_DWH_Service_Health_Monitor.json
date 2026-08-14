@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_DWH_SERVICE_HEALTH_MONITOR_CONTRACT",
+    "name": "DWH Service Health Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for freshness, availability, completeness, latency, composite SLOs, error budgets and breach/recovery Events.",
+  "scope": {
+    "owns": [
+      "DWH Service Health Monitor semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "AccessCore policy ownership",
+      "runtime execution authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_DWH_SERVICE_HEALTH_MONITOR",
+      "name": "DWH Service Health Monitor",
+      "purpose": "Define a read-only Expose monitor for freshness, availability, completeness, latency, composite SLOs, error budgets and breach/recovery Events.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_SERVICE_LEVELS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_DWH_SERVICE_HEALTH_MONITOR_CONTRACT",
+        "SLO_EVIDENCE_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "freshness objective/lag",
+      "availability state",
+      "completeness/partial state",
+      "latency budget/measurements",
+      "quality/consistency evidence",
+      "SLO/error-budget state",
+      "breach/recovery history",
+      "source watermark/revision refs"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Objective, metric/evidence, SLO evaluation, source resource and Event identities remain distinct.",
+    "derived_rule": "Healthy/degraded/breached status is visibly derived evidence, not semantic ownership or authorization.",
+    "action_rule": "edit-objective/test-evaluate/acknowledge/invoke-remediation operations use separate authorized workflows.",
+    "authority_rule": "Viewing/acknowledging service health grants no data or remediation authority.",
+    "graph_rule": "Objective→evidence→SLO→Event edges correspond only to explicit refs.",
+    "failure_rule": "Unknown, partial, stale, degraded and breached states remain visibly distinct."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SLO_EVIDENCE_NONAUTHORITY",
+        "rule": "Freshness, availability, completeness, latency and SLO results are derived service-health evidence over exact data/runtime scopes; they never change data identity, ownership, classification, authorization or execution authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor shows unknown as healthy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "monitor auto-remediates by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "SLO evaluation conflated with dataset identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "partial state hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "visual graph invents causal breach relation",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SLO",
+      "target_ref": "AIGMOS_DWH_SERVICE_LEVEL_OBJECTIVE_CONTRACT",
+      "purpose": "Monitor projects exact SLO evaluations."
+    },
+    {
+      "id": "REF_EVENT",
+      "target_ref": "AIGMOS_DWH_SERVICE_LEVEL_BREACH_EVENT_CONTRACT",
+      "purpose": "Monitor exposes breach/recovery Event boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for freshness, availability, completeness, latency, composite SLOs, error budgets and breach/recovery Events.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH quality, replication, changefeed, query and monitoring contracts."
+    ]
+  }
+}

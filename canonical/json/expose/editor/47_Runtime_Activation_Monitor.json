@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_RUNTIME_ACTIVATION_MONITOR_CONTRACT",
+    "name": "Runtime Activation Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor showing repository accepted snapshot versus runtime active snapshot, activation/reload state, boot profile and rollback targets.",
+  "scope": {
+    "owns": [
+      "Runtime Activation Monitor semantics"
+    ],
+    "does_not_own": [
+      "repository acceptance semantics",
+      "domain business semantics",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_RUNTIME_ACTIVATION_MONITOR",
+      "name": "Runtime Activation Monitor",
+      "purpose": "Define a read-only Expose monitor showing repository accepted snapshot versus runtime active snapshot, activation/reload state, boot profile and rollback targets.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_ACTIVATION",
+        "TOPIC_REPOSITORY_ACCEPTANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_RUNTIME_ACTIVATION_MONITOR_CONTRACT",
+        "ACCEPTANCE_ACTIVATION_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "runtime instance",
+      "runtime active snapshot",
+      "repository current accepted snapshot",
+      "candidate snapshots",
+      "activation/reload history",
+      "boot profile",
+      "dependency failures",
+      "rollback targets"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "separation_rule": "Accepted, candidate and runtime-active snapshot states are visibly distinct.",
+    "action_rule": "Activate/reload/rollback operations invoke separate authorized lifecycle operations.",
+    "authority_rule": "Viewing runtime state grants no lifecycle authority.",
+    "trace_rule": "Every lifecycle result links exact runtime/snapshot/profile refs.",
+    "failure_rule": "Partial/failed activation is displayed explicitly rather than represented as active.",
+    "ac_rule": "AccessCore state is shown as governed runtime state, not as repository acceptance."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ACCEPTANCE_ACTIVATION_SEPARATION",
+        "rule": "Repository acceptance establishes canonical source state; runtime activation/reload is a separate explicit lifecycle operation over an exact accepted snapshot."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor conflates accepted and active snapshot",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "candidate displayed as active",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "monitor directly activates without explicit operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "failed activation displayed as successful",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "viewing grants lifecycle authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ACTIVE",
+      "target_ref": "AIGMOS_RUNTIME_ACTIVE_SNAPSHOT_CONTRACT",
+      "purpose": "Monitor shows exact active binding."
+    },
+    {
+      "id": "REF_ACCEPT",
+      "target_ref": "AIGMOS_EXPOSE_REPOSITORY_ACCEPTANCE_MONITOR_CONTRACT",
+      "purpose": "Repository acceptance remains separate."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor showing repository accepted snapshot versus runtime active snapshot, activation/reload state, boot profile and rollback targets.",
+    "notes": [
+      "Unlocked pending reconciliation against runtime lifecycle, repository acceptance and boot-profile contracts."
+    ]
+  }
+}

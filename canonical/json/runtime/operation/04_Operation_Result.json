@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_OPERATION_RESULT_CONTRACT",
+    "name": "Operation Result Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define operation results as inert execution evidence/output distinct from execution state and from any subsequent operation request.",
+  "scope": {
+    "owns": [
+      "Operation Result Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_OPERATION_RESULT",
+      "name": "Operation Result Boundary",
+      "purpose": "Define operation results as inert execution evidence/output distinct from execution state and from any subsequent operation request.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME",
+        "TOPIC_OPERATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_OPERATION_RESULT_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each result has an explicit result identity or exact execution-result relation.",
+    "execution_rule": "Result references exact execution identity.",
+    "status_rule": "Success, partial, failed, cancelled, timeout and unknown are distinct.",
+    "payload_rule": "Result payload is inert data.",
+    "effect_rule": "A result never implies that any follow-up operation has been requested.",
+    "lineage_rule": "Derived result retains execution/target provenance.",
+    "partial_rule": "Partial result is never represented as complete.",
+    "authority_rule": "Result contents grant no authority for downstream effects."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "result payload triggers implicit follow-up",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "partial shown complete",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "result reused as execution identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "success inferred from non-empty payload",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "result content grants authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DISPATCH",
+      "target_ref": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+      "purpose": "Results originate from exact executions."
+    }
+  ],
+  "prose": {
+    "summary": "Define operation results as inert execution evidence/output distinct from execution state and from any subsequent operation request.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

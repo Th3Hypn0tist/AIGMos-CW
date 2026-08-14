@@ -1,0 +1,196 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_IAM_ASSURANCE_CONTRACT",
+    "name": "IAM Assurance",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define IAM assurance levels and authentication semantics separately from authorization so identity proof strength never implicitly creates resource rights.",
+  "scope": {
+    "owns": [
+      "IAM Assurance semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "transport implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_IAM_ASSURANCE",
+      "name": "IAM Assurance",
+      "purpose": "Define IAM assurance levels and authentication semantics separately from authorization so identity proof strength never implicitly creates resource rights.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_CAPABILITY_AUTHORITY",
+        "TOPIC_RUNTIME_DEFINITION_STATE"
+      ],
+      "member_refs": [
+        "AIGMOS_IAM_ASSURANCE_CONTRACT",
+        "GOVERNANCE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_IAM_IDENTIFY",
+        "OP_IAM_AUTHENTICATE",
+        "OP_IAM_VALIDATE_ASSURANCE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_IAM_IDENTIFY",
+        "name": "Resolve identity",
+        "inputs": [
+          "presented identity credentials/context"
+        ],
+        "outputs": [
+          "resolved identity"
+        ],
+        "errors": [
+          "identity unresolved",
+          "identity ambiguous"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_IAM_AUTHENTICATE",
+        "name": "Authenticate identity",
+        "inputs": [
+          "resolved identity",
+          "allowed authentication method"
+        ],
+        "outputs": [
+          "authenticated identity",
+          "assurance level"
+        ],
+        "errors": [
+          "authentication failed",
+          "method unavailable"
+        ],
+        "side_effects": [
+          "authentication runtime state updated"
+        ]
+      },
+      {
+        "id": "OP_IAM_VALIDATE_ASSURANCE",
+        "name": "Validate assurance requirement",
+        "inputs": [
+          "current assurance",
+          "required assurance"
+        ],
+        "outputs": [
+          "sufficient | insufficient"
+        ],
+        "errors": [],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "levels": [
+      "none",
+      "light",
+      "medium",
+      "strong"
+    ],
+    "ordering": "none < light < medium < strong",
+    "light": "username + password",
+    "medium": "username + password + 2FA",
+    "strong": "shell-only assurance boundary",
+    "separation_rule": "Assurance proves identity strength; it does not grant authorization.",
+    "resource_rule": "A resource may require a minimum assurance level in addition to authorization.",
+    "remote_rule": "Remote assurance mapping is customer/remote-policy defined and not inferred from transport strength.",
+    "session_rule": "Assurance state is runtime/session state with explicit lifetime."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "GOVERNANCE_BOUNDARY_EXPLICIT",
+        "rule": "Identity assurance, authorization, remote delegation and activation state remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "higher assurance automatically grants broader authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "authorization interpreted as proof of identity strength",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "transport encryption treated as IAM assurance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "remote assurance mapping inferred without explicit policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "assurance session state persisted as immutable canonical identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "resource assurance requirement bypassed",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AUTHORITY",
+      "target_ref": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT",
+      "purpose": "Assurance and authority remain orthogonal."
+    },
+    {
+      "id": "REF_STATE",
+      "target_ref": "AIGMOS_RUNTIME_DEFINITION_STATE_SEPARATION_CONTRACT",
+      "purpose": "Assurance/session state is runtime state."
+    }
+  ],
+  "prose": {
+    "summary": "Define IAM assurance levels and authentication semantics separately from authorization so identity proof strength never implicitly creates resource rights.",
+    "notes": [
+      "Unlocked until reconciled against existing IAM/AC/DWH contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

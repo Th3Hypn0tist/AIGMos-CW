@@ -1,0 +1,193 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT",
+    "name": "AccessCore Reauthentication",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define optional per-resource reauthentication with explicit assurance requirement, allowed authentication methods, resource-specific lifetime and key/session rotation.",
+  "scope": {
+    "owns": [
+      "AccessCore Reauthentication semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "transport implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ACCESSCORE_REAUTH",
+      "name": "AccessCore Reauthentication",
+      "purpose": "Define optional per-resource reauthentication with explicit assurance requirement, allowed authentication methods, resource-specific lifetime and key/session rotation.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE_AUTHORIZATION"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_IAM_ASSURANCE"
+      ],
+      "member_refs": [
+        "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT",
+        "GOVERNANCE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_REAUTH_REQUIRE",
+        "OP_REAUTH_PERFORM",
+        "OP_REAUTH_EXPIRE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_REAUTH_REQUIRE",
+        "name": "Resolve resource reauthentication requirement",
+        "inputs": [
+          "resource ref",
+          "reauth policy"
+        ],
+        "outputs": [
+          "required assurance + allowed auth methods + lifetime"
+        ],
+        "errors": [
+          "policy invalid"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_REAUTH_PERFORM",
+        "name": "Perform resource reauthentication",
+        "inputs": [
+          "identity",
+          "allowed auth method",
+          "required assurance"
+        ],
+        "outputs": [
+          "resource-specific reauth grant"
+        ],
+        "errors": [
+          "reauth failed"
+        ],
+        "side_effects": [
+          "resource-specific auth state created"
+        ]
+      },
+      {
+        "id": "OP_REAUTH_EXPIRE",
+        "name": "Expire reauthentication grant",
+        "inputs": [
+          "grant",
+          "lifetime/rotation condition"
+        ],
+        "outputs": [
+          "expired grant"
+        ],
+        "errors": [],
+        "side_effects": [
+          "resource-specific auth state removed"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "scope": "per resource/operation",
+    "required_fields": [
+      "required_assurance",
+      "allowed_auth_methods",
+      "lifetime"
+    ],
+    "success_rule": "Successful reauthentication creates a resource-specific bounded grant.",
+    "rotation_rule": "Successful reauthentication rotates applicable keys/session material according to the resource policy.",
+    "lifetime_rule": "Reauth lifetime is resource-specific and finite where enabled.",
+    "separation_rule": "Reauthentication raises/refreshes assurance for the scoped resource; it does not create unrelated authorization.",
+    "fallback_rule": "Failure does not silently fall back to weaker assurance."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "GOVERNANCE_BOUNDARY_EXPLICIT",
+        "rule": "Identity assurance, authorization, remote delegation and activation state remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "reauth success grants unrelated resource rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "resource reauth lifetime unbounded when policy requires expiry",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "reauth failure silently downgrades to weaker method",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "allowed authentication methods inferred instead of explicit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "resource-specific grant reused outside its scope",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "required assurance not validated",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_IAM",
+      "target_ref": "AIGMOS_IAM_ASSURANCE_CONTRACT",
+      "purpose": "Reauth validates explicit IAM assurance levels."
+    },
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_AUTHORIZATION_CONTRACT",
+      "purpose": "Reauth complements but does not replace authorization."
+    }
+  ],
+  "prose": {
+    "summary": "Define optional per-resource reauthentication with explicit assurance requirement, allowed authentication methods, resource-specific lifetime and key/session rotation.",
+    "notes": [
+      "Unlocked until reconciled against existing IAM/AC/DWH contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

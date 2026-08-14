@@ -1,0 +1,167 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_CONCURRENCY_CONFLICT_CONTRACT",
+    "name": "DWH Concurrency and Conflict Control",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit optimistic/pessimistic concurrency and same-target conflict detection so stale writers never silently overwrite newer accepted state.",
+  "scope": {
+    "owns": [
+      "DWH Concurrency and Conflict Control semantics"
+    ],
+    "does_not_own": [
+      "source domain model ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_CONCURRENCY_CONFLICT",
+      "name": "DWH Concurrency and Conflict Control",
+      "purpose": "Define explicit optimistic/pessimistic concurrency and same-target conflict detection so stale writers never silently overwrite newer accepted state.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_MUTATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_CONCURRENCY_CONFLICT_CONTRACT",
+        "DWH_MUTATION_EXACT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_MUTATION",
+      "name": "Mutation",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_MUTATION already referenced by 6 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 6,
+        "distinct_child_topics": 6,
+        "host_contract_ref": "AIGMOS_DWH_CONCURRENCY_CONFLICT_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "profiles": [
+      "optimistic_version",
+      "compare_and_set",
+      "lock_explicit",
+      "single_writer",
+      "other declared profile"
+    ],
+    "version_rule": "Optimistic writes bind to an explicit expected version/hash/revision where required.",
+    "conflict_rule": "Expected-versus-current mismatch produces an explicit conflict, not last-write-wins unless that policy is explicitly declared.",
+    "merge_rule": "Conflict merge/reconciliation is a separate explicit operation with provenance.",
+    "lock_rule": "Locks, where used, have explicit owner/scope/lifetime and release semantics.",
+    "identity_rule": "Record identity and record version/revision identity remain distinct.",
+    "retry_rule": "Automatic retry is bounded and may only reapply when semantics remain valid under the declared profile.",
+    "order_rule": "mtime, arrival order or filesystem order never establishes authority by itself.",
+    "authority_rule": "Winning a concurrency race does not substitute for authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_MUTATION_EXACT",
+        "rule": "Every DWH mutation resolves an exact destination instance/schema/record/field identity, validates intended change, evaluates authorization and conflict state, and records provenance; no write is inferred from query/display context or silently overwrites conflicting accepted state."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "stale writer silently overwrites current state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "mtime used as conflict authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "record revision used as record semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "merge performed implicitly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "lock has no owner/lifetime",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "retry unbounded",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REC",
+      "target_ref": "AIGMOS_RECONCILIATION_MERGE_CONTRACT",
+      "purpose": "Conflicts enter explicit reconciliation when needed."
+    },
+    {
+      "id": "REF_WRITE",
+      "target_ref": "AIGMOS_DWH_WRITE_OPERATION_IDENTITY_CONTRACT",
+      "purpose": "Concurrency applies to exact writes."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit optimistic/pessimistic concurrency and same-target conflict detection so stale writers never silently overwrite newer accepted state.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH schema binding, lineage, AccessCore and canonical change-boundary contracts.",
+      "Pass 6 hosts grouping-only Topic TOPIC_MUTATION solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

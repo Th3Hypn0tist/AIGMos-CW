@@ -1,0 +1,229 @@
+{
+  "behavior": {
+    "events": [],
+    "flows": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "errors": [
+          "identity unresolved",
+          "Project unresolved",
+          "terms invalid"
+        ],
+        "id": "OP_PARTICIPATION_ADD",
+        "inputs": [
+          "Project",
+          "identity",
+          "role/terms"
+        ],
+        "name": "Add Project participant",
+        "outputs": [
+          "participation relation"
+        ],
+        "side_effects": [
+          "Project participation updated"
+        ]
+      },
+      {
+        "errors": [],
+        "id": "OP_PARTICIPATION_END",
+        "inputs": [
+          "participation",
+          "reason/time"
+        ],
+        "name": "End Project participation",
+        "outputs": [
+          "ended participation"
+        ],
+        "side_effects": [
+          "participation state updated"
+        ]
+      }
+    ],
+    "states": []
+  },
+  "constraints": {
+    "hard_gates": [
+      {
+        "id": "GATE_3E285169B9",
+        "condition": "Project participation grants unrelated AC rights automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_F509DFE823",
+        "condition": "participation alone creates merit/Tier evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_DBFF9DD134",
+        "condition": "participant identity unresolved",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_C0F31ECCC9",
+        "condition": "participation interval/role inferred solely from prose",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_F8E0D65894",
+        "condition": "employment participation modeled outside explicit Project relation without reason",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_D58E3E5397",
+        "condition": "participant inferred from author field only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_8AFD362FCC",
+        "condition": "participation equals merit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_F3E1E5B458",
+        "condition": "role grants system role",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_7C4652BC3A",
+        "condition": "project selected by name",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4FE5145AC3",
+        "condition": "time contribution duplicated silently",
+        "result": "hard_fail"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "MARKET_SEMANTICS_EXPLICIT",
+        "rule": "Marketplace discovery, matching, participation, feedback and visibility semantics remain explicit and do not override Project/Merit/IAM ownership."
+      },
+      {
+        "id": "COMPOSITION_NONOWNERSHIP",
+        "rule": "Composition never silently transfers semantic ownership: universal modules own their primitives, domains own their composition semantics, and composed members retain their own identities and contracts."
+      },
+      {
+        "id": "EXPLICIT_STRUCTURE",
+        "rule": "Containment, relation, dependency, composition and projection edges exist only through explicit typed references; naming, file hierarchy, UI adjacency or shared values never create semantic structure."
+      }
+    ]
+  },
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_PROJECT_PARTICIPATION_CONTRACT",
+    "name": "Project Participation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "members": [],
+  "prose": {
+    "notes": [
+      "Unlocked until reconciled against existing FreeMarket contracts and repository-wide Contract Format 1.4 validation.",
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: freemarket/project/05_Project_Participation.json, project/03_Project_Participation_Evidence.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define explicit identity-to-Project participation and role/terms semantics separately from IAM authentication, AccessCore authorization and merit outcome. [2] Define explicit participant/role/contribution evidence linking IAM identities to exact Projects and time/work evidence."
+  },
+  "purpose": "Reconciled source purposes: [1] Define explicit identity-to-Project participation and role/terms semantics separately from IAM authentication, AccessCore authorization and merit outcome. [2] Define explicit participant/role/contribution evidence linking IAM identities to exact Projects and time/work evidence.",
+  "references": [
+    {
+      "id": "REF_PROJECT",
+      "target_ref": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT",
+      "purpose": "Participation targets Project."
+    },
+    {
+      "id": "REF_IDENTITY",
+      "target_ref": "AIGMOS_IDENTITYCORE_CONTRACT",
+      "purpose": "Participant is explicit identity."
+    },
+    {
+      "id": "REF_PROJ",
+      "target_ref": "AIGMOS_PROJECT_IDENTITY_CONTRACT",
+      "purpose": "Participation binds exact Projects."
+    }
+  ],
+  "scope": {
+    "does_not_own": [
+      "presentation semantics",
+      "transport implementation",
+      "unrelated IAM/AC policy",
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "presentation/layout semantics"
+    ],
+    "owns": [
+      "Project Participation semantics",
+      "Project Participation Evidence semantics"
+    ]
+  },
+  "semantics": {
+    "authority_rule": "Participation evidence does not automatically grant Project administration rights.",
+    "authorization_rule": "Participation does not automatically grant unrelated AccessCore rights.",
+    "employment_rule": "Employment participation is represented within the employment Project/child Project structure.",
+    "identity_rule": "Each material participation/contribution record has explicit evidence identity.",
+    "merit_rule": "Participation alone does not create merit; actual evidence/outcomes feed MeritCore.",
+    "participant_rule": "IAM identity ref is exact.",
+    "project_rule": "Project ref is exact.",
+    "relation_rule": "Participation is an explicit relation between identity and Project.",
+    "result_rule": "Participation evidence is distinct from MeritCore merit calculation.",
+    "role_rule": "Reconciled source clauses: [1] Role/terms are explicit Project participation semantics. [2] Role/contribution semantics are explicit and domain/project-scoped.",
+    "time_rule": "Reconciled source clauses: [1] Participation interval may bound eligible Project evidence context. [2] Applicable week/hour atoms are explicit."
+  },
+  "source_role": "definition",
+  "status": "locked",
+  "structure": {
+    "authority": [],
+    "containment": [],
+    "dependencies": [],
+    "ownership": [],
+    "relations": []
+  },
+  "topics": [
+    {
+      "child_topics": [],
+      "composed_topic_refs": [
+        "TOPIC_PROJECT",
+        "TOPIC_IDENTITYCORE",
+        "TOPIC_ACCESSCORE_AUTHORIZATION"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_PROJECT_PARTICIPATION",
+      "member_refs": [
+        "AIGMOS_PROJECT_PARTICIPATION_CONTRACT",
+        "MARKET_SEMANTICS_EXPLICIT",
+        "COMPOSITION_NONOWNERSHIP",
+        "EXPLICIT_STRUCTURE",
+        "GATE_3E285169B9",
+        "GATE_F509DFE823",
+        "GATE_DBFF9DD134",
+        "GATE_C0F31ECCC9",
+        "GATE_F8E0D65894",
+        "GATE_D58E3E5397",
+        "GATE_8AFD362FCC",
+        "GATE_F3E1E5B458",
+        "GATE_7C4652BC3A",
+        "GATE_4FE5145AC3"
+      ],
+      "metadata": {},
+      "name": "Project Participation",
+      "operation_refs": [
+        "OP_PARTICIPATION_ADD",
+        "OP_PARTICIPATION_END"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_PROJECT"
+      ],
+      "purpose": "Reconciled source clauses: [1] Define explicit identity-to-Project participation and role/terms semantics separately from IAM authentication, AccessCore authorization and merit outcome. [2] Define explicit participant/role/contribution evidence linking IAM identities to exact Projects and time/work evidence.",
+      "relation_refs": []
+    }
+  ]
+}

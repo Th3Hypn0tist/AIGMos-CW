@@ -1,0 +1,141 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_COMMAND_IO_MONITOR_CONTRACT",
+    "name": "Import/Export Command Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose projection for recursive import/export command trees, profile bindings, candidate imports, export results and command errors/remediation.",
+  "scope": {
+    "owns": [
+      "Import/Export Command Monitor semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_COMMAND_IO_MONITOR",
+      "name": "Import/Export Command Monitor",
+      "purpose": "Define a read-only Expose projection for recursive import/export command trees, profile bindings, candidate imports, export results and command errors/remediation.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_COMMANDS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_COMMAND_IO_MONITOR_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "import/export family trees",
+      "concrete format commands",
+      "help metadata",
+      "profile bindings",
+      "import candidate/diff",
+      "export result/hash",
+      "errors/remediation suggestions"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Command family, concrete command, import/export profile, candidate/result and error identities remain distinct.",
+    "action_rule": "invoke-import/invoke-export/apply-import operations use separate authorized workflows.",
+    "authority_rule": "Viewing command/profile state grants no import/export authority.",
+    "failure_rule": "unknown-format/invalid-profile/rejected-import/lossy-export states remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor imports by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "family root shown executable",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "profile inferred from extension visually",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "candidate shown accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "error suggestion auto-runs",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EXP_TREE",
+      "target_ref": "AIGMOS_EXPORT_COMMAND_TREE_CONTRACT",
+      "purpose": "Monitor renders recursive export tree."
+    },
+    {
+      "id": "REF_IMP_TREE",
+      "target_ref": "AIGMOS_IMPORT_COMMAND_TREE_CONTRACT",
+      "purpose": "Monitor renders recursive import tree."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose projection for recursive import/export command trees, profile bindings, candidate imports, export results and command errors/remediation.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

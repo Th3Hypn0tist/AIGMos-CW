@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_COMMAND_NODE_IDENTITY_CONTRACT",
+    "name": "Concrete Command Node Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each executable command as an explicit leaf-or-concrete node identity with exact parent family, operation binding, argument schema and help metadata.",
+  "scope": {
+    "owns": [
+      "Concrete Command Node Identity semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_COMMAND_NODE_IDENTITY",
+      "name": "Concrete Command Node Identity",
+      "purpose": "Define each executable command as an explicit leaf-or-concrete node identity with exact parent family, operation binding, argument schema and help metadata.",
+      "parent_topic_refs": [
+        "TOPIC_COMMANDS",
+        "TOPIC_COMMAND_TREE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_COMMAND_NODE_IDENTITY_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each executable command has an explicit stable command identity.",
+    "parent_rule": "Parent command-family ref is exact.",
+    "operation_rule": "Command maps to one exact canonical operation or declared command execution semantics.",
+    "argument_rule": "Argument/options schema is explicit.",
+    "execution_rule": "Concrete command invocation creates a separate request/execution identity.",
+    "alias_rule": "Aliases are explicit and never create duplicate command semantics.",
+    "authority_rule": "Command registration does not authorize caller."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "command path reused as execution identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "operation binding guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "alias shadows unrelated command",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "arguments free-form without declared semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "registration grants execution rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_FAMILY",
+      "target_ref": "AIGMOS_COMMAND_FAMILY_IDENTITY_CONTRACT",
+      "purpose": "Concrete command nodes live under exact families."
+    }
+  ],
+  "prose": {
+    "summary": "Define each executable command as an explicit leaf-or-concrete node identity with exact parent family, operation binding, argument schema and help metadata.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

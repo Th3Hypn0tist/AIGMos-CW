@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_THEME_TOKEN_BOUNDARY_CONTRACT",
+    "name": "Theme and Token Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define theme/token semantics as presentation configuration that may switch or override visual tokens while preserving the same canonical UI/component and domain identities.",
+  "scope": {
+    "owns": [
+      "Theme and Token Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "runtime authority",
+      "module-specific business logic"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_THEME_TOKEN_BOUNDARY",
+      "name": "Theme and Token Boundary",
+      "purpose": "Define theme/token semantics as presentation configuration that may switch or override visual tokens while preserving the same canonical UI/component and domain identities.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_WEB_BASE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_THEME_TOKEN_BOUNDARY_CONTRACT",
+        "WEB_PRESENTATION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "theme_rule": "Theme is a named configuration/projection over canonical style tokens.",
+    "identity_rule": "Changing theme does not change page, component, command, asset or domain identities.",
+    "token_rule": "Theme overrides only declared themeable tokens.",
+    "brand_rule": "Brand colors may serve as defaults while site/theme configuration may override according to policy.",
+    "contrast_rule": "Theme validation may enforce accessibility contrast and visibility constraints.",
+    "runtime_rule": "Theme selection is presentation/runtime preference state unless explicitly persisted as user/site configuration.",
+    "semantic_rule": "Dark/light/brand variants do not create separate semantic UI trees."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "WEB_PRESENTATION_BOUNDARY",
+        "rule": "Web Base, style, assets and responsive layout define reusable presentation primitives only; they do not become semantic or runtime authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "theme change creates new component/domain identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "theme overrides undeclared semantic field",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "dark/light variant duplicates semantic UI tree",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "theme bypasses accessibility constraints where required",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "theme selection grants authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_STYLE",
+      "target_ref": "AIGMOS_CANONICAL_STYLE_CONTRACT",
+      "purpose": "Themes are configurations over canonical style tokens."
+    },
+    {
+      "id": "REF_WEB",
+      "target_ref": "AIGMOS_WEB_BASE_PRIMITIVES_CONTRACT",
+      "purpose": "Same primitives render under different themes."
+    }
+  ],
+  "prose": {
+    "summary": "Define theme/token semantics as presentation configuration that may switch or override visual tokens while preserving the same canonical UI/component and domain identities.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Expose/Web Base/style contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

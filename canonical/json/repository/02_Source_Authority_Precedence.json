@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_SOURCE_AUTHORITY_PRECEDENCE_CONTRACT",
+    "name": "Source Authority Precedence",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic authority resolution among definition, reconciliation, generated, migration, history and other declared source roles without using file freshness, path order or archive order as semantic precedence.",
+  "scope": {
+    "owns": [
+      "Source Authority Precedence semantics"
+    ],
+    "does_not_own": [
+      "Contract Format bootstrap semantics",
+      "canonical contract domain semantics",
+      "runtime business authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_SOURCE_AUTHORITY_PRECEDENCE",
+      "name": "Source Authority Precedence",
+      "purpose": "Define deterministic authority resolution among definition, reconciliation, generated, migration, history and other declared source roles without using file freshness, path order or archive order as semantic precedence.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_SOURCE_RESOLUTION",
+        "TOPIC_REPOSITORY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_SOURCE_AUTHORITY_PRECEDENCE_CONTRACT",
+        "SOURCE_RESOLUTION_DETERMINISTIC",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "authority_rule": "Semantic authority is determined by explicit source role, accepted snapshot/release state and reconciliation outcome.",
+    "freshness_rule": "mtime, upload time and commit recency are advisory provenance only and never semantic precedence by themselves.",
+    "path_rule": "Directory depth/name/alphabetical order never establishes authority.",
+    "archive_rule": "ZIP member order never establishes authority.",
+    "reconciliation_rule": "Conflicting same-identity sources require explicit reconciliation/supersession rather than implicit winner selection.",
+    "history_rule": "Historical/deprecated/superseded artifacts remain traceable but cannot override active accepted definitions.",
+    "candidate_rule": "Candidate/review sources cannot override accepted definitions until explicit approval/replacement."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SOURCE_RESOLUTION_DETERMINISTIC",
+        "rule": "Canonical source resolution is deterministic, exact-identity based and provenance-preserving; filesystem location, transport or freshness never silently changes semantic authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "newest file wins semantic conflict",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "alphabetical/path order chooses authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "archive member order chooses authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "candidate source overrides accepted source automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "same-identity conflict resolved without reconciliation evidence",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RECON",
+      "target_ref": "AIGMOS_RECONCILIATION_MERGE_CONTRACT",
+      "purpose": "Conflicting sources require explicit reconciliation."
+    },
+    {
+      "id": "REF_RELEASE",
+      "target_ref": "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT",
+      "purpose": "Accepted/released snapshot state participates in authority resolution."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic authority resolution among definition, reconciliation, generated, migration, history and other declared source roles without using file freshness, path order or archive order as semantic precedence.",
+    "notes": [
+      "Unlocked pending reconciliation against BootstrapResolution, source-role and repository validation contracts."
+    ]
+  }
+}

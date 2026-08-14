@@ -1,0 +1,149 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_BEHAVIOR_CAUSALITY_VALIDATION_CONTRACT",
+    "name": "Behavior and Causality Validation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define validation of operations, events, flows, effects, ordering and runtime execution boundaries so execution semantics are explicit and cannot arise from incidental serialization or topology.",
+  "scope": {
+    "owns": [
+      "Behavior and Causality Validation semantics"
+    ],
+    "does_not_own": [
+      "source semantic content",
+      "runtime implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_VALIDATION_BEHAVIOR",
+      "name": "Behavior and Causality Validation",
+      "purpose": "Define validation of operations, events, flows, effects, ordering and runtime execution boundaries so execution semantics are explicit and cannot arise from incidental serialization or topology.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_VALIDATION",
+        "TOPIC_CORE_CAUSALITY",
+        "TOPIC_RUNTIME_DISPATCHER"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_BEHAVIOR_CAUSALITY_VALIDATION_CONTRACT",
+        "VALIDATION_NONAUTHORITATIVE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "checks": [
+      "operation identity/input/output/error/effect definitions",
+      "event identity/payload/cause",
+      "flow entry/exit/steps",
+      "cause/next/subflow refs",
+      "explicit effect ownership",
+      "dispatcher boundary",
+      "bounded operation rules"
+    ],
+    "ordering_rule": "Execution order must come from explicit causal/flow semantics, never ordinary JSON array position.",
+    "effect_rule": "Side effects are explicitly declared and authorized.",
+    "dispatch_rule": "Runtime effects cross canonical dispatcher/operation boundaries.",
+    "payload_rule": "Payload/model/tool/backend output remains inert until explicit operation consumes it.",
+    "bound_rule": "Dynamic operations, loops, queues, retries and recursion satisfy applicable finite bounds.",
+    "cleanup_rule": "Terminal success/error/timeout/cancel paths satisfy declared cleanup requirements."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "VALIDATION_NONAUTHORITATIVE",
+        "rule": "Validation proves or rejects conformance; it never invents missing semantics or becomes semantic owner."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "execution order inferred from incidental array order",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "operation has hidden undeclared effect",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "payload/model output directly executes arbitrary effect",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "runtime effect bypasses dispatcher",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "dynamic behavior unbounded",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "terminal path omits required cleanup",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CAUSE",
+      "target_ref": "AIGMOS_CORE_EXPLICIT_CAUSALITY_CONTRACT",
+      "purpose": "Execution causality is explicit."
+    },
+    {
+      "id": "REF_DISPATCH",
+      "target_ref": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+      "purpose": "Effects cross canonical execution boundary."
+    },
+    {
+      "id": "REF_BOUNDS",
+      "target_ref": "AIGMOS_CORE_BOUNDED_OPERATION_CONTRACT",
+      "purpose": "Dynamic behavior is bounded."
+    }
+  ],
+  "prose": {
+    "summary": "Define validation of operations, events, flows, effects, ordering and runtime execution boundaries so execution semantics are explicit and cannot arise from incidental serialization or topology.",
+    "notes": [
+      "Unlocked until exercised against the complete assembled Contract Format 1.4 tree."
+    ]
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TOOL_INVOCATION_RESULT_BOUNDARY_CONTRACT",
+    "name": "Tool Invocation and Result Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define governed tool invocation and result handling so exact tool/target/arguments are validated and authorized, while returned data remains inert until explicitly consumed.",
+  "scope": {
+    "owns": [
+      "Tool Invocation and Result Boundary semantics"
+    ],
+    "does_not_own": [
+      "external MCP implementation semantics",
+      "AccessCore policy ownership",
+      "domain business semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TOOL_INVOCATION_RESULT_BOUNDARY",
+      "name": "Tool Invocation and Result Boundary",
+      "purpose": "Define governed tool invocation and result handling so exact tool/target/arguments are validated and authorized, while returned data remains inert until explicitly consumed.",
+      "parent_topic_refs": [
+        "TOPIC_MCP",
+        "TOPIC_TOOLS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TOOL_INVOCATION_RESULT_BOUNDARY_CONTRACT",
+        "MCP_TOOL_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "invocation_rule": "Invocation resolves exact registered #T tool identity.",
+    "binding_rule": "Concrete invocation resolves exact validated MCP/local implementation binding.",
+    "argument_rule": "Arguments validate against tool schema before dispatch.",
+    "authorization_rule": "Caller/session AccessCore and assurance constraints are evaluated independently from model/tool recommendation.",
+    "execution_rule": "Invocation receives a distinct runtime execution identity.",
+    "result_rule": "Tool result is inert data with exact tool/invocation/source provenance.",
+    "effect_rule": "A returned command-like string or structured object does not execute automatically.",
+    "chain_rule": "Any subsequent operation requested from tool output crosses the normal validate/authorize/dispatch boundary again.",
+    "failure_rule": "Timeout/error/schema violation is explicit and cannot masquerade as successful result."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MCP_TOOL_SEPARATION",
+        "rule": "MCP endpoint identity, advertised capability, validated #T tool identity, concrete invocation and returned result are separate identities; advertisement or availability never grants execution authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "tool selected fuzzily by name",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "arguments dispatched before validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "tool availability grants authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "tool result auto-executes",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "failed invocation represented as successful",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "result provenance omitted",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_TOOL_SCHEMA_CAPABILITY_VALIDATION_CONTRACT",
+      "purpose": "Invocation obeys validated tool contract."
+    },
+    {
+      "id": "REF_MODEL",
+      "target_ref": "AIGMOS_MODEL_OUTPUT_OPERATION_BOUNDARY_CONTRACT",
+      "purpose": "Tool/model outputs remain inert until normal dispatch boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define governed tool invocation and result handling so exact tool/target/arguments are validated and authorized, while returned data remains inert until explicitly consumed.",
+    "notes": [
+      "Unlocked pending reconciliation against #MCP, #T, q-family and command-dispatch contracts."
+    ]
+  }
+}

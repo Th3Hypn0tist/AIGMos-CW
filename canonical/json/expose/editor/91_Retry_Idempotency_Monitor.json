@@ -1,0 +1,131 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_RETRY_IDEMPOTENCY_MONITOR_CONTRACT",
+    "name": "Retry and Idempotency Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for idempotency keys/scopes, retry policies, attempts, duplicate decisions and reconciled request outcomes.",
+  "scope": {
+    "owns": [
+      "Retry and Idempotency Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_RETRY_IDEMPOTENCY_MONITOR",
+      "name": "Retry and Idempotency Monitor",
+      "purpose": "Define a read-only Expose monitor for idempotency keys/scopes, retry policies, attempts, duplicate decisions and reconciled request outcomes.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_RETRY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_RETRY_IDEMPOTENCY_MONITOR_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "request/idempotency scope",
+      "retry policy",
+      "attempt chain",
+      "error/retry eligibility",
+      "duplicate/conflict decision",
+      "accepted effect/result",
+      "ambiguous/partial state"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Request, key, policy, attempt, execution, result and duplicate-decision identities remain distinct.",
+    "action_rule": "retry/reconcile/cancel operations invoke separate authorized workflows.",
+    "authority_rule": "Viewing retry state grants no retry authority.",
+    "failure_rule": "ambiguous/partial/conflict states are explicit.",
+    "graph_rule": "Attempt/retry/dedupe edges correspond only to explicit refs."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor retries by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "idempotency key displayed as execution identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "ambiguous result hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "visual order invents attempt causality",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "duplicate conflict auto-resolved",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REC",
+      "target_ref": "AIGMOS_RETRY_RESULT_RECONCILIATION_CONTRACT",
+      "purpose": "Monitor exposes request-level reconciliation."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for idempotency keys/scopes, retry policies, attempts, duplicate decisions and reconciled request outcomes.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

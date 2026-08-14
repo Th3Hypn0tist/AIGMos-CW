@@ -1,0 +1,162 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_ORCHESTRATION_MONITOR_CONTRACT",
+    "name": "Routine, Trigger and Runner Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for Routine invocations, Trigger evaluations/bindings, Runner instantiation, step execution and causality traces.",
+  "scope": {
+    "owns": [
+      "Routine, Trigger and Runner Monitor semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_ORCHESTRATION_MONITOR",
+      "name": "Routine, Trigger and Runner Monitor",
+      "purpose": "Define a read-only Expose monitor for Routine invocations, Trigger evaluations/bindings, Runner instantiation, step execution and causality traces.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_ORCHESTRATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_ORCHESTRATION_MONITOR_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_ORCHESTRATION",
+      "name": "Orchestration",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_ORCHESTRATION already referenced by 7 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 7,
+        "distinct_child_topics": 7,
+        "host_contract_ref": "AIGMOS_EXPOSE_ORCHESTRATION_MONITOR_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "Routine definitions/invocations",
+      "Trigger definitions/evaluations",
+      "action bindings",
+      "Runner executions",
+      "step status",
+      "operation dispatch refs",
+      "causality graph",
+      "loop bounds"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Routine, invocation, Trigger, evaluation, binding, Runner, step, operation and Event identities remain distinct.",
+    "action_rule": "invoke/cancel/retry/rebind operations use separate authorized workflows.",
+    "authority_rule": "Viewing orchestration grants no execution authority.",
+    "graph_rule": "Rendered causality edges correspond only to explicit refs.",
+    "failure_rule": "unresolved/failed/loop-blocked/partial states remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor runs Routine by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "visual edge creates trigger action",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "definition/execution conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "failed step hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "loop shown valid despite bound breach",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TRACE",
+      "target_ref": "AIGMOS_ORCHESTRATION_CAUSALITY_TRACE_CONTRACT",
+      "purpose": "Monitor renders exact causal chain."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for Routine invocations, Trigger evaluations/bindings, Runner instantiation, step execution and causality traces.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_ORCHESTRATION solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

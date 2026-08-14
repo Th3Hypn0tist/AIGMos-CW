@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_COMMAND_ERROR_REMEDIATION_CONTRACT",
+    "name": "Command Error and Remediation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define structured command failures with exact error class, target/context refs and concise remediation, preserving the runtime UX rule of one actionable remediation line where possible.",
+  "scope": {
+    "owns": [
+      "Command Error and Remediation semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "transport presentation",
+      "implicit authorization"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_COMMAND_ERROR_REMEDIATION",
+      "name": "Command Error and Remediation",
+      "purpose": "Define structured command failures with exact error class, target/context refs and concise remediation, preserving the runtime UX rule of one actionable remediation line where possible.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_COMMAND_REGISTRY",
+        "TOPIC_COMMAND_PARSING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_COMMAND_ERROR_REMEDIATION_CONTRACT",
+        "COMMAND_EXECUTION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "error_classes": [
+      "parse_error",
+      "unknown_command",
+      "invalid_argument",
+      "target_unresolved",
+      "capability_missing",
+      "authorization_denied",
+      "assurance_required",
+      "dependency_failure",
+      "runtime_failure",
+      "timeout",
+      "cancelled"
+    ],
+    "structure_rule": "Error includes stable class/code plus machine-readable context.",
+    "remediation_rule": "When a deterministic corrective action exists, emit one concise remediation line.",
+    "no_guess_rule": "If no deterministic remediation is known, do not invent one.",
+    "security_rule": "Errors do not leak restricted target/data/secret metadata.",
+    "cause_rule": "Nested/internal causes may be retained for authorized diagnostics while user-facing error remains bounded.",
+    "authority_rule": "Error handling never retries by bypassing authorization or enabling hidden capability."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "COMMAND_EXECUTION_EXPLICIT",
+        "rule": "Executable commands resolve by exact canonical identity and schema, cross one governed dispatcher boundary, and never infer authority from capability presence or parser success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "error only free-form prose with no stable class",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "remediation guessed when unknown",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "error leaks secret/restricted metadata",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "failure auto-enables hidden capability",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "authorization denial retried via bypass",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CAP",
+      "target_ref": "AIGMOS_RUNTIME_CAPABILITY_RESOLUTION_CONTRACT",
+      "purpose": "Missing capability errors provide deterministic remediation."
+    }
+  ],
+  "prose": {
+    "summary": "Define structured command failures with exact error class, target/context refs and concise remediation, preserving the runtime UX rule of one actionable remediation line where possible.",
+    "notes": [
+      "Unlocked pending reconciliation against existing command/runtime contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

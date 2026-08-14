@@ -1,0 +1,168 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_FREEMARKET_OPPORTUNITY_PROJECT_CONTRACT",
+    "name": "FreeMarket Opportunity to Project",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the explicit transition from marketplace opportunity/listing to a canonical Project, preserving listing provenance without making the listing itself the work primitive.",
+  "scope": {
+    "owns": [
+      "FreeMarket Opportunity to Project semantics"
+    ],
+    "does_not_own": [
+      "presentation semantics",
+      "transport implementation",
+      "unrelated IAM/AC policy"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_FREEMARKET_PROJECT_CREATION",
+      "name": "Opportunity to Project",
+      "purpose": "Define the explicit transition from marketplace opportunity/listing to a canonical Project, preserving listing provenance without making the listing itself the work primitive.",
+      "parent_topic_refs": [
+        "TOPIC_PROJECT"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_FREEMARKET_LISTING",
+        "TOPIC_PROJECT",
+        "TOPIC_CORE_CAUSALITY"
+      ],
+      "member_refs": [
+        "AIGMOS_FREEMARKET_OPPORTUNITY_PROJECT_CONTRACT",
+        "MARKET_SEMANTICS_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_OPPORTUNITY_ACCEPT",
+        "OP_OPPORTUNITY_CREATE_PROJECT"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_OPPORTUNITY_ACCEPT",
+        "name": "Accept opportunity",
+        "inputs": [
+          "listing/opportunity",
+          "parties",
+          "agreed scope"
+        ],
+        "outputs": [
+          "accepted opportunity intent"
+        ],
+        "errors": [
+          "party unresolved",
+          "scope invalid"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_OPPORTUNITY_CREATE_PROJECT",
+        "name": "Create Project from accepted opportunity",
+        "inputs": [
+          "accepted intent"
+        ],
+        "outputs": [
+          "explicit Project"
+        ],
+        "errors": [
+          "Project creation failure"
+        ],
+        "side_effects": [
+          "Project registry updated"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "transition_rule": "Accepted opportunity creates or binds to an explicit Project.",
+    "identity_rule": "Resulting Project has its own stable Project identity.",
+    "provenance_rule": "Project may retain source listing/opportunity refs.",
+    "scope_rule": "Agreed work scope is Project semantics after creation.",
+    "listing_rule": "Listing may close/remain historical after Project creation.",
+    "causality_rule": "Listing -> acceptance -> Project creation is explicit mechanism causality, not inferred from relation proximity."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MARKET_SEMANTICS_EXPLICIT",
+        "rule": "Marketplace discovery, matching, participation, feedback and visibility semantics remain explicit and do not override Project/Merit/IAM ownership."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "accepted listing used as Project identity directly without explicit Project definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Project creation provenance to opportunity lost",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "work begins without explicit Project where Project model applies",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "listing and Project semantics duplicated inconsistently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "transition causality inferred rather than explicit",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LISTING",
+      "target_ref": "AIGMOS_FREEMARKET_LISTING_CONTRACT",
+      "purpose": "Source opportunity."
+    },
+    {
+      "id": "REF_PROJECT",
+      "target_ref": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT",
+      "purpose": "Accepted work becomes Project."
+    }
+  ],
+  "prose": {
+    "summary": "Define the explicit transition from marketplace opportunity/listing to a canonical Project, preserving listing provenance without making the listing itself the work primitive.",
+    "notes": [
+      "Unlocked until reconciled against existing FreeMarket contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

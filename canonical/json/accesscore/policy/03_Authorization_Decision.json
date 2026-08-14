@@ -1,0 +1,142 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_AUTHORIZATION_DECISION_CONTRACT",
+    "name": "AccessCore Authorization Decision",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define every machine-significant authorization evaluation as explicit evidence over exact subject, session/assurance, operation, target resource, policy revision and context.",
+  "scope": {
+    "owns": [
+      "AccessCore Authorization Decision semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime operation implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_AUTHORIZATION_DECISION",
+      "name": "AccessCore Authorization Decision",
+      "purpose": "Define every machine-significant authorization evaluation as explicit evidence over exact subject, session/assurance, operation, target resource, policy revision and context.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE",
+        "TOPIC_AUTHORIZATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_AUTHORIZATION_DECISION_CONTRACT",
+        "IDENTITY_AUTHORITY_SEPARATION",
+        "FAIL_CLOSED_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "decision_states": [
+      "allow",
+      "deny",
+      "challenge_reauth",
+      "not_applicable",
+      "unknown",
+      "error"
+    ],
+    "identity_rule": "Each machine-significant decision has an explicit decision/evaluation identity.",
+    "subject_rule": "Exact identity/session refs are explicit.",
+    "operation_rule": "Exact requested operation/right is explicit.",
+    "resource_rule": "Exact target resource identity/scope is explicit.",
+    "policy_rule": "Decision references exact policy revision/snapshot.",
+    "assurance_rule": "Required/current assurance refs are explicit.",
+    "context_rule": "Relevant execution/request context snapshot is explicit.",
+    "authority_rule": "Only a valid allow decision for the exact scoped request may authorize dispatch."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_AUTHORITY_SEPARATION",
+        "rule": "Identity, authentication assurance, authorization policy, authorization decision, delegation and runtime execution remain separate machine-significant identities/evidence; no one layer silently substitutes for another."
+      },
+      {
+        "id": "FAIL_CLOSED_AUTHORITY",
+        "rule": "Ambiguous, missing, stale or unverifiable authority for a protected effect fails closed rather than inheriting trust from locality, transport reachability, process ownership, UI visibility or previous success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "allow reused for different target",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "policy revision omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "session assurance inferred",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "old decision treated universally reusable",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "unknown means allow",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_POLICY",
+      "target_ref": "AIGMOS_ACCESS_POLICY_IDENTITY_CONTRACT",
+      "purpose": "Decisions evaluate exact policy revisions."
+    },
+    {
+      "id": "REF_ASSURANCE",
+      "target_ref": "AIGMOS_IAM_ASSURANCE_EVIDENCE_CONTRACT",
+      "purpose": "Decision may require exact assurance."
+    }
+  ],
+  "prose": {
+    "summary": "Define every machine-significant authorization evaluation as explicit evidence over exact subject, session/assurance, operation, target resource, policy revision and context.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

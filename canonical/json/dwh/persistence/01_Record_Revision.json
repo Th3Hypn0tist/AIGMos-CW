@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_RECORD_REVISION_CONTRACT",
+    "name": "DWH Record Revision",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit revision/version evidence for mutable persisted records, separate from record semantic identity and suitable for conflict detection, audit and recovery.",
+  "scope": {
+    "owns": [
+      "DWH Record Revision semantics"
+    ],
+    "does_not_own": [
+      "domain schema ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation internals"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_RECORD_REVISION",
+      "name": "DWH Record Revision",
+      "purpose": "Define explicit revision/version evidence for mutable persisted records, separate from record semantic identity and suitable for conflict detection, audit and recovery.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_PERSISTENCE_RECOVERY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_RECORD_REVISION_CONTRACT",
+        "PERSISTENCE_NONIDENTITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "record_rule": "Record semantic identity remains stable across accepted revisions.",
+    "revision_rule": "Each accepted mutation produces or references an explicit revision/version identity/value according to profile.",
+    "parent_rule": "Revision may reference exact predecessor revision where history is maintained.",
+    "content_rule": "Revision evidence binds to exact accepted semantic state/hash where applicable.",
+    "concurrency_rule": "Expected revision participates in optimistic conflict control.",
+    "history_rule": "Prior revisions are immutable evidence when retained.",
+    "identity_rule": "Revision identity never replaces record semantic identity.",
+    "failure_rule": "Uncommitted/failed write attempt does not become accepted record revision."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PERSISTENCE_NONIDENTITY",
+        "rule": "Physical storage location, file name, engine page, snapshot artifact or backup copy never replaces canonical data/schema/instance identity; persistence and recovery operate on exact semantic identities with explicit version/provenance evidence."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "record revision used as record identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "failed write creates accepted revision",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "prior revision silently rewritten",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "revision missing from optimistic conflict check",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "same revision points to conflicting accepted content",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CONFLICT",
+      "target_ref": "AIGMOS_DWH_CONCURRENCY_CONFLICT_CONTRACT",
+      "purpose": "Record revisions support exact conflict control."
+    },
+    {
+      "id": "REF_WRITE",
+      "target_ref": "AIGMOS_DWH_WRITE_OPERATION_IDENTITY_CONTRACT",
+      "purpose": "Accepted writes create explicit revision evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit revision/version evidence for mutable persisted records, separate from record semantic identity and suitable for conflict detection, audit and recovery.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH mutation, runtime snapshot, repository acceptance and retention contracts."
+    ]
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MSG_CONVERSATION_IDENTITY_CONTRACT",
+    "name": "Messaging Conversation Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define direct and group conversations as explicit messaging identities independent from peer identity, transport session and transient Hello rendezvous records.",
+  "scope": {
+    "owns": [
+      "Messaging Conversation Identity semantics"
+    ],
+    "does_not_own": [
+      "Hello rendezvous identity",
+      "IdentityCore identity ownership",
+      "transport cryptographic implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MSG_CONVERSATION_IDENTITY",
+      "name": "Messaging Conversation Identity",
+      "purpose": "Define direct and group conversations as explicit messaging identities independent from peer identity, transport session and transient Hello rendezvous records.",
+      "parent_topic_refs": [
+        "TOPIC_MESSAGING",
+        "TOPIC_HELLO"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MSG_CONVERSATION_IDENTITY_CONTRACT",
+        "MESSAGING_PEER_GOVERNED",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each conversation has an explicit stable conversation identity.",
+    "direct_rule": "Direct conversation references its participating peer identities explicitly.",
+    "group_rule": "Group conversation references explicit group membership/governance state.",
+    "transport_rule": "Conversation identity survives transport reconnect/session replacement.",
+    "hello_rule": "Hello rendezvous record/session identity never becomes conversation identity.",
+    "payload_rule": "Messages reference exact conversation identity.",
+    "authority_rule": "Conversation membership/visibility is governed independently from transport reachability."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MESSAGING_PEER_GOVERNED",
+        "rule": "Messaging is explicit peer/group communication over governed peer transport; rendezvous, transport, conversation policy and message payload remain separate semantic layers."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "transport session used as conversation identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Hello record becomes conversation identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "message lacks exact conversation ref",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "transport reachability grants conversation membership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "peer identity conflated with conversation identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_HELLO",
+      "target_ref": "AIGMOS_HELLO_IDENTITY_CONTRACT",
+      "purpose": "Rendezvous remains separate from conversation identity."
+    }
+  ],
+  "prose": {
+    "summary": "Define direct and group conversations as explicit messaging identities independent from peer identity, transport session and transient Hello rendezvous records.",
+    "notes": [
+      "Unlocked pending reconciliation against existing msg/WebRTC/Hello contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TOPIC_COMPOSITION_CONTRACT",
+    "name": "Topic Composition",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Topics as composable semantic groupings so a higher-level mechanism may be described by composing existing Topics instead of duplicating their documentation or semantics.",
+  "scope": {
+    "owns": [
+      "Topic Composition semantics"
+    ],
+    "does_not_own": [
+      "runtime implementation details",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TOPIC_COMPOSITION",
+      "name": "Topic Composition",
+      "purpose": "Define Topics as composable semantic groupings so a higher-level mechanism may be described by composing existing Topics instead of duplicating their documentation or semantics.",
+      "parent_topic_refs": [
+        "TOPIC_TOPIC_SYSTEM"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_TOPIC_INHERITANCE"
+      ],
+      "member_refs": [
+        "AIGMOS_TOPIC_COMPOSITION_CONTRACT",
+        "TOPIC_GRAPH_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_TOPIC_COMPOSE",
+        "OP_TOPIC_COMPOSITION_RESOLVE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_TOPIC_COMPOSE",
+        "name": "Compose Topic from existing Topics",
+        "inputs": [
+          "new Topic identity",
+          "component Topic refs"
+        ],
+        "outputs": [
+          "composed Topic"
+        ],
+        "errors": [
+          "component unresolved",
+          "composition invalid"
+        ],
+        "side_effects": [
+          "Topic graph updated"
+        ]
+      },
+      {
+        "id": "OP_TOPIC_COMPOSITION_RESOLVE",
+        "name": "Resolve composed Topic",
+        "inputs": [
+          "topic_ref"
+        ],
+        "outputs": [
+          "component Topic graph and semantic surface"
+        ],
+        "errors": [
+          "component unresolved"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "composition_rule": "A Topic may be composed from any number of existing Topics.",
+    "reuse_rule": "Composition references component Topics rather than copying their members/semantics.",
+    "order_example": "An Order Topic may be created from existing Topics that collectively describe order creation and its effects across the full chain.",
+    "runtime_example": "Runtime may compose many Topics because its semantic surface spans multiple mechanisms.",
+    "identity_rule": "Composed Topic has its own stable identity while retaining traceability to components.",
+    "documentation_rule": "Composition allows a mechanism to be specified without redundant parallel documentation."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TOPIC_GRAPH_EXPLICIT",
+        "rule": "Every machine-significant canonical node is classified by explicit Topic membership or explicitly marked outsider; Topics may inherit and compose other Topics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "composed Topic copies component semantics instead of referencing them",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "composed Topic loses component traceability",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "Topic composition limited to one component",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "cross-cutting mechanism forced into duplicated documentation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "component Topic resolved by fuzzy/path heuristic",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TOPIC",
+      "target_ref": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT",
+      "purpose": "Composition reuses Topic identities."
+    }
+  ],
+  "prose": {
+    "summary": "Define Topics as composable semantic groupings so a higher-level mechanism may be described by composing existing Topics instead of duplicating their documentation or semantics.",
+    "notes": [
+      "Unlocked until reconciled against the assembled 1.4 Topic graph and repository-wide validation."
+    ]
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_AUTOMATION_RUNNER_LIFECYCLE_CONTRACT",
+    "name": "Automation Runner Lifecycle",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define `%` Runner as the tracked execution carrier for explicit automation work, with deterministic lifecycle, bounded execution, cancellation and cleanup.",
+  "scope": {
+    "owns": [
+      "Automation Runner Lifecycle semantics"
+    ],
+    "does_not_own": [
+      "domain payload semantics",
+      "transport implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_AUTOMATION_RUNNERS",
+      "name": "Automation Runner Lifecycle",
+      "purpose": "Define `%` Runner as the tracked execution carrier for explicit automation work, with deterministic lifecycle, bounded execution, cancellation and cleanup.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_AUTOMATION",
+        "TOPIC_RUNTIME_CANCELLATION",
+        "TOPIC_CORE_BOUNDED_OPERATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_AUTOMATION_RUNNER_LIFECYCLE_CONTRACT",
+        "AUTOMATION_CAUSALITY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "sigil": "%",
+    "states": [
+      "declared",
+      "queued",
+      "running",
+      "completed",
+      "failed",
+      "cancelled"
+    ],
+    "target_rule": "Runner executes an explicit canonical operation/command/Routine target.",
+    "tracking_rule": "Every active Runner has a runtime execution identity distinct from its canonical Runner definition.",
+    "bound_rule": "Execution time/retry/concurrency limits follow explicit policy.",
+    "cleanup_rule": "success/error/timeout/cancel all converge on cleanup semantics.",
+    "autostart_rule": "Runner autostart is explicit configuration and ordered numerically when applicable.",
+    "osc_rule": "OSC input boot semantics remain separate from ordinary Runner autostart ordering.",
+    "authority_rule": "Runner existence/autostart does not bypass operation authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "AUTOMATION_CAUSALITY_EXPLICIT",
+        "rule": "Automation semantics remain explicit across Event, Trigger, Runner and Routine identities, and execution order never derives from incidental structure or serialization order."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "runner execution untracked",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "runner runtime identity conflated with canonical definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "cancel/error skips cleanup",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "autostart inferred from file presence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "OSC input boot conflated with Runner autostart",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "runner bypasses target authorization",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CANCEL",
+      "target_ref": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT",
+      "purpose": "Runner terminal states use common cleanup semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define `%` Runner as the tracked execution carrier for explicit automation work, with deterministic lifecycle, bounded execution, cancellation and cleanup.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Trigger/Event/Runner/Routine contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

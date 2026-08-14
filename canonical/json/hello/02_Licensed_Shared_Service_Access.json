@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_HELLO_LICENSED_SHARED_SERVICE_ACCESS_CONTRACT",
+    "name": "Hello Licensed Shared-Service Access",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define access to the official Hello/Rendezvous shared service as a license-linked service entitlement while keeping commercial entitlement separate from identity, certification and application authorization.",
+  "scope": {
+    "owns": [
+      "Hello Licensed Shared-Service Access semantics"
+    ],
+    "does_not_own": [
+      "application payload semantics",
+      "IdentityCore ownership",
+      "AccessCore authorization"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_HELLO_LICENSED_SHARED_SERVICE_ACCESS",
+      "name": "Hello Licensed Shared-Service Access",
+      "purpose": "Define access to the official Hello/Rendezvous shared service as a license-linked service entitlement while keeping commercial entitlement separate from identity, certification and application authorization.",
+      "parent_topic_refs": [
+        "TOPIC_HELLO",
+        "TOPIC_RENDEZVOUS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_HELLO_LICENSED_SHARED_SERVICE_ACCESS_CONTRACT",
+        "HELLO_BOOTSTRAP_ONLY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "service_rule": "Official Hello/Rendezvous may be available to applicable licensed AIGMos sites/organizations.",
+    "standard_rule": "Standard licensed sites may use the official rendezvous/signaling shared service according to the active commercial license policy.",
+    "supported_rule": "Supported/OEM and Enterprise tiers may use the same shared service subject to their license terms.",
+    "identity_rule": "License entitlement identifies service eligibility, not peer semantic identity.",
+    "cert_rule": "Certification status is separate from shared-service entitlement.",
+    "authority_rule": "Shared-service entitlement does not grant remote application/data rights.",
+    "failure_rule": "No entitlement/service availability produces explicit service-access failure rather than fallback into hidden authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "HELLO_BOOTSTRAP_ONLY",
+        "rule": "Hello/Rendezvous performs peer discovery/bootstrap only; it never becomes application-payload owner, semantic peer identity, or authorization authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "license entitlement treated as remote application permission",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "certification substituted for shared-service entitlement",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "shared-service access changes peer identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "unlicensed access silently granted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "service availability treated as remote data authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LICENSE",
+      "target_ref": "AIGMOS_LICENSED_SHARED_SERVICES_CONTRACT",
+      "purpose": "Hello is a licensed shared service where applicable."
+    }
+  ],
+  "prose": {
+    "summary": "Define access to the official Hello/Rendezvous shared service as a license-linked service entitlement while keeping commercial entitlement separate from identity, certification and application authorization.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Hello/Rendezvous/licensing/messaging contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

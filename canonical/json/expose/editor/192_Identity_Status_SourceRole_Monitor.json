@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_CF_IDENTITY_STATUS_MONITOR_CONTRACT",
+    "name": "Contract Identity, Status and Source-Role Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for id/name/type/version, readiness status and source role.",
+  "scope": {
+    "owns": [
+      "Contract Identity, Status and Source-Role Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_CF_IDENTITY_STATUS_MONITOR",
+      "name": "Contract Identity, Status and Source-Role Monitor",
+      "purpose": "Define a read-only Expose monitor for id/name/type/version, readiness status and source role.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_CONTRACT_FORMAT"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_CF_IDENTITY_STATUS_MONITOR_CONTRACT",
+        "FORMAT_SECTION_MEANING_EXPLICIT",
+        "BOOTSTRAP_NONRECURSIVE_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "identity id/name/type/version",
+      "duplicate id findings",
+      "status/readiness",
+      "source role",
+      "history/projection conflicts",
+      "identity migration refs"
+    ],
+    "readonly_rule": "Default is read-only.",
+    "identity_rule": "Contract id, path, status and source-role evidence remain distinct.",
+    "action_rule": "rename-id/change-status/change-source-role operations use separate workflows.",
+    "authority_rule": "Viewing metadata grants no canonical admin authority.",
+    "failure_rule": "duplicate-id/invalid-status/role-conflict states remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "FORMAT_SECTION_MEANING_EXPLICIT",
+        "rule": "Every Contract Format section and field has explicit machine-readable meaning; consumers never infer semantics from JSON ordering, filenames, indentation, prose style or neighboring fields."
+      },
+      {
+        "id": "BOOTSTRAP_NONRECURSIVE_AUTHORITY",
+        "rule": "These contracts document and constrain Contract Format semantics but do not replace the repository-root AIGMos_Canonical_Contract_Format_v1.4.0.json bootstrap authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor renames id by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "path shown canonical id",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "locked shown runtime active",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "viewing grants rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "source conflict hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for id/name/type/version, readiness status and source role.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "This contract constrains the semantic interpretation of Contract Format fields; root bootstrap authority remains external to canonical/json."
+    ]
+  }
+}

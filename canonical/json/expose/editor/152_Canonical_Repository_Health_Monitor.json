@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_CANONICAL_REPOSITORY_HEALTH_MONITOR_CONTRACT",
+    "name": "Canonical Repository Health Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for bootstrap health, source-set build, validation/conformance runs, projection consistency, readiness and CI-gate state.",
+  "scope": {
+    "owns": [
+      "Canonical Repository Health Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_CANONICAL_REPOSITORY_HEALTH_MONITOR",
+      "name": "Canonical Repository Health Monitor",
+      "purpose": "Define a read-only Expose monitor for bootstrap health, source-set build, validation/conformance runs, projection consistency, readiness and CI-gate state.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_CANONICAL_CONTRACTS",
+        "TOPIC_REPOSITORY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_CANONICAL_REPOSITORY_HEALTH_MONITOR_CONTRACT",
+        "BOOTSTRAP_AUTHORITY_EXPLICIT",
+        "VALIDATE_BEFORE_ACCEPT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "bootstrap status",
+      "source-set snapshot",
+      "repository build",
+      "validation reports",
+      "registry health",
+      "conformance runs",
+      "projection consistency",
+      "lock/readiness state",
+      "CI gate result"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Repository/source snapshot, build, validation report, conformance run, projection and CI-gate identities remain distinct.",
+    "action_rule": "rebuild/revalidate/run-conformance/regenerate-projections operations use separate authorized workflows.",
+    "authority_rule": "Healthy repository state grants no runtime/deploy authority.",
+    "failure_rule": "bootstrap-failed/invalid/dangling/stale-projection/not-ready/CI-failed states remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOTSTRAP_AUTHORITY_EXPLICIT",
+        "rule": "Contract Format bootstrap authority, canonical contract sources, generated projections, historical artifacts and runtime state remain separate identities/roles; no file becomes authoritative merely by name, path order, timestamp or discovery order."
+      },
+      {
+        "id": "VALIDATE_BEFORE_ACCEPT",
+        "rule": "Candidate canonical changes remain inert until exact format validation, identity/reference resolution, semantic diff, applicable governance/authorization and repository acceptance succeed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor merges/deploys by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "healthy means runtime active",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "projection shown authoritative",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "failed CI hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "build/source identities conflated",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CI",
+      "target_ref": "AIGMOS_CANONICAL_CI_GATE_CONTRACT",
+      "purpose": "Monitor projects exact repository gate state."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for bootstrap health, source-set build, validation/conformance runs, projection consistency, readiness and CI-gate state.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

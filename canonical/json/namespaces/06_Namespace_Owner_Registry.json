@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NAMESPACE_OWNER_REGISTRY_CONTRACT",
+    "name": "Namespace Owner Registry",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the explicit registry mapping every reserved runtime root and namespace family to exactly one authoritative owner contract.",
+  "scope": {
+    "owns": [
+      "Namespace Owner Registry semantics"
+    ],
+    "does_not_own": [
+      "unrelated domain semantics",
+      "presentation semantics",
+      "implicit runtime authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NAMESPACE_OWNER_REGISTRY",
+      "name": "Namespace Owner Registry",
+      "purpose": "Define the explicit registry mapping every reserved runtime root and namespace family to exactly one authoritative owner contract.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NAMESPACES",
+        "TOPIC_STRUCTURE_OWNERSHIP"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_NAMESPACE_OWNER_REGISTRY_CONTRACT",
+        "NAMESPACE_OWNER_CLOSURE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "role": "namespace ownership registry/index",
+    "required_fields": [
+      "namespace_identity",
+      "owner_contract_ref",
+      "namespace_kind",
+      "active_state"
+    ],
+    "namespace_kinds": [
+      "reserved_root",
+      "dynamic_family",
+      "declared_extension"
+    ],
+    "single_owner_rule": "Each active reserved root/family resolves to exactly one authoritative owner contract.",
+    "registry_rule": "Registry indexes ownership; it does not absorb owner semantics.",
+    "dynamic_rule": "Dynamic namespace families map to family owner contracts, not to transient runtime child instances.",
+    "history_rule": "Historical/superseded owner mappings cannot compete with active mappings.",
+    "trace_rule": "A generic reader can resolve root -> owner -> semantics and reverse owner -> owned roots."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "NAMESPACE_OWNER_CLOSURE",
+        "rule": "Every active reserved runtime root has exactly one explicit owner contract and remains distinguishable from runtime availability, Topic grouping and physical implementation location."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "active reserved root has no owner",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "active reserved root has conflicting owners",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "registry duplicates owner semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "historical owner mapping competes with active mapping",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "dynamic child instance incorrectly registered as family owner",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_NS",
+      "target_ref": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
+      "purpose": "Namespace identities are registered separately from owner mappings."
+    },
+    {
+      "id": "REF_OWNER",
+      "target_ref": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT",
+      "purpose": "Namespace ownership is explicit."
+    }
+  ],
+  "prose": {
+    "summary": "Define the explicit registry mapping every reserved runtime root and namespace family to exactly one authoritative owner contract.",
+    "notes": [
+      "Unlocked pending reconciliation against the complete reserved-root set and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

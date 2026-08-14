@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_LISTENER_LIFECYCLE_CONTRACT",
+    "name": "Listener Lifecycle",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define bounded listener lifecycle from declaration through enable/start/running/stop/reload/failure with deterministic cleanup and no conflation of config state with runtime state.",
+  "scope": {
+    "owns": [
+      "Listener Lifecycle semantics"
+    ],
+    "does_not_own": [
+      "protocol business semantics",
+      "domain data semantics",
+      "presentation-only state"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_LISTENER_LIFECYCLE",
+      "name": "Listener Lifecycle",
+      "purpose": "Define bounded listener lifecycle from declaration through enable/start/running/stop/reload/failure with deterministic cleanup and no conflation of config state with runtime state.",
+      "parent_topic_refs": [
+        "TOPIC_INSTANCE_CONFIG",
+        "TOPIC_RUNTIME_NETWORK"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_LISTENER_LIFECYCLE_CONTRACT",
+        "LISTENER_IDENTITY_BINDING_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "states": [
+      "declared",
+      "enabled",
+      "starting",
+      "running",
+      "stopping",
+      "stopped",
+      "failed"
+    ],
+    "start_rule": "Start uses the current validated listener definition/binding.",
+    "stop_rule": "Stop releases socket/process/session resources without deleting listener definition.",
+    "reload_rule": "Reload validates candidate config before rebinding/restarting where required.",
+    "failure_rule": "Bind/start/runtime failure is explicit and does not silently change identity or port.",
+    "cleanup_rule": "All terminal paths release owned listener resources.",
+    "config_rule": "Enabled/declared configuration and current running state remain distinguishable.",
+    "authority_rule": "Starting/stopping listener requires explicit lifecycle authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "LISTENER_IDENTITY_BINDING_SEPARATION",
+        "rule": "Listener/service identity is stable and separate from mutable listen binding, protocol configuration and runtime process/session state."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "stopping deletes listener definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "failed bind silently chooses another port",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "reload activates invalid binding",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "resource leak after stop/failure",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "enabled conflated with running",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "lifecycle operation bypasses authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RELOAD",
+      "target_ref": "AIGMOS_INSTANCE_RELOAD_CONTRACT",
+      "purpose": "Listener reload follows validated reconciliation semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define bounded listener lifecycle from declaration through enable/start/running/stop/reload/failure with deterministic cleanup and no conflation of config state with runtime state.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Port Editor/listener/protocol contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

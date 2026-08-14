@@ -1,0 +1,278 @@
+{
+  "behavior": {
+    "events": [],
+    "flows": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "errors": [
+          "closure failure",
+          "conformance failure",
+          "migration gap"
+        ],
+        "id": "OP_REPLACEMENT_VALIDATE",
+        "inputs": [
+          "candidate clean tree",
+          "Master",
+          "manifest",
+          "conformance/closure reports"
+        ],
+        "name": "Validate clean replacement tree",
+        "outputs": [
+          "replaceable | not_replaceable"
+        ],
+        "side_effects": []
+      },
+      {
+        "errors": [
+          "evidence insufficient"
+        ],
+        "id": "OP_REPLACEMENT_APPROVE",
+        "inputs": [
+          "validated candidate",
+          "review evidence"
+        ],
+        "name": "Approve clean-tree replacement",
+        "outputs": [
+          "replacement approval record"
+        ],
+        "side_effects": []
+      }
+    ],
+    "states": []
+  },
+  "constraints": {
+    "hard_gates": [
+      {
+        "id": "GATE_85433A788C",
+        "condition": "current tree replaced before candidate whole-tree validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_DF4631B929",
+        "condition": "per-file validation treated as sufficient replacement evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_07E084DD2F",
+        "condition": "legacy semantic coverage unresolved at replacement",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_E329426312",
+        "condition": "replacement occurs without explicit approval",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3FE8BBDEAC",
+        "condition": "rollback/recovery path unavailable before acceptance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "mixed transitional tree declared final",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_DEC44C0F76",
+        "condition": "accepted tree incrementally patched leaving stale active artifacts",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_1D1B921008",
+        "condition": "replacement proceeds without passed acceptance gates",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_E60C37CCA9",
+        "condition": "mixed old/new active tree exposed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_C9A45CBE8F",
+        "condition": "repository replacement silently activates runtime",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_B726A701EC",
+        "condition": "replacement lacks old/new snapshot provenance",
+        "result": "hard_fail"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "MIGRATION_STATE_EXPLICIT",
+        "rule": "Repository activation, migration state, validation state and replacement decisions are explicit and machine-readable."
+      },
+      {
+        "id": "ACCEPTANCE_EXPLICIT",
+        "rule": "Candidate canonical trees become accepted/locked only through explicit reproducible validation and clean replacement; review state, acceptance state and runtime activation remain distinct."
+      }
+    ]
+  },
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CANONICAL_CLEAN_TREE_REPLACEMENT_CONTRACT",
+    "name": "Clean Tree Replacement",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "members": [],
+  "prose": {
+    "notes": [
+      "Unlocked until the complete clean Contract Format 1.4 tree is assembled and validated.",
+      "Unlocked pending end-to-end repository acceptance validation under Contract Format 1.4.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: migration/01_Clean_Tree_Replacement.json, repository/05_Clean_Tree_Replacement.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define the gate for replacing the current canonical directory with a separately assembled clean Contract Format 1.4 tree only after whole-tree validation and migration coverage pass. [2] Define replacement of the accepted canonical tree by a fully validated candidate snapshot as one explicit clean operation rather than incremental in-place mutation of the accepted tree."
+  },
+  "purpose": "Reconciled source purposes: [1] Define the gate for replacing the current canonical directory with a separately assembled clean Contract Format 1.4 tree only after whole-tree validation and migration coverage pass. [2] Define replacement of the accepted canonical tree by a fully validated candidate snapshot as one explicit clean operation rather than incremental in-place mutation of the accepted tree.",
+  "references": [
+    {
+      "id": "REF_CLOSURE",
+      "target_ref": "AIGMOS_CANONICAL_GRAPH_CLOSURE_CONTRACT",
+      "purpose": "Candidate tree must close as one semantic graph."
+    },
+    {
+      "id": "REF_CONFORMANCE",
+      "target_ref": "AIGMOS_CORE_CONFORMANCE_RESULT_CONTRACT",
+      "purpose": "Candidate tree needs full dimensioned conformance."
+    },
+    {
+      "id": "REF_CAND",
+      "target_ref": "AIGMOS_CANDIDATE_REVIEW_TREE_CONTRACT",
+      "purpose": "Validated candidate is replacement source."
+    },
+    {
+      "id": "REF_GATES",
+      "target_ref": "AIGMOS_REPOSITORY_ACCEPTANCE_GATES_CONTRACT",
+      "purpose": "Acceptance gates precede replacement."
+    }
+  ],
+  "scope": {
+    "does_not_own": [
+      "child semantic content unless explicitly stated",
+      "filesystem authority",
+      "domain semantic content",
+      "runtime business authority",
+      "commercial licensing"
+    ],
+    "owns": [
+      "Clean Tree Replacement semantics",
+      "Canonical Clean Tree Replacement semantics"
+    ]
+  },
+  "semantics": {
+    "atomic_rule": "Replacement is atomic or uses staging/swap semantics that avoid ambiguous mixed old/new state.",
+    "authority_rule": "Replacement approval is explicit; validation tools do not silently replace repository state.",
+    "bootstrap_rule": "Root Contract Format bootstrap and canonical/json tree are replaced/validated according to repository layout rules.",
+    "clean_rule": "Replacement removes stale active artifacts not present in the candidate rather than leaving hidden leftovers.",
+    "migration_rule": "Legacy semantic coverage must be explicit before replacement.",
+    "no_partial_rule": "A mixed half-old/half-new active tree is not considered the completed migration state.",
+    "precondition_rule": "Candidate has passed the required acceptance profile.",
+    "provenance_rule": "Replacement records old snapshot, new snapshot, actor/tool, validation report and result.",
+    "replacement_rule": "Accepted canonical tree is replaced from the validated candidate snapshot as one controlled operation.",
+    "rollback_rule": "Previous tree remains recoverable until replacement is accepted.",
+    "runtime_rule": "Repository replacement is separate from runtime reload/activation unless explicitly chained.",
+    "separation_rule": "Candidate clean tree is reviewed before replacing the current canonical tree.",
+    "validation_rule": "Whole-tree validation is mandatory; per-file success is insufficient.",
+    "workflow": [
+      "assemble clean tree separately",
+      "apply additive migration packages",
+      "build Master/manifest",
+      "run graph closure",
+      "run conformance",
+      "validate migration coverage",
+      "human review",
+      "approve replacement"
+    ]
+  },
+  "source_role": "definition",
+  "status": "locked",
+  "structure": {
+    "authority": [],
+    "containment": [],
+    "dependencies": [],
+    "ownership": [],
+    "relations": []
+  },
+  "topics": [
+    {
+      "child_topics": [],
+      "composed_topic_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_CLEAN_TREE_REPLACEMENT",
+      "member_refs": [
+        "AIGMOS_CANONICAL_CLEAN_TREE_REPLACEMENT_CONTRACT",
+        "MIGRATION_STATE_EXPLICIT",
+        "ACCEPTANCE_EXPLICIT",
+        "GATE_85433A788C",
+        "GATE_DF4631B929",
+        "GATE_07E084DD2F",
+        "GATE_E329426312",
+        "GATE_3FE8BBDEAC",
+        "GATE_6",
+        "GATE_DEC44C0F76",
+        "GATE_1D1B921008",
+        "GATE_E60C37CCA9",
+        "GATE_C9A45CBE8F",
+        "GATE_B726A701EC"
+      ],
+      "metadata": {},
+      "name": "Clean Tree Replacement",
+      "operation_refs": [
+        "OP_REPLACEMENT_VALIDATE",
+        "OP_REPLACEMENT_APPROVE"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_MIGRATION",
+        "TOPIC_GRAPH_CLOSURE",
+        "TOPIC_CORE_CONFORMANCE"
+      ],
+      "purpose": "Define the gate for replacing the current canonical directory with a separately assembled clean Contract Format 1.4 tree only after whole-tree validation and migration coverage pass.",
+      "relation_refs": []
+    },
+    {
+      "child_topics": [],
+      "composed_topic_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_CANONICAL_CLEAN_TREE_REPLACEMENT",
+      "member_refs": [
+        "AIGMOS_CANONICAL_CLEAN_TREE_REPLACEMENT_CONTRACT",
+        "MIGRATION_STATE_EXPLICIT",
+        "ACCEPTANCE_EXPLICIT",
+        "GATE_85433A788C",
+        "GATE_DF4631B929",
+        "GATE_07E084DD2F",
+        "GATE_E329426312",
+        "GATE_3FE8BBDEAC",
+        "GATE_6",
+        "GATE_DEC44C0F76",
+        "GATE_1D1B921008",
+        "GATE_E60C37CCA9",
+        "GATE_C9A45CBE8F",
+        "GATE_B726A701EC"
+      ],
+      "metadata": {},
+      "name": "Canonical Clean Tree Replacement",
+      "operation_refs": [
+        "OP_REPLACEMENT_VALIDATE",
+        "OP_REPLACEMENT_APPROVE"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_REPOSITORY_ACCEPTANCE",
+        "TOPIC_RELEASE_GOVERNANCE"
+      ],
+      "purpose": "Define replacement of the accepted canonical tree by a fully validated candidate snapshot as one explicit clean operation rather than incremental in-place mutation of the accepted tree.",
+      "relation_refs": []
+    }
+  ]
+}

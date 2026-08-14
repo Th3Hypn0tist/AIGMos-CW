@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_REPLICA_IDENTITY_CONTRACT",
+    "name": "DWH Replica Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a replica as an explicit copy/synchronization participant identity bound to an exact source scope, destination scope and replication profile, separate from the source data identity.",
+  "scope": {
+    "owns": [
+      "DWH Replica Identity semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "AccessCore policy ownership",
+      "transport implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_REPLICA_IDENTITY",
+      "name": "DWH Replica Identity",
+      "purpose": "Define a replica as an explicit copy/synchronization participant identity bound to an exact source scope, destination scope and replication profile, separate from the source data identity.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_REPLICATION_SYNC"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_REPLICA_IDENTITY_CONTRACT",
+        "REPLICA_NONOWNERSHIP",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each replica/sync participant has an explicit stable identity.",
+    "source_rule": "Replica references exact authoritative/source instance/schema/data scope.",
+    "destination_rule": "Replica references exact destination instance/storage scope.",
+    "copy_rule": "Replicated records may have local storage identities but retain source semantic/lineage refs.",
+    "role_rule": "authoritative, replica, cache and peer roles are explicit.",
+    "ownership_rule": "Replica existence does not transfer semantic ownership from authoritative source.",
+    "state_rule": "configured, syncing, current, stale, conflicted and failed states remain distinct.",
+    "authority_rule": "Replica availability does not grant source or destination mutation authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "REPLICA_NONOWNERSHIP",
+        "rule": "Replica/sync state, transport position or local copy never replaces the semantic identity or ownership of the authoritative source data; propagation is explicit, provenance-bearing and conflict-aware."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "replica id replaces source data identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "copy becomes semantic owner automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "source role inferred from newest timestamp",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "replica availability grants write authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "cache and authoritative replica conflated",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_STORE",
+      "target_ref": "AIGMOS_DWH_STORAGE_BINDING_CONTRACT",
+      "purpose": "Replica destination uses explicit persistence binding."
+    },
+    {
+      "id": "REF_REMOTE",
+      "target_ref": "AIGMOS_DWH_REMOTE_ADDRESSING_CONTRACT",
+      "purpose": "Remote source may be reached through governed DWH addressing."
+    }
+  ],
+  "prose": {
+    "summary": "Define a replica as an explicit copy/synchronization participant identity bound to an exact source scope, destination scope and replication profile, separate from the source data identity.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH persistence, remote addressing, mutation and reconciliation contracts."
+    ]
+  }
+}

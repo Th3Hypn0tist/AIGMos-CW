@@ -1,0 +1,142 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_INSTALLED_ARTIFACT_REGISTRY_CONTRACT",
+    "name": "Installed Artifact Registry",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the explicit registry of installed packages/modules/resources, their physical source, canonical identity/version, integrity evidence and lifecycle state.",
+  "scope": {
+    "owns": [
+      "Installed Artifact Registry semantics"
+    ],
+    "does_not_own": [
+      "module semantic identity",
+      "AccessCore policy ownership",
+      "runtime business semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_INSTALLED_ARTIFACT_REGISTRY",
+      "name": "Installed Artifact Registry",
+      "purpose": "Define the explicit registry of installed packages/modules/resources, their physical source, canonical identity/version, integrity evidence and lifecycle state.",
+      "parent_topic_refs": [
+        "TOPIC_LIBRARY",
+        "TOPIC_INSTALLATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_INSTALLED_ARTIFACT_REGISTRY_CONTRACT",
+        "LIBRARY_INSTALL_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "entry_fields": [
+      "artifact_id",
+      "canonical_identity_ref",
+      "artifact_type",
+      "version",
+      "source_ref",
+      "install_state",
+      "integrity/hash refs",
+      "dependencies"
+    ],
+    "state_values": [
+      "discovered",
+      "validated",
+      "installed",
+      "registered",
+      "disabled",
+      "removed",
+      "error"
+    ],
+    "identity_rule": "Installed-artifact identity and canonical module/resource identity remain distinct.",
+    "source_rule": "Registry retains originating package/library/source provenance.",
+    "integrity_rule": "Applicable hash/signature/certification evidence is referenced explicitly.",
+    "remove_rule": "Removal changes install state and physical bindings without silently deleting independent canonical history/evidence.",
+    "runtime_rule": "Installed/registered does not mean enabled/running.",
+    "authority_rule": "Registry presence does not grant invocation/access rights."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "LIBRARY_INSTALL_EXPLICIT",
+        "rule": "Library discovery and installation are explicit source/package lifecycle semantics; filesystem presence, discovery order or installation never silently changes canonical identity, enables dependencies or activates runtime effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "installed registry conflates module and package identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "installed means running",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "source/integrity provenance lost",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "remove deletes unrelated history",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "registry presence grants authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CERT",
+      "target_ref": "AIGMOS_CERTIFICATION_PACKAGE_HASH_ANCHOR_CONTRACT",
+      "purpose": "Installed artifacts may retain package integrity/certification refs."
+    }
+  ],
+  "prose": {
+    "summary": "Define the explicit registry of installed packages/modules/resources, their physical source, canonical identity/version, integrity evidence and lifecycle state.",
+    "notes": [
+      "Unlocked pending reconciliation against UserModule, boot profile, repository and distribution contracts."
+    ]
+  }
+}

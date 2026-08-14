@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_UPGRADE_PLAN_CONTRACT",
+    "name": "Upgrade Plan",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define exact upgrade from one accepted deployed state to another including artifacts, configuration, schema/data migrations, compatibility windows and rollback constraints.",
+  "scope": {
+    "owns": [
+      "Upgrade Plan semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "canonical documentation ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_UPGRADE_PLAN",
+      "name": "Upgrade Plan",
+      "purpose": "Define exact upgrade from one accepted deployed state to another including artifacts, configuration, schema/data migrations, compatibility windows and rollback constraints.",
+      "parent_topic_refs": [
+        "TOPIC_DEPLOYMENT",
+        "TOPIC_UPGRADE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_UPGRADE_PLAN_CONTRACT",
+        "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "OPERATIONS_FAIL_SAFE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each upgrade plan has explicit identity/revision.",
+    "source_rule": "Current deployed release/artifact/config/schema state is exact.",
+    "target_rule": "Target accepted release/artifact/config/schema state is exact.",
+    "migration_rule": "Required ordered migrations are explicit.",
+    "compatibility_rule": "Mixed-version/dual-read/dual-write compatibility windows are explicit.",
+    "rollback_rule": "Rollback eligibility/point-of-no-return is explicit.",
+    "verification_rule": "Pre/post/mid-upgrade gates are explicit.",
+    "inert_rule": "Plan definition performs no upgrade."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "rule": "Release candidate, accepted release, deployment plan, deployment execution, installed artifact, active runtime instance and observed health remain separate identities/states."
+      },
+      {
+        "id": "OPERATIONS_FAIL_SAFE",
+        "rule": "Operational convenience, availability pressure, maintenance state, automation, recovery or rollback never silently bypass validation, authorization, integrity, governance or dispatcher boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "upgrade means install latest",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "migration order inferred",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "point-of-no-return hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "mixed-version compatibility assumed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "plan auto-runs",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DEP",
+      "target_ref": "AIGMOS_DEPLOYMENT_PLAN_IDENTITY_CONTRACT",
+      "purpose": "Upgrade is a specialized deployment plan."
+    }
+  ],
+  "prose": {
+    "summary": "Define exact upgrade from one accepted deployed state to another including artifacts, configuration, schema/data migrations, compatibility windows and rollback constraints.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

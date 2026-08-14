@@ -1,0 +1,135 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ACCESSCORE_POLICY_CHANGE_AUDIT_CONTRACT",
+    "name": "AccessCore Policy Change and Audit",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define canonical change control and audit evidence for AccessCore policies so authorization changes are reviewable, attributable and cannot silently alter active rights.",
+  "scope": {
+    "owns": [
+      "AccessCore Policy Change and Audit semantics"
+    ],
+    "does_not_own": [
+      "IAM identity proofing",
+      "domain data semantics",
+      "presentation-only access hints"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ACCESSCORE_POLICY_CHANGE_AUDIT",
+      "name": "AccessCore Policy Change and Audit",
+      "purpose": "Define canonical change control and audit evidence for AccessCore policies so authorization changes are reviewable, attributable and cannot silently alter active rights.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE_AUTHORIZATION",
+        "TOPIC_STRUCTURE_AUTHORITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_ACCESSCORE_POLICY_CHANGE_AUDIT_CONTRACT",
+        "ACCESSCORE_AUTHORITY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "change_rule": "Policy create/update/remove is an explicit canonical change operation.",
+    "authority_rule": "Policy mutation requires explicit policy-administration authority.",
+    "validation_rule": "Candidate policy validates identity, target refs, rule precedence and lockout/safety constraints before activation.",
+    "audit_rule": "Change records actor identity, affected policy/resource, semantic diff, time/run identity and result.",
+    "activation_rule": "Validated policy change becomes active through explicit apply/reload semantics.",
+    "rollback_rule": "Previous accepted policy version/snapshot remains traceable for rollback/recovery where policy supports it.",
+    "secret_rule": "Audit records do not expose credential secrets."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ACCESSCORE_AUTHORITY_EXPLICIT",
+        "rule": "AccessCore decisions are explicit policy evaluations over identity, resource and operation context; authentication assurance, visibility and ownership never silently become authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "policy changed without administrative authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "invalid candidate policy activated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "authorization change lacks actor/diff provenance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "policy edit takes effect solely through UI state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "audit logs credential secrets",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "rollback/history trace lost",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CHANGE",
+      "target_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+      "purpose": "Policy mutation follows canonical change control."
+    },
+    {
+      "id": "REF_RELOAD",
+      "target_ref": "AIGMOS_INSTANCE_RELOAD_CONTRACT",
+      "purpose": "Validated policy may activate through reload/apply semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define canonical change control and audit evidence for AccessCore policies so authorization changes are reviewable, attributable and cannot silently alter active rights.",
+    "notes": [
+      "Unlocked pending reconciliation against existing AccessCore/IAM contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

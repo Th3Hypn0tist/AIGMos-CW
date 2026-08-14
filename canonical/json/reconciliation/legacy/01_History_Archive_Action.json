@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_HISTORY_ARCHIVE_ACTION_CONTRACT",
+    "name": "History Archive Action",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit candidate move/copy of legacy artifacts into history/** with provenance and active-source exclusion.",
+  "scope": {
+    "owns": [
+      "History Archive Action semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_HISTORY_ARCHIVE_ACTION",
+      "name": "History Archive Action",
+      "purpose": "Define explicit candidate move/copy of legacy artifacts into history/** with provenance and active-source exclusion.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_RECONCILIATION",
+        "TOPIC_LEGACY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_HISTORY_ARCHIVE_ACTION_CONTRACT",
+        "RECONCILIATION_IS_EVIDENCE_DRIVEN",
+        "NO_SILENT_FINALIZATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "source_rule": "Exact legacy artifact/path/hash is referenced.",
+    "target_rule": "Exact history path is explicit.",
+    "copy_rule": "Move vs copy semantics are explicit.",
+    "integrity_rule": "Byte identity/hash preservation is verified where required.",
+    "active_rule": "Archived artifact is excluded from active source set.",
+    "provenance_rule": "Original location/replacement reason are retained.",
+    "authority_rule": "Archive action requires repository change authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RECONCILIATION_IS_EVIDENCE_DRIVEN",
+        "rule": "Whole-tree reconciliation operates only on exact accepted/candidate source snapshots, identities, references and declared semantics; it never repairs ambiguity through filename, path order, timestamp, nearest-name or UI layout heuristics."
+      },
+      {
+        "id": "NO_SILENT_FINALIZATION",
+        "rule": "A contract, closure set or repository remains unlocked/not-ready until all required reconciliation findings for its declared readiness profile are explicitly resolved or accepted through an explicit bounded exception."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "archive changes bytes silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "history file remains active",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "target path inferred",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "source deleted before copy verified",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "archive operation broad wildcard",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LEGACY",
+      "target_ref": "AIGMOS_LEGACY_ARTIFACT_FINDING_CONTRACT",
+      "purpose": "Archive resolves exact legacy finding."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit candidate move/copy of legacy artifacts into history/** with provenance and active-source exclusion.",
+    "notes": [
+      "Unlocked pending application to the final merged review tree.",
+      "This contract defines reconciliation semantics; it does not claim that repository-wide reconciliation has already passed."
+    ]
+  }
+}

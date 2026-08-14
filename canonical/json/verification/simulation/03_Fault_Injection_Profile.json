@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_FAULT_INJECTION_CONTRACT",
+    "name": "Fault Injection Profile",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define bounded deliberate failure injection for dependency, network, storage, timeout, retry, crash and degraded-mode verification.",
+  "scope": {
+    "owns": [
+      "Fault Injection Profile semantics"
+    ],
+    "does_not_own": [
+      "production runtime authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_FAULT_INJECTION",
+      "name": "Fault Injection Profile",
+      "purpose": "Define bounded deliberate failure injection for dependency, network, storage, timeout, retry, crash and degraded-mode verification.",
+      "parent_topic_refs": [
+        "TOPIC_VERIFICATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_FAULT_INJECTION_CONTRACT",
+        "TEST_NONAUTHORITY",
+        "EVIDENCE_REPRODUCIBILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each fault profile has an explicit identity.",
+    "fault_types": [
+      "timeout",
+      "disconnect",
+      "packet_loss",
+      "dependency_failure",
+      "storage_failure",
+      "process_crash",
+      "resource_exhaustion",
+      "stale_lease",
+      "other declared fault"
+    ],
+    "target_rule": "Fault target/scope is exact.",
+    "bound_rule": "Duration/rate/count/resource bounds are explicit.",
+    "sandbox_rule": "Fault injection defaults to verification/sandbox scope unless production experiment is explicitly governed.",
+    "cleanup_rule": "Fault removal/recovery semantics are explicit.",
+    "evidence_rule": "Injected fault is tagged so observed failure can be distinguished from spontaneous failure.",
+    "authority_rule": "Fault injection requires exact applicable test/admin authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TEST_NONAUTHORITY",
+        "rule": "Test definitions, fixtures, results, coverage, simulations and release evidence never become production semantic authority or grant production execution rights merely by existing or passing."
+      },
+      {
+        "id": "EVIDENCE_REPRODUCIBILITY",
+        "rule": "Verification evidence binds exact test/profile/source/runtime revisions and declared environment inputs so a pass/fail result cannot silently float across unrelated versions or targets."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "fault injector targets all services by wildcard accidentally",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "production fault enabled by test default",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "injected failure indistinguishable from real incident",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "fault persists after test",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "fault tool gets unlimited admin",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DEG",
+      "target_ref": "AIGMOS_RUNTIME_DEGRADED_MODE_CONTRACT",
+      "purpose": "Fault injection verifies explicit degraded/failure behavior."
+    }
+  ],
+  "prose": {
+    "summary": "Define bounded deliberate failure injection for dependency, network, storage, timeout, retry, crash and degraded-mode verification.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

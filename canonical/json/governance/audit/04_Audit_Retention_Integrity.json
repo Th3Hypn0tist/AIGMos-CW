@@ -1,0 +1,154 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_AUDIT_RETENTION_INTEGRITY_CONTRACT",
+    "name": "Audit Retention and Integrity Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define audit-specific retention, integrity and minimization independently from source-data lifecycle so required evidence survives appropriately without silently preserving purged payload content.",
+  "scope": {
+    "owns": [
+      "Audit Retention and Integrity Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "runtime execution authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_AUDIT_RETENTION_INTEGRITY",
+      "name": "Audit Retention and Integrity Boundary",
+      "purpose": "Define audit-specific retention, integrity and minimization independently from source-data lifecycle so required evidence survives appropriately without silently preserving purged payload content.",
+      "parent_topic_refs": [
+        "TOPIC_GOVERNANCE",
+        "TOPIC_AUDIT",
+        "TOPIC_RETENTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_AUDIT_RETENTION_INTEGRITY_CONTRACT",
+        "GOVERNANCE_EVIDENCE_SEPARATION",
+        "FAIL_CLOSED_PROTECTED_DATA",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_RETENTION",
+      "name": "Retention",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_RETENTION already referenced by 1 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 1,
+        "distinct_child_topics": 1,
+        "host_contract_ref": "AIGMOS_AUDIT_RETENTION_INTEGRITY_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "retention_rule": "Audit retention policy is explicit and separate from source-data retention.",
+    "source_purge_rule": "Purging source data does not silently purge required audit evidence.",
+    "payload_rule": "Audit evidence must not preserve unnecessary source payload beyond allowed audit purpose.",
+    "hash_rule": "Integrity/hash/chain evidence remains verifiable across archive/retention.",
+    "hold_rule": "Applicable legal/compliance holds may block audit purge explicitly.",
+    "expiry_rule": "Expired audit evidence follows explicit archive/purge policy.",
+    "authority_rule": "Retention status grants no access authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "GOVERNANCE_EVIDENCE_SEPARATION",
+        "rule": "Policy, decision, evidence, audit record, consent, incident and compliance result remain separate machine-significant identities; no evidence artifact silently becomes source data, authorization or runtime authority."
+      },
+      {
+        "id": "FAIL_CLOSED_PROTECTED_DATA",
+        "rule": "Ambiguous or unresolved governance for protected data fails closed; UI visibility, transport reachability, cache presence, role title, prior access or audit-log presence never substitute for an explicit valid policy decision."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "source purge deletes required audit trail",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "audit stores full source forever automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "audit retention inferred from disk space",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "hold ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "archive breaks hash chain",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LIFE",
+      "target_ref": "AIGMOS_DWH_RETENTION_POLICY_CONTRACT",
+      "purpose": "Audit retention remains distinct from source-data lifecycle."
+    }
+  ],
+  "prose": {
+    "summary": "Define audit-specific retention, integrity and minimization independently from source-data lifecycle so required evidence survives appropriately without silently preserving purged payload content.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_RETENTION solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

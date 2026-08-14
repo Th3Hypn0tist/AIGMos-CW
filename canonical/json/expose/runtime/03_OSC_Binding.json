@@ -1,0 +1,166 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT",
+    "name": "Expose OSC Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define OSC as an optional explicit protocol binding from OSC addresses/messages to canonical values and operations, with message validation and no protocol-owned domain semantics.",
+  "scope": {
+    "owns": [
+      "Expose OSC Binding semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "unrelated domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_OSC_BINDING",
+      "name": "OSC Binding",
+      "purpose": "Define OSC as an optional explicit protocol binding from OSC addresses/messages to canonical values and operations, with message validation and no protocol-owned domain semantics.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_PROTOCOL_OPTIONALITY",
+        "TOPIC_EXPOSE_GUI_EDITOR",
+        "TOPIC_EXPOSE_PORT_EDITOR"
+      ],
+      "member_refs": [
+        "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT",
+        "EXPOSE_RUNTIME_BINDING_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_OSC_BIND",
+        "OP_OSC_DISPATCH"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_OSC_BIND",
+        "name": "Bind OSC address to canonical surface",
+        "inputs": [
+          "OSC address",
+          "canonical operation/value ref"
+        ],
+        "outputs": [
+          "OSC binding"
+        ],
+        "errors": [
+          "address collision",
+          "source unresolved"
+        ],
+        "side_effects": [
+          "OSC binding config updated"
+        ]
+      },
+      {
+        "id": "OP_OSC_DISPATCH",
+        "name": "Dispatch OSC input",
+        "inputs": [
+          "validated OSC message",
+          "binding"
+        ],
+        "outputs": [
+          "canonical operation/result"
+        ],
+        "errors": [
+          "validation failure",
+          "authority denied"
+        ],
+        "side_effects": [
+          "only canonical operation effects"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "protocol": "OSC",
+    "optional_rule": "OSC capability may be installed/removed explicitly.",
+    "address_rule": "OSC address is binding identity, not source semantic identity.",
+    "validation_rule": "Incoming OSC data is validated before canonical dispatch.",
+    "authority_rule": "Receiving an OSC message does not grant authorization.",
+    "semantic_rule": "OSC transport does not redefine operation/value semantics.",
+    "editor_rule": "GUI/Port Editor may configure OSC surfaces only through canonical binding/listener operations."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPOSE_RUNTIME_BINDING_EXPLICIT",
+        "rule": "Web instances, protocol bindings and exposed surfaces retain explicit stable identity, binding, lifecycle and authority boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "OSC address treated as canonical domain identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "unvalidated OSC payload dispatched",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "OSC reachability grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "OSC binding invents hidden operation semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "missing OSC capability auto-enabled",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROTOCOL",
+      "target_ref": "AIGMOS_RUNTIME_PROTOCOL_OPTIONALITY_CONTRACT",
+      "purpose": "OSC is optional capability."
+    }
+  ],
+  "prose": {
+    "summary": "Define OSC as an optional explicit protocol binding from OSC addresses/messages to canonical values and operations, with message validation and no protocol-owned domain semantics.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose/runtime contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

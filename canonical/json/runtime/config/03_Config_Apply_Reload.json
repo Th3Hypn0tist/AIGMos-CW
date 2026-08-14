@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CONFIG_APPLY_RELOAD_CONTRACT",
+    "name": "Configuration Apply and Reload",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the explicit transition from validated candidate to accepted config and then to runtime reload/activation according to per-field/component semantics.",
+  "scope": {
+    "owns": [
+      "Configuration Apply and Reload semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CONFIG_APPLY_RELOAD",
+      "name": "Configuration Apply and Reload",
+      "purpose": "Define the explicit transition from validated candidate to accepted config and then to runtime reload/activation according to per-field/component semantics.",
+      "parent_topic_refs": [
+        "TOPIC_CONFIGURATION",
+        "TOPIC_RUNTIME_ACTIVATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CONFIG_APPLY_RELOAD_CONTRACT",
+        "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "flow": [
+      "validate candidate",
+      "authorize apply",
+      "commit accepted configuration revision",
+      "determine affected components",
+      "perform hot reload/restart/rebind as declared",
+      "record runtime result"
+    ],
+    "accepted_rule": "Apply creates a new accepted config revision/snapshot.",
+    "runtime_rule": "Accepted config and live runtime state remain separate until reload/activation succeeds.",
+    "field_rule": "Hot-reload/restart-required semantics come from exact config field/component contracts.",
+    "partial_rule": "Partial runtime apply is explicit and cannot masquerade as fully active configuration.",
+    "failure_rule": "Reload failure preserves accepted/runtime distinction and exposes recovery path.",
+    "authority_rule": "Apply/reload require explicit config/lifecycle authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "rule": "Machine-significant definitions, executions, evidence and runtime state use explicit identities and boundaries; visibility, file order, timestamps, transport reachability or UI placement never silently create semantic authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "validated candidate silently becomes live",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "reload semantics guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "partial reload shown fully active",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "apply bypasses authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "accepted config overwritten on runtime failure without evidence",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ACT",
+      "target_ref": "AIGMOS_RUNTIME_ACTIVATION_CONTRACT",
+      "purpose": "Live state changes only through explicit activation/reload."
+    }
+  ],
+  "prose": {
+    "summary": "Define the explicit transition from validated candidate to accepted config and then to runtime reload/activation according to per-field/component semantics.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

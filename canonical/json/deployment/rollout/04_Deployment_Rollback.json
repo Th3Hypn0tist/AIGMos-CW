@@ -1,0 +1,154 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DEPLOYMENT_ROLLBACK_CONTRACT",
+    "name": "Deployment Rollback",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define rollback to an exact known prior artifact/config/schema-compatible state with explicit eligibility, target and irreversible-change handling.",
+  "scope": {
+    "owns": [
+      "Deployment Rollback semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "canonical documentation ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DEPLOYMENT_ROLLBACK",
+      "name": "Deployment Rollback",
+      "purpose": "Define rollback to an exact known prior artifact/config/schema-compatible state with explicit eligibility, target and irreversible-change handling.",
+      "parent_topic_refs": [
+        "TOPIC_DEPLOYMENT",
+        "TOPIC_ROLLBACK"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DEPLOYMENT_ROLLBACK_CONTRACT",
+        "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "OPERATIONS_FAIL_SAFE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_ROLLBACK",
+      "name": "Rollback",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_ROLLBACK already referenced by 1 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 1,
+        "distinct_child_topics": 1,
+        "host_contract_ref": "AIGMOS_DEPLOYMENT_ROLLBACK_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "source_rule": "Rollback originates from exact failed/current deployment state.",
+    "target_rule": "Rollback target release/artifact/config revision is exact.",
+    "eligibility_rule": "Compatibility and reversibility are explicitly evaluated.",
+    "migration_rule": "Irreversible schema/data changes block naive artifact rollback.",
+    "execution_rule": "Rollback is a new explicit authorized deployment execution.",
+    "verification_rule": "Rollback result undergoes post-verification.",
+    "history_rule": "Failed deployment evidence remains historical.",
+    "authority_rule": "Rollback is not exempt from operational gates."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "rule": "Release candidate, accepted release, deployment plan, deployment execution, installed artifact, active runtime instance and observed health remain separate identities/states."
+      },
+      {
+        "id": "OPERATIONS_FAIL_SAFE",
+        "rule": "Operational convenience, availability pressure, maintenance state, automation, recovery or rollback never silently bypass validation, authorization, integrity, governance or dispatcher boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "rollback selects newest previous directory",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "irreversible migration ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "rollback erases failure history",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "failed deployment auto-rolls back without policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "rollback bypasses auth",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DEPLOY",
+      "target_ref": "AIGMOS_DEPLOYMENT_EXECUTION_CONTRACT",
+      "purpose": "Rollback is its own deployment execution."
+    }
+  ],
+  "prose": {
+    "summary": "Define rollback to an exact known prior artifact/config/schema-compatible state with explicit eligibility, target and irreversible-change handling.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_ROLLBACK solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

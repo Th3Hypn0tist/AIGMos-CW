@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_OPERATIONAL_CONTROL_ELEMENT_CONTRACT",
+    "name": "Operational Control Element",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define buttons, toggles, sliders and other operational controls as explicit invocation surfaces bound to canonical operations rather than direct arbitrary client-side effects.",
+  "scope": {
+    "owns": [
+      "Operational Control Element semantics"
+    ],
+    "does_not_own": [
+      "domain business semantics",
+      "AccessCore policy ownership",
+      "canonical style ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_OPERATIONAL_CONTROL_ELEMENT",
+      "name": "Operational Control Element",
+      "purpose": "Define buttons, toggles, sliders and other operational controls as explicit invocation surfaces bound to canonical operations rather than direct arbitrary client-side effects.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_ELEMENTS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_OPERATIONAL_CONTROL_ELEMENT_CONTRACT",
+        "ELEMENT_PRESENTATION_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "control_types": [
+      "button",
+      "toggle",
+      "slider",
+      "stepper",
+      "action menu",
+      "command control"
+    ],
+    "operation_rule": "Every effectful control resolves an exact canonical operation identity.",
+    "argument_rule": "Control state/value maps to explicit validated operation arguments.",
+    "display_state_rule": "Displayed enabled/disabled/active state is a projection and not an authorization decision.",
+    "invoke_rule": "Activation requests normal validate→authorize→dispatch processing.",
+    "optimistic_rule": "Optimistic UI state, if used, remains provisional until authoritative result.",
+    "failure_rule": "Denied/failed operation restores or marks provisional UI state explicitly.",
+    "authority_rule": "Rendering or interacting with a control never bypasses AccessCore."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ELEMENT_PRESENTATION_NONAUTHORITY",
+        "rule": "Expose Elements are reusable human-interface primitives that project or invoke explicitly bound semantics; visual form, nesting, focus, color, position or enabled-looking state never creates ownership, authority or domain meaning."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "button executes hidden arbitrary JS as canonical effect",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "control appearance treated as authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "slider value bypasses schema validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "optimistic state shown permanently after failed operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "control target inferred from DOM proximity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DISPATCH",
+      "target_ref": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+      "purpose": "Operational controls invoke normal runtime dispatch."
+    },
+    {
+      "id": "REF_GUI",
+      "target_ref": "AIGMOS_EXPOSE_GUI_EDITOR_CONTRACT",
+      "purpose": "GUI Editor composes operational controls."
+    }
+  ],
+  "prose": {
+    "summary": "Define buttons, toggles, sliders and other operational controls as explicit invocation surfaces bound to canonical operations rather than direct arbitrary client-side effects.",
+    "notes": [
+      "Unlocked pending reconciliation against Web Base, Form/GUI Editor, localization and canonical style contracts."
+    ]
+  }
+}

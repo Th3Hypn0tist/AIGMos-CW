@@ -1,0 +1,132 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_IDENTITYCORE_APPROVAL_CONTRACT",
+    "name": "Identity Approval",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define IdentityCore approval/verification state as explicit evidence about an identity record without conflating approval with authentication assurance, certification or authorization.",
+  "scope": {
+    "owns": [
+      "Identity Approval semantics"
+    ],
+    "does_not_own": [
+      "IAM credential semantics",
+      "MeritCore scoring",
+      "PortfolioCore evidence presentation",
+      "AccessCore authorization"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_IDENTITYCORE_APPROVAL",
+      "name": "Identity Approval",
+      "purpose": "Define IdentityCore approval/verification state as explicit evidence about an identity record without conflating approval with authentication assurance, certification or authorization.",
+      "parent_topic_refs": [
+        "TOPIC_IDENTITYCORE",
+        "TOPIC_IAM"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_IDENTITYCORE_APPROVAL_CONTRACT",
+        "IDENTITYCORE_STABLE_IDENTITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "states": [
+      "unapproved",
+      "pending",
+      "approved",
+      "rejected",
+      "revoked"
+    ],
+    "approval_rule": "Approval state is explicit and tied to exact identity and approving authority/evidence.",
+    "evidence_rule": "Approval retains provenance and applicable verification evidence.",
+    "assurance_rule": "Identity approval is distinct from current IAM authentication assurance.",
+    "certification_rule": "Identity approval is distinct from package/system certification.",
+    "authorization_rule": "Approved identity does not automatically receive AccessCore rights.",
+    "revocation_rule": "Revocation preserves historical approval evidence/state transitions.",
+    "scope_rule": "Approval scope/type is explicit where multiple identity-verification contexts exist."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITYCORE_STABLE_IDENTITY",
+        "rule": "IdentityCore owns stable person/organization identity and explicit identity relations; credentials, profiles, merits and authorization remain separate semantic layers."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "approved identity automatically gets rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "approval treated as current login assurance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "approval conflated with certification",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "revocation deletes history",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "approval has no approving authority/evidence",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ASSURE",
+      "target_ref": "AIGMOS_IAM_ASSURANCE_LIFECYCLE_CONTRACT",
+      "purpose": "Identity approval remains separate from authentication assurance."
+    }
+  ],
+  "prose": {
+    "summary": "Define IdentityCore approval/verification state as explicit evidence about an identity record without conflating approval with authentication assurance, certification or authorization.",
+    "notes": [
+      "Unlocked pending reconciliation against existing IAM/IdentityCore/PortfolioCore/MeritCore contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

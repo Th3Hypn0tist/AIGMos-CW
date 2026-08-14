@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_STUDIO_LENS_PRESET_CONTRACT",
+    "name": "Lens Preset",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define reusable Lens presets as explicit parameter/configuration snapshots over an existing Lens identity without becoming new source semantics or hidden canonical defaults.",
+  "scope": {
+    "owns": [
+      "Lens Preset semantics"
+    ],
+    "does_not_own": [
+      "source domain semantics",
+      "runtime authorization",
+      "projection source ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_STUDIO_LENS_PRESET",
+      "name": "Lens Preset",
+      "purpose": "Define reusable Lens presets as explicit parameter/configuration snapshots over an existing Lens identity without becoming new source semantics or hidden canonical defaults.",
+      "parent_topic_refs": [
+        "TOPIC_STUDIO",
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_STUDIO_LENS_PRESET_CONTRACT",
+        "STUDIO_PROJECTION_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "preset_rule": "Preset references one exact Lens identity/version and stores explicit parameter values/configuration.",
+    "identity_rule": "Each reusable preset has an explicit identity.",
+    "source_rule": "Preset does not copy Lens source data or source semantic ownership.",
+    "default_rule": "A default preset is explicit metadata, never inferred from most-recent use.",
+    "personal_rule": "User-specific presets and shared canonical presets are distinguishable by scope/owner.",
+    "compatibility_rule": "Preset validates against Lens parameter schema/version before use.",
+    "migration_rule": "Incompatible Lens changes require explicit preset migration/invalid state.",
+    "authority_rule": "Preset cannot grant source access beyond Lens/current caller policy."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "STUDIO_PROJECTION_NONAUTHORITY",
+        "rule": "Studio and Lens compose and project existing canonical semantics; analysis, presets and visualizations never silently become source semantic authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "preset copied as source truth",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "last-used state silently becomes canonical default",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "preset bypasses Lens/source authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "incompatible preset silently applied",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "user-private preset treated as shared canonical preset",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LENS",
+      "target_ref": "AIGMOS_STUDIO_LENS_CONTRACT",
+      "purpose": "Preset configures an exact Lens."
+    }
+  ],
+  "prose": {
+    "summary": "Define reusable Lens presets as explicit parameter/configuration snapshots over an existing Lens identity without becoming new source semantics or hidden canonical defaults.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Studio/Strategy/Lens contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

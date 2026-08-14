@@ -1,0 +1,186 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_FREEMARKET_LISTING_CONTRACT",
+    "name": "FreeMarket Opportunity Listing",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define marketplace opportunity listings as discovery metadata that may lead to Project creation but do not themselves become Project work, merit evidence or authorization.",
+  "scope": {
+    "owns": [
+      "FreeMarket Opportunity Listing semantics"
+    ],
+    "does_not_own": [
+      "presentation semantics",
+      "transport implementation",
+      "unrelated IAM/AC policy"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_FREEMARKET_LISTING",
+      "name": "Opportunity Listing",
+      "purpose": "Define marketplace opportunity listings as discovery metadata that may lead to Project creation but do not themselves become Project work, merit evidence or authorization.",
+      "parent_topic_refs": [
+        "TOPIC_PROJECT"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_IDENTITYCORE",
+        "TOPIC_CORE_PROJECTION"
+      ],
+      "member_refs": [
+        "AIGMOS_FREEMARKET_LISTING_CONTRACT",
+        "MARKET_SEMANTICS_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_LISTING_CREATE",
+        "OP_LISTING_UPDATE",
+        "OP_LISTING_CLOSE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_LISTING_CREATE",
+        "name": "Create opportunity listing",
+        "inputs": [
+          "publisher identity",
+          "opportunity/project intent",
+          "public metadata"
+        ],
+        "outputs": [
+          "listing"
+        ],
+        "errors": [
+          "publisher unresolved",
+          "metadata invalid"
+        ],
+        "side_effects": [
+          "listing registry updated"
+        ]
+      },
+      {
+        "id": "OP_LISTING_UPDATE",
+        "name": "Update opportunity listing",
+        "inputs": [
+          "listing",
+          "authorized delta"
+        ],
+        "outputs": [
+          "updated listing"
+        ],
+        "errors": [
+          "authority denied"
+        ],
+        "side_effects": [
+          "listing updated"
+        ]
+      },
+      {
+        "id": "OP_LISTING_CLOSE",
+        "name": "Close opportunity listing",
+        "inputs": [
+          "listing",
+          "reason"
+        ],
+        "outputs": [
+          "closed listing"
+        ],
+        "errors": [],
+        "side_effects": [
+          "listing state updated"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "listing_rule": "Listing is a marketplace discovery object, not an executable work unit.",
+    "project_rule": "Accepted/realized work is represented by an explicit Project.",
+    "publisher_rule": "Listing has an explicit publisher identity.",
+    "visibility_rule": "Public/private visibility is explicit and separate from participation authority.",
+    "merit_rule": "Listing existence creates no merit evidence.",
+    "expiry_rule": "Listing lifecycle/closure is explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MARKET_SEMANTICS_EXPLICIT",
+        "rule": "Marketplace discovery, matching, participation, feedback and visibility semantics remain explicit and do not override Project/Merit/IAM ownership."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "listing treated as executable Project without explicit Project creation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "listing grants participation authority by visibility",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "listing existence creates merit/Tier evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "listing lacks explicit publisher identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "closed listing remains discoverable as active without explicit historical projection",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROJECT",
+      "target_ref": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT",
+      "purpose": "Real work uses Project."
+    },
+    {
+      "id": "REF_IDENTITY",
+      "target_ref": "AIGMOS_IDENTITYCORE_CONTRACT",
+      "purpose": "Listings bind to publisher identity."
+    }
+  ],
+  "prose": {
+    "summary": "Define marketplace opportunity listings as discovery metadata that may lead to Project creation but do not themselves become Project work, merit evidence or authorization.",
+    "notes": [
+      "Unlocked until reconciled against existing FreeMarket contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

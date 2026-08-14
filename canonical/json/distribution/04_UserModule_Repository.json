@@ -1,0 +1,190 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_USERMODULE_REPOSITORY_DISTRIBUTION_CONTRACT",
+    "name": "UserModule Repository Distribution",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define UserModule repository publication and retrieval as licensed/authorized distribution of inert module packages with explicit publisher, identity and hash validation.",
+  "scope": {
+    "owns": [
+      "UserModule Repository Distribution semantics"
+    ],
+    "does_not_own": [
+      "source semantic ownership",
+      "runtime authority",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_USERMODULE_REPOSITORY",
+      "name": "UserModule Repository",
+      "purpose": "Define UserModule repository publication and retrieval as licensed/authorized distribution of inert module packages with explicit publisher, identity and hash validation.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+        "TOPIC_DISTRIBUTION_PACKAGE",
+        "TOPIC_CERTIFICATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_USERMODULE_REPOSITORY_DISTRIBUTION_CONTRACT",
+        "DISTRIBUTION_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_UM_REPO_PUBLISH",
+        "OP_UM_REPO_FETCH",
+        "OP_UM_REPO_VALIDATE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_UM_REPO_PUBLISH",
+        "name": "Publish UserModule package",
+        "inputs": [
+          "publisher identity",
+          "module package",
+          "hash/metadata"
+        ],
+        "outputs": [
+          "repository entry"
+        ],
+        "errors": [
+          "publisher denied",
+          "package invalid"
+        ],
+        "side_effects": [
+          "module repository updated"
+        ]
+      },
+      {
+        "id": "OP_UM_REPO_FETCH",
+        "name": "Fetch UserModule package",
+        "inputs": [
+          "module identity/version"
+        ],
+        "outputs": [
+          "package + integrity metadata"
+        ],
+        "errors": [
+          "module unavailable"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_UM_REPO_VALIDATE",
+        "name": "Validate fetched UserModule",
+        "inputs": [
+          "package",
+          "expected hash/certification policy"
+        ],
+        "outputs": [
+          "validated inert module package"
+        ],
+        "errors": [
+          "hash mismatch",
+          "certification mismatch"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "publisher_rule": "Repository publication binds package to an explicit authorized publisher identity.",
+    "identity_rule": "UserModule canonical identity/version is distinct from repository path.",
+    "hash_rule": "Fetched package hash is validated before install/load.",
+    "certification_rule": "Certification is separate and may be required by policy but is not implied by repository presence.",
+    "inert_rule": "Fetched module remains inert until normal install/load/enable lifecycle.",
+    "export_rule": "Repository retrieval/export must preserve package bytes where byte-identical export is claimed.",
+    "authority_rule": "Repository presence does not grant runtime authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DISTRIBUTION_NONAUTHORITY",
+        "rule": "Packaging, hashing, certification and repository distribution preserve canonical semantics but do not become semantic or runtime authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "repository path used as module semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "fetched package executes before normal lifecycle",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "hash validation skipped where required",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "repository presence treated as certification",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "repository presence grants runtime authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "publisher identity unresolved",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_UM",
+      "target_ref": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT",
+      "purpose": "Distributed packages resolve to canonical UserModule identities."
+    },
+    {
+      "id": "REF_LIFE",
+      "target_ref": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT",
+      "purpose": "Fetched package remains inert until normal lifecycle."
+    }
+  ],
+  "prose": {
+    "summary": "Define UserModule repository publication and retrieval as licensed/authorized distribution of inert module packages with explicit publisher, identity and hash validation.",
+    "notes": [
+      "Unlocked until reconciled against the assembled 1.4 tree and distribution/certification validation."
+    ]
+  }
+}

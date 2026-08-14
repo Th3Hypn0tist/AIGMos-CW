@@ -1,0 +1,176 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT",
+    "name": "Expose Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Expose as the human/web-facing architecture over existing AIGMos canonical/runtime semantics, without creating a parallel backend or privileged execution path.",
+  "scope": {
+    "owns": [
+      "Expose Boundary semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority unless explicitly referenced",
+      "unrelated domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE",
+      "name": "Expose",
+      "purpose": "Define Expose as the human/web-facing architecture over existing AIGMos canonical/runtime semantics, without creating a parallel backend or privileged execution path.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_PROJECTION",
+        "TOPIC_RUNTIME_EXP",
+        "TOPIC_RUNTIME_REST"
+      ],
+      "member_refs": [
+        "AIGMOS_EXPOSE_BOUNDARY_CONTRACT",
+        "EXPOSE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_EXPOSE_PROJECT",
+        "OP_EXPOSE_INVOKE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_EXPOSE_PROJECT",
+        "name": "Project canonical semantics to human-facing surface",
+        "inputs": [
+          "canonical/runtime refs",
+          "Expose view composition"
+        ],
+        "outputs": [
+          "human-facing projection"
+        ],
+        "errors": [
+          "source unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_EXPOSE_INVOKE",
+        "name": "Invoke canonical operation from Expose",
+        "inputs": [
+          "operation_ref",
+          "validated UI input"
+        ],
+        "outputs": [
+          "canonical operation result"
+        ],
+        "errors": [
+          "authority denied",
+          "operation unresolved"
+        ],
+        "side_effects": [
+          "only effects of invoked operation"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "scope": [
+      "Web Base",
+      "Elements",
+      "nanoCMS",
+      "MetaModules",
+      "Editor",
+      "assets/style",
+      "web-facing protocol bindings"
+    ],
+    "backend_rule": "Expose is not a parallel backend/runtime.",
+    "read_rule": "Reads are projections over canonical/runtime sources.",
+    "write_rule": "Writes invoke explicit canonical operations owned elsewhere.",
+    "authority_rule": "UI visibility or control presence does not grant authority.",
+    "protocol_rule": "REST/OSC/WebSocket/web bindings expose existing operations and data; they do not redefine semantics.",
+    "meta_visibility_rule": "Meta is not under Expose unless a MetaModule has an exposed human-facing surface."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPOSE_BOUNDARY_EXPLICIT",
+        "rule": "Expose, nanoCMS, MetaModules and Editor remain projections/compositions over canonical semantics and never create hidden runtime authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "Expose creates private backend semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Expose bypasses Core dispatcher or AccessCore",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "UI visibility grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "web binding duplicates domain semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "Meta semantics treated as Expose-owned solely because they are visible",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROJECTION",
+      "target_ref": "AIGMOS_CORE_PROJECTION_BOUNDARY_CONTRACT",
+      "purpose": "Expose is derived human-facing projection."
+    },
+    {
+      "id": "REF_EXP",
+      "target_ref": "AIGMOS_RUNTIME_EXP_EXPOSURE_CONTRACT",
+      "purpose": "UserModule exposure reuses canonical runtime surfaces."
+    }
+  ],
+  "prose": {
+    "summary": "Define Expose as the human/web-facing architecture over existing AIGMos canonical/runtime semantics, without creating a parallel backend or privileged execution path.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose/nanoCMS/Meta contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

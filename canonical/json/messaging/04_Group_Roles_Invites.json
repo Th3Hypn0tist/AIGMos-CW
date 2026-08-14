@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_GROUP_ROLE_INVITE_CONTRACT",
+    "name": "Group Roles and Invites",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define group governance with immutable owner, two delegated permission levels and explicit optional all-members-may-invite policy.",
+  "scope": {
+    "owns": [
+      "Group Roles and Invites semantics"
+    ],
+    "does_not_own": [
+      "transport identity",
+      "AccessCore authorization",
+      "unrelated MeritCore semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MESSAGING_GROUP_GOVERNANCE",
+      "name": "Group Roles and Invites",
+      "purpose": "Define group governance with immutable owner, two delegated permission levels and explicit optional all-members-may-invite policy.",
+      "parent_topic_refs": [
+        "TOPIC_MESSAGING_GROUP",
+        "TOPIC_STRUCTURE_AUTHORITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_GROUP_ROLE_INVITE_CONTRACT",
+        "MESSAGING_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "owner": "immutable group owner",
+    "delegated_levels": 2,
+    "role_rule": "Delegated levels are explicit group-governance permissions and do not alter IdentityCore identity.",
+    "invite_rule": "Invites require an explicitly permitted group role or policy.",
+    "all_may_invite_rule": "A group may explicitly enable all-members-may-invite.",
+    "default_rule": "All-members-may-invite is not assumed unless enabled.",
+    "membership_rule": "Invite acceptance creates explicit group membership.",
+    "authority_rule": "Group role authority applies only to group-governance operations and does not grant unrelated AccessCore rights."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MESSAGING_BOUNDARY_EXPLICIT",
+        "rule": "Messaging identity, conversation state, throttling, group governance and transport semantics remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "group role changes canonical identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "all-members-may-invite assumed without explicit setting",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "invite accepted without explicit membership transition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "group role grants unrelated AccessCore authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "owner role transferred silently",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_GROUP",
+      "target_ref": "AIGMOS_GROUP_MESSAGING_CONTRACT",
+      "purpose": "Governance applies to explicit group identity."
+    },
+    {
+      "id": "REF_AUTH",
+      "target_ref": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT",
+      "purpose": "Group permissions are scoped authority semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define group governance with immutable owner, two delegated permission levels and explicit optional all-members-may-invite policy.",
+    "notes": [
+      "Unlocked pending reconciliation against existing msg/WebRTC/rendezvous contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_IAM_AUTH_SESSION_CONTRACT",
+    "name": "IAM Authentication Session Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define authenticated sessions as explicit bounded identities tied to an IAM identity and assurance evidence, separate from AccessCore permissions.",
+  "scope": {
+    "owns": [
+      "IAM Authentication Session Identity semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime operation implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_IAM_AUTH_SESSION",
+      "name": "IAM Authentication Session Identity",
+      "purpose": "Define authenticated sessions as explicit bounded identities tied to an IAM identity and assurance evidence, separate from AccessCore permissions.",
+      "parent_topic_refs": [
+        "TOPIC_IAM",
+        "TOPIC_AUTHENTICATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_IAM_AUTH_SESSION_CONTRACT",
+        "IDENTITY_AUTHORITY_SEPARATION",
+        "FAIL_CLOSED_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each session has an explicit session identity.",
+    "subject_rule": "Session references one exact IAM identity.",
+    "assurance_rule": "Current assurance evidence/level is explicit.",
+    "lifetime_rule": "Issued, expiry, idle-lifetime and renewal semantics are explicit.",
+    "channel_rule": "Terminal/web/remote channel binding is explicit where required.",
+    "authorization_rule": "Session proves authenticated context only; it does not itself grant AccessCore rights.",
+    "revocation_rule": "Revoked session cannot be reused.",
+    "secret_rule": "Session secret material is never emitted into ordinary logs/canonical JSON."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_AUTHORITY_SEPARATION",
+        "rule": "Identity, authentication assurance, authorization policy, authorization decision, delegation and runtime execution remain separate machine-significant identities/evidence; no one layer silently substitutes for another."
+      },
+      {
+        "id": "FAIL_CLOSED_AUTHORITY",
+        "rule": "Ambiguous, missing, stale or unverifiable authority for a protected effect fails closed rather than inheriting trust from locality, transport reachability, process ownership, UI visibility or previous success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "session equals authorization policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "session never expires",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "revoked session accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "channel binding guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "session token logged",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ATTEMPT",
+      "target_ref": "AIGMOS_IAM_AUTHENTICATION_ATTEMPT_CONTRACT",
+      "purpose": "Successful authentication may create a bounded session."
+    }
+  ],
+  "prose": {
+    "summary": "Define authenticated sessions as explicit bounded identities tied to an IAM identity and assurance evidence, separate from AccessCore permissions.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

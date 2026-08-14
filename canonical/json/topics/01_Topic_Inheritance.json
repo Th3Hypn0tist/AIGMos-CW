@@ -1,0 +1,159 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TOPIC_INHERITANCE_CONTRACT",
+    "name": "Topic Inheritance",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Topic inheritance so a Topic may inherit broader Topic classifications and a recursive reader can resolve the full semantic grouping graph.",
+  "scope": {
+    "owns": [
+      "Topic Inheritance semantics"
+    ],
+    "does_not_own": [
+      "runtime implementation details",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TOPIC_INHERITANCE",
+      "name": "Topic Inheritance",
+      "purpose": "Define Topic inheritance so a Topic may inherit broader Topic classifications and a recursive reader can resolve the full semantic grouping graph.",
+      "parent_topic_refs": [
+        "TOPIC_TOPIC_SYSTEM"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_TOPIC_SYSTEM"
+      ],
+      "member_refs": [
+        "AIGMOS_TOPIC_INHERITANCE_CONTRACT",
+        "TOPIC_GRAPH_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_TOPIC_INHERIT",
+        "OP_TOPIC_INHERIT_RESOLVE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_TOPIC_INHERIT",
+        "name": "Declare Topic inheritance",
+        "inputs": [
+          "child_topic",
+          "parent_topic"
+        ],
+        "outputs": [
+          "inheritance edge"
+        ],
+        "errors": [
+          "Topic unresolved",
+          "invalid inheritance cycle"
+        ],
+        "side_effects": [
+          "Topic graph updated"
+        ]
+      },
+      {
+        "id": "OP_TOPIC_INHERIT_RESOLVE",
+        "name": "Resolve inherited Topic surface",
+        "inputs": [
+          "topic_ref"
+        ],
+        "outputs": [
+          "resolved inherited memberships/semantics"
+        ],
+        "errors": [
+          "cycle invalid"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "inheritance_rule": "Topic may reference one or more parent Topics.",
+    "multi_parent_rule": "Multiple parent Topics are valid when the child genuinely spans several semantic groupings.",
+    "transitive_rule": "Inherited Topic membership is recursively resolvable.",
+    "identity_rule": "Child Topic retains its own identity and does not merge into parent identity.",
+    "structure_rule": "Topic inheritance is classification inheritance, not structural containment.",
+    "cycle_rule": "Inheritance cycles must be explicitly valid under the Topic model or hard-fail."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TOPIC_GRAPH_EXPLICIT",
+        "rule": "Every machine-significant canonical node is classified by explicit Topic membership or explicitly marked outsider; Topics may inherit and compose other Topics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "Topic inheritance collapses child identity into parent",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "multiple parent Topics rejected without semantic reason",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "inheritance interpreted as ownership/containment",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "recursive inherited Topic resolution is impossible",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "invalid Topic inheritance cycle accepted",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TOPIC",
+      "target_ref": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT",
+      "purpose": "Inheritance extends Topic classification."
+    }
+  ],
+  "prose": {
+    "summary": "Define Topic inheritance so a Topic may inherit broader Topic classifications and a recursive reader can resolve the full semantic grouping graph.",
+    "notes": [
+      "Unlocked until reconciled against the assembled 1.4 Topic graph and repository-wide validation."
+    ]
+  }
+}

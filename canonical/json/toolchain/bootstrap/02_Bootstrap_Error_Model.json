@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TOOLCHAIN_BOOTSTRAP_ERROR_MODEL_CONTRACT",
+    "name": "Bootstrap Error Model",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define exact bootstrap failure categories and fail-fast behavior before canonical source discovery.",
+  "scope": {
+    "owns": [
+      "Bootstrap Error Model semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime application authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TOOLCHAIN_BOOTSTRAP_ERROR_MODEL",
+      "name": "Bootstrap Error Model",
+      "purpose": "Define exact bootstrap failure categories and fail-fast behavior before canonical source discovery.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_TOOLCHAIN",
+        "TOPIC_RECONCILIATION_EXECUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TOOLCHAIN_BOOTSTRAP_ERROR_MODEL_CONTRACT",
+        "TOOLING_NONAUTHORITY",
+        "DETERMINISTIC_EXACT_INPUTS",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "error_types": [
+      "root_missing",
+      "root_ambiguous",
+      "read_error",
+      "parse_error",
+      "unsupported_format",
+      "invalid_bootstrap",
+      "hash_mismatch",
+      "other declared error"
+    ],
+    "fatal_rule": "All bootstrap integrity/format errors are fatal to the canonical run.",
+    "report_rule": "Error includes exact path/rule/context without leaking secrets.",
+    "recovery_rule": "Recovery requires corrected source/new run, not fallback guessing.",
+    "exit_rule": "CLI/CI expose deterministic failure status."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TOOLING_NONAUTHORITY",
+        "rule": "Toolchain code, scans, indexes, reports and generated artifacts remain implementation/evidence surfaces; they never become canonical semantic authority unless an explicit accepted canonical definition says so."
+      },
+      {
+        "id": "DETERMINISTIC_EXACT_INPUTS",
+        "rule": "Every toolchain execution binds exact bootstrap/source/profile/input revisions and must not resolve ambiguity through filesystem order, newest-wins, mtime, fuzzy names or UI layout."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "bootstrap warning only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "fallback guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "error swallowed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "different invalid root tried automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "run marked partial-success",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LOAD",
+      "target_ref": "AIGMOS_TOOLCHAIN_BOOTSTRAP_LOADER_CONTRACT",
+      "purpose": "Errors govern bootstrap loader failure."
+    }
+  ],
+  "prose": {
+    "summary": "Define exact bootstrap failure categories and fail-fast behavior before canonical source discovery.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Implementation contracts operationalize canonical semantics but do not replace canonical source authority."
+    ]
+  }
+}

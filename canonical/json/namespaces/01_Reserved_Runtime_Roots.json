@@ -1,0 +1,138 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RESERVED_RUNTIME_ROOTS_CONTRACT",
+    "name": "Reserved Runtime Roots",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define reserved top-level AIGMos runtime roots as stable semantic namespaces whose concrete owners and module families are explicit and cannot be shadowed by user content.",
+  "scope": {
+    "owns": [
+      "Reserved Runtime Roots semantics"
+    ],
+    "does_not_own": [
+      "mounted module internal semantics",
+      "runtime authorization policy",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_RESERVED_ROOTS",
+      "name": "Reserved Runtime Roots",
+      "purpose": "Define reserved top-level AIGMos runtime roots as stable semantic namespaces whose concrete owners and module families are explicit and cannot be shadowed by user content.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NAMESPACES",
+        "TOPIC_RUNTIME_BOOT_PROFILE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RESERVED_RUNTIME_ROOTS_CONTRACT",
+        "NAMESPACE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "reserved_roots": [
+      "#I",
+      "#A",
+      "#P",
+      "#R",
+      "#T",
+      "#MCP",
+      "#OSC",
+      "#REST",
+      "#UM",
+      "#MEM",
+      "#HELP",
+      "#CAL",
+      "#SHOP"
+    ],
+    "reservation_rule": "Reserved root identity cannot be redefined by user-installed modules or arbitrary mounts.",
+    "owner_rule": "Each root resolves to one explicit semantic owner/family contract.",
+    "extension_rule": "New reserved root requires explicit canonical contract and registry update.",
+    "shadow_rule": "User/library content cannot shadow a reserved root by name/path coincidence.",
+    "lifecycle_rule": "A reserved root may exist canonically even when the corresponding optional subsystem is disabled/unavailable.",
+    "authority_rule": "Reserved status is naming/address-space protection, not elevated runtime authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "NAMESPACE_EXPLICIT",
+        "rule": "Runtime symbol namespaces, roots, mounts and dynamic families are explicit, collision-free and never inferred solely from filesystem layout or display labels."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "user module shadows reserved root",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "reserved root owner unresolved",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "new reserved root appears without registry contract",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "disabled subsystem causes canonical reserved root identity to disappear where root is defined as persistent",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "reserved status interpreted as privileged authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REG",
+      "target_ref": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
+      "purpose": "Reserved roots are registered explicitly."
+    }
+  ],
+  "prose": {
+    "summary": "Define reserved top-level AIGMos runtime roots as stable semantic namespaces whose concrete owners and module families are explicit and cannot be shadowed by user content.",
+    "notes": [
+      "Unlocked pending reconciliation against existing runtime symbol/module contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

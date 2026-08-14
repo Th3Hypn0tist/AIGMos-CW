@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_GOVERNANCE_DECISION_MONITOR_CONTRACT",
+    "name": "Governance Decision and Explainability Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only/candidate-edit Expose monitor for governance decisions, explanations, conflicts, reviews/appeals and policy-change candidates.",
+  "scope": {
+    "owns": [
+      "Governance Decision and Explainability Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "runtime execution authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_GOVERNANCE_DECISION_MONITOR",
+      "name": "Governance Decision and Explainability Monitor",
+      "purpose": "Define a read-only/candidate-edit Expose monitor for governance decisions, explanations, conflicts, reviews/appeals and policy-change candidates.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_GOVERNANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_GOVERNANCE_DECISION_MONITOR_CONTRACT",
+        "GOVERNANCE_EVIDENCE_SEPARATION",
+        "FAIL_CLOSED_PROTECTED_DATA",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "governance decision registry",
+      "purpose/classification/retention/disclosure inputs",
+      "material policies",
+      "explanation evidence",
+      "conflict resolution",
+      "review/appeal state",
+      "policy candidate/diff/activation"
+    ],
+    "readonly_rule": "Monitor is read-only by default; policy edits remain candidate-only.",
+    "identity_rule": "Governance decision, AccessCore decision, policy, explanation, review and candidate revision identities remain distinct.",
+    "action_rule": "review/appeal/edit-policy/validate/apply operations use separate authorized workflows.",
+    "authority_rule": "Viewing explanation grants no protected-resource authority.",
+    "failure_rule": "deny/partial/conflict/unknown/appealed/activation-failed states remain explicit.",
+    "privacy_rule": "Explanations avoid leaking denied protected values."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "GOVERNANCE_EVIDENCE_SEPARATION",
+        "rule": "Policy, decision, evidence, audit record, consent, incident and compliance result remain separate machine-significant identities; no evidence artifact silently becomes source data, authorization or runtime authority."
+      },
+      {
+        "id": "FAIL_CLOSED_PROTECTED_DATA",
+        "rule": "Ambiguous or unresolved governance for protected data fails closed; UI visibility, transport reachability, cache presence, role title, prior access or audit-log presence never substitute for an explicit valid policy decision."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor treats governance allow as AccessCore allow",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "policy edit live while typing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "appeal grants access",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "denial explanation leaks data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "conflict hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EXPL",
+      "target_ref": "AIGMOS_GOVERNANCE_EXPLANATION_EVIDENCE_CONTRACT",
+      "purpose": "Monitor projects exact explanation evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only/candidate-edit Expose monitor for governance decisions, explanations, conflicts, reviews/appeals and policy-change candidates.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,197 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_INFLIGHT_GATE_CONTRACT",
+    "name": "Runtime Inflight and No-Reentry",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define concrete-key inflight gates and no-reentry behavior for automation/runtime paths that could recursively re-enter themselves.",
+  "scope": {
+    "owns": [
+      "Runtime Inflight and No-Reentry semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_INFLIGHT",
+      "name": "Inflight Gate",
+      "purpose": "Define concrete-key inflight gates and no-reentry behavior for automation/runtime paths that could recursively re-enter themselves.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_AUTOMATION"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_DEFINITION_STATE",
+        "TOPIC_CORE_BOUNDED_OPERATION",
+        "TOPIC_CORE_ERRORS"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_INFLIGHT_GATE_CONTRACT",
+        "AUTOMATION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_INFLIGHT_ACQUIRE",
+        "OP_INFLIGHT_RELEASE",
+        "OP_INFLIGHT_RECOVER"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_INFLIGHT_ACQUIRE",
+        "name": "Acquire inflight gate",
+        "inputs": [
+          "concrete gate key",
+          "runtime context"
+        ],
+        "outputs": [
+          "acquired gate"
+        ],
+        "errors": [
+          "already inflight",
+          "resource bound exceeded"
+        ],
+        "side_effects": [
+          "gate runtime state created"
+        ]
+      },
+      {
+        "id": "OP_INFLIGHT_RELEASE",
+        "name": "Release inflight gate",
+        "inputs": [
+          "gate key",
+          "completion reason"
+        ],
+        "outputs": [
+          "released gate"
+        ],
+        "errors": [],
+        "side_effects": [
+          "gate runtime state removed"
+        ]
+      },
+      {
+        "id": "OP_INFLIGHT_RECOVER",
+        "name": "Recover stale gate",
+        "inputs": [
+          "gate key",
+          "stale timeout policy"
+        ],
+        "outputs": [
+          "recovered/reported gate"
+        ],
+        "errors": [
+          "recovery failed"
+        ],
+        "side_effects": [
+          "gate runtime state reconciled"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "gate_key_rule": "Gate key is a concrete target identity, trigger id, runner id or other explicit runtime identity; not a broad guessed namespace.",
+    "acquire_rule": "Gate is acquired before entering the guarded effect/dispatch path.",
+    "release_reasons": [
+      "success",
+      "error",
+      "timeout",
+      "cancel"
+    ],
+    "stale_timeout_required": true,
+    "visibility_rule": "Gate state is visible for debugging/monitoring.",
+    "state_rule": "Inflight gates are runtime state, never authored definition semantics.",
+    "reentry_rule": "Guarded path cannot re-enter while its gate is held unless an explicit safe reentry semantic is separately defined."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "AUTOMATION_EXPLICIT",
+        "rule": "Automation semantics are explicit, bounded, and do not gain authority from data or composition."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "reentrant path lacks applicable inflight gate",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "gate acquired after effect begins",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "gate not released on success/error/timeout/cancel",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "stale gate timeout missing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "gate state hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "inflight gate stored as authored definition",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_STATE",
+      "target_ref": "AIGMOS_RUNTIME_DEFINITION_STATE_SEPARATION_CONTRACT",
+      "purpose": "Inflight state is mutable runtime state."
+    },
+    {
+      "id": "REF_BOUNDS",
+      "target_ref": "AIGMOS_CORE_BOUNDED_OPERATION_CONTRACT",
+      "purpose": "Gate/resource behavior is bounded."
+    }
+  ],
+  "prose": {
+    "summary": "Define concrete-key inflight gates and no-reentry behavior for automation/runtime paths that could recursively re-enter themselves.",
+    "notes": [
+      "Unlocked until reconciled against the existing automation/runtime contracts and repository-wide 1.4 traceability validation."
+    ]
+  }
+}

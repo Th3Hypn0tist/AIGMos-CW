@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_DWH_LIFECYCLE_MONITOR_CONTRACT",
+    "name": "DWH Lifecycle and Retention Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for lifecycle states, retention policies, archive bindings, expiry, holds, purge eligibility and destructive-operation evidence.",
+  "scope": {
+    "owns": [
+      "DWH Lifecycle and Retention Monitor semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_DWH_LIFECYCLE_MONITOR",
+      "name": "DWH Lifecycle and Retention Monitor",
+      "purpose": "Define a read-only Expose monitor for lifecycle states, retention policies, archive bindings, expiry, holds, purge eligibility and destructive-operation evidence.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_DATA_LIFECYCLE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_DWH_LIFECYCLE_MONITOR_CONTRACT",
+        "RETENTION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "data lifecycle state",
+      "retention policy/scope/anchor",
+      "archive storage/integrity refs",
+      "expiry status",
+      "active holds",
+      "policy conflicts",
+      "purge eligibility",
+      "purge/delete/tombstone evidence"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Data identity, lifecycle state, retention policy, hold, archive binding and purge execution identities remain distinct.",
+    "derived_rule": "Expiry/purge eligibility is displayed as derived policy state, not as completed deletion.",
+    "action_rule": "archive/restore/hold/release-hold/delete/purge operations invoke separate authorized canonical workflows.",
+    "authority_rule": "Viewing eligible/expired data grants no destructive authority.",
+    "graph_rule": "Policy/scope/hold edges correspond only to explicit refs.",
+    "failure_rule": "Policy conflicts, blocked purge, failed archive and partial purge states are surfaced explicitly."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RETENTION_EXPLICIT",
+        "rule": "Retention, archival, expiry, purge and hold state are explicit lifecycle semantics over exact data identities; time passage, storage movement or archive location never silently deletes, declassifies, transfers ownership or restores data."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor shows expiry as already purged",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "monitor purges on view",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "hold and retention identities conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "viewing grants purge authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "policy conflict hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_STATE",
+      "target_ref": "AIGMOS_DWH_DATA_LIFECYCLE_STATE_CONTRACT",
+      "purpose": "Monitor projects explicit lifecycle states."
+    },
+    {
+      "id": "REF_HOLD",
+      "target_ref": "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT",
+      "purpose": "Monitor surfaces holds/conflicts."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for lifecycle states, retention policies, archive bindings, expiry, holds, purge eligibility and destructive-operation evidence.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH persistence, deletion, classification and governance contracts."
+    ]
+  }
+}

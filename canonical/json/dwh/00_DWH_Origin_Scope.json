@@ -1,0 +1,128 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT",
+    "name": "DWH Origin and Scope",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define DWH data origin, local/remote classification and input scope at the point where data enters the originating instance.",
+  "scope": {
+    "owns": [
+      "DWH Origin and Scope semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy semantics",
+      "remote domain semantics",
+      "transport identity"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_ORIGIN_SCOPE",
+      "name": "DWH Origin and Scope",
+      "purpose": "Define DWH data origin, local/remote classification and input scope at the point where data enters the originating instance.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_REMOTE_DATA"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT",
+        "DWH_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "origin_rule": "Every governed DWH datum has an explicit origin instance/identity context.",
+    "classification_rule": "Local and remote DWH semantics remain distinct from AccessCore authorization.",
+    "input_scope_values": [
+      "all",
+      "ext",
+      "id"
+    ],
+    "scope_rule": "Input scope is applied at the data origin before remote propagation.",
+    "identity_rule": "Origin identity is preserved through remote transport where required.",
+    "schema_rule": "Input is validated/classified against the origin-side declared schema/binding.",
+    "authority_rule": "DWH classification/scope does not itself grant read/write rights."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_BOUNDARY_EXPLICIT",
+        "rule": "DWH data movement preserves explicit origin identity, schema, scope and remote authority boundaries; transport connectivity never becomes data authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "origin identity missing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "input scope applied only after remote receipt",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "DWH scope treated as AccessCore permission",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "remote data relabeled local silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "schema/origin classification skipped",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_RIGHTS_EVALUATION_CONTRACT",
+      "purpose": "DWH scope remains orthogonal to authorization."
+    }
+  ],
+  "prose": {
+    "summary": "Define DWH data origin, local/remote classification and input scope at the point where data enters the originating instance.",
+    "notes": [
+      "Unlocked pending reconciliation against existing DWH/EXT/WebRTC/AccessCore contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

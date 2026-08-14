@@ -1,0 +1,147 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DEPLOYMENT_ENVIRONMENT_IDENTITY_CONTRACT",
+    "name": "Deployment Environment Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each deployment environment such as development, test, staging or production as an explicit identity with exact infrastructure, governance and boundary profile.",
+  "scope": {
+    "owns": [
+      "Deployment Environment Identity semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "canonical documentation ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DEPLOYMENT_ENVIRONMENT_IDENTITY",
+      "name": "Deployment Environment Identity",
+      "purpose": "Define each deployment environment such as development, test, staging or production as an explicit identity with exact infrastructure, governance and boundary profile.",
+      "parent_topic_refs": [
+        "TOPIC_DEPLOYMENT",
+        "TOPIC_ENVIRONMENTS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DEPLOYMENT_ENVIRONMENT_IDENTITY_CONTRACT",
+        "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "OPERATIONS_FAIL_SAFE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_ENVIRONMENTS",
+      "name": "Environments",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_ENVIRONMENTS already referenced by 1 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 1,
+        "distinct_child_topics": 1,
+        "host_contract_ref": "AIGMOS_DEPLOYMENT_ENVIRONMENT_IDENTITY_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each environment has an explicit stable identity.",
+    "class_rule": "Environment class/name is descriptive metadata, not the sole identity.",
+    "resource_rule": "Bound hosts/nodes/listeners/storage/endpoints are explicit.",
+    "governance_rule": "Environment-specific AccessCore/governance/secrets/deployment policies are explicit.",
+    "isolation_rule": "Environment boundaries are explicit and do not collapse because resources share a host/network.",
+    "promotion_rule": "Promotion between environments is a separate deployment action.",
+    "authority_rule": "Access to one environment grants no authority to another."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "rule": "Release candidate, accepted release, deployment plan, deployment execution, installed artifact, active runtime instance and observed health remain separate identities/states."
+      },
+      {
+        "id": "OPERATIONS_FAIL_SAFE",
+        "rule": "Operational convenience, availability pressure, maintenance state, automation, recovery or rollback never silently bypass validation, authorization, integrity, governance or dispatcher boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "staging credentials accepted in production",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "same hostname merges environments",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "environment inferred from directory name",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "promotion copies authority automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "production selected by default fallback",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define each deployment environment such as development, test, staging or production as an explicit identity with exact infrastructure, governance and boundary profile.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_ENVIRONMENTS solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

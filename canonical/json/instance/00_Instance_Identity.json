@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_INSTANCE_IDENTITY_CONTRACT",
+    "name": "AIGMos Instance Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each AIGMos runtime installation/instance as an explicit stable logical identity independent from hostname, filesystem path, active snapshot and listener bindings.",
+  "scope": {
+    "owns": [
+      "AIGMos Instance Identity semantics"
+    ],
+    "does_not_own": [
+      "IdentityCore identity semantics",
+      "AccessCore policy semantics",
+      "runtime business-domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_INSTANCE_IDENTITY",
+      "name": "AIGMos Instance Identity",
+      "purpose": "Define each AIGMos runtime installation/instance as an explicit stable logical identity independent from hostname, filesystem path, active snapshot and listener bindings.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_ACTIVATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_INSTANCE_IDENTITY_CONTRACT",
+        "INSTANCE_CONFIG_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each AIGMos instance has an explicit stable canonical/logical identity.",
+    "name_rule": "Human-facing instance name is editable descriptive metadata and does not replace instance identity.",
+    "path_rule": "Install path/config path is implementation binding, not semantic identity.",
+    "host_rule": "Hostname/IP/device identity does not automatically become AIGMos instance identity.",
+    "snapshot_rule": "Runtime active snapshot is a separate binding from instance identity.",
+    "listener_rule": "Named network listeners belong to the instance but ports/endpoints do not define the instance.",
+    "authority_rule": "Instance existence/ownership metadata does not itself grant AccessCore rights."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "INSTANCE_CONFIG_SEPARATION",
+        "rule": "AIGMos instance identity, configuration, IAM parent, AccessCore parent and runtime state remain explicit separate dimensions; configuration never silently changes semantic ownership or authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "instance identity inferred solely from hostname/path",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "instance rename changes semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "active snapshot used as instance identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "port/listener used as instance identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "instance metadata grants AccessCore authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ACTIVE",
+      "target_ref": "AIGMOS_RUNTIME_ACTIVE_SNAPSHOT_CONTRACT",
+      "purpose": "Instance identity remains separate from active snapshot."
+    }
+  ],
+  "prose": {
+    "summary": "Define each AIGMos runtime installation/instance as an explicit stable logical identity independent from hostname, filesystem path, active snapshot and listener bindings.",
+    "notes": [
+      "Unlocked pending reconciliation against existing instance-config/IAM/AccessCore/runtime contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

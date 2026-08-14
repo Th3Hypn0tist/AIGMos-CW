@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_BOOT_NEGATIVE_PRUNING_CONTRACT",
+    "name": "Boot Negative Pruning",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit negative/pruning selections that remove components from a candidate profile while requiring dependency closure to remain valid.",
+  "scope": {
+    "owns": [
+      "Boot Negative Pruning semantics"
+    ],
+    "does_not_own": [
+      "component semantic identity",
+      "AccessCore policy ownership",
+      "component runtime implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_BOOT_NEGATIVE_PRUNING",
+      "name": "Boot Negative Pruning",
+      "purpose": "Define explicit negative/pruning selections that remove components from a candidate profile while requiring dependency closure to remain valid.",
+      "parent_topic_refs": [
+        "TOPIC_BOOT_PROFILE",
+        "TOPIC_RUNTIME_ACTIVATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_BOOT_NEGATIVE_PRUNING_CONTRACT",
+        "BOOT_PROFILE_EXPLICIT_SELECTION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "prune_rule": "Negative selection targets exact component/capability identities.",
+    "precedence_rule": "Conflict between positive selection and explicit prune is resolved by a declared deterministic profile rule; never by order of appearance.",
+    "required_rule": "A component required by a retained component cannot be pruned while preserving an invalid closure.",
+    "optional_rule": "Optional components may be pruned when no retained required dependency is broken.",
+    "cascade_rule": "Pruning does not silently cascade-delete dependents; resulting invalid dependents are reported explicitly.",
+    "history_rule": "Pruning affects resolved profile availability, not installed-artifact history.",
+    "authority_rule": "Pruning availability does not modify permissions."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOT_PROFILE_EXPLICIT_SELECTION",
+        "rule": "Boot/runtime availability is derived only from explicit profile selection plus validated dependency closure; discovery, installation, dependency presence or historical activation never silently enables a component."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "required dependency pruned silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "negative/positive conflict resolved by list order",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "prune removes installed history",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "prune silently cascades arbitrary dependents",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "negative selector fuzzy-matched",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_USE",
+      "target_ref": "AIGMOS_BOOT_USE_SELECTION_CONTRACT",
+      "purpose": "Positive and negative profile selection reconcile explicitly."
+    },
+    {
+      "id": "REF_DEP",
+      "target_ref": "AIGMOS_INSTALL_DEPENDENCY_VALIDATION_CONTRACT",
+      "purpose": "Pruned closure must remain dependency-valid."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit negative/pruning selections that remove components from a candidate profile while requiring dependency closure to remain valid.",
+    "notes": [
+      "Unlocked pending reconciliation against runtime activation, install dependency and instance configuration contracts."
+    ]
+  }
+}

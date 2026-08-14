@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_IAM_SESSION_MONITOR_CONTRACT",
+    "name": "IAM Session and Assurance Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for authentication attempts, sessions, assurance, expiry/renewal and revocation state without exposing authentication secrets.",
+  "scope": {
+    "owns": [
+      "IAM Session and Assurance Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime operation implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_IAM_SESSION_MONITOR",
+      "name": "IAM Session and Assurance Monitor",
+      "purpose": "Define a read-only Expose monitor for authentication attempts, sessions, assurance, expiry/renewal and revocation state without exposing authentication secrets.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_IAM"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_IAM_SESSION_MONITOR_CONTRACT",
+        "IDENTITY_AUTHORITY_SEPARATION",
+        "FAIL_CLOSED_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "identity refs",
+      "authentication attempts",
+      "session registry",
+      "assurance level/evidence metadata",
+      "issued/expiry/idle state",
+      "channel binding",
+      "revocation state"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Identity, auth attempt, session and assurance evidence identities remain distinct.",
+    "secret_rule": "Passwords/tokens/private factors are structurally excluded.",
+    "action_rule": "reauth/revoke/close-session operations invoke separate authorized workflows.",
+    "authority_rule": "Viewing a session grants no session/use/access authority.",
+    "failure_rule": "expired/revoked/unknown assurance remains explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_AUTHORITY_SEPARATION",
+        "rule": "Identity, authentication assurance, authorization policy, authorization decision, delegation and runtime execution remain separate machine-significant identities/evidence; no one layer silently substitutes for another."
+      },
+      {
+        "id": "FAIL_CLOSED_AUTHORITY",
+        "rule": "Ambiguous, missing, stale or unverifiable authority for a protected effect fails closed rather than inheriting trust from locality, transport reachability, process ownership, UI visibility or previous success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor reveals session secret",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "session shown as AccessCore right",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "viewing grants session authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "identity/session conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "revoked state hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ASSURANCE",
+      "target_ref": "AIGMOS_IAM_ASSURANCE_EVIDENCE_CONTRACT",
+      "purpose": "Monitor projects assurance evidence safely."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for authentication attempts, sessions, assurance, expiry/renewal and revocation state without exposing authentication secrets.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ROUTINE_CONDITION_BRANCH_CONTRACT",
+    "name": "Routine Condition and Branch",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit condition, branch and wait semantics as canonical control-flow constructs rather than arbitrary embedded code.",
+  "scope": {
+    "owns": [
+      "Routine Condition and Branch semantics"
+    ],
+    "does_not_own": [
+      "Runner execution state",
+      "AccessCore policy ownership",
+      "domain operation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ROUTINE_CONDITION_BRANCH",
+      "name": "Routine Condition and Branch",
+      "purpose": "Define explicit condition, branch and wait semantics as canonical control-flow constructs rather than arbitrary embedded code.",
+      "parent_topic_refs": [
+        "TOPIC_ROUTINES",
+        "TOPIC_RUNNERS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_ROUTINE_CONDITION_BRANCH_CONTRACT",
+        "ROUTINE_DEFINITION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "condition_rule": "Condition is a machine-readable predicate over explicit bound inputs/state refs.",
+    "branch_rule": "Each branch target/path is explicit.",
+    "else_rule": "Fallback/default branch behavior is explicit where applicable.",
+    "wait_rule": "Wait may bind to explicit duration, Event, state predicate or other declared wait primitive.",
+    "timeout_rule": "Wait/condition loops are bounded by explicit timeout/reentry policy where blocking/repetition is possible.",
+    "purity_rule": "Condition evaluation is read-only unless an explicitly separate effectful operation is invoked.",
+    "language_rule": "No hidden implementation-language expression is treated as canonical semantics without a declared expression/profile contract.",
+    "trace_rule": "Runner execution records the evaluated condition result and selected branch."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ROUTINE_DEFINITION_EXPLICIT",
+        "rule": "Routine definitions are explicit canonical ordered compositions of exact commands/operations/routines; runtime execution state is never embedded into the reusable definition."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "arbitrary hidden code used as canonical condition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "condition evaluation performs undeclared side effect",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "branch fallback implicit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "wait unbounded without policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "runner trace omits selected branch/evidence",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_STEP",
+      "target_ref": "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT",
+      "purpose": "Runtime records branch/condition step evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit condition, branch and wait semantics as canonical control-flow constructs rather than arbitrary embedded code.",
+    "notes": [
+      "Unlocked pending reconciliation against existing #R, &, Runner and command contracts."
+    ]
+  }
+}

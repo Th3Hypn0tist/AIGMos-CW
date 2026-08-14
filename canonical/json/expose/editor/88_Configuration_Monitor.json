@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT",
+    "name": "Configuration Monitor and Editor Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define an Expose view/editor boundary for accepted configuration, candidate edits, validation/diff, apply/reload status and rollback history.",
+  "scope": {
+    "owns": [
+      "Configuration Monitor and Editor Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_CONFIGURATION_MONITOR",
+      "name": "Configuration Monitor and Editor Boundary",
+      "purpose": "Define an Expose view/editor boundary for accepted configuration, candidate edits, validation/diff, apply/reload status and rollback history.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_CONFIGURATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT",
+        "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "accepted config revision",
+      "candidate edit buffer",
+      "semantic diff",
+      "validation findings",
+      "dependency/secret refs",
+      "reload/restart impact",
+      "accepted vs live state",
+      "rollback history"
+    ],
+    "candidate_rule": "Editing remains candidate-only until explicit authorized apply.",
+    "identity_rule": "Config schema/field, candidate, accepted revision, runtime instance and secret identities remain distinct.",
+    "action_rule": "validate/apply/reload/rollback operations use separate authorized workflows.",
+    "authority_rule": "Viewing/editing candidate does not grant apply/reload authority.",
+    "secret_rule": "Secret values are never rendered; only safe secret refs/metadata.",
+    "failure_rule": "Accepted-but-not-live, partial-reload and rollback-failed states are explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "rule": "Machine-significant definitions, executions, evidence and runtime state use explicit identities and boundaries; visibility, file order, timestamps, transport reachability or UI placement never silently create semantic authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "editor mutates live config while typing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "secret value displayed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "accepted and live state conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "candidate edit grants apply authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "failed reload hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CAND",
+      "target_ref": "AIGMOS_CONFIG_CANDIDATE_CONTRACT",
+      "purpose": "Editor maintains candidate state."
+    },
+    {
+      "id": "REF_APPLY",
+      "target_ref": "AIGMOS_CONFIG_APPLY_RELOAD_CONTRACT",
+      "purpose": "Apply/reload is explicit."
+    }
+  ],
+  "prose": {
+    "summary": "Define an Expose view/editor boundary for accepted configuration, candidate edits, validation/diff, apply/reload status and rollback history.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

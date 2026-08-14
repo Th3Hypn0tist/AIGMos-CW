@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT",
+    "name": "Runner Step Execution",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each Runner step as an ordered/dependency-bound execution unit with exact definition, input, output, status and parent execution provenance.",
+  "scope": {
+    "owns": [
+      "Runner Step Execution semantics"
+    ],
+    "does_not_own": [
+      "Event definition semantics",
+      "AccessCore policy ownership",
+      "domain operation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNNER_STEP_EXECUTION",
+      "name": "Runner Step Execution",
+      "purpose": "Define each Runner step as an ordered/dependency-bound execution unit with exact definition, input, output, status and parent execution provenance.",
+      "parent_topic_refs": [
+        "TOPIC_RUNNERS",
+        "TOPIC_EXECUTION_TRACE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT",
+        "RUNNER_EXECUTION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "step_rule": "Each machine-significant step has a stable definition identity within the Runner/Routine.",
+    "execution_rule": "Each executed step has a distinct step-execution identity.",
+    "parent_rule": "Step execution references exact parent Runner execution.",
+    "order_rule": "Execution ordering/dependencies are explicit and never inferred only from log timestamps.",
+    "input_rule": "Resolved inputs are explicit refs/values according to operation contract.",
+    "output_rule": "Outputs/results are attached to exact step execution.",
+    "failure_rule": "Skipped, failed, cancelled and completed states are distinct.",
+    "retry_rule": "Retries create explicit attempts rather than rewriting prior attempt evidence."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RUNNER_EXECUTION_EXPLICIT",
+        "rule": "Runner definition, runner execution, individual step execution, operation dispatch and emitted Events are distinct explicit identities connected by traceable execution/causality relations."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "step order inferred only from timestamps",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "retry overwrites failed attempt",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "step result lacks parent run",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "skipped represented as successful",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "step definition and execution identity conflated",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RUN",
+      "target_ref": "AIGMOS_RUNNER_EXECUTION_IDENTITY_CONTRACT",
+      "purpose": "Steps execute within an exact Runner execution."
+    }
+  ],
+  "prose": {
+    "summary": "Define each Runner step as an ordered/dependency-bound execution unit with exact definition, input, output, status and parent execution provenance.",
+    "notes": [
+      "Unlocked pending reconciliation against Routine/Runner, Event/Trigger causality and command dispatch contracts."
+    ]
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_P2P_MESSAGING_CONTRACT",
+    "name": "P2P Messaging",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define msg messaging as peer-to-peer identity-addressed communication over WebRTC, with rendezvous used only for peer bootstrap and no central application-payload authority.",
+  "scope": {
+    "owns": [
+      "P2P Messaging semantics"
+    ],
+    "does_not_own": [
+      "transport identity",
+      "AccessCore authorization",
+      "unrelated MeritCore semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MESSAGING",
+      "name": "P2P Messaging",
+      "purpose": "Define msg messaging as peer-to-peer identity-addressed communication over WebRTC, with rendezvous used only for peer bootstrap and no central application-payload authority.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_WEBRTC",
+        "TOPIC_RUNTIME_RENDEZVOUS",
+        "TOPIC_IDENTITYCORE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_P2P_MESSAGING_CONTRACT",
+        "MESSAGING_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "module": "msg",
+    "transport": "WebRTC",
+    "payload_path": "peer-to-peer",
+    "rendezvous_rule": "Rendezvous/signaling provides peer discovery/bootstrap metadata only.",
+    "identity_rule": "Messaging peer identity is explicit semantic identity and is separate from transient transport/session identifiers.",
+    "payload_rule": "Message payload is inert data.",
+    "authority_rule": "Receiving a message does not grant runtime/data authority.",
+    "conversation_rule": "Conversation state is scoped to explicit participants/group identity.",
+    "ui_rule": "Irssi-style or other UI is projection only; message semantics are independent of client presentation."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MESSAGING_BOUNDARY_EXPLICIT",
+        "rule": "Messaging identity, conversation state, throttling, group governance and transport semantics remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "message payload routed through rendezvous as default application payload path",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "transport/session id used as semantic peer identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "message payload grants runtime authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "conversation participant identity unresolved",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "client UI semantics become message authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_WEBRTC",
+      "target_ref": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT",
+      "purpose": "Messages use P2P WebRTC transport."
+    },
+    {
+      "id": "REF_RENDEZVOUS",
+      "target_ref": "AIGMOS_RUNTIME_RENDEZVOUS_SIGNALING_CONTRACT",
+      "purpose": "Rendezvous is bootstrap-only."
+    }
+  ],
+  "prose": {
+    "summary": "Define msg messaging as peer-to-peer identity-addressed communication over WebRTC, with rendezvous used only for peer bootstrap and no central application-payload authority.",
+    "notes": [
+      "Unlocked pending reconciliation against existing msg/WebRTC/rendezvous contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

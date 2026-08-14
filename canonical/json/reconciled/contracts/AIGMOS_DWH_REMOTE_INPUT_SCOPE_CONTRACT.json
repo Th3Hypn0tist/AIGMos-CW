@@ -1,0 +1,192 @@
+{
+  "behavior": {
+    "events": [],
+    "flows": [],
+    "interfaces": [],
+    "operations": [],
+    "states": []
+  },
+  "constraints": {
+    "hard_gates": [
+      {
+        "id": "GATE_29224E19AF",
+        "condition": "receiver widens origin scope",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_67DEAAFE90",
+        "condition": "transport connectivity implies all scope",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_DE5FD60016",
+        "condition": "scope replaces authorization checks",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_A5BE55E155",
+        "condition": "released data loses origin/scope provenance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_9775B01318",
+        "condition": "scope inferred from payload/path",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_DE58B65390",
+        "condition": "unknown scope defaults to all",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_42F1652AD6",
+        "condition": "ext/id inferred from field name heuristics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_156D597A9B",
+        "condition": "scope token becomes resource identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_8E61E875B0",
+        "condition": "remote input bypasses schema validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4E11086D85",
+        "condition": "all scope bypasses AccessCore",
+        "result": "hard_fail"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "DWH_POLICY_EXPLICIT",
+        "rule": "DWH scope, release, remote access and policy decisions remain explicit, provenance-preserving and separate from transport reachability."
+      },
+      {
+        "id": "REMOTE_SHARING_NONEXPANSION",
+        "rule": "Remote DWH sharing exposes only explicitly scoped and schema-governed data; transport reachability, endpoint registration, local authorization or broader local ownership never silently expands delegated remote rights."
+      }
+    ]
+  },
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT",
+    "name": "DWH Remote Input Scope",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "members": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending reconciliation against DWH local/remote, AC/IAM and lineage contracts and whole-tree Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against DWH access governance, EXT addressing, AccessCore and remote transport contracts.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: dwh/12_Remote_Input_Scope.json, dwh/remote/01_Remote_Input_Scopes.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define explicit remote DWH input scopes `all`, `ext` and `id` at the origin so remote exposure is selected before transfer rather than inferred by the receiver. [2] Define the canonical remote input scope modes `all`, `ext` and `id` as explicit origin-side ingestion boundaries rather than heuristic filters."
+  },
+  "purpose": "Reconciled source purposes: [1] Define explicit remote DWH input scopes `all`, `ext` and `id` at the origin so remote exposure is selected before transfer rather than inferred by the receiver. [2] Define the canonical remote input scope modes `all`, `ext` and `id` as explicit origin-side ingestion boundaries rather than heuristic filters.",
+  "references": [
+    {
+      "id": "REF_LINEAGE",
+      "target_ref": "AIGMOS_DWH_DATA_LINEAGE_CONTRACT",
+      "purpose": "Remote release preserves origin lineage."
+    },
+    {
+      "id": "REF_ORIGIN",
+      "target_ref": "AIGMOS_DWH_ORIGIN_INPUT_GOVERNANCE_CONTRACT",
+      "purpose": "Remote input scope is enforced at origin."
+    }
+  ],
+  "scope": {
+    "does_not_own": [
+      "domain payload semantics",
+      "transport implementation",
+      "presentation semantics",
+      "source domain ownership",
+      "AccessCore policy ownership",
+      "transport cryptography"
+    ],
+    "owns": [
+      "DWH Remote Input Scope semantics",
+      "DWH Remote Input Scopes semantics"
+    ]
+  },
+  "semantics": {
+    "all_rule": "`all` accepts the full explicitly permitted remote input set within the owning origin/schema policy.",
+    "authority_rule": "Input scope describes admissible data class/scope and is not authorization by itself.",
+    "authorization_rule": "Scope limits candidate data but does not replace IAM/AC authorization.",
+    "default_rule": "No broader scope is inferred from transport connectivity.",
+    "explicit_rule": "Remote scope is explicit configuration/policy data.",
+    "ext_rule": "`ext` accepts only data classified/identified as external according to the owning origin/schema contract.",
+    "id_rule": "`id` accepts only explicitly identity-scoped/identity-classified data according to the owning contract.",
+    "identity_rule": "Scope token is policy mode, not data/resource identity.",
+    "lineage_rule": "Released data retains origin, scope and lineage provenance.",
+    "origin_rule": "Reconciled source clauses: [1] Scope is evaluated at the data origin before remote transfer. [2] Remote input scope is evaluated at the receiving/origin ingestion boundary.",
+    "receiver_rule": "Receiver cannot widen the origin-selected scope.",
+    "schema_rule": "Scope selection does not bypass schema validation/classification.",
+    "scope_modes": [
+      "all",
+      "ext",
+      "id"
+    ],
+    "scopes": {
+      "all": "all data permitted by the owning DWH policy",
+      "ext": "externally releasable data only",
+      "id": "identity-scoped data only"
+    },
+    "unknown_rule": "Unknown scope mode hard-fails rather than falling back to `all`."
+  },
+  "source_role": "definition",
+  "status": "locked",
+  "structure": {
+    "authority": [],
+    "containment": [],
+    "dependencies": [],
+    "ownership": [],
+    "relations": []
+  },
+  "topics": [
+    {
+      "child_topics": [],
+      "composed_topic_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+      "member_refs": [
+        "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT",
+        "DWH_POLICY_EXPLICIT",
+        "REMOTE_SHARING_NONEXPANSION",
+        "GATE_29224E19AF",
+        "GATE_67DEAAFE90",
+        "GATE_DE5FD60016",
+        "GATE_A5BE55E155",
+        "GATE_9775B01318",
+        "GATE_DE58B65390",
+        "GATE_42F1652AD6",
+        "GATE_156D597A9B",
+        "GATE_8E61E875B0",
+        "GATE_4E11086D85"
+      ],
+      "metadata": {},
+      "name": "DWH Remote Input Scope",
+      "operation_refs": [],
+      "parent_topic_refs": [
+        "TOPIC_DWH_LOCAL_REMOTE",
+        "TOPIC_DWH_LINEAGE",
+        "TOPIC_ACCESSCORE_AUTHORIZATION",
+        "TOPIC_DWH",
+        "TOPIC_REMOTE_SHARING"
+      ],
+      "purpose": "Reconciled source clauses: [1] Define explicit remote DWH input scopes `all`, `ext` and `id` at the origin so remote exposure is selected before transfer rather than inferred by the receiver. [2] Define the canonical remote input scope modes `all`, `ext` and `id` as explicit origin-side ingestion boundaries rather than heuristic filters.",
+      "relation_refs": []
+    }
+  ]
+}

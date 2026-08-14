@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DIRECT_MESSAGE_CONTRACT",
+    "name": "Direct Messages",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define one-to-one messaging between two explicit identities, with deterministic conversation identity and no implicit group or broadcast semantics.",
+  "scope": {
+    "owns": [
+      "Direct Messages semantics"
+    ],
+    "does_not_own": [
+      "transport identity",
+      "AccessCore authorization",
+      "unrelated MeritCore semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MESSAGING_DM",
+      "name": "Direct Messages",
+      "purpose": "Define one-to-one messaging between two explicit identities, with deterministic conversation identity and no implicit group or broadcast semantics.",
+      "parent_topic_refs": [
+        "TOPIC_MESSAGING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DIRECT_MESSAGE_CONTRACT",
+        "MESSAGING_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "participants": 2,
+    "identity_rule": "Direct conversation is between exactly two explicit semantic identities.",
+    "conversation_identity_rule": "Conversation identity is stable and independent of current WebRTC session.",
+    "delivery_rule": "Messages are delivered over an established governed P2P channel when available.",
+    "offline_rule": "No centralized offline message store is implied unless an explicit future service contract defines it.",
+    "history_rule": "Local message history persistence is implementation/policy-specific and must be explicit if canonical/runtime-significant.",
+    "block_rule": "Blocking a requester prevents further direct contact attempts according to the blocking contract."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MESSAGING_BOUNDARY_EXPLICIT",
+        "rule": "Messaging identity, conversation state, throttling, group governance and transport semantics remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "direct conversation silently expands to additional participant",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "conversation identity tied to transient session handle",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "central offline store assumed without explicit service contract",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "blocked identity continues governed direct-message attempts",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "message history persistence inferred without explicit policy",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MSG",
+      "target_ref": "AIGMOS_P2P_MESSAGING_CONTRACT",
+      "purpose": "Direct messages are a P2P messaging mode."
+    }
+  ],
+  "prose": {
+    "summary": "Define one-to-one messaging between two explicit identities, with deterministic conversation identity and no implicit group or broadcast semantics.",
+    "notes": [
+      "Unlocked pending reconciliation against existing msg/WebRTC/rendezvous contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

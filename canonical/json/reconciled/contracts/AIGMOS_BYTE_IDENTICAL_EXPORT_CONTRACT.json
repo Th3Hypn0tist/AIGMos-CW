@@ -1,0 +1,243 @@
+{
+  "behavior": {
+    "events": [],
+    "flows": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "errors": [
+          "package unavailable"
+        ],
+        "id": "OP_EXPORT_BYTES",
+        "inputs": [
+          "stored package identity"
+        ],
+        "name": "Export package bytes",
+        "outputs": [
+          "exported package bytes"
+        ],
+        "side_effects": []
+      },
+      {
+        "errors": [
+          "comparison unavailable"
+        ],
+        "id": "OP_EXPORT_COMPARE",
+        "inputs": [
+          "stored package",
+          "exported package"
+        ],
+        "name": "Verify byte-identical export",
+        "outputs": [
+          "byte_identical | mismatch"
+        ],
+        "side_effects": []
+      }
+    ],
+    "states": []
+  },
+  "constraints": {
+    "hard_gates": [
+      {
+        "id": "GATE_5842A4377C",
+        "condition": "byte-identical export rebuilds or normalizes package",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_246629B7D5",
+        "condition": "stored/exported hashes differ under byte-identical claim",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_85E3570899",
+        "condition": "byte identity treated as canonical semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4AADDC0B1C",
+        "condition": "reserialized semantic export mislabeled byte-identical",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_155DD1BE9F",
+        "condition": "export loses source package/hash provenance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6A7A0AC826",
+        "condition": "JSON reserialized in byte-identical mode",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_DC20BE66D8",
+        "condition": "missing original bytes regenerated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_B600A108ED",
+        "condition": "export hash mismatch ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_BB8CC4D3B0",
+        "condition": "export result becomes new module identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_F67747CB07",
+        "condition": "read right implies export right automatically",
+        "result": "hard_fail"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "DISTRIBUTION_NONAUTHORITY",
+        "rule": "Packaging, hashing, certification and repository distribution preserve canonical semantics but do not become semantic or runtime authority."
+      },
+      {
+        "id": "PACKAGE_IDENTITY_INTEGRITY",
+        "rule": "Package, artifact, module, certification, license and installed-instance identities remain distinct; hashes prove content integrity only within their declared profile and never grant runtime authority."
+      },
+      {
+        "id": "ENTITLEMENT_NONAUTHORITY",
+        "rule": "License or certification entitlement permits declared product/service use only; it never substitutes for IAM identity, AccessCore authorization, runtime validation or dispatcher gating."
+      }
+    ]
+  },
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT",
+    "name": "Byte-Identical Package Export",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "members": [],
+  "prose": {
+    "notes": [
+      "Unlocked until reconciled against the assembled 1.4 tree and distribution/certification validation.",
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: distribution/05_Byte_Identical_Export.json, distribution/reproducibility/00_Byte_Identical_Export.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses.",
+      "Pass 6 hosts grouping-only Topic TOPIC_EXPORT solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ],
+    "summary": "Reconciled source purposes: [1] Define byte-identical export for stored distributable packages so repository export can reproduce the exact package artifact rather than silently rebuilding or normalizing it. [2] Define byte-identical export for repository/module artifacts when preservation semantics require exporting the exact validated original bytes."
+  },
+  "purpose": "Reconciled source purposes: [1] Define byte-identical export for stored distributable packages so repository export can reproduce the exact package artifact rather than silently rebuilding or normalizing it. [2] Define byte-identical export for repository/module artifacts when preservation semantics require exporting the exact validated original bytes.",
+  "references": [
+    {
+      "id": "REF_1744EEC6B2",
+      "target_ref": "AIGMOS_DISTRIBUTION_HASH_MANIFEST_CONTRACT",
+      "purpose": "Byte identity is verifiable through exact package hashes."
+    },
+    {
+      "id": "REF_C5D1A9B59B",
+      "target_ref": "AIGMOS_MODULE_HASH_VALIDATION_CONTRACT",
+      "purpose": "Byte-identical export preserves validated module hash."
+    }
+  ],
+  "scope": {
+    "does_not_own": [
+      "source semantic ownership",
+      "runtime authority",
+      "presentation semantics",
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ],
+    "owns": [
+      "Byte-Identical Package Export semantics",
+      "Byte-Identical Artifact Export semantics"
+    ]
+  },
+  "semantics": {
+    "authority_rule": "Export permission is separately authorized.",
+    "byte_rule": "Byte-identical mode emits the exact source bytes without normalization/reformatting.",
+    "canonical_export_rule": "Other semantic exports may legitimately reserialize canonical data, but must not be labeled byte-identical package export.",
+    "fallback_rule": "If exact source bytes are unavailable, byte-identical export hard-fails rather than regenerating approximately.",
+    "hash_rule": "Reconciled source clauses: [1] Stored and exported package hashes must match. [2] Exported bytes must reproduce the exact expected content hash.",
+    "identity_rule": "Export operation/result identity is separate from artifact identity.",
+    "metadata_rule": "Transport/archive metadata may be external to preserved artifact bytes.",
+    "no_rebuild_rule": "Export does not reserialize, normalize or rebuild the package under a byte-identical claim.",
+    "provenance_rule": "Export result identifies source package identity/hash.",
+    "rule": "When byte-identical export is claimed, exported bytes exactly match the stored package bytes.",
+    "scope": "stored immutable distributable package artifact",
+    "semantic_rule": "Byte identity is a distribution-integrity property, not semantic identity.",
+    "source_rule": "Export source is exact validated artifact revision/bytes."
+  },
+  "source_role": "definition",
+  "status": "locked",
+  "structure": {
+    "authority": [],
+    "containment": [],
+    "dependencies": [],
+    "ownership": [],
+    "relations": []
+  },
+  "topics": [
+    {
+      "child_topics": [],
+      "composed_topic_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_BYTE_IDENTICAL_EXPORT",
+      "member_refs": [
+        "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT",
+        "DISTRIBUTION_NONAUTHORITY",
+        "PACKAGE_IDENTITY_INTEGRITY",
+        "ENTITLEMENT_NONAUTHORITY",
+        "GATE_5842A4377C",
+        "GATE_246629B7D5",
+        "GATE_85E3570899",
+        "GATE_4AADDC0B1C",
+        "GATE_155DD1BE9F",
+        "GATE_6A7A0AC826",
+        "GATE_DC20BE66D8",
+        "GATE_B600A108ED",
+        "GATE_BB8CC4D3B0",
+        "GATE_F67747CB07"
+      ],
+      "metadata": {},
+      "name": "Byte-Identical Export",
+      "operation_refs": [
+        "OP_EXPORT_BYTES",
+        "OP_EXPORT_COMPARE"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_DISTRIBUTION_HASH",
+        "TOPIC_USERMODULE_REPOSITORY",
+        "TOPIC_DISTRIBUTION",
+        "TOPIC_EXPORT"
+      ],
+      "purpose": "Reconciled source clauses: [1] Define byte-identical export for stored distributable packages so repository export can reproduce the exact package artifact rather than silently rebuilding or normalizing it. [2] Define byte-identical export for repository/module artifacts when preservation semantics require exporting the exact validated original bytes.",
+      "relation_refs": []
+    },
+    {
+      "id": "TOPIC_EXPORT",
+      "name": "Export",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_EXPORT already referenced by 4 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 4,
+        "distinct_child_topics": 4,
+        "host_contract_ref": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ]
+}

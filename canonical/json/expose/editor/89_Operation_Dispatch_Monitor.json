@@ -1,0 +1,156 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_OPERATION_DISPATCH_MONITOR_CONTRACT",
+    "name": "Operation and Dispatch Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for operation definitions, requests, validation, authorization refs, dispatcher bindings, executions and results.",
+  "scope": {
+    "owns": [
+      "Operation and Dispatch Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_OPERATION_DISPATCH_MONITOR",
+      "name": "Operation and Dispatch Monitor",
+      "purpose": "Define a read-only Expose monitor for operation definitions, requests, validation, authorization refs, dispatcher bindings, executions and results.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_DISPATCH"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_OPERATION_DISPATCH_MONITOR_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_DISPATCH",
+      "name": "Dispatch",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_DISPATCH already referenced by 2 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 2,
+        "distinct_child_topics": 2,
+        "host_contract_ref": "AIGMOS_EXPOSE_OPERATION_DISPATCH_MONITOR_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "operation registry",
+      "request identity/target",
+      "validation result",
+      "authorization ref",
+      "implementation binding",
+      "execution state",
+      "result status/payload metadata",
+      "failure evidence"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Operation, request, validation, authorization, execution and result identities remain distinct.",
+    "action_rule": "retry/cancel/reinvoke operations use separate authorized workflows.",
+    "authority_rule": "Viewing request/operation grants no invocation authority.",
+    "graph_rule": "Request→validation→authorization→dispatch→execution→result edges correspond only to explicit refs.",
+    "failure_rule": "Rejected, unresolved, failed, partial and cancelled states remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor executes by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "operation and request identity conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "validation displayed as authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "visual adjacency invents dispatch",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "failed result shown success",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DISPATCH",
+      "target_ref": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+      "purpose": "Monitor projects exact dispatcher evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for operation definitions, requests, validation, authorization refs, dispatcher bindings, executions and results.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_DISPATCH solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

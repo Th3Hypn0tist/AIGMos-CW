@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_INDEX_IDENTITY_CONTRACT",
+    "name": "DWH Index Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each DWH index as an explicit derived physical-access structure bound to exact schema/field/expression identities, separate from data and query semantic identities.",
+  "scope": {
+    "owns": [
+      "DWH Index Identity semantics"
+    ],
+    "does_not_own": [
+      "source schema ownership",
+      "AccessCore policy ownership",
+      "query semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_INDEX_IDENTITY",
+      "name": "DWH Index Identity",
+      "purpose": "Define each DWH index as an explicit derived physical-access structure bound to exact schema/field/expression identities, separate from data and query semantic identities.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_QUERY_OPTIMIZATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_INDEX_IDENTITY_CONTRACT",
+        "OPTIMIZATION_NONSEMANTIC",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Every machine-significant index has an explicit stable index identity.",
+    "target_rule": "Index references exact schema/table/resource/field/expression identities.",
+    "type_rule": "Index type/profile is explicit where behavior affects compatibility or maintenance.",
+    "physical_rule": "Index is a derived physical access structure and not source-of-truth data.",
+    "ownership_rule": "Index does not take ownership of indexed data or schema semantics.",
+    "query_rule": "Presence/absence of an index never changes canonical query result semantics.",
+    "classification_rule": "Index content inherits/protects applicable source classification.",
+    "authority_rule": "Index visibility or availability grants no underlying data access."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "OPTIMIZATION_NONSEMANTIC",
+        "rule": "Indexes, statistics, caches and optimizer plans may change execution strategy only; they never change canonical query semantics, data identity, ownership, classification or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "index becomes source-of-truth data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "index key name used as field semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "query semantics depend on index existence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "index silently declassifies source values",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "index visibility grants data authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_FIELD",
+      "target_ref": "AIGMOS_SCHEMA_FIELD_IDENTITY_CONTRACT",
+      "purpose": "Indexes bind exact fields/expressions."
+    },
+    {
+      "id": "REF_QUERY",
+      "target_ref": "AIGMOS_DWH_QUERY_IDENTITY_CONTRACT",
+      "purpose": "Optimization never changes query semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define each DWH index as an explicit derived physical-access structure bound to exact schema/field/expression identities, separate from data and query semantic identities.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH query, persistence, changefeed and schema-migration contracts."
+    ]
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_EXPIRY_PURGE_BOUNDARY_CONTRACT",
+    "name": "DWH Expiry and Purge Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define expiry as an eligibility/lifecycle state and purge as a separate explicitly authorized destructive operation with exact scope, retention checks and audit evidence.",
+  "scope": {
+    "owns": [
+      "DWH Expiry and Purge Boundary semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_EXPIRY_PURGE_BOUNDARY",
+      "name": "DWH Expiry and Purge Boundary",
+      "purpose": "Define expiry as an eligibility/lifecycle state and purge as a separate explicitly authorized destructive operation with exact scope, retention checks and audit evidence.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_DATA_LIFECYCLE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_EXPIRY_PURGE_BOUNDARY_CONTRACT",
+        "RETENTION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "expiry_rule": "Expiry marks data as past an explicit retention/availability threshold; it does not itself mean physical destruction.",
+    "purge_rule": "Purge is a distinct destructive operation targeting exact data/revision/artifact identities.",
+    "validation_rule": "Purge validates applicable retention, hold, relation, lineage/audit and policy constraints before destruction.",
+    "authorization_rule": "Purge requires explicit destructive-operation authorization independent from ordinary update/delete where policy requires.",
+    "tombstone_rule": "Tombstone/audit evidence may remain according to retention/audit profile without retaining purged content.",
+    "cascade_rule": "Purge of derived/cached/materialized data never silently purges upstream source.",
+    "failure_rule": "Partial/failed purge state is explicit and cannot be represented as complete."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RETENTION_EXPLICIT",
+        "rule": "Retention, archival, expiry, purge and hold state are explicit lifecycle semantics over exact data identities; time passage, storage movement or archive location never silently deletes, declassifies, transfers ownership or restores data."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "expiry automatically destroys content",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "ordinary read/update right allows purge",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "purging copy deletes source",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "hold ignored during purge",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "failed purge reported successful",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RET",
+      "target_ref": "AIGMOS_DWH_RETENTION_POLICY_CONTRACT",
+      "purpose": "Expiry derives from explicit retention policy."
+    },
+    {
+      "id": "REF_DEL",
+      "target_ref": "AIGMOS_DWH_DELETE_TOMBSTONE_CONTRACT",
+      "purpose": "Purge is stronger than ordinary delete/tombstone semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define expiry as an eligibility/lifecycle state and purge as a separate explicitly authorized destructive operation with exact scope, retention checks and audit evidence.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH persistence, deletion, classification and governance contracts."
+    ]
+  }
+}

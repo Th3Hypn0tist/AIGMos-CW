@@ -1,0 +1,178 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_REST_INSTANCE_CONTRACT",
+    "name": "Runtime REST Instances",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define REST as named service instances whose routes bind external HTTP requests to explicit canonical operations without creating private backend semantics.",
+  "scope": {
+    "owns": [
+      "Runtime REST Instances semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "presentation layout unless explicitly stated"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_REST",
+      "name": "REST",
+      "purpose": "Define REST as named service instances whose routes bind external HTTP requests to explicit canonical operations without creating private backend semantics.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_SERVICE_INSTANCES",
+        "TOPIC_RUNTIME_DISPATCHER",
+        "TOPIC_CORE_SCHEMA",
+        "TOPIC_CORE_OPERATIONS"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_REST_INSTANCE_CONTRACT",
+        "SERVICE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_REST_REGISTER_ROUTE",
+        "OP_REST_HANDLE_REQUEST"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_REST_REGISTER_ROUTE",
+        "name": "Register REST route",
+        "inputs": [
+          "named REST instance",
+          "route definition",
+          "canonical operation ref"
+        ],
+        "outputs": [
+          "registered route"
+        ],
+        "errors": [
+          "route collision",
+          "operation unresolved"
+        ],
+        "side_effects": [
+          "REST route registry updated"
+        ]
+      },
+      {
+        "id": "OP_REST_HANDLE_REQUEST",
+        "name": "Handle REST request",
+        "inputs": [
+          "request",
+          "route",
+          "schema",
+          "authority context"
+        ],
+        "outputs": [
+          "canonical operation result as response"
+        ],
+        "errors": [
+          "route unresolved",
+          "schema invalid",
+          "authority denied",
+          "operation failure"
+        ],
+        "side_effects": [
+          "only effects of invoked canonical operation"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "instance_model": "named service instance",
+    "default_port_locked": false,
+    "route_rule": "Each REST route binds to an explicit canonical operation or read projection.",
+    "schema_rule": "Request and response shapes are explicit.",
+    "authority_rule": "REST exposure does not grant authority; applicable IAM/AC/runtime authorization remains separate.",
+    "backend_rule": "REST is a transport/exposure binding, not a separate semantic backend.",
+    "instance_identity_rule": "Logical REST instance identity is separate from its port.",
+    "error_rule": "Errors are structured and transport-mapped without changing canonical semantics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SERVICE_BOUNDARY_EXPLICIT",
+        "rule": "Network/service identity, binding, lifecycle and authority remain explicit and separate."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "REST route implements private semantic mutation outside canonical operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "REST exposure grants authority by existence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "route accepts unknown fields without owning schema rule",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "REST instance identity equals port number",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "transport error changes canonical semantic meaning",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SERVICE",
+      "target_ref": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT",
+      "purpose": "REST uses named instance model."
+    },
+    {
+      "id": "REF_OPERATION",
+      "target_ref": "AIGMOS_CORE_CANONICAL_OPERATION_CONTRACT",
+      "purpose": "Routes invoke canonical operations."
+    }
+  ],
+  "prose": {
+    "summary": "Define REST as named service instances whose routes bind external HTTP requests to explicit canonical operations without creating private backend semantics.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose/REST/web contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

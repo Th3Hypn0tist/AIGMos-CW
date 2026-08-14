@@ -1,0 +1,131 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_OFFLINE_QUEUE_REPLAY_CONTRACT",
+    "name": "DWH Offline Queue and Replay",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define bounded offline change queues and reconnect replay semantics so disconnected operation cannot create unbounded, duplicated or authority-bypassing writes.",
+  "scope": {
+    "owns": [
+      "DWH Offline Queue and Replay semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "AccessCore policy ownership",
+      "transport implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_OFFLINE_QUEUE_REPLAY",
+      "name": "DWH Offline Queue and Replay",
+      "purpose": "Define bounded offline change queues and reconnect replay semantics so disconnected operation cannot create unbounded, duplicated or authority-bypassing writes.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_REPLICATION_SYNC"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_OFFLINE_QUEUE_REPLAY_CONTRACT",
+        "REPLICA_NONOWNERSHIP",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "queue_rule": "Offline change intent is stored as explicit queued operation/change identity.",
+    "target_rule": "Queued entry retains exact source/destination/record/operation refs.",
+    "bound_rule": "Queue size/age/retry limits are explicit.",
+    "auth_rule": "Reconnect replay reevaluates current authorization/assurance where required; old authorization context is not assumed eternally valid.",
+    "revision_rule": "Replay validates expected source/destination revision before apply.",
+    "idempotency_rule": "Successfully accepted queue entry is not applied again merely due to reconnect/retry.",
+    "conflict_rule": "Stale/divergent queued writes enter explicit conflict/reconciliation rather than blind replay.",
+    "failure_rule": "Expired/invalid/denied queue entries become explicit failed/review states.",
+    "ordering_rule": "Replay ordering is explicit and does not imply authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "REPLICA_NONOWNERSHIP",
+        "rule": "Replica/sync state, transport position or local copy never replaces the semantic identity or ownership of the authoritative source data; propagation is explicit, provenance-bearing and conflict-aware."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "offline queue unbounded",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "reconnect blindly replays stale write",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "old authorization assumed permanently valid",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "accepted entry replayed twice",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "conflicted queue entry silently overwrites",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SYNC",
+      "target_ref": "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT",
+      "purpose": "Replay interacts with exact sync position."
+    },
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_ASSURANCE_GATED_RESOURCE_CONTRACT",
+      "purpose": "Replay obeys current governance."
+    }
+  ],
+  "prose": {
+    "summary": "Define bounded offline change queues and reconnect replay semantics so disconnected operation cannot create unbounded, duplicated or authority-bypassing writes.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH persistence, remote addressing, mutation and reconciliation contracts."
+    ]
+  }
+}

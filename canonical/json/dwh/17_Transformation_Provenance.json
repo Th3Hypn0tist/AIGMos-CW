@@ -1,0 +1,132 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_TRANSFORMATION_PROVENANCE_CONTRACT",
+    "name": "DWH Transformation Provenance",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define provenance for every machine-significant DWH transformation, including operation identity, input refs, output refs, rule/version and execution evidence.",
+  "scope": {
+    "owns": [
+      "DWH Transformation Provenance semantics"
+    ],
+    "does_not_own": [
+      "AccessCore authorization policy",
+      "source domain semantics",
+      "transport cryptography"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_TRANSFORMATION_PROVENANCE",
+      "name": "DWH Transformation Provenance",
+      "purpose": "Define provenance for every machine-significant DWH transformation, including operation identity, input refs, output refs, rule/version and execution evidence.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_PROVENANCE_LINEAGE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_TRANSFORMATION_PROVENANCE_CONTRACT",
+        "LINEAGE_PROVENANCE_PRESERVED",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "required": [
+      "transformation_id",
+      "operation_or_rule_ref",
+      "input_refs",
+      "output_refs",
+      "rule_version",
+      "execution_or_run_ref"
+    ],
+    "operation_rule": "Transformation semantics resolve to an exact canonical operation/rule.",
+    "input_rule": "All machine-significant contributing inputs are explicitly referenced.",
+    "output_rule": "Produced outputs reference the transformation provenance.",
+    "version_rule": "Rule/schema/code version affecting semantics is explicit.",
+    "runtime_rule": "Runtime execution identity is separate from canonical transformation definition identity.",
+    "determinism_rule": "Where declared deterministic, same accepted inputs/rule version yield semantically equivalent outputs.",
+    "failure_rule": "Failed/partial transformations do not masquerade as complete derived outputs."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "LINEAGE_PROVENANCE_PRESERVED",
+        "rule": "Derived DWH data retains explicit source lineage, transformation provenance and applicable classification/taint state; transformations never silently erase origin or governance metadata."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "transformation has no exact rule/operation identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "contributing input omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "rule version unknown",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "runtime run identity used as transformation definition identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "partial failure recorded as successful complete output",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LINE",
+      "target_ref": "AIGMOS_DWH_DATA_LINEAGE_IDENTITY_CONTRACT",
+      "purpose": "Transformation provenance creates lineage edges."
+    }
+  ],
+  "prose": {
+    "summary": "Define provenance for every machine-significant DWH transformation, including operation identity, input refs, output refs, rule/version and execution evidence.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH schema, provenance, AccessCore and remote-data contracts."
+    ]
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT",
+    "name": "Runtime OSC and WebSocket Bindings",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define OSC and WebSocket as optional named protocol bindings that translate validated messages to/from explicit canonical/runtime surfaces without becoming semantic authorities.",
+  "scope": {
+    "owns": [
+      "Runtime OSC and WebSocket Bindings semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "presentation layout unless explicitly stated"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_PROTOCOL_BINDINGS",
+      "name": "Protocol Bindings",
+      "purpose": "Define OSC and WebSocket as optional named protocol bindings that translate validated messages to/from explicit canonical/runtime surfaces without becoming semantic authorities.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_INPUT_ADAPTERS",
+        "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+        "TOPIC_RUNTIME_BOOT_PROFILE"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT",
+        "SERVICE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_PROTOCOL_BIND",
+        "OP_PROTOCOL_RECEIVE",
+        "OP_PROTOCOL_SEND"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_PROTOCOL_BIND",
+        "name": "Bind protocol service",
+        "inputs": [
+          "named service instance",
+          "protocol binding"
+        ],
+        "outputs": [
+          "active protocol surface"
+        ],
+        "errors": [
+          "protocol unavailable",
+          "binding invalid"
+        ],
+        "side_effects": [
+          "protocol listener/state created"
+        ]
+      },
+      {
+        "id": "OP_PROTOCOL_RECEIVE",
+        "name": "Receive protocol message",
+        "inputs": [
+          "protocol message",
+          "declared schema/address mapping"
+        ],
+        "outputs": [
+          "validated inert input or explicit operation request"
+        ],
+        "errors": [
+          "message invalid",
+          "address unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_PROTOCOL_SEND",
+        "name": "Send protocol message",
+        "inputs": [
+          "validated outbound operation",
+          "target binding",
+          "payload"
+        ],
+        "outputs": [
+          "send result"
+        ],
+        "errors": [
+          "authority denied",
+          "transport failure"
+        ],
+        "side_effects": [
+          "declared external protocol interaction"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "protocols": [
+      "OSC",
+      "WebSocket"
+    ],
+    "optional_removable": true,
+    "input_rule": "Inbound protocol messages are inert until mapped to explicit input symbols or canonical operations.",
+    "output_rule": "Outbound protocol messages require explicit operation/effect authority.",
+    "address_rule": "Protocol addresses map through explicit declared mappings; they do not become arbitrary canonical roots.",
+    "osc_boot_rule": "OSC input service boot has explicit boot semantics separate from normal Runner autostart.",
+    "websocket_rule": "WebSocket connection identity/state is runtime state, not canonical semantic identity.",
+    "authority_rule": "Remote sender data never grants authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SERVICE_BOUNDARY_EXPLICIT",
+        "rule": "Network/service identity, binding, lifecycle and authority remain explicit and separate."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "protocol message directly executes arbitrary command",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "remote payload grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "protocol address dynamically selects arbitrary canonical root",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "OSC boot conflated with Runner autostart",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "WebSocket connection state becomes canonical semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "optional protocol treated as mandatory Core primitive",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_IO",
+      "target_ref": "AIGMOS_RUNTIME_INPUT_ADAPTER_BOUNDARY_CONTRACT",
+      "purpose": "Inbound messages become validated inert input."
+    },
+    {
+      "id": "REF_BOOT",
+      "target_ref": "AIGMOS_RUNTIME_BOOT_PROFILE_CONTRACT",
+      "purpose": "Protocol service boot is explicit."
+    }
+  ],
+  "prose": {
+    "summary": "Define OSC and WebSocket as optional named protocol bindings that translate validated messages to/from explicit canonical/runtime surfaces without becoming semantic authorities.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose/REST/web contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

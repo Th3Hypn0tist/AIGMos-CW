@@ -1,0 +1,135 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_LICENSE_ENTITLEMENT_VALIDATION_CONTRACT",
+    "name": "License Entitlement Validation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic validation of active commercial entitlement for a site/service request without conflating license checks with certification or application authorization.",
+  "scope": {
+    "owns": [
+      "License Entitlement Validation semantics"
+    ],
+    "does_not_own": [
+      "Certification validity",
+      "IdentityCore identity semantics",
+      "AccessCore authorization"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_LICENSE_ENTITLEMENT_VALIDATION",
+      "name": "License Entitlement Validation",
+      "purpose": "Define deterministic validation of active commercial entitlement for a site/service request without conflating license checks with certification or application authorization.",
+      "parent_topic_refs": [
+        "TOPIC_LICENSING",
+        "TOPIC_SHARED_SERVICES"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_LICENSE_ENTITLEMENT_VALIDATION_CONTRACT",
+        "LICENSE_ENTITLEMENT_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "inputs": [
+      "license_identity",
+      "tier",
+      "status",
+      "validity_period",
+      "requested_commercial_service_or_right"
+    ],
+    "results": [
+      "entitled",
+      "not_entitled",
+      "unverifiable"
+    ],
+    "status_rule": "Active/expired/suspended/revoked states are explicit.",
+    "service_rule": "Requested shared service/OEM/support right is checked against the exact tier/agreement.",
+    "cert_rule": "Certification validation is not substituted by license validation.",
+    "runtime_rule": "Application operation authorization is not substituted by license validation.",
+    "cache_rule": "Where online entitlement checks are cached, freshness/expiry semantics are explicit.",
+    "failure_rule": "Unverifiable entitlement never silently becomes entitled."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "LICENSE_ENTITLEMENT_SEPARATION",
+        "rule": "Commercial license entitlement is explicit and separate from technical certification, semantic identity and runtime authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "license validation grants application operation rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "license validation substitutes certification",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "expired entitlement accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "unverifiable treated as entitled",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "requested right not checked against exact tier/agreement",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CERT",
+      "target_ref": "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT",
+      "purpose": "License and certification validation remain separate."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic validation of active commercial entitlement for a site/service request without conflating license checks with certification or application authorization.",
+    "notes": [
+      "Unlocked pending reconciliation against existing licensing/certification/shared-service contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

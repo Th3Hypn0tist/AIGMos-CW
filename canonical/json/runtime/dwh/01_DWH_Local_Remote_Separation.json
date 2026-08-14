@@ -1,0 +1,164 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_LOCAL_REMOTE_SEPARATION_CONTRACT",
+    "name": "DWH Local and Remote Separation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define DWH local and remote data paths as separate semantic scopes so remote access never silently expands local authority or local data ownership.",
+  "scope": {
+    "owns": [
+      "DWH Local and Remote Separation semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "transport implementation details",
+      "remote policy owned elsewhere"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_LOCAL_REMOTE",
+      "name": "DWH Local vs Remote",
+      "purpose": "Define DWH local and remote data paths as separate semantic scopes so remote access never silently expands local authority or local data ownership.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_REMOTE_DEREFERENCE",
+        "TOPIC_CORE_PROVENANCE"
+      ],
+      "member_refs": [
+        "AIGMOS_DWH_LOCAL_REMOTE_SEPARATION_CONTRACT",
+        "DWH_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_DWH_RESOLVE_SCOPE",
+        "OP_DWH_ROUTE_SCOPE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_DWH_RESOLVE_SCOPE",
+        "name": "Resolve DWH locality scope",
+        "inputs": [
+          "DWH reference",
+          "origin context"
+        ],
+        "outputs": [
+          "local | remote"
+        ],
+        "errors": [
+          "scope ambiguous"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_DWH_ROUTE_SCOPE",
+        "name": "Route DWH access by locality",
+        "inputs": [
+          "resolved scope",
+          "semantic target"
+        ],
+        "outputs": [
+          "local or governed remote path"
+        ],
+        "errors": [
+          "remote route unavailable"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "local_rule": "Local DWH data remains scoped to the owning local context/instance.",
+    "remote_rule": "Remote DWH data is accessed through an explicit remote semantic path and remote authority boundary.",
+    "separation_rule": "Local and remote data are independent dimensions; one does not inherit authority from the other.",
+    "ownership_rule": "Local ownership does not imply remote ownership or write rights.",
+    "access_rule": "Remote access requires explicit peer/remote target resolution.",
+    "projection_rule": "A combined projection may show local and remote data together but preserves locality provenance."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_BOUNDARY_EXPLICIT",
+        "rule": "DWH local/remote, origin, schema, external identity, access path and transport-security semantics remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "local rights silently expand to remote target",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "remote rights inferred from local ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "remote data treated as local canonical storage",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "combined projection loses local/remote provenance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "remote access path inferred from transport endpoint only",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REMOTE",
+      "target_ref": "AIGMOS_RUNTIME_REMOTE_DEREFERENCE_CONTRACT",
+      "purpose": "Remote DWH uses explicit governed remote dereference."
+    },
+    {
+      "id": "REF_PROVENANCE",
+      "target_ref": "AIGMOS_CORE_PROVENANCE_EVIDENCE_CONTRACT",
+      "purpose": "Locality provenance is preserved."
+    }
+  ],
+  "prose": {
+    "summary": "Define DWH local and remote data paths as separate semantic scopes so remote access never silently expands local authority or local data ownership.",
+    "notes": [
+      "Unlocked until reconciled against existing DWH/IAM/AC contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT",
+    "name": "AccessCore Policy Validation and Apply",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define validate→authorize policy administration→commit revision→activate evaluator snapshot as explicit separate transitions.",
+  "scope": {
+    "owns": [
+      "AccessCore Policy Validation and Apply semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime operation implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ACCESS_POLICY_APPLY",
+      "name": "AccessCore Policy Validation and Apply",
+      "purpose": "Define validate→authorize policy administration→commit revision→activate evaluator snapshot as explicit separate transitions.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE",
+        "TOPIC_POLICY_CHANGE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT",
+        "IDENTITY_AUTHORITY_SEPARATION",
+        "FAIL_CLOSED_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_POLICY_CHANGE",
+      "name": "Policy Change",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_POLICY_CHANGE already referenced by 5 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 5,
+        "distinct_child_topics": 5,
+        "host_contract_ref": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "flow": [
+      "validate candidate",
+      "compute authority-impact diff",
+      "authorize policy administration",
+      "commit accepted revision",
+      "activate evaluator snapshot",
+      "record result"
+    ],
+    "validation_rule": "Structural and semantic policy validation precedes apply.",
+    "self_lockout_rule": "Self-lockout/critical-admin effects may require explicit safeguard profile.",
+    "authority_rule": "Policy changes require policy-administration authority separate from rights being edited.",
+    "activation_rule": "Accepted policy may exist before evaluator activation completes.",
+    "failure_rule": "Activation failure is explicit and never silently falls back to ungoverned mode.",
+    "history_rule": "Previous active/accepted revisions remain traceable."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_AUTHORITY_SEPARATION",
+        "rule": "Identity, authentication assurance, authorization policy, authorization decision, delegation and runtime execution remain separate machine-significant identities/evidence; no one layer silently substitutes for another."
+      },
+      {
+        "id": "FAIL_CLOSED_AUTHORITY",
+        "rule": "Ambiguous, missing, stale or unverifiable authority for a protected effect fails closed rather than inheriting trust from locality, transport reachability, process ownership, UI visibility or previous success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "policy apply bypasses admin authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "activation failure disables AC",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "accepted/live policy conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "self-lockout hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "invalid candidate committed",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CAND",
+      "target_ref": "AIGMOS_ACCESS_POLICY_CANDIDATE_DIFF_CONTRACT",
+      "purpose": "Apply consumes validated candidate/diff."
+    }
+  ],
+  "prose": {
+    "summary": "Define validate→authorize policy administration→commit revision→activate evaluator snapshot as explicit separate transitions.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_POLICY_CHANGE solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

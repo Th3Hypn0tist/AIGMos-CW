@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_BOOT_PROFILE_ACTIVATION_CONTRACT",
+    "name": "Boot Profile Activation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define runtime activation of additive USE/user boot profiles from Absolute Base Zero, with explicit dependency validation and no silent auto-enablement.",
+  "scope": {
+    "owns": [
+      "Boot Profile Activation semantics"
+    ],
+    "does_not_own": [
+      "repository acceptance semantics",
+      "domain business semantics",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_BOOT_PROFILE_ACTIVATION",
+      "name": "Boot Profile Activation",
+      "purpose": "Define runtime activation of additive USE/user boot profiles from Absolute Base Zero, with explicit dependency validation and no silent auto-enablement.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_ACTIVATION",
+        "TOPIC_REPOSITORY_ACCEPTANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_BOOT_PROFILE_ACTIVATION_CONTRACT",
+        "ACCEPTANCE_ACTIVATION_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "base_rule": "Runtime boot begins from Absolute Base Zero.",
+    "additive_rule": "Declared USE/user selections add only explicitly selected capabilities/modules and required explicitly declared structure.",
+    "exclusive_rule": "Where `use` or `user` selection semantics apply, only listed capabilities are enabled according to profile rules.",
+    "dependency_rule": "Dependencies are validated but never silently auto-enabled.",
+    "failure_rule": "Missing required dependency hard-fails unless explicitly pruned/disabled by compatible policy.",
+    "negative_rule": "Negative pruning is explicit and cannot silently remove required dependencies.",
+    "remediation_rule": "User-facing failure should provide one clear remediation line where applicable.",
+    "snapshot_rule": "Boot profile applies to an exact runtime/accepted snapshot context."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ACCEPTANCE_ACTIVATION_SEPARATION",
+        "rule": "Repository acceptance establishes canonical source state; runtime activation/reload is a separate explicit lifecycle operation over an exact accepted snapshot."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "dependency silently auto-enabled",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "undeclared capability enabled",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "missing dependency ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "negative pruning creates invalid graph silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "boot profile detached from runtime snapshot",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ACT",
+      "target_ref": "AIGMOS_RUNTIME_ACTIVATION_CONTRACT",
+      "purpose": "Boot profile participates in runtime activation."
+    }
+  ],
+  "prose": {
+    "summary": "Define runtime activation of additive USE/user boot profiles from Absolute Base Zero, with explicit dependency validation and no silent auto-enablement.",
+    "notes": [
+      "Unlocked pending reconciliation against runtime lifecycle, repository acceptance and boot-profile contracts."
+    ]
+  }
+}

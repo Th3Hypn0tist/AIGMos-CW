@@ -1,0 +1,146 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_DWH_SCHEMA_MIGRATION_MONITOR_CONTRACT",
+    "name": "DWH Schema Migration Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for schema versions, compatibility findings, migration/backfill progress, dual-version state, cutover criteria and rollback readiness.",
+  "scope": {
+    "owns": [
+      "DWH Schema Migration Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation details"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_DWH_SCHEMA_MIGRATION_MONITOR",
+      "name": "DWH Schema Migration Monitor",
+      "purpose": "Define a read-only Expose monitor for schema versions, compatibility findings, migration/backfill progress, dual-version state, cutover criteria and rollback readiness.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_SCHEMA_EVOLUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_DWH_SCHEMA_MIGRATION_MONITOR_CONTRACT",
+        "SCHEMA_EVOLUTION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "source/target schema versions",
+      "compatibility class",
+      "migration plan/transform refs",
+      "record/batch progress",
+      "quality/validation results",
+      "dual-read/write state",
+      "cutover readiness",
+      "legacy usage",
+      "rollback/snapshot readiness",
+      "failures/conflicts"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Schema version, migration definition, execution/batch, record revision and snapshot identities remain distinct.",
+    "derived_rule": "Compatibility/cutover readiness is displayed as derived evidence, not active state by itself.",
+    "action_rule": "validate/start/pause/resume/cutover/rollback operations invoke separate authorized canonical workflows.",
+    "authority_rule": "Viewing migration state grants no migration/cutover authority.",
+    "graph_rule": "Version/migration/transformation edges correspond only to explicit refs.",
+    "failure_rule": "Irreversible changes, incompatible consumers, failed backfills and rollback data-loss risks are surfaced explicitly."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SCHEMA_EVOLUTION_EXPLICIT",
+        "rule": "Schema evolution is an explicit versioned migration between exact schema identities/versions with validated compatibility and data transformation provenance; runtime/file order never silently changes active data meaning."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor treats compatibility as completed migration",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "monitor cuts over on view",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "schema/migration identities conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "irreversible migration shown rollback-ready",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "failed batch hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MIG",
+      "target_ref": "AIGMOS_DWH_SCHEMA_MIGRATION_IDENTITY_CONTRACT",
+      "purpose": "Monitor projects explicit migration identities."
+    },
+    {
+      "id": "REF_DUAL",
+      "target_ref": "AIGMOS_DWH_DUAL_VERSION_TRANSITION_CONTRACT",
+      "purpose": "Monitor exposes transition/cutover state."
+    },
+    {
+      "id": "REF_ROLL",
+      "target_ref": "AIGMOS_DWH_SCHEMA_MIGRATION_ROLLBACK_CONTRACT",
+      "purpose": "Monitor shows rollback readiness."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for schema versions, compatibility findings, migration/backfill progress, dual-version state, cutover criteria and rollback readiness.",
+    "notes": [
+      "Unlocked pending reconciliation against Schema Evolution, DWH mutation, persistence and runtime activation contracts."
+    ]
+  }
+}

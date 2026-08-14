@@ -1,0 +1,161 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_BACKUP_RESTORE_BOUNDARY_CONTRACT",
+    "name": "DWH Backup and Restore Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define backup/restore as explicit validated state-transfer operations with exact scope, integrity, compatibility and authorization checks before any live data replacement.",
+  "scope": {
+    "owns": [
+      "DWH Backup and Restore Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain schema ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation internals"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_BACKUP_RESTORE_BOUNDARY",
+      "name": "DWH Backup and Restore Boundary",
+      "purpose": "Define backup/restore as explicit validated state-transfer operations with exact scope, integrity, compatibility and authorization checks before any live data replacement.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_PERSISTENCE_RECOVERY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_BACKUP_RESTORE_BOUNDARY_CONTRACT",
+        "PERSISTENCE_NONIDENTITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_PERSISTENCE_RECOVERY",
+      "name": "Persistence Recovery",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_PERSISTENCE_RECOVERY already referenced by 6 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 6,
+        "distinct_child_topics": 6,
+        "host_contract_ref": "AIGMOS_DWH_BACKUP_RESTORE_BOUNDARY_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "backup_rule": "Backup is an explicit artifact derived from exact snapshot/data scope.",
+    "integrity_rule": "Backup carries explicit integrity/hash/profile evidence.",
+    "compatibility_rule": "Restore validates schema/version/storage/profile compatibility.",
+    "target_rule": "Restore target resolves exact instance/schema/data scope.",
+    "candidate_rule": "Restored data is validated as a candidate state before becoming accepted/live where profile supports staged restore.",
+    "authority_rule": "Restore requires explicit high-impact mutation authorization and never follows from backup possession.",
+    "atomic_rule": "Restore replacement semantics and rollback behavior are explicit.",
+    "lineage_rule": "Restored state retains backup/source/snapshot provenance.",
+    "failure_rule": "Failed restore leaves prior accepted state intact or explicit recovery state according to profile."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PERSISTENCE_NONIDENTITY",
+        "rule": "Physical storage location, file name, engine page, snapshot artifact or backup copy never replaces canonical data/schema/instance identity; persistence and recovery operate on exact semantic identities with explicit version/provenance evidence."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "backup file presence auto-restores",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "restore target inferred from filename",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "integrity not validated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "restore bypasses authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "failed restore leaves ambiguous partial live state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "restore erases source provenance",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SNAP",
+      "target_ref": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT",
+      "purpose": "Backups derive from explicit captured state."
+    },
+    {
+      "id": "REF_CHANGE",
+      "target_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+      "purpose": "Restore crosses an explicit accepted-state change boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define backup/restore as explicit validated state-transfer operations with exact scope, integrity, compatibility and authorization checks before any live data replacement.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH mutation, runtime snapshot, repository acceptance and retention contracts.",
+      "Pass 6 hosts grouping-only Topic TOPIC_PERSISTENCE_RECOVERY solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

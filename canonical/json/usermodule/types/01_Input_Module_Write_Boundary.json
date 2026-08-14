@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_INPUT_MODULE_WRITE_BOUNDARY_CONTRACT",
+    "name": "Input Module Write Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define input-type UserModules as explicit producers that validate and write incoming data into their own declared `#UM.<module_id>` instance boundary.",
+  "scope": {
+    "owns": [
+      "Input Module Write Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain data semantics",
+      "AccessCore policy ownership",
+      "protocol transport ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_INPUT_MODULE_WRITE_BOUNDARY",
+      "name": "Input Module Write Boundary",
+      "purpose": "Define input-type UserModules as explicit producers that validate and write incoming data into their own declared `#UM.<module_id>` instance boundary.",
+      "parent_topic_refs": [
+        "TOPIC_USERMODULE_TYPES",
+        "TOPIC_INPUT_ADAPTER_VIEW"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_INPUT_MODULE_WRITE_BOUNDARY_CONTRACT",
+        "MODULE_TYPE_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "type": "input",
+    "target_rule": "Input writes to the exact owning UserModule instance data boundary.",
+    "mount_example": "#UM.<module_id>",
+    "validation_rule": "Incoming values are parsed/validated against the owning schema before accepted write.",
+    "origin_rule": "Input source/protocol/device provenance is retained.",
+    "event_rule": "Accepted input may emit explicit Events after the write according to declared semantics.",
+    "authority_rule": "Input reachability does not grant arbitrary writes outside its declared instance boundary.",
+    "failure_rule": "Invalid input does not partially mutate accepted instance data."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MODULE_TYPE_BOUNDARY",
+        "rule": "Command, input, adapter and view module types have distinct effect boundaries: command is one-shot operation, input writes declared instance data, adapter mounts/translates symbols without owning them, and view is UI-only."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "input writes arbitrary module instance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "incoming data bypasses schema validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "source provenance lost",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "protocol reachability grants arbitrary write",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "failed input partially mutates state",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DWH",
+      "target_ref": "AIGMOS_DWH_ORIGIN_INPUT_GOVERNANCE_CONTRACT",
+      "purpose": "Input data enters governed DWH path at origin."
+    }
+  ],
+  "prose": {
+    "summary": "Define input-type UserModules as explicit producers that validate and write incoming data into their own declared `#UM.<module_id>` instance boundary.",
+    "notes": [
+      "Unlocked pending reconciliation against UserModule type, DWH, protocol and Expose contracts."
+    ]
+  }
+}

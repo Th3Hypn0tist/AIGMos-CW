@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ROUTINE_INVOCATION_CONTRACT",
+    "name": "Routine Invocation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define invocation of a reusable Routine definition through `&` or another explicit binding as a separate request identity with exact parameters/context.",
+  "scope": {
+    "owns": [
+      "Routine Invocation semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ROUTINE_INVOCATION",
+      "name": "Routine Invocation",
+      "purpose": "Define invocation of a reusable Routine definition through `&` or another explicit binding as a separate request identity with exact parameters/context.",
+      "parent_topic_refs": [
+        "TOPIC_ORCHESTRATION",
+        "TOPIC_ROUTINES"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_ROUTINE_INVOCATION_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "routine_rule": "Invocation references exact Routine identity/revision.",
+    "identity_rule": "Each invocation has an explicit identity.",
+    "parameter_rule": "Parameters validate against exact Routine parameter schema.",
+    "context_rule": "Execution context snapshot is explicit.",
+    "execution_rule": "Invocation is not itself a Runner execution.",
+    "nested_rule": "Nested Routine invocation creates explicit child invocation/execution refs.",
+    "authority_rule": "Routine availability does not authorize its operations."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "`&` executes unnamed nearest Routine",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Routine definition reused as invocation identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "parameters inferred from ambient variables",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "nested Routine invisible",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "Routine presence grants rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ROUTINE",
+      "target_ref": "AIGMOS_ROUTINE_IDENTITY_CONTRACT",
+      "purpose": "Invocation targets exact reusable Routine definition."
+    }
+  ],
+  "prose": {
+    "summary": "Define invocation of a reusable Routine definition through `&` or another explicit binding as a separate request identity with exact parameters/context.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

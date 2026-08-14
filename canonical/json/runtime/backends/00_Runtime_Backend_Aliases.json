@@ -1,0 +1,192 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT",
+    "name": "Runtime Backend Aliases",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define stable logical backend aliases separately from concrete provider/model bindings so q/qc/qt and other runtime callers bind to explicit aliases rather than embedding provider-specific semantics.",
+  "scope": {
+    "owns": [
+      "Runtime Backend Aliases semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_BACKEND_ALIASES",
+      "name": "Backend Aliases",
+      "purpose": "Define stable logical backend aliases separately from concrete provider/model bindings so q/qc/qt and other runtime callers bind to explicit aliases rather than embedding provider-specific semantics.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_AI"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_QUEUE_PROFILES",
+        "TOPIC_RUNTIME_DISPATCHER"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT",
+        "RUNTIME_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_BACKEND_REGISTER_ALIAS",
+        "OP_BACKEND_RESOLVE_ALIAS",
+        "OP_BACKEND_CALL"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_BACKEND_REGISTER_ALIAS",
+        "name": "Register backend alias",
+        "inputs": [
+          "alias definition",
+          "backend target"
+        ],
+        "outputs": [
+          "alias mapping"
+        ],
+        "errors": [
+          "alias collision",
+          "backend unresolved"
+        ],
+        "side_effects": [
+          "backend registry updated"
+        ]
+      },
+      {
+        "id": "OP_BACKEND_RESOLVE_ALIAS",
+        "name": "Resolve backend alias",
+        "inputs": [
+          "literal alias"
+        ],
+        "outputs": [
+          "exact backend target"
+        ],
+        "errors": [
+          "alias unresolved",
+          "alias ambiguous"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_BACKEND_CALL",
+        "name": "Call resolved backend",
+        "inputs": [
+          "backend target",
+          "validated request"
+        ],
+        "outputs": [
+          "backend response"
+        ],
+        "errors": [
+          "backend unavailable",
+          "timeout",
+          "response invalid"
+        ],
+        "side_effects": [
+          "declared backend interaction"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "alias_rule": "Alias is stable logical identity separate from provider/model endpoint.",
+    "binding_rule": "Changing a concrete backend binding does not change caller semantic identity when behavior remains compatible.",
+    "queue_rule": "Runtime queues are keyed by resolved backend alias.",
+    "fallback_rule": "Backend fallback must be explicit; silent provider/model substitution is forbidden.",
+    "response_rule": "Backend response is inert data and cannot grant authority or choose arbitrary runtime roots/commands.",
+    "configuration_rule": "Alias configuration is authoritative runtime configuration, not projection/UI state."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RUNTIME_BOUNDARY_EXPLICIT",
+        "rule": "Runtime capabilities, dispatch and mutable state remain explicit, bounded and Core-governed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "caller embeds provider/model endpoint instead of logical alias where alias semantics are required",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "silent backend fallback",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "backend response grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "backend response selects arbitrary runtime root or command",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "two active aliases collide case-insensitively",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "queue identity derived from transient provider endpoint instead of resolved alias",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_QUEUE",
+      "target_ref": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT",
+      "purpose": "Queues are alias scoped."
+    },
+    {
+      "id": "REF_DISPATCH",
+      "target_ref": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+      "purpose": "Backend effects/calls cross dispatcher boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define stable logical backend aliases separately from concrete provider/model bindings so q/qc/qt and other runtime callers bind to explicit aliases rather than embedding provider-specific semantics.",
+    "notes": [
+      "Unlocked until reconciled against existing runtime contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TOOLCHAIN_PROJECTION_CONSISTENCY_RUNNER_CONTRACT",
+    "name": "Projection Consistency Runner",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define checker comparing generated projection artifacts with exact accepted canonical source and generator profile.",
+  "scope": {
+    "owns": [
+      "Projection Consistency Runner semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime application authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TOOLCHAIN_PROJECTION_CONSISTENCY_RUNNER",
+      "name": "Projection Consistency Runner",
+      "purpose": "Define checker comparing generated projection artifacts with exact accepted canonical source and generator profile.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_TOOLCHAIN",
+        "TOPIC_RECONCILIATION_EXECUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TOOLCHAIN_PROJECTION_CONSISTENCY_RUNNER_CONTRACT",
+        "TOOLING_NONAUTHORITY",
+        "DETERMINISTIC_EXACT_INPUTS",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "source_rule": "Exact canonical source snapshot.",
+    "projection_rule": "Exact projection artifact/hash/profile.",
+    "result_states": [
+      "consistent",
+      "stale",
+      "missing",
+      "divergent",
+      "error"
+    ],
+    "repair_rule": "Repair regenerates projection only.",
+    "authority_rule": "Projection never repairs source.",
+    "ci_rule": "Required projection inconsistency may fail CI."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TOOLING_NONAUTHORITY",
+        "rule": "Toolchain code, scans, indexes, reports and generated artifacts remain implementation/evidence surfaces; they never become canonical semantic authority unless an explicit accepted canonical definition says so."
+      },
+      {
+        "id": "DETERMINISTIC_EXACT_INPUTS",
+        "rule": "Every toolchain execution binds exact bootstrap/source/profile/input revisions and must not resolve ambiguity through filesystem order, newest-wins, mtime, fuzzy names or UI layout."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "source mutated to match UML",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "stale accepted by mtime",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "missing projection ignored despite required profile",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "projection chosen newest",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "repair edits semantics",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROJ",
+      "target_ref": "AIGMOS_PROJECTION_CONSISTENCY_CHECK_CONTRACT",
+      "purpose": "Implements projection consistency."
+    }
+  ],
+  "prose": {
+    "summary": "Define checker comparing generated projection artifacts with exact accepted canonical source and generator profile.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Implementation contracts operationalize canonical semantics but do not replace canonical source authority."
+    ]
+  }
+}

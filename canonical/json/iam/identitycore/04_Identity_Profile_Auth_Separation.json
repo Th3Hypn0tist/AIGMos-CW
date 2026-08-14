@@ -1,0 +1,140 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_IDENTITY_PROFILE_AUTH_SEPARATION_CONTRACT",
+    "name": "Identity Profile and Authentication Separation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the hard separation between stable identity, descriptive profile, authentication methods/session assurance, PortfolioCore evidence and MeritCore competence history.",
+  "scope": {
+    "owns": [
+      "Identity Profile and Authentication Separation semantics"
+    ],
+    "does_not_own": [
+      "IAM credential semantics",
+      "MeritCore scoring",
+      "PortfolioCore evidence presentation",
+      "AccessCore authorization"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_IDENTITY_PROFILE_AUTH_SEPARATION",
+      "name": "Identity Profile and Authentication Separation",
+      "purpose": "Define the hard separation between stable identity, descriptive profile, authentication methods/session assurance, PortfolioCore evidence and MeritCore competence history.",
+      "parent_topic_refs": [
+        "TOPIC_IDENTITYCORE",
+        "TOPIC_IAM"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_IDENTITY_PROFILE_AUTH_SEPARATION_CONTRACT",
+        "IDENTITYCORE_STABLE_IDENTITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "layers": [
+      "IdentityCore identity",
+      "descriptive identity profile",
+      "IAM credentials/authentication",
+      "session assurance",
+      "PortfolioCore",
+      "MeritCore",
+      "AccessCore authorization"
+    ],
+    "identity_rule": "Stable IdentityCore ID is the cross-layer anchor.",
+    "profile_rule": "Profile fields can change without changing semantic identity.",
+    "credential_rule": "Credential rotation/recovery does not change semantic identity.",
+    "assurance_rule": "Assurance is transient/session/resource authentication state.",
+    "portfolio_rule": "PortfolioCore stores references/evidence/history presentation separately.",
+    "merit_rule": "MeritCore stores/calculates merit/tier/recommendation/trust history separately.",
+    "authorization_rule": "AccessCore evaluates rights independently from all descriptive profile fields.",
+    "projection_rule": "A combined human profile/CV view may project all layers while preserving source ownership."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITYCORE_STABLE_IDENTITY",
+        "rule": "IdentityCore owns stable person/organization identity and explicit identity relations; credentials, profiles, merits and authorization remain separate semantic layers."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "profile edit creates new identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "credential rotation creates new identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "CV projection becomes canonical owner of all layers",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "MeritCore values copied into profile as authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "descriptive title grants AccessCore rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MERIT",
+      "target_ref": "AIGMOS_MERITCORE_IDENTITY_TIMELINE_CONTRACT",
+      "purpose": "Merit remains identity-linked but separately owned."
+    },
+    {
+      "id": "REF_PORT",
+      "target_ref": "AIGMOS_PORTFOLIO_REGISTRY_CONTRACT",
+      "purpose": "Portfolio evidence remains separately owned."
+    }
+  ],
+  "prose": {
+    "summary": "Define the hard separation between stable identity, descriptive profile, authentication methods/session assurance, PortfolioCore evidence and MeritCore competence history.",
+    "notes": [
+      "Unlocked pending reconciliation against existing IAM/IdentityCore/PortfolioCore/MeritCore contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CONDITION_WATCH_EVALUATION_CONTRACT",
+    "name": "Condition-Watch Evaluation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define recurring condition checks as read/evaluation executions that emit an occurrence/Event only when an explicit condition transition or satisfaction policy requires it.",
+  "scope": {
+    "owns": [
+      "Condition-Watch Evaluation semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CONDITION_WATCH_EVALUATION",
+      "name": "Condition-Watch Evaluation",
+      "purpose": "Define recurring condition checks as read/evaluation executions that emit an occurrence/Event only when an explicit condition transition or satisfaction policy requires it.",
+      "parent_topic_refs": [
+        "TOPIC_AUTOMATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CONDITION_WATCH_EVALUATION_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "condition_rule": "Condition definition/Trigger/query is exact.",
+    "cadence_rule": "Evaluation cadence is explicit.",
+    "read_rule": "Condition check is read-only unless separately declared.",
+    "transition_rule": "Notify/dispatch semantics are based on explicit false→true/threshold/rearm policy.",
+    "dedupe_rule": "Persistent true condition does not repeatedly create duplicate semantic notifications unless recurrence is explicit.",
+    "state_rule": "Last evaluated/last satisfied/rearm state is explicit.",
+    "authority_rule": "Condition satisfaction does not grant downstream authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "polling causes mutation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "persistent true spams duplicate actions",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "condition inferred from model narrative",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "true means authorized",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "last state guessed from log text",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AUTO",
+      "target_ref": "AIGMOS_AUTOMATION_DEFINITION_CONTRACT",
+      "purpose": "Condition-watch automations use explicit evaluations."
+    }
+  ],
+  "prose": {
+    "summary": "Define recurring condition checks as read/evaluation executions that emit an occurrence/Event only when an explicit condition transition or satisfaction policy requires it.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

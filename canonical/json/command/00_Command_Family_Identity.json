@@ -1,0 +1,153 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_COMMAND_FAMILY_IDENTITY_CONTRACT",
+    "name": "Command Family Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define recursive command-family namespaces as explicit identities that organize concrete commands without being executable unless explicitly declared as concrete commands.",
+  "scope": {
+    "owns": [
+      "Command Family Identity semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_COMMAND_FAMILY_IDENTITY",
+      "name": "Command Family Identity",
+      "purpose": "Define recursive command-family namespaces as explicit identities that organize concrete commands without being executable unless explicitly declared as concrete commands.",
+      "parent_topic_refs": [
+        "TOPIC_COMMANDS",
+        "TOPIC_COMMAND_TREE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_COMMAND_FAMILY_IDENTITY_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_COMMAND_TREE",
+      "name": "Command TREE",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_COMMAND_TREE already referenced by 3 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 3,
+        "distinct_child_topics": 3,
+        "host_contract_ref": "AIGMOS_COMMAND_FAMILY_IDENTITY_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each command family/namespace has an explicit identity.",
+    "recursive_rule": "Command families may contain child families recursively.",
+    "execution_rule": "A family root is non-executable by default.",
+    "concrete_rule": "Only explicitly declared concrete command nodes are invocable.",
+    "path_rule": "Dot-separated command paths such as `export.files.json` represent recursive namespace membership.",
+    "directory_rule": "Filesystem directories may mirror command namespaces but do not alone make commands executable.",
+    "authority_rule": "Command discovery/visibility does not grant invocation authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "family root executes by default",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "directory existence creates command",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "child command inferred from filename only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "command family grants rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "namespace path resolved by nearest name",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REG",
+      "target_ref": "AIGMOS_RUNTIME_COMMAND_REGISTRY_CONTRACT",
+      "purpose": "Registry enumerates exact command families and concrete nodes."
+    }
+  ],
+  "prose": {
+    "summary": "Define recursive command-family namespaces as explicit identities that organize concrete commands without being executable unless explicitly declared as concrete commands.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_COMMAND_TREE solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_TOOLCHAIN_CLI_MONITOR_CONTRACT",
+    "name": "Canonical Toolchain CLI Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define read-only Expose help/status view for canonical command family and recent execution results.",
+  "scope": {
+    "owns": [
+      "Canonical Toolchain CLI Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime application authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_TOOLCHAIN_CLI_MONITOR",
+      "name": "Canonical Toolchain CLI Monitor",
+      "purpose": "Define read-only Expose help/status view for canonical command family and recent execution results.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_TOOLCHAIN",
+        "TOPIC_RECONCILIATION_EXECUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_TOOLCHAIN_CLI_MONITOR_CONTRACT",
+        "TOOLING_NONAUTHORITY",
+        "DETERMINISTIC_EXACT_INPUTS",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "recursive command tree",
+      "short/long help",
+      "argument schemas",
+      "read-only/effectful classification",
+      "recent run ids/status"
+    ],
+    "readonly_rule": "Viewing help/status does not invoke commands.",
+    "authority_rule": "Command visibility grants no execution/repo authority.",
+    "identity_rule": "Command definition/invocation/toolchain run identities distinct.",
+    "failure_rule": "unknown/non-executable family paths explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TOOLING_NONAUTHORITY",
+        "rule": "Toolchain code, scans, indexes, reports and generated artifacts remain implementation/evidence surfaces; they never become canonical semantic authority unless an explicit accepted canonical definition says so."
+      },
+      {
+        "id": "DETERMINISTIC_EXACT_INPUTS",
+        "rule": "Every toolchain execution binds exact bootstrap/source/profile/input revisions and must not resolve ambiguity through filesystem order, newest-wins, mtime, fuzzy names or UI layout."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "clicking help executes command",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "family root executes",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "viewing grants rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "fuzzy path accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "command/run identity conflated",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define read-only Expose help/status view for canonical command family and recent execution results.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Implementation contracts operationalize canonical semantics but do not replace canonical source authority."
+    ]
+  }
+}

@@ -1,0 +1,1452 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+    "name": "Core Lock Eligibility",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the complete validation chain required before an active canonical contract may transition from unlocked to locked under Contract Format 1.4.",
+  "scope": {
+    "owns": [
+      "lock eligibility semantics",
+      "validation sequencing",
+      "round-trip validation boundary",
+      "failure classification for locking"
+    ],
+    "does_not_own": [
+      "contract-specific semantics",
+      "runtime execution",
+      "Topic definitions",
+      "reference target semantics",
+      "serialization implementation details"
+    ]
+  },
+  "members": [
+    {
+      "id": "FSYM_16AE4693680BAE9B4369",
+      "name": "canonical_validator",
+      "type": "flow_actor_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "actor_ref",
+        "source_literal": "canonical_validator",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_9B7E850676B26ABDF232",
+      "name": "canonical contract",
+      "type": "flow_data_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "data_ref",
+        "source_literal": "canonical contract",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_0E95877FFF131FBA84AA",
+      "name": "validation context",
+      "type": "flow_target_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "target_ref",
+        "source_literal": "validation context",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_2CA730E1E0CE28CD3159",
+      "name": "shape validation result",
+      "type": "flow_result_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "result_refs",
+        "source_literal": "shape validation result",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_6B233F43D09B25BCC162",
+      "name": "missing required field",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "missing required field",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_B0CF8FD26ACF42DB74E1",
+      "name": "invalid field shape",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "invalid field shape",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_259EFFD72E26EE83AEB1",
+      "name": "canonical contract + active identity index",
+      "type": "flow_data_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "data_ref",
+        "source_literal": "canonical contract + active identity index",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_2DB60681F11FE851A7DB",
+      "name": "shape valid",
+      "type": "flow_condition_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "condition_ref",
+        "source_literal": "shape valid",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_7BCC4B650DFE6A3FB0FE",
+      "name": "identity validation result",
+      "type": "flow_result_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "result_refs",
+        "source_literal": "identity validation result",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_A05CBDD4CBF1D8C37A65",
+      "name": "duplicate active identity",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "duplicate active identity",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_90A6E6AC6E3C9B366873",
+      "name": "canonical references",
+      "type": "flow_data_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "data_ref",
+        "source_literal": "canonical references",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_A785C6F87095193B1306",
+      "name": "identity validation valid",
+      "type": "flow_condition_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "condition_ref",
+        "source_literal": "identity validation valid",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_96631E96115A1C8BF4EF",
+      "name": "reference validation result",
+      "type": "flow_result_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "result_refs",
+        "source_literal": "reference validation result",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_CD27591F944C9A46DAF0",
+      "name": "unresolved reference",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "unresolved reference",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_E8B0ABB43EB833D3DB31",
+      "name": "ambiguous reference",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "ambiguous reference",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_B9C34BB4C74A71E96ABD",
+      "name": "Topic graph + canonical contract",
+      "type": "flow_data_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "data_ref",
+        "source_literal": "Topic graph + canonical contract",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_B0894D4199D31FF657F3",
+      "name": "reference validation valid",
+      "type": "flow_condition_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "condition_ref",
+        "source_literal": "reference validation valid",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_0E102DA94333E0877275",
+      "name": "Topic validation result",
+      "type": "flow_result_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "result_refs",
+        "source_literal": "Topic validation result",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_4ABBB1F4DCE1ACDC1708",
+      "name": "hidden zero-membership identity",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "hidden zero-membership identity",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_0E4CE8D5D5EF5BFF5D8E",
+      "name": "invalid Outsider",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "invalid Outsider",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_D6FA048D8FBAD5BC0E57",
+      "name": "Topic inheritance cycle",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "Topic inheritance cycle",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_FEAAED89729F0824660C",
+      "name": "Topic composition cycle",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "Topic composition cycle",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_5BDB45F40848598722EE",
+      "name": "Topic semantic leak",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "Topic semantic leak",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_C9E66E3718DFEF6B7C16",
+      "name": "structure",
+      "type": "flow_data_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "data_ref",
+        "source_literal": "structure",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_9BED59C9345C15BB2D61",
+      "name": "Topic validation valid",
+      "type": "flow_condition_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "condition_ref",
+        "source_literal": "Topic validation valid",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_C1D4586B200B79D97564",
+      "name": "structural validation result",
+      "type": "flow_result_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "result_refs",
+        "source_literal": "structural validation result",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_8BF19C4FEE5AE709FCD7",
+      "name": "unresolved structural endpoint",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "unresolved structural endpoint",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_EAE35EA7432F5B154C2C",
+      "name": "dimension inference",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "dimension inference",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_244E87F36E5511484CF6",
+      "name": "behavior.flows",
+      "type": "flow_data_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "data_ref",
+        "source_literal": "behavior.flows",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_A03C82D3CD6933D2A01F",
+      "name": "structure validation valid",
+      "type": "flow_condition_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "condition_ref",
+        "source_literal": "structure validation valid",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_8E560E7C24D0B2FE82D5",
+      "name": "causality validation result",
+      "type": "flow_result_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "result_refs",
+        "source_literal": "causality validation result",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_F794EE499BA2D239FFAB",
+      "name": "implicit execution order",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "implicit execution order",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_88DF3C356C02048536D3",
+      "name": "ambiguous branch",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "ambiguous branch",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_2C9DB859F2AFBC3DFD03",
+      "name": "implicit continuation",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "implicit continuation",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_C94FAEE1120FAD41FDA2",
+      "name": "representation + normalized semantic model",
+      "type": "flow_data_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "data_ref",
+        "source_literal": "representation + normalized semantic model",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_77DC15C918490390CE03",
+      "name": "causality validation valid",
+      "type": "flow_condition_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "condition_ref",
+        "source_literal": "causality validation valid",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_0A747D599E032F54B23E",
+      "name": "round-trip equivalence result",
+      "type": "flow_result_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "result_refs",
+        "source_literal": "round-trip equivalence result",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_45C182F3339DE61E9E13",
+      "name": "semantic loss",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "semantic loss",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_765954720717D1AE2CC3",
+      "name": "semantic invention",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "semantic invention",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_27EC5E5208F36FBFB715",
+      "name": "identity change",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "identity change",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_49953317BFEC409AFA37",
+      "name": "edge-dimension change",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "edge-dimension change",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_28A0A6CA71378ED8F0FC",
+      "name": "contract + validation context",
+      "type": "flow_data_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "data_ref",
+        "source_literal": "contract + validation context",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_01617411770700258D43",
+      "name": "round-trip valid",
+      "type": "flow_condition_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "condition_ref",
+        "source_literal": "round-trip valid",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_82B942FD27B09B5D7556",
+      "name": "hard-gate report",
+      "type": "flow_result_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "result_refs",
+        "source_literal": "hard-gate report",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_556A1EC6423B4EBCB363",
+      "name": "hard gate failed",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "hard gate failed",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_7D0AB95AFBF86B09F8C4",
+      "name": "all validation results",
+      "type": "flow_data_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "data_ref",
+        "source_literal": "all validation results",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_590886C79BA04B8D670F",
+      "name": "contract status transition",
+      "type": "flow_target_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "target_ref",
+        "source_literal": "contract status transition",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_23A75A89A614EF37764C",
+      "name": "all applicable validations passed",
+      "type": "flow_condition_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "condition_ref",
+        "source_literal": "all applicable validations passed",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_B451E9605FBBB83C9C1F",
+      "name": "lock_eligible=true",
+      "type": "flow_result_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "result_refs",
+        "source_literal": "lock_eligible=true",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_D318499A391A49F6DAAD",
+      "name": "validation incomplete",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "validation incomplete",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_33DC5010CD7B9C77157E",
+      "name": "validation failure",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "validation failure",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    }
+  ],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": [
+      {
+        "id": "DEP_IDENTITY_RESOLUTION",
+        "source_ref": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "target_ref": "AIGMOS_CORE_CANONICAL_IDENTITY_RESOLUTION_CONTRACT",
+        "dependency_type": "validation_dependency",
+        "required": true
+      },
+      {
+        "id": "DEP_TOPIC_COVERAGE",
+        "source_ref": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "target_ref": "AIGMOS_CORE_TOPIC_COVERAGE_CONTRACT",
+        "dependency_type": "validation_dependency",
+        "required": true
+      },
+      {
+        "id": "DEP_STRUCTURAL_DIMENSIONS",
+        "source_ref": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "target_ref": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+        "dependency_type": "validation_dependency",
+        "required": true
+      },
+      {
+        "id": "DEP_EXPLICIT_CAUSALITY",
+        "source_ref": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "target_ref": "AIGMOS_CORE_EXPLICIT_CAUSALITY_CONTRACT",
+        "dependency_type": "validation_dependency",
+        "required": true
+      }
+    ]
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CORE_VALIDATION",
+      "name": "Validation",
+      "purpose": "Group canonical validation and lock-eligibility semantics.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_IDENTITY_RESOLUTION",
+        "TOPIC_CORE_TOPIC_COVERAGE",
+        "TOPIC_CORE_STRUCTURE",
+        "TOPIC_CORE_CAUSALITY"
+      ],
+      "member_refs": [
+        "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "DEP_IDENTITY_RESOLUTION",
+        "DEP_TOPIC_COVERAGE",
+        "DEP_STRUCTURAL_DIMENSIONS",
+        "DEP_EXPLICIT_CAUSALITY",
+        "STATE_UNLOCKED",
+        "STATE_LOCK_ELIGIBLE",
+        "STATE_LOCKED",
+        "LOCK_REQUIRES_COMPLETE_VALIDATION",
+        "ROUND_TRIP_SEMANTIC",
+        "GATE_LOCK_WITH_FAILED_VALIDATION",
+        "GATE_LOCK_WITH_UNRESOLVED_TOPIC",
+        "GATE_LOCK_WITH_IMPLICIT_CAUSALITY",
+        "GATE_LOCK_WITH_REFERENCE_FAILURE",
+        "GATE_ROUND_TRIP_LOSS",
+        "GATE_ROUND_TRIP_INVENTION",
+        "FSYM_16AE4693680BAE9B4369",
+        "FSYM_9B7E850676B26ABDF232",
+        "FSYM_0E95877FFF131FBA84AA",
+        "FSYM_2CA730E1E0CE28CD3159",
+        "FSYM_6B233F43D09B25BCC162",
+        "FSYM_B0CF8FD26ACF42DB74E1",
+        "FSYM_259EFFD72E26EE83AEB1",
+        "FSYM_2DB60681F11FE851A7DB",
+        "FSYM_7BCC4B650DFE6A3FB0FE",
+        "FSYM_A05CBDD4CBF1D8C37A65",
+        "FSYM_90A6E6AC6E3C9B366873",
+        "FSYM_A785C6F87095193B1306",
+        "FSYM_96631E96115A1C8BF4EF",
+        "FSYM_CD27591F944C9A46DAF0",
+        "FSYM_E8B0ABB43EB833D3DB31",
+        "FSYM_B9C34BB4C74A71E96ABD",
+        "FSYM_B0894D4199D31FF657F3",
+        "FSYM_0E102DA94333E0877275",
+        "FSYM_4ABBB1F4DCE1ACDC1708",
+        "FSYM_0E4CE8D5D5EF5BFF5D8E",
+        "FSYM_D6FA048D8FBAD5BC0E57",
+        "FSYM_FEAAED89729F0824660C",
+        "FSYM_5BDB45F40848598722EE",
+        "FSYM_C9E66E3718DFEF6B7C16",
+        "FSYM_9BED59C9345C15BB2D61",
+        "FSYM_C1D4586B200B79D97564",
+        "FSYM_8BF19C4FEE5AE709FCD7",
+        "FSYM_EAE35EA7432F5B154C2C",
+        "FSYM_244E87F36E5511484CF6",
+        "FSYM_A03C82D3CD6933D2A01F",
+        "FSYM_8E560E7C24D0B2FE82D5",
+        "FSYM_F794EE499BA2D239FFAB",
+        "FSYM_88DF3C356C02048536D3",
+        "FSYM_2C9DB859F2AFBC3DFD03",
+        "FSYM_C94FAEE1120FAD41FDA2",
+        "FSYM_77DC15C918490390CE03",
+        "FSYM_0A747D599E032F54B23E",
+        "FSYM_45C182F3339DE61E9E13",
+        "FSYM_765954720717D1AE2CC3",
+        "FSYM_27EC5E5208F36FBFB715",
+        "FSYM_49953317BFEC409AFA37",
+        "FSYM_28A0A6CA71378ED8F0FC",
+        "FSYM_01617411770700258D43",
+        "FSYM_82B942FD27B09B5D7556",
+        "FSYM_556A1EC6423B4EBCB363",
+        "FSYM_7D0AB95AFBF86B09F8C4",
+        "FSYM_590886C79BA04B8D670F",
+        "FSYM_23A75A89A614EF37764C",
+        "FSYM_B451E9605FBBB83C9C1F",
+        "FSYM_D318499A391A49F6DAAD",
+        "FSYM_33DC5010CD7B9C77157E"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_VALIDATE_SHAPE",
+        "OP_VALIDATE_IDENTITIES",
+        "OP_VALIDATE_REFERENCES",
+        "OP_VALIDATE_TOPICS",
+        "OP_VALIDATE_STRUCTURE",
+        "OP_VALIDATE_CAUSALITY",
+        "OP_VALIDATE_ROUND_TRIP",
+        "OP_VALIDATE_HARD_GATES",
+        "OP_COMPUTE_LOCK_ELIGIBILITY"
+      ],
+      "event_refs": [],
+      "flow_refs": [
+        "FLOW_LOCK_ELIGIBILITY"
+      ],
+      "child_topics": [
+        {
+          "id": "TOPIC_CORE_ROUND_TRIP",
+          "name": "Round Trip",
+          "purpose": "Group semantic round-trip validation across representations.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_VALIDATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_VALIDATE_ROUND_TRIP"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [
+      {
+        "id": "STATE_UNLOCKED",
+        "name": "unlocked"
+      },
+      {
+        "id": "STATE_LOCK_ELIGIBLE",
+        "name": "lock_eligible"
+      },
+      {
+        "id": "STATE_LOCKED",
+        "name": "locked"
+      }
+    ],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_VALIDATE_SHAPE",
+        "name": "Validate Contract Format shape",
+        "inputs": [
+          "canonical contract"
+        ],
+        "outputs": [
+          "shape validation result"
+        ],
+        "errors": [
+          "missing required field",
+          "invalid field shape"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_VALIDATE_IDENTITIES",
+        "name": "Validate identity uniqueness",
+        "inputs": [
+          "canonical contract",
+          "active identity index"
+        ],
+        "outputs": [
+          "identity validation result"
+        ],
+        "errors": [
+          "duplicate active identity"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_VALIDATE_REFERENCES",
+        "name": "Validate references",
+        "inputs": [
+          "canonical contract",
+          "active identity index"
+        ],
+        "outputs": [
+          "reference validation result"
+        ],
+        "errors": [
+          "unresolved reference",
+          "ambiguous reference"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_VALIDATE_TOPICS",
+        "name": "Validate Topic classification and graph resolution",
+        "inputs": [
+          "canonical contract",
+          "Topic graph"
+        ],
+        "outputs": [
+          "Topic validation result"
+        ],
+        "errors": [
+          "hidden zero-membership identity",
+          "invalid Outsider",
+          "Topic inheritance cycle",
+          "Topic composition cycle",
+          "Topic semantic leak"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_VALIDATE_STRUCTURE",
+        "name": "Validate structural dimensions",
+        "inputs": [
+          "canonical contract"
+        ],
+        "outputs": [
+          "structural validation result"
+        ],
+        "errors": [
+          "unresolved structural endpoint",
+          "dimension inference"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_VALIDATE_CAUSALITY",
+        "name": "Validate explicit causality",
+        "inputs": [
+          "canonical contract"
+        ],
+        "outputs": [
+          "causality validation result"
+        ],
+        "errors": [
+          "implicit execution order",
+          "ambiguous branch",
+          "implicit continuation"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_VALIDATE_ROUND_TRIP",
+        "name": "Validate semantic round trip",
+        "inputs": [
+          "canonical contract",
+          "normalized canonical semantic model"
+        ],
+        "outputs": [
+          "round-trip equivalence result"
+        ],
+        "errors": [
+          "semantic loss",
+          "semantic invention",
+          "identity change",
+          "edge-dimension change"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_VALIDATE_HARD_GATES",
+        "name": "Validate all applicable hard gates",
+        "inputs": [
+          "canonical contract",
+          "validation context"
+        ],
+        "outputs": [
+          "hard-gate report"
+        ],
+        "errors": [
+          "hard gate failed"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_COMPUTE_LOCK_ELIGIBILITY",
+        "name": "Compute lock eligibility",
+        "inputs": [
+          "all validation results"
+        ],
+        "outputs": [
+          "lock_eligible boolean"
+        ],
+        "errors": [
+          "validation incomplete",
+          "validation failure"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": [
+      {
+        "id": "FLOW_LOCK_ELIGIBILITY",
+        "owner_ref": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+        "name": "Validate contract for lock eligibility",
+        "flow_type": "validation_pipeline",
+        "entry_refs": [
+          "OP_VALIDATE_SHAPE"
+        ],
+        "exit_refs": [
+          "OP_COMPUTE_LOCK_ELIGIBILITY"
+        ],
+        "steps": [
+          {
+            "id": "STEP_VALIDATE_SHAPE",
+            "actor_ref": "FSYM_16AE4693680BAE9B4369",
+            "action_ref": "OP_VALIDATE_SHAPE",
+            "data_ref": "FSYM_9B7E850676B26ABDF232",
+            "target_ref": "FSYM_0E95877FFF131FBA84AA",
+            "cause_ref": null,
+            "condition_ref": null,
+            "payload_ref": null,
+            "result_refs": [
+              "FSYM_2CA730E1E0CE28CD3159"
+            ],
+            "error_refs": [
+              "FSYM_6B233F43D09B25BCC162",
+              "FSYM_B0CF8FD26ACF42DB74E1"
+            ],
+            "next_step_refs": [
+              "STEP_VALIDATE_IDENTITIES"
+            ],
+            "subflow_refs": [],
+            "resume_ref": null
+          },
+          {
+            "id": "STEP_VALIDATE_IDENTITIES",
+            "actor_ref": "FSYM_16AE4693680BAE9B4369",
+            "action_ref": "OP_VALIDATE_IDENTITIES",
+            "data_ref": "FSYM_259EFFD72E26EE83AEB1",
+            "target_ref": "FSYM_0E95877FFF131FBA84AA",
+            "cause_ref": "STEP_VALIDATE_SHAPE",
+            "condition_ref": "FSYM_2DB60681F11FE851A7DB",
+            "payload_ref": null,
+            "result_refs": [
+              "FSYM_7BCC4B650DFE6A3FB0FE"
+            ],
+            "error_refs": [
+              "FSYM_A05CBDD4CBF1D8C37A65"
+            ],
+            "next_step_refs": [
+              "STEP_VALIDATE_REFERENCES"
+            ],
+            "subflow_refs": [],
+            "resume_ref": null
+          },
+          {
+            "id": "STEP_VALIDATE_REFERENCES",
+            "actor_ref": "FSYM_16AE4693680BAE9B4369",
+            "action_ref": "OP_VALIDATE_REFERENCES",
+            "data_ref": "FSYM_90A6E6AC6E3C9B366873",
+            "target_ref": "FSYM_0E95877FFF131FBA84AA",
+            "cause_ref": "STEP_VALIDATE_IDENTITIES",
+            "condition_ref": "FSYM_A785C6F87095193B1306",
+            "payload_ref": null,
+            "result_refs": [
+              "FSYM_96631E96115A1C8BF4EF"
+            ],
+            "error_refs": [
+              "FSYM_CD27591F944C9A46DAF0",
+              "FSYM_E8B0ABB43EB833D3DB31"
+            ],
+            "next_step_refs": [
+              "STEP_VALIDATE_TOPICS"
+            ],
+            "subflow_refs": [],
+            "resume_ref": null
+          },
+          {
+            "id": "STEP_VALIDATE_TOPICS",
+            "actor_ref": "FSYM_16AE4693680BAE9B4369",
+            "action_ref": "OP_VALIDATE_TOPICS",
+            "data_ref": "FSYM_B9C34BB4C74A71E96ABD",
+            "target_ref": "FSYM_0E95877FFF131FBA84AA",
+            "cause_ref": "STEP_VALIDATE_REFERENCES",
+            "condition_ref": "FSYM_B0894D4199D31FF657F3",
+            "payload_ref": null,
+            "result_refs": [
+              "FSYM_0E102DA94333E0877275"
+            ],
+            "error_refs": [
+              "FSYM_4ABBB1F4DCE1ACDC1708",
+              "FSYM_0E4CE8D5D5EF5BFF5D8E",
+              "FSYM_D6FA048D8FBAD5BC0E57",
+              "FSYM_FEAAED89729F0824660C",
+              "FSYM_5BDB45F40848598722EE"
+            ],
+            "next_step_refs": [
+              "STEP_VALIDATE_STRUCTURE"
+            ],
+            "subflow_refs": [],
+            "resume_ref": null
+          },
+          {
+            "id": "STEP_VALIDATE_STRUCTURE",
+            "actor_ref": "FSYM_16AE4693680BAE9B4369",
+            "action_ref": "OP_VALIDATE_STRUCTURE",
+            "data_ref": "FSYM_C9E66E3718DFEF6B7C16",
+            "target_ref": "FSYM_0E95877FFF131FBA84AA",
+            "cause_ref": "STEP_VALIDATE_TOPICS",
+            "condition_ref": "FSYM_9BED59C9345C15BB2D61",
+            "payload_ref": null,
+            "result_refs": [
+              "FSYM_C1D4586B200B79D97564"
+            ],
+            "error_refs": [
+              "FSYM_8BF19C4FEE5AE709FCD7",
+              "FSYM_EAE35EA7432F5B154C2C"
+            ],
+            "next_step_refs": [
+              "STEP_VALIDATE_CAUSALITY"
+            ],
+            "subflow_refs": [],
+            "resume_ref": null
+          },
+          {
+            "id": "STEP_VALIDATE_CAUSALITY",
+            "actor_ref": "FSYM_16AE4693680BAE9B4369",
+            "action_ref": "OP_VALIDATE_CAUSALITY",
+            "data_ref": "FSYM_244E87F36E5511484CF6",
+            "target_ref": "FSYM_0E95877FFF131FBA84AA",
+            "cause_ref": "STEP_VALIDATE_STRUCTURE",
+            "condition_ref": "FSYM_A03C82D3CD6933D2A01F",
+            "payload_ref": null,
+            "result_refs": [
+              "FSYM_8E560E7C24D0B2FE82D5"
+            ],
+            "error_refs": [
+              "FSYM_F794EE499BA2D239FFAB",
+              "FSYM_88DF3C356C02048536D3",
+              "FSYM_2C9DB859F2AFBC3DFD03"
+            ],
+            "next_step_refs": [
+              "STEP_VALIDATE_ROUND_TRIP"
+            ],
+            "subflow_refs": [],
+            "resume_ref": null
+          },
+          {
+            "id": "STEP_VALIDATE_ROUND_TRIP",
+            "actor_ref": "FSYM_16AE4693680BAE9B4369",
+            "action_ref": "OP_VALIDATE_ROUND_TRIP",
+            "data_ref": "FSYM_C94FAEE1120FAD41FDA2",
+            "target_ref": "FSYM_0E95877FFF131FBA84AA",
+            "cause_ref": "STEP_VALIDATE_CAUSALITY",
+            "condition_ref": "FSYM_77DC15C918490390CE03",
+            "payload_ref": null,
+            "result_refs": [
+              "FSYM_0A747D599E032F54B23E"
+            ],
+            "error_refs": [
+              "FSYM_45C182F3339DE61E9E13",
+              "FSYM_765954720717D1AE2CC3",
+              "FSYM_27EC5E5208F36FBFB715",
+              "FSYM_49953317BFEC409AFA37"
+            ],
+            "next_step_refs": [
+              "STEP_VALIDATE_HARD_GATES"
+            ],
+            "subflow_refs": [],
+            "resume_ref": null
+          },
+          {
+            "id": "STEP_VALIDATE_HARD_GATES",
+            "actor_ref": "FSYM_16AE4693680BAE9B4369",
+            "action_ref": "OP_VALIDATE_HARD_GATES",
+            "data_ref": "FSYM_28A0A6CA71378ED8F0FC",
+            "target_ref": "FSYM_0E95877FFF131FBA84AA",
+            "cause_ref": "STEP_VALIDATE_ROUND_TRIP",
+            "condition_ref": "FSYM_01617411770700258D43",
+            "payload_ref": null,
+            "result_refs": [
+              "FSYM_82B942FD27B09B5D7556"
+            ],
+            "error_refs": [
+              "FSYM_556A1EC6423B4EBCB363"
+            ],
+            "next_step_refs": [
+              "STEP_LOCK_ELIGIBILITY"
+            ],
+            "subflow_refs": [],
+            "resume_ref": null
+          },
+          {
+            "id": "STEP_LOCK_ELIGIBILITY",
+            "actor_ref": "FSYM_16AE4693680BAE9B4369",
+            "action_ref": "OP_COMPUTE_LOCK_ELIGIBILITY",
+            "data_ref": "FSYM_7D0AB95AFBF86B09F8C4",
+            "target_ref": "FSYM_590886C79BA04B8D670F",
+            "cause_ref": "STEP_VALIDATE_HARD_GATES",
+            "condition_ref": "FSYM_23A75A89A614EF37764C",
+            "payload_ref": null,
+            "result_refs": [
+              "FSYM_B451E9605FBBB83C9C1F"
+            ],
+            "error_refs": [
+              "FSYM_D318499A391A49F6DAAD",
+              "FSYM_33DC5010CD7B9C77157E"
+            ],
+            "next_step_refs": [],
+            "subflow_refs": [],
+            "resume_ref": null
+          }
+        ],
+        "metadata": {
+          "status_transition": "unlocked -> lock_eligible -> locked",
+          "automatic_lock": false,
+          "rule": "Validation can establish eligibility. The canonical update that sets status=locked remains an explicit change."
+        }
+      }
+    ]
+  },
+  "semantics": {
+    "lock_rule": "An active non-bootstrap contract may be locked only when all applicable 1.4 validation dimensions pass.",
+    "required_validation_dimensions": [
+      "format shape",
+      "identity uniqueness",
+      "reference closure",
+      "Topic resolution and coverage",
+      "structural dimension correctness",
+      "explicit causality",
+      "semantic round trip",
+      "contract-specific and format-level hard gates"
+    ],
+    "round_trip": {
+      "forward": "serialized representation -> normalized canonical semantic model",
+      "reverse": "normalized canonical semantic model -> serialized representation",
+      "required_preservation": [
+        "identity",
+        "Topic memberships and parent/composition refs",
+        "structural edge dimension",
+        "edge direction and target",
+        "operations/events/flows",
+        "causal links",
+        "constraints",
+        "contract-specific semantics"
+      ],
+      "allowed_differences": [
+        "whitespace",
+        "JSON object key order",
+        "non-semantic serialization details"
+      ]
+    },
+    "failure_classes": {
+      "format_gap": "The current Contract Format cannot express semantics required by the authoritative source.",
+      "source_gap": "Required semantics do not exist in authoritative source material.",
+      "traceability_failure": "Data exists but a generic reader still must guess.",
+      "resolution_failure": "Identity, reference, Topic or structural target cannot resolve deterministically.",
+      "round_trip_failure": "Normalization or reverse serialization changes active meaning."
+    }
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "LOCK_REQUIRES_COMPLETE_VALIDATION",
+        "rule": "Locked status is evidence of successful current-format validation, not an editorial label."
+      },
+      {
+        "id": "ROUND_TRIP_SEMANTIC",
+        "rule": "Round-trip equivalence is semantic, not byte-for-byte serialization identity."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_LOCK_WITH_FAILED_VALIDATION",
+        "condition": "Contract is marked locked while any applicable 1.4 validation has failed.",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_LOCK_WITH_UNRESOLVED_TOPIC",
+        "condition": "Contract is locked while Topic classification/coverage remains unresolved other than a valid explicit Outsider state where permitted.",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_LOCK_WITH_IMPLICIT_CAUSALITY",
+        "condition": "Contract is locked while machine-significant causality still requires inference.",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_LOCK_WITH_REFERENCE_FAILURE",
+        "condition": "Contract is locked while an active reference remains unresolved or ambiguous.",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_ROUND_TRIP_LOSS",
+        "condition": "Round trip drops or changes active semantic meaning.",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_ROUND_TRIP_INVENTION",
+        "condition": "Round trip introduces semantic meaning that was not explicitly present.",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_IDENTITY_RESOLUTION",
+      "target_ref": "AIGMOS_CORE_CANONICAL_IDENTITY_RESOLUTION_CONTRACT",
+      "purpose": "Identity and reference validation."
+    },
+    {
+      "id": "REF_TOPIC_COVERAGE",
+      "target_ref": "AIGMOS_CORE_TOPIC_COVERAGE_CONTRACT",
+      "purpose": "Topic coverage and Outsider validation."
+    },
+    {
+      "id": "REF_STRUCTURAL_DIMENSIONS",
+      "target_ref": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+      "purpose": "Structural dimension validation."
+    },
+    {
+      "id": "REF_EXPLICIT_CAUSALITY",
+      "target_ref": "AIGMOS_CORE_EXPLICIT_CAUSALITY_CONTRACT",
+      "purpose": "Explicit causal flow validation."
+    }
+  ],
+  "prose": {
+    "summary": "Defines the complete 1.4 validation pipeline required for unlocked -> locked: shape, identities, references, Topics, structure, causality, round trip and hard gates.",
+    "notes": [
+      "The validation contract itself remains unlocked until the assembled review tree resolves all referenced Core validation contracts.",
+      "Pass 8 formalized previously free Flow actor/data/target/condition/payload/result/error tokens as exact owner-scoped member identities while preserving every source literal."
+    ]
+  }
+}

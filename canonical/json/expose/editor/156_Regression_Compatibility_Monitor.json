@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_REGRESSION_COMPATIBILITY_MONITOR_CONTRACT",
+    "name": "Regression, Compatibility and Migration Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for baselines, candidate comparisons, compatibility claims, migration tests and performance budgets.",
+  "scope": {
+    "owns": [
+      "Regression, Compatibility and Migration Monitor semantics"
+    ],
+    "does_not_own": [
+      "production runtime authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_REGRESSION_COMPATIBILITY_MONITOR",
+      "name": "Regression, Compatibility and Migration Monitor",
+      "purpose": "Define a read-only Expose monitor for baselines, candidate comparisons, compatibility claims, migration tests and performance budgets.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_VERIFICATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_REGRESSION_COMPATIBILITY_MONITOR_CONTRACT",
+        "TEST_NONAUTHORITY",
+        "EVIDENCE_REPRODUCIBILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "regression baseline",
+      "candidate comparison",
+      "intended changes",
+      "compatibility matrix",
+      "migration pre/post checks",
+      "rollback evidence",
+      "performance budgets/results"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Baseline, candidate revision, compatibility profile, migration, performance profile and test result identities remain distinct.",
+    "action_rule": "set-baseline/run-regression/run-compatibility/run-migration-test operations use separate workflows.",
+    "authority_rule": "Viewing/passing verification grants no deployment authority.",
+    "failure_rule": "regression/incompatible/loss/unverified-rollback/performance-fail states remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TEST_NONAUTHORITY",
+        "rule": "Test definitions, fixtures, results, coverage, simulations and release evidence never become production semantic authority or grant production execution rights merely by existing or passing."
+      },
+      {
+        "id": "EVIDENCE_REPRODUCIBILITY",
+        "rule": "Verification evidence binds exact test/profile/source/runtime revisions and declared environment inputs so a pass/fail result cannot silently float across unrelated versions or targets."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor updates baseline automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "migration test invokes prod",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "unknown compatibility shown pass",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "performance failure hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "baseline and source identity conflated",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_COMP",
+      "target_ref": "AIGMOS_COMPATIBILITY_VERIFICATION_CONTRACT",
+      "purpose": "Monitor projects exact compatibility evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for baselines, candidate comparisons, compatibility claims, migration tests and performance budgets.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

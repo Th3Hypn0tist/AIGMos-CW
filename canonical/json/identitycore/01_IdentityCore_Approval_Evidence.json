@@ -1,0 +1,135 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_IDENTITYCORE_APPROVAL_EVIDENCE_CONTRACT",
+    "name": "IdentityCore Approval Evidence",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define verification/approval evidence for person/organization identity attributes and claims without turning unverified self-assertion into canonical verified fact.",
+  "scope": {
+    "owns": [
+      "IdentityCore Approval Evidence semantics"
+    ],
+    "does_not_own": [
+      "IAM authentication/session semantics",
+      "AccessCore authorization policy",
+      "Project semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_IDENTITYCORE_APPROVAL_EVIDENCE",
+      "name": "IdentityCore Approval Evidence",
+      "purpose": "Define verification/approval evidence for person/organization identity attributes and claims without turning unverified self-assertion into canonical verified fact.",
+      "parent_topic_refs": [
+        "TOPIC_IDENTITYCORE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_IDENTITYCORE_APPROVAL_EVIDENCE_CONTRACT",
+        "EVIDENCE_NONFABRICATION",
+        "IDENTITY_ISOLATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Approval evidence has its own explicit identity.",
+    "target_rule": "Approval targets exact IdentityCore identity and claim/attribute.",
+    "issuer_rule": "Approver/issuer identity is explicit.",
+    "result_states": [
+      "approved",
+      "rejected",
+      "pending",
+      "revoked",
+      "expired",
+      "unknown"
+    ],
+    "claim_rule": "Unapproved claim remains distinct from verified attribute.",
+    "history_rule": "Approval/revocation history is append/history governed.",
+    "authority_rule": "Approval evidence does not automatically grant AccessCore authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EVIDENCE_NONFABRICATION",
+        "rule": "Identity, portfolio, merit, recommendation, trust and competence states derive only from explicit provenance-bearing evidence; display text, self-authored claims, ranking position or AI inference never become verified evidence by themselves."
+      },
+      {
+        "id": "IDENTITY_ISOLATION",
+        "rule": "Distinct canonical identities maintain independent evidence histories; merit, Tier, trust and recommendation histories are not mergeable across identities unless a future explicit canonical identity-merger contract exists."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "self-authored claim treated verified",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "approval issuer omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "revoked evidence shown active",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "approval grants system rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "approval history overwritten",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ID",
+      "target_ref": "AIGMOS_IDENTITYCORE_IDENTITY_CONTRACT",
+      "purpose": "Approval evidence targets exact canonical identities."
+    }
+  ],
+  "prose": {
+    "summary": "Define verification/approval evidence for person/organization identity attributes and claims without turning unverified self-assertion into canonical verified fact.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

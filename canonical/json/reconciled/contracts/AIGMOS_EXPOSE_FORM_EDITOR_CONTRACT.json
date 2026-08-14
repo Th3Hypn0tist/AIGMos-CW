@@ -1,0 +1,244 @@
+{
+  "behavior": {
+    "events": [],
+    "flows": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "errors": [
+          "schema unresolved"
+        ],
+        "id": "OP_FORM_DERIVE",
+        "inputs": [
+          "schema ref",
+          "field/UI metadata"
+        ],
+        "name": "Derive form from schema",
+        "outputs": [
+          "form definition"
+        ],
+        "side_effects": []
+      },
+      {
+        "errors": [
+          "schema violation"
+        ],
+        "id": "OP_FORM_VALIDATE",
+        "inputs": [
+          "form input",
+          "schema"
+        ],
+        "name": "Validate form submission",
+        "outputs": [
+          "validated data"
+        ],
+        "side_effects": []
+      },
+      {
+        "errors": [
+          "authority denied",
+          "write target unresolved"
+        ],
+        "id": "OP_FORM_SUBMIT",
+        "inputs": [
+          "validated data",
+          "canonical operation/write target"
+        ],
+        "name": "Submit validated form",
+        "outputs": [
+          "operation result"
+        ],
+        "side_effects": [
+          "only target operation effects"
+        ]
+      }
+    ],
+    "states": []
+  },
+  "constraints": {
+    "hard_gates": [
+      {
+        "id": "GATE_F608422FF7",
+        "condition": "form field identity inferred from label only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_73EA98AB89",
+        "condition": "relation field accepts undeclared relation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_29D9F866A4",
+        "condition": "form bypasses schema constraints",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_73BD59B108",
+        "condition": "Form Editor absorbs operational GUI semantics without explicit model",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_F0832D35F2",
+        "condition": "field visibility used as sole write authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_DE5CF60C40",
+        "condition": "form schema inferred only from observed payload",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_FD1A1E22FF",
+        "condition": "form submission writes directly outside canonical operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3AAEC3FA8D",
+        "condition": "unknown field silently extends schema",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_935427D004",
+        "condition": "widget/layout changes field semantic meaning",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2DB4661E3E",
+        "condition": "Form Editor used as private operational backend",
+        "result": "hard_fail"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "EDITOR_NONAUTHORITY",
+        "rule": "Editor surfaces project and mutate canonical semantics only through explicit validated operations; editor layout or widget state never becomes semantic or runtime authority."
+      },
+      {
+        "id": "EDITOR_TOOL_BOUNDARY_EXPLICIT",
+        "rule": "Editor subtools are projections/operation surfaces over canonical semantics and do not become independent authorities."
+      }
+    ]
+  },
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_FORM_EDITOR_CONTRACT",
+    "name": "Form Editor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "members": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending reconciliation against existing Expose/editor contracts and whole-tree Contract Format 1.4 validation.",
+      "Unlocked until reconciled against existing Expose Editor contracts and repository-wide Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: expose/editor/02_Form_Editor.json, expose/editor/04_Form_Editor.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define Form Editor for structured schema-driven data entry and record mutation, separate from operational GUI control surfaces. [2] Define Form Editor as schema-driven structured data-entry UI, distinct from GUI Editor operational controls and always writing through explicit canonical operations/targets."
+  },
+  "purpose": "Reconciled source purposes: [1] Define Form Editor for structured schema-driven data entry and record mutation, separate from operational GUI control surfaces. [2] Define Form Editor as schema-driven structured data-entry UI, distinct from GUI Editor operational controls and always writing through explicit canonical operations/targets.",
+  "references": [
+    {
+      "id": "REF_FOUND",
+      "target_ref": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT",
+      "purpose": "Form Editor reuses shared mutation/validation pipeline."
+    },
+    {
+      "id": "REF_D22E3247C6",
+      "target_ref": "AIGMOS_CORE_SCHEMA_SEMANTICS_CONTRACT",
+      "purpose": "Forms derive from canonical schema."
+    },
+    {
+      "id": "REF_5705A2F754",
+      "target_ref": "AIGMOS_CORE_SCHEMA_SEMANTICS_CONTRACT",
+      "purpose": "Forms derive from explicit schema."
+    },
+    {
+      "id": "REF_CHANGE",
+      "target_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+      "purpose": "Form writes target authoritative semantics."
+    }
+  ],
+  "scope": {
+    "does_not_own": [
+      "domain semantics",
+      "runtime authority",
+      "unrelated persistence semantics",
+      "runtime execution authority",
+      "unrelated domain semantics"
+    ],
+    "owns": [
+      "Form Editor semantics",
+      "Expose Form Editor semantics"
+    ]
+  },
+  "semantics": {
+    "authority_rule": "Read/write field access remains independently AC-addressable where policy supports it.",
+    "candidate_rule": "Form edits stage candidate values and semantic diff before commit where applicable.",
+    "field_rule": "Each field binds to exact semantic field/property identity.",
+    "gui_boundary": "Form Editor does not replace operational GUI controls.",
+    "gui_rule": "Operational invoke/control behavior belongs to GUI Editor unless explicitly modeled as a form action.",
+    "presentation_rule": "Widget choice/layout is presentation metadata and does not alter field semantics.",
+    "relation_rule": "Relation/FK fields reference explicit canonical relation semantics.",
+    "role": "Reconciled source clauses: [1] structured data-entry editor [2] structured data entry",
+    "schema_rule": "Reconciled source clauses: [1] Form structure derives from explicit canonical schema. [2] Form structure is derived from explicit schema plus optional presentation metadata.",
+    "unknown_field_rule": "Unknown fields follow schema policy; UI cannot silently extend schema.",
+    "validation_rule": "Reconciled source clauses: [1] Type, required, relation and constraint validation occurs before apply. [2] Submission validates against the owning schema before write.",
+    "write_rule": "Validated data is written only via explicit canonical operation/authoritative target."
+  },
+  "source_role": "definition",
+  "status": "locked",
+  "structure": {
+    "authority": [],
+    "containment": [],
+    "dependencies": [],
+    "ownership": [],
+    "relations": []
+  },
+  "topics": [
+    {
+      "child_topics": [],
+      "composed_topic_refs": [
+        "TOPIC_EXPOSE_EDITOR",
+        "TOPIC_CORE_SCHEMA",
+        "TOPIC_CORE_CHANGE_CONTROL"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_EXPOSE_FORM_EDITOR",
+      "member_refs": [
+        "AIGMOS_EXPOSE_FORM_EDITOR_CONTRACT",
+        "EDITOR_NONAUTHORITY",
+        "EDITOR_TOOL_BOUNDARY_EXPLICIT",
+        "GATE_F608422FF7",
+        "GATE_73EA98AB89",
+        "GATE_29D9F866A4",
+        "GATE_73BD59B108",
+        "GATE_F0832D35F2",
+        "GATE_DE5CF60C40",
+        "GATE_FD1A1E22FF",
+        "GATE_3AAEC3FA8D",
+        "GATE_935427D004",
+        "GATE_2DB4661E3E"
+      ],
+      "metadata": {},
+      "name": "Form Editor",
+      "operation_refs": [
+        "OP_FORM_DERIVE",
+        "OP_FORM_VALIDATE",
+        "OP_FORM_SUBMIT"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE_EDITOR",
+        "TOPIC_EXPOSE"
+      ],
+      "purpose": "Reconciled source clauses: [1] Define Form Editor for structured schema-driven data entry and record mutation, separate from operational GUI control surfaces. [2] Define Form Editor as schema-driven structured data-entry UI, distinct from GUI Editor operational controls and always writing through explicit canonical operations/targets.",
+      "relation_refs": []
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_OSC_BINDING_CONTRACT",
+    "name": "OSC Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define OSC protocol bindings as explicit address-pattern mappings to canonical operations/values with declared type/argument schema and transport direction.",
+  "scope": {
+    "owns": [
+      "OSC Binding semantics"
+    ],
+    "does_not_own": [
+      "domain business semantics",
+      "AccessCore policy ownership",
+      "listener binding ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_OSC_BINDING",
+      "name": "OSC Binding",
+      "purpose": "Define OSC protocol bindings as explicit address-pattern mappings to canonical operations/values with declared type/argument schema and transport direction.",
+      "parent_topic_refs": [
+        "TOPIC_PROTOCOL_BINDINGS",
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_OSC_BINDING_CONTRACT",
+        "PROTOCOL_BINDING_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "protocol": "OSC",
+    "address_rule": "OSC address/pattern is an explicit protocol selector.",
+    "target_rule": "Each mapping resolves exact canonical operation/value target.",
+    "argument_rule": "OSC argument types/order are explicit.",
+    "direction_rule": "Receive/send/bidirectional semantics are explicit.",
+    "transport_rule": "UDP/TCP or other OSC transport binding is declared through listener configuration.",
+    "identity_rule": "OSC address is not target semantic identity.",
+    "authority_rule": "Incoming OSC packet is inert input until routed through governed operation/value handling.",
+    "failure_rule": "Unknown/invalid address or argument schema fails explicitly."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PROTOCOL_BINDING_SEPARATION",
+        "rule": "Protocol identity, named listener instance, route/address/channel binding and domain operation identity remain separate; protocol exposure never creates semantic ownership or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "OSC packet directly executes hidden code",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "address string used as semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "argument schema omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "OSC packet bypasses authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "invalid address guessed to nearest target",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ROUTE",
+      "target_ref": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
+      "purpose": "OSC addresses are protocol bindings."
+    }
+  ],
+  "prose": {
+    "summary": "Define OSC protocol bindings as explicit address-pattern mappings to canonical operations/values with declared type/argument schema and transport direction.",
+    "notes": [
+      "Unlocked pending reconciliation against listener, REST/OSC/WebSocket and Expose contracts."
+    ]
+  }
+}

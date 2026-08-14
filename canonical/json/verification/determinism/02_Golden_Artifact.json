@@ -1,0 +1,134 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_GOLDEN_ARTIFACT_CONTRACT",
+    "name": "Golden Artifact and Expected Output",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define approved exact expected output/snapshot artifacts with identity, target/test scope and byte/semantic comparison profile.",
+  "scope": {
+    "owns": [
+      "Golden Artifact and Expected Output semantics"
+    ],
+    "does_not_own": [
+      "production runtime authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_GOLDEN_ARTIFACT",
+      "name": "Golden Artifact and Expected Output",
+      "purpose": "Define approved exact expected output/snapshot artifacts with identity, target/test scope and byte/semantic comparison profile.",
+      "parent_topic_refs": [
+        "TOPIC_VERIFICATION",
+        "TOPIC_DETERMINISM"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_GOLDEN_ARTIFACT_CONTRACT",
+        "TEST_NONAUTHORITY",
+        "EVIDENCE_REPRODUCIBILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each golden artifact has an explicit identity/revision.",
+    "test_rule": "Applicable test/target profile is explicit.",
+    "comparison_modes": [
+      "byte_identical",
+      "semantic_equivalent",
+      "structured_subset",
+      "other declared mode"
+    ],
+    "source_rule": "Golden provenance/approval is explicit.",
+    "update_rule": "Golden updates are candidate changes requiring review/acceptance.",
+    "drift_rule": "Observed mismatch creates finding rather than silently rewriting golden.",
+    "authority_rule": "Golden artifact is test evidence, not production source-of-truth."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TEST_NONAUTHORITY",
+        "rule": "Test definitions, fixtures, results, coverage, simulations and release evidence never become production semantic authority or grant production execution rights merely by existing or passing."
+      },
+      {
+        "id": "EVIDENCE_REPRODUCIBILITY",
+        "rule": "Verification evidence binds exact test/profile/source/runtime revisions and declared environment inputs so a pass/fail result cannot silently float across unrelated versions or targets."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "test automatically updates golden on failure",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "golden filename is identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "semantic test uses byte compare accidentally",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "golden becomes canonical config",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "newest golden selected",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TEST",
+      "target_ref": "AIGMOS_TEST_CASE_IDENTITY_CONTRACT",
+      "purpose": "Tests compare against exact expected artifacts."
+    }
+  ],
+  "prose": {
+    "summary": "Define approved exact expected output/snapshot artifacts with identity, target/test scope and byte/semantic comparison profile.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

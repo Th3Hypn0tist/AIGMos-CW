@@ -1,0 +1,148 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EVENT_REGISTRY_CONTRACT",
+    "name": "Event Registry",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Events as explicit canonical occurrence identities/payload contracts registered independently from Triggers and Runners.",
+  "scope": {
+    "owns": [
+      "Event Registry semantics"
+    ],
+    "does_not_own": [
+      "domain payload semantics",
+      "transport implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_AUTOMATION_EVENTS",
+      "name": "Event Registry",
+      "purpose": "Define Events as explicit canonical occurrence identities/payload contracts registered independently from Triggers and Runners.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_EVENTS",
+        "TOPIC_TOPIC_SYSTEM"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EVENT_REGISTRY_CONTRACT",
+        "AUTOMATION_CAUSALITY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_CORE_EVENTS",
+      "name": "CORE Events",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_CORE_EVENTS already referenced by 1 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 1,
+        "distinct_child_topics": 1,
+        "host_contract_ref": "AIGMOS_EVENT_REGISTRY_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "sigil": "@",
+    "registry_rule": "Events have exact canonical identities and payload/schema semantics.",
+    "occurrence_rule": "An Event occurrence references an Event identity plus occurrence-specific payload/provenance.",
+    "payload_rule": "Payload remains inert data until an explicit Trigger/operation consumes it.",
+    "identity_rule": "Event identity is separate from producer implementation, topic membership and transport channel.",
+    "producer_rule": "Any producer emitting an Event must reference the canonical Event identity.",
+    "authority_rule": "Event emission/receipt does not itself grant execution authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "AUTOMATION_CAUSALITY_EXPLICIT",
+        "rule": "Automation semantics remain explicit across Event, Trigger, Runner and Routine identities, and execution order never derives from incidental structure or serialization order."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "event identity inferred from producer name/path",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "event payload directly executes effect",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "transport channel becomes event identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "event occurrence lacks canonical event ref",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "event receipt grants authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_VALUES",
+      "target_ref": "AIGMOS_CORE_VALUE_SEMANTICS_CONTRACT",
+      "purpose": "Event payload is inert canonical data."
+    }
+  ],
+  "prose": {
+    "summary": "Define Events as explicit canonical occurrence identities/payload contracts registered independently from Triggers and Runners.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Trigger/Event/Runner/Routine contracts and whole-tree Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_CORE_EVENTS solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_META_OWNERSHIP_CONTRACT",
+    "name": "Meta Ownership",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Meta as the semantic ownership layer for module/domain models, schemas, relations and constraints, independent from whether those semantics are exposed through Expose.",
+  "scope": {
+    "owns": [
+      "Meta Ownership semantics"
+    ],
+    "does_not_own": [
+      "runtime implementation details",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_META",
+      "name": "Meta",
+      "purpose": "Define Meta as the semantic ownership layer for module/domain models, schemas, relations and constraints, independent from whether those semantics are exposed through Expose.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_SCHEMA",
+        "TOPIC_EXPOSE"
+      ],
+      "member_refs": [
+        "AIGMOS_META_OWNERSHIP_CONTRACT",
+        "ARCHITECTURE_COMPOSITION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_META_DEFINE",
+        "OP_META_RESOLVE_SCHEMA"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_META_DEFINE",
+        "name": "Define Meta semantic owner",
+        "inputs": [
+          "Meta identity",
+          "schema",
+          "owned relations/constraints/operations"
+        ],
+        "outputs": [
+          "Meta definition"
+        ],
+        "errors": [
+          "identity collision",
+          "ownership conflict"
+        ],
+        "side_effects": [
+          "Meta registry updated"
+        ]
+      },
+      {
+        "id": "OP_META_RESOLVE_SCHEMA",
+        "name": "Resolve Meta-owned schema",
+        "inputs": [
+          "Meta ref"
+        ],
+        "outputs": [
+          "owned schema"
+        ],
+        "errors": [
+          "schema unresolved"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "role": "semantic ownership/model layer",
+    "owns": [
+      "owned schema",
+      "owned relation declarations",
+      "owned constraints",
+      "owned operations where applicable"
+    ],
+    "expose_rule": "Meta is not under Expose unless a MetaModule/view exposes a human-facing surface.",
+    "schema_rule": "Schemas belong to their explicit Meta/semantic owner.",
+    "relation_rule": "Relations are declared by explicit semantic owners and may be referenced by instances/domains.",
+    "runtime_rule": "Meta definition is declarative semantics, not runtime authority.",
+    "projection_rule": "Editor/Expose projections do not take ownership from Meta."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ARCHITECTURE_COMPOSITION_EXPLICIT",
+        "rule": "Universal substrates, domain compositions, Meta ownership and relations remain explicit and non-duplicated."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "Meta ownership inferred from Expose placement",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Expose visibility transfers semantic ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "schema owned only by form/UI definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "relation created ad hoc by runtime instance without Meta declaration",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "Meta definition treated as runtime authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_CORE_SCHEMA_SEMANTICS_CONTRACT",
+      "purpose": "Meta may own explicit schema semantics."
+    },
+    {
+      "id": "REF_EXPOSE",
+      "target_ref": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT",
+      "purpose": "Exposure does not alter Meta ownership."
+    }
+  ],
+  "prose": {
+    "summary": "Define Meta as the semantic ownership layer for module/domain models, schemas, relations and constraints, independent from whether those semantics are exposed through Expose.",
+    "notes": [
+      "Unlocked until reconciled against existing universal_module/domain/Meta/relation contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

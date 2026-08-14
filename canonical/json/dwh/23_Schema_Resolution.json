@@ -1,0 +1,138 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_SCHEMA_RESOLUTION_CONTRACT",
+    "name": "DWH Schema Resolution",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic resolution of DWH addresses/queries into exact schema, instance, relation and field identities before data projection or mutation.",
+  "scope": {
+    "owns": [
+      "DWH Schema Resolution semantics"
+    ],
+    "does_not_own": [
+      "module domain model ownership",
+      "AccessCore policy ownership",
+      "transport implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_SCHEMA_RESOLUTION",
+      "name": "DWH Schema Resolution",
+      "purpose": "Define deterministic resolution of DWH addresses/queries into exact schema, instance, relation and field identities before data projection or mutation.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_SCHEMA_BINDING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_SCHEMA_RESOLUTION_CONTRACT",
+        "DWH_SCHEMA_OWNERSHIP_PRESERVED",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "flow": [
+      "resolve DWH address/root",
+      "resolve instance binding type",
+      "resolve exact instance",
+      "resolve schema",
+      "resolve optional relation traversal",
+      "resolve field/resource",
+      "evaluate governance"
+    ],
+    "identity_rule": "Every machine-significant resolution step returns exact canonical identities.",
+    "ambiguity_rule": "Ambiguous schema/instance/relation/field resolution hard-fails.",
+    "order_rule": "Resolution never depends on filesystem, declaration or discovery order.",
+    "alias_rule": "Compatibility aliases may resolve only through explicit alias contracts.",
+    "output_rule": "Resolved schema/field classification becomes input to output governance.",
+    "mutation_rule": "Resolution alone is read-only and never mutates data.",
+    "trace_rule": "Resolution trace can record exact path of canonical refs."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_SCHEMA_OWNERSHIP_PRESERVED",
+        "rule": "DWH resolves and projects schemas/relations but never becomes the semantic owner of module domain models; local/relation bindings require exact declared identities and cannot be inferred from names or proximity."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "ambiguous field picks first match",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "resolution order depends on file order",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "schema inferred from display name",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "resolution mutates data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "classification lost before output governance",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MASTER",
+      "target_ref": "AIGMOS_DWH_MASTER_SCHEMA_ROOT_CONTRACT",
+      "purpose": "Resolution starts from common schema graph."
+    },
+    {
+      "id": "REF_OUT",
+      "target_ref": "AIGMOS_DWH_OUTPUT_SCHEMA_GOVERNANCE_CONTRACT",
+      "purpose": "Resolved schema/field drives governed output."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic resolution of DWH addresses/queries into exact schema, instance, relation and field identities before data projection or mutation.",
+    "notes": [
+      "Unlocked pending reconciliation against Schema/Relation, UserModule isolation and DWH access/lineage contracts."
+    ]
+  }
+}

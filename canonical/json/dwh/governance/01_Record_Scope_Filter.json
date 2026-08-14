@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_RECORD_SCOPE_FILTER_CONTRACT",
+    "name": "DWH Record Scope Filter",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define row/record-level visibility as an explicit predicate over exact fields, identity/session/context refs and governed policy inputs, applied before result exposure.",
+  "scope": {
+    "owns": [
+      "DWH Record Scope Filter semantics"
+    ],
+    "does_not_own": [
+      "AccessCore authorization policy ownership",
+      "source domain ownership",
+      "transport security semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_RECORD_SCOPE_FILTER",
+      "name": "DWH Record Scope Filter",
+      "purpose": "Define row/record-level visibility as an explicit predicate over exact fields, identity/session/context refs and governed policy inputs, applied before result exposure.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_GOVERNANCE_POLICY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_RECORD_SCOPE_FILTER_CONTRACT",
+        "DWH_GOVERNANCE_NONEXPANSION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "predicate_rule": "Record-scope predicate is explicit machine-readable policy semantics.",
+    "field_rule": "Predicate references exact field/resource identities.",
+    "context_rule": "Caller/session/identity/project/peer context refs are explicit inputs where used.",
+    "filter_rule": "Records failing the scope predicate are excluded from the authorized projection.",
+    "query_rule": "Query filters do not substitute for governance filters; both are evaluated independently.",
+    "join_rule": "Joining data cannot expand record visibility beyond each contributing source's governed scope.",
+    "unknown_rule": "Unknown predicate result follows explicit fail-closed policy for protected data.",
+    "authority_rule": "Record-scope match is not itself AccessCore authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_GOVERNANCE_NONEXPANSION",
+        "rule": "DWH governance may restrict or project data according to exact schema/classification/scope policy but never creates AccessCore rights, semantic ownership or broader visibility than the underlying authorized source set."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "application query filter used as governance substitute",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "join exposes records outside source scope",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "predicate field resolved by display label",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "unknown treated as allow",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "scope match grants AccessCore rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_FILTER",
+      "target_ref": "AIGMOS_DWH_FILTER_PROJECTION_CONTRACT",
+      "purpose": "Governance filtering remains distinct from user query filters."
+    },
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_ASSURANCE_GATED_RESOURCE_CONTRACT",
+      "purpose": "Record scope does not replace caller authorization."
+    }
+  ],
+  "prose": {
+    "summary": "Define row/record-level visibility as an explicit predicate over exact fields, identity/session/context refs and governed policy inputs, applied before result exposure.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH access governance, schema resolution, classification and AccessCore contracts."
+    ]
+  }
+}

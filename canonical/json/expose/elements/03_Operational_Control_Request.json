@@ -1,0 +1,134 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_OPERATIONAL_CONTROL_REQUEST_CONTRACT",
+    "name": "Expose Operational Control Request",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define buttons, toggles, sliders and other operational controls as request producers over exact operations/targets rather than direct implementation calls.",
+  "scope": {
+    "owns": [
+      "Expose Operational Control Request semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_OPERATIONAL_CONTROL_REQUEST",
+      "name": "Expose Operational Control Request",
+      "purpose": "Define buttons, toggles, sliders and other operational controls as request producers over exact operations/targets rather than direct implementation calls.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_ELEMENTS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_OPERATIONAL_CONTROL_REQUEST_CONTRACT",
+        "UI_NONAUTHORITY",
+        "UI_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "control_rule": "Control binds exact operation identity.",
+    "target_rule": "Target is explicit and not inferred from focus/selection unless selection itself is an explicit typed binding.",
+    "argument_rule": "Control state maps explicitly to operation arguments.",
+    "request_rule": "Activation creates inert Operation Request.",
+    "confirmation_rule": "Optional destructive/sensitive confirmation is UI evidence only; canonical gates still apply.",
+    "feedback_rule": "UI completion state derives from exact execution/result evidence.",
+    "authority_rule": "Enabled control does not mean caller is authorized."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "UI_NONAUTHORITY",
+        "rule": "UI visibility, navigation, placement, styling, selection, focus and visual adjacency never create semantic ownership, resource identity or execution authority."
+      },
+      {
+        "id": "UI_EFFECT_BOUNDARY",
+        "rule": "Effect-capable UI actions create explicit candidate/request data and must cross canonical validation, authorization and dispatcher boundaries before effects occur."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "button calls backend implementation directly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "focused row becomes hidden target",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "enabled means authorized",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "confirmation replaces destructive gate",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "optimistic UI shown success without result",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CTRL",
+      "target_ref": "AIGMOS_EXPOSE_OPERATIONAL_CONTROL_ELEMENT_CONTRACT",
+      "purpose": "Operational Elements create requests only."
+    },
+    {
+      "id": "REF_REQ",
+      "target_ref": "AIGMOS_OPERATION_REQUEST_CONTRACT",
+      "purpose": "Effects cross canonical request boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define buttons, toggles, sliders and other operational controls as request producers over exact operations/targets rather than direct implementation calls.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TOPIC_OUTSIDER_CONTRACT",
+    "name": "Topic Outsider Classification",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define outsider as an explicit visible classification for canonical nodes that do not yet belong to any existing Topic, preventing silent unclassified semantics.",
+  "scope": {
+    "owns": [
+      "Topic Outsider Classification semantics"
+    ],
+    "does_not_own": [
+      "runtime implementation details",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TOPIC_OUTSIDER",
+      "name": "Outsider",
+      "purpose": "Define outsider as an explicit visible classification for canonical nodes that do not yet belong to any existing Topic, preventing silent unclassified semantics.",
+      "parent_topic_refs": [
+        "TOPIC_TOPIC_SYSTEM"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TOPIC_OUTSIDER_CONTRACT",
+        "TOPIC_GRAPH_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_OUTSIDER_MARK",
+        "OP_OUTSIDER_REVIEW"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_OUTSIDER_MARK",
+        "name": "Mark canonical node as outsider",
+        "inputs": [
+          "node_ref",
+          "reason",
+          "review metadata"
+        ],
+        "outputs": [
+          "outsider classification"
+        ],
+        "errors": [
+          "node unresolved",
+          "reason missing"
+        ],
+        "side_effects": [
+          "Topic coverage state updated"
+        ]
+      },
+      {
+        "id": "OP_OUTSIDER_REVIEW",
+        "name": "Review outsider",
+        "inputs": [
+          "outsider node",
+          "current Topic graph"
+        ],
+        "outputs": [
+          "remain outsider | assign existing Topic | create Topic"
+        ],
+        "errors": [],
+        "side_effects": [
+          "Topic graph may update"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "rule": "A node with zero Topic memberships must be explicitly marked outsider.",
+    "visibility_rule": "Outsider state is machine-visible and human-visible.",
+    "reason_rule": "Outsider classification records why no current Topic applies.",
+    "review_rule": "Outsiders are candidates for assignment to an existing Topic or creation of a new Topic.",
+    "non_error_rule": "Outsider may be a valid temporary semantic state, but never an invisible omission.",
+    "lock_rule": "Lock eligibility must explicitly account for remaining outsiders."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TOPIC_GRAPH_EXPLICIT",
+        "rule": "Every machine-significant canonical node is classified by explicit Topic membership or explicitly marked outsider; Topics may inherit and compose other Topics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "zero-Topic node is silently accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "outsider lacks reason/visibility",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "outsider automatically assigned by heuristic",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "lock validation ignores outsider state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "outsider treated as ownership/authority state",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TOPIC",
+      "target_ref": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT",
+      "purpose": "Outsider is the explicit alternative to Topic membership."
+    }
+  ],
+  "prose": {
+    "summary": "Define outsider as an explicit visible classification for canonical nodes that do not yet belong to any existing Topic, preventing silent unclassified semantics.",
+    "notes": [
+      "Unlocked until reconciled against the assembled 1.4 Topic graph and repository-wide validation."
+    ]
+  }
+}

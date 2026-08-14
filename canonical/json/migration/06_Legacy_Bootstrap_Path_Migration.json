@@ -1,0 +1,118 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_LEGACY_BOOTSTRAP_PATH_MIGRATION_CONTRACT",
+    "name": "Legacy Bootstrap Path Migration",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define migration of any existing `canonical/json/00_Contract_Format.json` out of the active canonical tree while preserving it as historical migration evidence.",
+  "scope": {
+    "owns": [
+      "Legacy Bootstrap Path Migration semantics"
+    ],
+    "does_not_own": [
+      "canonical contract domain semantics",
+      "filesystem semantics beyond declared bootstrap bindings",
+      "runtime business authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_LEGACY_BOOTSTRAP_PATH_MIGRATION",
+      "name": "Legacy Bootstrap Path Migration",
+      "purpose": "Define migration of any existing `canonical/json/00_Contract_Format.json` out of the active canonical tree while preserving it as historical migration evidence.",
+      "parent_topic_refs": [
+        "TOPIC_CONTRACT_FORMAT",
+        "TOPIC_CANONICAL_SOURCE_RESOLUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_LEGACY_BOOTSTRAP_PATH_MIGRATION_CONTRACT",
+        "BOOTSTRAP_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "legacy_path": "canonical/json/00_Contract_Format.json",
+    "target_state": "historical only",
+    "preservation_example": "history/bootstrap/00_Contract_Format.json",
+    "active_rule": "Legacy bootstrap-location artifact cannot compete as active Contract Format authority.",
+    "replacement_rule": "Root `AIGMos_Canonical_Contract_Format_v1.4.0.json` is the active 1.4 bootstrap artifact.",
+    "history_rule": "Legacy artifact may be retained byte-for-byte/history-labelled for audit/migration.",
+    "reference_rule": "Any active local-source reference to the legacy path must be migrated to bootstrap resolution semantics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOTSTRAP_SEPARATION",
+        "rule": "Contract Format bootstrap authority is resolved before the canonical contract tree and is never treated as an ordinary canonical contract inside canonical/json/**."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "legacy path remains active authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "legacy artifact deleted with no migration/history trace where preservation is required",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "root and legacy files compete as active authorities",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "active code still hardcodes legacy path",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RESOLVE",
+      "target_ref": "AIGMOS_BOOTSTRAP_SOURCE_RESOLUTION_CONTRACT",
+      "purpose": "Active resolution no longer uses legacy path."
+    }
+  ],
+  "prose": {
+    "summary": "Define migration of any existing `canonical/json/00_Contract_Format.json` out of the active canonical tree while preserving it as historical migration evidence.",
+    "notes": [
+      "Bootstrap correction: project-root Contract Format authority is intentionally outside canonical/json/**."
+    ]
+  }
+}

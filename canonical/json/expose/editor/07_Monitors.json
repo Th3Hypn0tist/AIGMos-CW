@@ -1,0 +1,169 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT",
+    "name": "Expose Monitors",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Editor monitors as read-only projections over canonical/runtime observability surfaces such as site map, Trigger/Event/Runner activity, DWH and q activity.",
+  "scope": {
+    "owns": [
+      "Expose Monitors semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "unrelated domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_MONITORS",
+      "name": "Monitors",
+      "purpose": "Define Editor monitors as read-only projections over canonical/runtime observability surfaces such as site map, Trigger/Event/Runner activity, DWH and q activity.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE_EDITOR"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_EXPOSE_EDITOR",
+        "TOPIC_CORE_TRACEABILITY",
+        "TOPIC_CORE_PROJECTION"
+      ],
+      "member_refs": [
+        "AIGMOS_EXPOSE_MONITOR_CONTRACT",
+        "EDITOR_TOOL_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_MONITOR_PROJECT",
+        "OP_MONITOR_TRACE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_MONITOR_PROJECT",
+        "name": "Project monitor view",
+        "inputs": [
+          "canonical/runtime trace refs",
+          "monitor type"
+        ],
+        "outputs": [
+          "read-only monitor model"
+        ],
+        "errors": [
+          "source unavailable"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_MONITOR_TRACE",
+        "name": "Trace monitored item",
+        "inputs": [
+          "selected identity/event/flow"
+        ],
+        "outputs": [
+          "provenance-backed trace"
+        ],
+        "errors": [
+          "trace unavailable"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "initial_monitors": [
+      "site map",
+      "Trigger/Event/Runner",
+      "DWH",
+      "q activity"
+    ],
+    "read_only_rule": "Monitor is observation/projection by default.",
+    "source_rule": "Monitor data comes from explicit canonical/runtime state and trace surfaces.",
+    "authority_rule": "Observing a resource does not grant control authority.",
+    "trace_rule": "Displayed activity retains identity/provenance where available.",
+    "projection_rule": "Filtering/sorting/layout are monitor presentation semantics only.",
+    "action_rule": "Any control action exposed alongside a monitor invokes a separate explicit canonical operation."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EDITOR_TOOL_BOUNDARY_EXPLICIT",
+        "rule": "Editor subtools are projections/operation surfaces over canonical semantics and do not become independent authorities."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor becomes semantic source of truth",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "monitor visibility grants control authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "monitor display ordering interpreted as runtime causality",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "activity data loses identity/provenance required for deterministic trace",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "control action mutates runtime directly without canonical operation",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TRACE",
+      "target_ref": "AIGMOS_CORE_BIDIRECTIONAL_TRACEABILITY_CONTRACT",
+      "purpose": "Monitor trace surfaces preserve provenance."
+    },
+    {
+      "id": "REF_PROJECTION",
+      "target_ref": "AIGMOS_CORE_PROJECTION_BOUNDARY_CONTRACT",
+      "purpose": "Monitors are derived views."
+    }
+  ],
+  "prose": {
+    "summary": "Define Editor monitors as read-only projections over canonical/runtime observability surfaces such as site map, Trigger/Event/Runner activity, DWH and q activity.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose Editor contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

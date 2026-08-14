@@ -1,0 +1,138 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_CHANGE_RECORD_IDENTITY_CONTRACT",
+    "name": "DWH Change Record Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each committed DWH changefeed/CDC record as an explicit identity referencing the exact source write, transaction, record/resource and accepted revision transition.",
+  "scope": {
+    "owns": [
+      "DWH Change Record Identity semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "Event execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_CHANGE_RECORD_IDENTITY",
+      "name": "DWH Change Record Identity",
+      "purpose": "Define each committed DWH changefeed/CDC record as an explicit identity referencing the exact source write, transaction, record/resource and accepted revision transition.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_CHANGEFEED_CDC"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_CHANGE_RECORD_IDENTITY_CONTRACT",
+        "CHANGEFEED_NONEXECUTION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each machine-significant change record has an explicit change identity.",
+    "source_rule": "Change references exact originating write execution and transaction where applicable.",
+    "record_rule": "Change references exact source record/resource semantic identity.",
+    "revision_rule": "Before/after or predecessor/new accepted revision refs are explicit where available.",
+    "change_types": [
+      "create",
+      "update",
+      "delete",
+      "tombstone",
+      "materialize",
+      "other declared mutation"
+    ],
+    "commit_rule": "Only committed/eligible mutations become normal changefeed records.",
+    "payload_rule": "Changed-field/value payload is inert data and may be full, partial or metadata-only according to declared profile.",
+    "lineage_rule": "Change record retains exact source provenance.",
+    "identity_separation": "Change identity never replaces record or revision identity."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "CHANGEFEED_NONEXECUTION",
+        "rule": "DWH changefeeds expose committed mutation evidence as ordered provenance-bearing data/events; subscription delivery never directly executes downstream operations and never replaces the underlying record/revision identities."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "uncommitted write emitted as accepted change",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "change id used as record identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "source write/transaction provenance omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "failed mutation emitted as committed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "change type inferred only from payload shape",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_WRITE",
+      "target_ref": "AIGMOS_DWH_WRITE_OPERATION_IDENTITY_CONTRACT",
+      "purpose": "Change records originate from exact writes."
+    },
+    {
+      "id": "REF_REV",
+      "target_ref": "AIGMOS_DWH_RECORD_REVISION_CONTRACT",
+      "purpose": "CDC tracks accepted revision transitions."
+    }
+  ],
+  "prose": {
+    "summary": "Define each committed DWH changefeed/CDC record as an explicit identity referencing the exact source write, transaction, record/resource and accepted revision transition.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH mutation/persistence, Event causality, sync and remote-sharing contracts."
+    ]
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DISTRIBUTION_HASH_MANIFEST_CONTRACT",
+    "name": "Package Hash Manifest",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define machine-readable member and package hashing for distribution integrity while keeping hashes as integrity evidence rather than semantic identity.",
+  "scope": {
+    "owns": [
+      "Package Hash Manifest semantics"
+    ],
+    "does_not_own": [
+      "source semantic ownership",
+      "runtime authority",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DISTRIBUTION_HASH",
+      "name": "Package Hashing",
+      "purpose": "Define machine-readable member and package hashing for distribution integrity while keeping hashes as integrity evidence rather than semantic identity.",
+      "parent_topic_refs": [
+        "TOPIC_DISTRIBUTION_PACKAGE",
+        "TOPIC_CORE_PROVENANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DISTRIBUTION_HASH_MANIFEST_CONTRACT",
+        "DISTRIBUTION_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_HASH_MANIFEST_BUILD",
+        "OP_HASH_MANIFEST_VERIFY"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_HASH_MANIFEST_BUILD",
+        "name": "Build package hash manifest",
+        "inputs": [
+          "package members"
+        ],
+        "outputs": [
+          "member hashes",
+          "package hash"
+        ],
+        "errors": [
+          "member unreadable"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_HASH_MANIFEST_VERIFY",
+        "name": "Verify package hashes",
+        "inputs": [
+          "package",
+          "hash manifest"
+        ],
+        "outputs": [
+          "verified | mismatch"
+        ],
+        "errors": [
+          "hash mismatch",
+          "member missing"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "hash_role": "integrity evidence",
+    "member_rule": "Each packaged artifact may have an explicit cryptographic hash.",
+    "package_rule": "Package-level hash is derived from a deterministic package/hash-manifest definition.",
+    "identity_rule": "Hash is not canonical semantic identity.",
+    "mismatch_rule": "Hash mismatch hard-fails integrity verification.",
+    "provenance_rule": "Certification/export evidence may reference package/member hashes."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DISTRIBUTION_NONAUTHORITY",
+        "rule": "Packaging, hashing, certification and repository distribution preserve canonical semantics but do not become semantic or runtime authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "hash used as sole semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "hash mismatch ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "hash manifest omits packaged machine-significant member without explicit rule",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "different package contents accepted under same verified package hash claim",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "hash result grants semantic authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PACKAGE",
+      "target_ref": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT",
+      "purpose": "Hash manifest validates explicit package membership."
+    }
+  ],
+  "prose": {
+    "summary": "Define machine-readable member and package hashing for distribution integrity while keeping hashes as integrity evidence rather than semantic identity.",
+    "notes": [
+      "Unlocked until reconciled against the assembled 1.4 tree and distribution/certification validation."
+    ]
+  }
+}

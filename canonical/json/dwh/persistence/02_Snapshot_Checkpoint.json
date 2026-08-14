@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT",
+    "name": "DWH Snapshot and Checkpoint",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define consistent DWH snapshots/checkpoints as explicit captured state identities over exact data scopes and revisions, separate from live data and runtime activation snapshots.",
+  "scope": {
+    "owns": [
+      "DWH Snapshot and Checkpoint semantics"
+    ],
+    "does_not_own": [
+      "domain schema ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation internals"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_SNAPSHOT_CHECKPOINT",
+      "name": "DWH Snapshot and Checkpoint",
+      "purpose": "Define consistent DWH snapshots/checkpoints as explicit captured state identities over exact data scopes and revisions, separate from live data and runtime activation snapshots.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_PERSISTENCE_RECOVERY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT",
+        "PERSISTENCE_NONIDENTITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "snapshot_rule": "Each DWH snapshot/checkpoint has an explicit artifact/state identity.",
+    "scope_rule": "Captured instance/schema/data scopes are explicit.",
+    "revision_rule": "Snapshot records exact included revision/watermark/state boundary.",
+    "consistency_rule": "Consistency level/profile is explicit, e.g. atomic point-in-time, transaction-consistent or other declared profile.",
+    "live_rule": "Snapshot is immutable captured evidence and not the live mutable data identity.",
+    "runtime_rule": "DWH data snapshot identity is distinct from canonical/runtime configuration snapshot identity.",
+    "lineage_rule": "Snapshot retains source scope and creation provenance.",
+    "restore_rule": "Possessing a snapshot does not restore or activate it automatically."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PERSISTENCE_NONIDENTITY",
+        "rule": "Physical storage location, file name, engine page, snapshot artifact or backup copy never replaces canonical data/schema/instance identity; persistence and recovery operate on exact semantic identities with explicit version/provenance evidence."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "snapshot artifact treated as live data identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "consistency level undocumented",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "snapshot conflated with runtime config snapshot",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "snapshot creation mutates live semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "snapshot presence auto-restores",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TX",
+      "target_ref": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT",
+      "purpose": "Consistent checkpoints align with transaction boundaries."
+    },
+    {
+      "id": "REF_RUNTIME",
+      "target_ref": "AIGMOS_RUNTIME_ACTIVE_SNAPSHOT_CONTRACT",
+      "purpose": "Data and runtime configuration snapshots remain separate."
+    }
+  ],
+  "prose": {
+    "summary": "Define consistent DWH snapshots/checkpoints as explicit captured state identities over exact data scopes and revisions, separate from live data and runtime activation snapshots.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH mutation, runtime snapshot, repository acceptance and retention contracts."
+    ]
+  }
+}

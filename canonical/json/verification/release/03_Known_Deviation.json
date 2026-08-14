@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_KNOWN_DEVIATION_CONTRACT",
+    "name": "Known Deviation and Accepted Risk",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit bounded release deviations/known failures with exact scope, rationale, owner, expiry/review and compensating controls.",
+  "scope": {
+    "owns": [
+      "Known Deviation and Accepted Risk semantics"
+    ],
+    "does_not_own": [
+      "production runtime authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_KNOWN_DEVIATION",
+      "name": "Known Deviation and Accepted Risk",
+      "purpose": "Define explicit bounded release deviations/known failures with exact scope, rationale, owner, expiry/review and compensating controls.",
+      "parent_topic_refs": [
+        "TOPIC_VERIFICATION",
+        "TOPIC_RELEASE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_KNOWN_DEVIATION_CONTRACT",
+        "TEST_NONAUTHORITY",
+        "EVIDENCE_REPRODUCIBILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each deviation has an explicit identity.",
+    "finding_rule": "Exact failed/missing test/control/finding refs are explicit.",
+    "scope_rule": "Affected component/operation/environment/users are exact.",
+    "risk_rule": "Impact/rationale is explicit.",
+    "control_rule": "Compensating controls/restrictions are explicit.",
+    "expiry_rule": "Deviation expiry/review date/condition is explicit.",
+    "approval_rule": "Acceptance requires exact authorized reviewer/owner evidence.",
+    "authority_rule": "Deviation cannot waive unrelated safety gates implicitly."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TEST_NONAUTHORITY",
+        "rule": "Test definitions, fixtures, results, coverage, simulations and release evidence never become production semantic authority or grant production execution rights merely by existing or passing."
+      },
+      {
+        "id": "EVIDENCE_REPRODUCIBILITY",
+        "rule": "Verification evidence binds exact test/profile/source/runtime revisions and declared environment inputs so a pass/fail result cannot silently float across unrelated versions or targets."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "known failure hidden in release notes only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "deviation valid forever",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "one waiver bypasses all AccessCore",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "scope omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "deviation chosen by product label",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROFILE",
+      "target_ref": "AIGMOS_RELEASE_ACCEPTANCE_PROFILE_CONTRACT",
+      "purpose": "Acceptance profile may allow explicitly reviewed deviations."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit bounded release deviations/known failures with exact scope, rationale, owner, expiry/review and compensating controls.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

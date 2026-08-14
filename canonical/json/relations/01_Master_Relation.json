@@ -1,0 +1,168 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MASTER_RELATION_CONTRACT",
+    "name": "Master Relation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Master Relation as the canonical registry/index of relation identities and their owning relation contracts, enabling deterministic cross-domain relation discovery without absorbing relation semantics.",
+  "scope": {
+    "owns": [
+      "Master Relation semantics"
+    ],
+    "does_not_own": [
+      "runtime implementation details",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MASTER_RELATION",
+      "name": "Master Relation",
+      "purpose": "Define Master Relation as the canonical registry/index of relation identities and their owning relation contracts, enabling deterministic cross-domain relation discovery without absorbing relation semantics.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RELATIONS",
+        "TOPIC_CORE_SOURCE_ROLES"
+      ],
+      "member_refs": [
+        "AIGMOS_MASTER_RELATION_CONTRACT",
+        "ARCHITECTURE_COMPOSITION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_MASTER_RELATION_REGISTER",
+        "OP_MASTER_RELATION_RESOLVE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_MASTER_RELATION_REGISTER",
+        "name": "Register Master Relation",
+        "inputs": [
+          "relation contract ref",
+          "semantic owners",
+          "global relation identity"
+        ],
+        "outputs": [
+          "Master Relation entry"
+        ],
+        "errors": [
+          "relation unresolved",
+          "duplicate identity"
+        ],
+        "side_effects": [
+          "Master Relation registry updated"
+        ]
+      },
+      {
+        "id": "OP_MASTER_RELATION_RESOLVE",
+        "name": "Resolve relation from Master Relation",
+        "inputs": [
+          "relation identity"
+        ],
+        "outputs": [
+          "exact authoritative relation contract"
+        ],
+        "errors": [
+          "relation unresolved",
+          "relation ambiguous"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "role": "relation registry/index",
+    "registry_rule": "Master Relation maps relation identity to its authoritative relation definition/owner.",
+    "ownership_rule": "Master Relation does not redefine or absorb relation semantics.",
+    "discovery_rule": "Cross-domain relation discovery uses explicit registry identity resolution.",
+    "duplication_rule": "A relation is defined once by its owner and referenced from Master Relation.",
+    "bootstrap_rule": "Master Relation may be referenced by Master/Domain composition for relation discovery.",
+    "projection_rule": "Relation lists/graphs are projections of registry plus definitions."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ARCHITECTURE_COMPOSITION_EXPLICIT",
+        "rule": "Universal substrates, domain compositions, Meta ownership and relations remain explicit and non-duplicated."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "Master Relation duplicates relation semantic definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "relation authority selected by file/path/version heuristic",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "same active relation identity maps to multiple conflicting owners",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "registry entry lacks authoritative target ref",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "relation graph projection becomes registry authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RELATION",
+      "target_ref": "AIGMOS_RELATION_CONTRACT",
+      "purpose": "Registry points to canonical relation definitions."
+    },
+    {
+      "id": "REF_SOURCE",
+      "target_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+      "purpose": "Registry does not override semantic owners."
+    }
+  ],
+  "prose": {
+    "summary": "Define Master Relation as the canonical registry/index of relation identities and their owning relation contracts, enabling deterministic cross-domain relation discovery without absorbing relation semantics.",
+    "notes": [
+      "Unlocked until reconciled against existing universal_module/domain/Meta/relation contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

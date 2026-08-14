@@ -1,0 +1,208 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_NETWORK_IDENTITY_BINDING_CONTRACT",
+    "name": "Runtime Network Identity and Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define stable logical network identities separately from mutable addresses, ports, transports, sessions and connection handles across local services and remote peers.",
+  "scope": {
+    "owns": [
+      "Runtime Network Identity and Binding semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "remote authorization policy",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_NETWORK_IDENTITY",
+      "name": "Network Identity",
+      "purpose": "Define stable logical network identities separately from mutable addresses, ports, transports, sessions and connection handles across local services and remote peers.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_SERVICE_INSTANCES",
+        "TOPIC_RUNTIME_LISTENERS",
+        "TOPIC_RUNTIME_WEBRTC",
+        "TOPIC_CORE_PROVENANCE"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_NETWORK_IDENTITY_BINDING_CONTRACT",
+        "NETWORK_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_NETWORK_IDENTITY_RESOLVE",
+        "OP_NETWORK_BINDING_RESOLVE",
+        "OP_NETWORK_VALIDATE_SEPARATION"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_NETWORK_IDENTITY_RESOLVE",
+        "name": "Resolve network service/peer identity",
+        "inputs": [
+          "logical identity ref"
+        ],
+        "outputs": [
+          "stable semantic identity"
+        ],
+        "errors": [
+          "identity unresolved",
+          "identity ambiguous"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_NETWORK_BINDING_RESOLVE",
+        "name": "Resolve current network binding",
+        "inputs": [
+          "stable identity",
+          "runtime/config state"
+        ],
+        "outputs": [
+          "address/port/transport/session binding"
+        ],
+        "errors": [
+          "binding unavailable"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_NETWORK_VALIDATE_SEPARATION",
+        "name": "Validate identity/binding separation",
+        "inputs": [
+          "identity",
+          "binding"
+        ],
+        "outputs": [
+          "valid mapping"
+        ],
+        "errors": [
+          "binding used as identity",
+          "identity drift"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "stable_identity_examples": [
+      "named REST instance",
+      "named nanoCMS instance",
+      "named protocol service",
+      "remote peer identity"
+    ],
+    "binding_examples": [
+      "IP address",
+      "listen address",
+      "port",
+      "TCP/UDP",
+      "WebRTC session",
+      "WebSocket connection",
+      "ICE candidate"
+    ],
+    "rule": "Bindings locate/connect to an identity but do not become that identity.",
+    "rebinding_rule": "Compatible rebinding preserves semantic identity.",
+    "runtime_rule": "Transient connection/session handles are runtime state.",
+    "trace_rule": "Trace/provenance preserves both stable semantic identity and the concrete binding used for a specific runtime interaction.",
+    "security_rule": "Possession of a binding/endpoint does not imply authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "NETWORK_BOUNDARY_EXPLICIT",
+        "rule": "Network identity, transport, remote authority and payload semantics remain explicit and separate."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "IP/port/session handle treated as canonical semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "rebinding silently creates new semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "connection handle persisted as canonical identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "endpoint possession grants authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "trace loses stable identity and keeps only transport endpoint",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "same stable identity resolves to conflicting active bindings without explicit multi-binding semantics",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SERVICES",
+      "target_ref": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT",
+      "purpose": "Local service identities remain stable across binding changes."
+    },
+    {
+      "id": "REF_LISTENER",
+      "target_ref": "AIGMOS_RUNTIME_LISTENER_BINDING_CONTRACT",
+      "purpose": "Ports/listen addresses are bindings."
+    },
+    {
+      "id": "REF_WEBRTC",
+      "target_ref": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT",
+      "purpose": "P2P session handles are transient runtime bindings."
+    }
+  ],
+  "prose": {
+    "summary": "Define stable logical network identities separately from mutable addresses, ports, transports, sessions and connection handles across local services and remote peers.",
+    "notes": [
+      "Unlocked until reconciled against DWH, messaging, transport and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

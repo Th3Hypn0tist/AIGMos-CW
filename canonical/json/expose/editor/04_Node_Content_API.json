@@ -1,0 +1,127 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NODE_CONTENT_API_CONTRACT",
+    "name": "Node Content API",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Node Content API so graph engine owns nodes, ports and edges while content plugins supply bounded node content types such as `comment` and `example` without redefining graph semantics.",
+  "scope": {
+    "owns": [
+      "Node Content API semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "runtime authority",
+      "unrelated persistence semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NODE_CONTENT_API",
+      "name": "Node Content API",
+      "purpose": "Define Node Content API so graph engine owns nodes, ports and edges while content plugins supply bounded node content types such as `comment` and `example` without redefining graph semantics.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE_EDITOR",
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_NODE_CONTENT_API_CONTRACT",
+        "EDITOR_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "engine_rule": "Graph engine owns node identity placement, ports, edges and graph lifecycle.",
+    "content_rule": "Content provider owns only the payload/presentation semantics of its declared node content type.",
+    "initial_types": [
+      "comment",
+      "example"
+    ],
+    "extension_rule": "New content type registers explicit identity, schema and rendering/editing semantics.",
+    "port_rule": "Content type does not invent ports/edges unless explicitly allowed by its node type contract.",
+    "inert_rule": "Comment/example content is inert and cannot execute operations by itself.",
+    "separation_rule": "Node content and canonical semantic target identity remain distinguishable."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EDITOR_NONAUTHORITY",
+        "rule": "Editor surfaces project and mutate canonical semantics only through explicit validated operations; editor layout or widget state never becomes semantic or runtime authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "comment/example content executes arbitrary operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "content plugin silently owns graph edges",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "content type invents unvalidated ports",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "node content confused with canonical target identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "new content type appears without schema/identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_GRAPH",
+      "target_ref": "AIGMOS_EXPOSE_NODE_GRAPH_EDITOR_CONTRACT",
+      "purpose": "Content API plugs into graph engine."
+    }
+  ],
+  "prose": {
+    "summary": "Define Node Content API so graph engine owns nodes, ports and edges while content plugins supply bounded node content types such as `comment` and `example` without redefining graph semantics.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Expose/editor contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

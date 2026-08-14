@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_DELEGATION_MONITOR_CONTRACT",
+    "name": "Delegation and Remote Authority Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for delegations, scopes, chains, remote effective authority, expiry and revocation propagation.",
+  "scope": {
+    "owns": [
+      "Delegation and Remote Authority Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime operation implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_DELEGATION_MONITOR",
+      "name": "Delegation and Remote Authority Monitor",
+      "purpose": "Define a read-only Expose monitor for delegations, scopes, chains, remote effective authority, expiry and revocation propagation.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_DELEGATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_DELEGATION_MONITOR_CONTRACT",
+        "IDENTITY_AUTHORITY_SEPARATION",
+        "FAIL_CLOSED_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "delegator/delegatee",
+      "rights/resource scope",
+      "conditions/lifetime",
+      "parent/child chain",
+      "effective intersection",
+      "remote target-side policy refs",
+      "expiry/revocation/propagation"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Identity, delegation, chain segment, session and authorization-decision identities remain distinct.",
+    "action_rule": "grant/revoke/redelegate operations invoke separate authorized workflows.",
+    "authority_rule": "Viewing delegation grants no delegated authority.",
+    "graph_rule": "Delegation-chain edges correspond only to explicit parent refs.",
+    "failure_rule": "expired/revoked/partially-propagated states remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_AUTHORITY_SEPARATION",
+        "rule": "Identity, authentication assurance, authorization policy, authorization decision, delegation and runtime execution remain separate machine-significant identities/evidence; no one layer silently substitutes for another."
+      },
+      {
+        "id": "FAIL_CLOSED_AUTHORITY",
+        "rule": "Ambiguous, missing, stale or unverifiable authority for a protected effect fails closed rather than inheriting trust from locality, transport reachability, process ownership, UI visibility or previous success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor grants by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "graph adjacency invents delegation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "delegation shown as ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "local rights shown as remote rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "revocation propagation hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_NONEXP",
+      "target_ref": "AIGMOS_REMOTE_AUTHORITY_NONEXPANSION_CONTRACT",
+      "purpose": "Monitor exposes effective bounded remote authority."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for delegations, scopes, chains, remote effective authority, expiry and revocation propagation.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

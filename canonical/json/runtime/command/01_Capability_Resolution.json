@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_CAPABILITY_RESOLUTION_CONTRACT",
+    "name": "Runtime Capability Resolution",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define command/operation capability availability separately from invocation authority, including disabled/missing dependency states and explicit remediation.",
+  "scope": {
+    "owns": [
+      "Runtime Capability Resolution semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "transport presentation",
+      "implicit authorization"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_CAPABILITY_RESOLUTION",
+      "name": "Runtime Capability Resolution",
+      "purpose": "Define command/operation capability availability separately from invocation authority, including disabled/missing dependency states and explicit remediation.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_COMMAND_REGISTRY",
+        "TOPIC_COMMAND_PARSING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RUNTIME_CAPABILITY_RESOLUTION_CONTRACT",
+        "COMMAND_EXECUTION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "capability_rule": "Command may require one or more explicit runtime capabilities/modules/services.",
+    "availability_rule": "Capability availability is resolved from boot/profile/registry state.",
+    "authorization_rule": "Available capability does not imply caller authorization.",
+    "missing_rule": "Missing required capability prevents dispatch.",
+    "dependency_rule": "Missing capability/dependency is never silently auto-enabled.",
+    "remediation_rule": "Failure reports exact missing/disabled capability and one concise actionable remediation where deterministically known.",
+    "optional_rule": "Optional capability branches are explicit and do not alter required command semantics silently."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "COMMAND_EXECUTION_EXPLICIT",
+        "rule": "Executable commands resolve by exact canonical identity and schema, cross one governed dispatcher boundary, and never infer authority from capability presence or parser success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "missing capability silently auto-enabled",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "capability availability treated as permission",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "required capability missing but dispatch continues",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "remediation suggests unrelated action",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "optional branch changes semantics invisibly",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_BOOT",
+      "target_ref": "AIGMOS_BOOT_DEPENDENCY_VALIDATION_CONTRACT",
+      "purpose": "Capabilities resolve from explicit boot/dependency state."
+    }
+  ],
+  "prose": {
+    "summary": "Define command/operation capability availability separately from invocation authority, including disabled/missing dependency states and explicit remediation.",
+    "notes": [
+      "Unlocked pending reconciliation against existing command/runtime contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

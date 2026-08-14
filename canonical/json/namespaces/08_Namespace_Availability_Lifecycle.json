@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT",
+    "name": "Namespace Availability and Lifecycle",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the separation between canonical namespace existence, configured capability availability, mounted availability and active runtime state.",
+  "scope": {
+    "owns": [
+      "Namespace Availability and Lifecycle semantics"
+    ],
+    "does_not_own": [
+      "unrelated domain semantics",
+      "presentation semantics",
+      "implicit runtime authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NAMESPACE_AVAILABILITY",
+      "name": "Namespace Availability and Lifecycle",
+      "purpose": "Define the separation between canonical namespace existence, configured capability availability, mounted availability and active runtime state.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NAMESPACES",
+        "TOPIC_RUNTIME_DEFINITION_STATE",
+        "TOPIC_BOOT_BASE_ZERO"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT",
+        "NAMESPACE_OWNER_CLOSURE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "states": [
+      "canonically_defined",
+      "configured",
+      "available",
+      "mounted",
+      "active",
+      "unavailable"
+    ],
+    "existence_rule": "A reserved root may exist canonically even when its optional subsystem is unavailable or inactive.",
+    "configuration_rule": "Configured capability does not automatically imply mounted or active runtime state.",
+    "mount_rule": "Mount availability is runtime/configuration state and does not redefine namespace identity.",
+    "active_rule": "Active service/module state is separate from namespace definition.",
+    "disable_rule": "Disabling optional capability removes availability but not the canonical reserved-root definition where that root remains reserved.",
+    "introspection_rule": "Introspection exposes both canonical definition and current availability state distinctly."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "NAMESPACE_OWNER_CLOSURE",
+        "rule": "Every active reserved runtime root has exactly one explicit owner contract and remains distinguishable from runtime availability, Topic grouping and physical implementation location."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "disabled subsystem deletes reserved root identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "configured state conflated with active state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "mount state becomes semantic namespace identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "availability state inferred only from file presence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "introspection cannot distinguish definition from runtime availability",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_STATE",
+      "target_ref": "AIGMOS_RUNTIME_DEFINITION_STATE_SEPARATION_CONTRACT",
+      "purpose": "Definition/config/runtime state remain separate."
+    },
+    {
+      "id": "REF_BOOT",
+      "target_ref": "AIGMOS_ABSOLUTE_BASE_ZERO_CONTRACT",
+      "purpose": "Optional capability availability is explicit."
+    }
+  ],
+  "prose": {
+    "summary": "Define the separation between canonical namespace existence, configured capability availability, mounted availability and active runtime state.",
+    "notes": [
+      "Unlocked pending reconciliation against the complete reserved-root set and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

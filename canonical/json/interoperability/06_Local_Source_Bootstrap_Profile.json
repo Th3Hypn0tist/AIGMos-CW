@@ -1,0 +1,128 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_LOCAL_SOURCE_BOOTSTRAP_PROFILE_CONTRACT",
+    "name": "Local Source Bootstrap Profile",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the local-source reader profile that first resolves the root Contract Format and then recursively reads `canonical/json/**`, preventing local filesystem source mode from using a different semantic bootstrap than packaged/remote readers.",
+  "scope": {
+    "owns": [
+      "Local Source Bootstrap Profile semantics"
+    ],
+    "does_not_own": [
+      "canonical contract domain semantics",
+      "filesystem semantics beyond declared bootstrap bindings",
+      "runtime business authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_LOCAL_SOURCE_BOOTSTRAP_PROFILE",
+      "name": "Local Source Bootstrap Profile",
+      "purpose": "Define the local-source reader profile that first resolves the root Contract Format and then recursively reads `canonical/json/**`, preventing local filesystem source mode from using a different semantic bootstrap than packaged/remote readers.",
+      "parent_topic_refs": [
+        "TOPIC_CONTRACT_FORMAT",
+        "TOPIC_CANONICAL_SOURCE_RESOLUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_LOCAL_SOURCE_BOOTSTRAP_PROFILE_CONTRACT",
+        "BOOTSTRAP_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "sequence": [
+      "resolve exact root Contract Format bootstrap",
+      "validate supported Contract Format version/profile",
+      "resolve canonical contract tree root",
+      "recursively read canonical/json/**",
+      "validate identities/source roles/topics/refs/closure under bootstrapped format"
+    ],
+    "equivalence_rule": "Local-source and packaged-source readers use the same Contract Format semantics.",
+    "legacy_rule": "Local source mode never assumes canonical/json/00_Contract_Format.json.",
+    "path_rule": "Repository paths are discovery bindings and not semantic identities.",
+    "failure_rule": "Bootstrap failure stops canonical semantic reading rather than falling through to guessed local behavior.",
+    "evidence_rule": "Reader result records bootstrap artifact and canonical source root separately."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOTSTRAP_SEPARATION",
+        "rule": "Contract Format bootstrap authority is resolved before the canonical contract tree and is never treated as an ordinary canonical contract inside canonical/json/**."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "local-source mode uses legacy bootstrap while package mode uses root bootstrap",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "bootstrap failure falls through to guessed parsing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "path becomes semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "reader evidence cannot distinguish bootstrap artifact from canonical tree root",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_READER",
+      "target_ref": "AIGMOS_GENERIC_READER_PROFILE_CONTRACT",
+      "purpose": "Local source is a concrete generic-reader bootstrap profile."
+    },
+    {
+      "id": "REF_RESOLVE",
+      "target_ref": "AIGMOS_BOOTSTRAP_SOURCE_RESOLUTION_CONTRACT",
+      "purpose": "Local source uses deterministic bootstrap resolution."
+    }
+  ],
+  "prose": {
+    "summary": "Define the local-source reader profile that first resolves the root Contract Format and then recursively reads `canonical/json/**`, preventing local filesystem source mode from using a different semantic bootstrap than packaged/remote readers.",
+    "notes": [
+      "Bootstrap correction: project-root Contract Format authority is intentionally outside canonical/json/**."
+    ]
+  }
+}

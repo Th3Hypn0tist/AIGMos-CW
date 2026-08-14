@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MODULE_HASH_VALIDATION_CONTRACT",
+    "name": "Module Hash Validation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define exact hash validation of downloaded/imported UserModule/Universal Module packages before install/export/certification acceptance.",
+  "scope": {
+    "owns": [
+      "Module Hash Validation semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MODULE_HASH_VALIDATION",
+      "name": "Module Hash Validation",
+      "purpose": "Define exact hash validation of downloaded/imported UserModule/Universal Module packages before install/export/certification acceptance.",
+      "parent_topic_refs": [
+        "TOPIC_DISTRIBUTION",
+        "TOPIC_MODULE_REPOSITORY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MODULE_HASH_VALIDATION_CONTRACT",
+        "PACKAGE_IDENTITY_INTEGRITY",
+        "ENTITLEMENT_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "target_rule": "Validation targets exact module package/artifact bytes.",
+    "expected_rule": "Expected hash comes from exact repository/certification/package manifest evidence.",
+    "algorithm_rule": "Algorithm/profile is explicit.",
+    "mismatch_rule": "Mismatch hard-fails acceptance.",
+    "export_rule": "Validated source bytes may be preserved for byte-identical export where required.",
+    "authority_rule": "Valid hash grants no install/enable authority.",
+    "certification_rule": "Hash match alone does not mean certified unless certification evidence matches exact hash."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PACKAGE_IDENTITY_INTEGRITY",
+        "rule": "Package, artifact, module, certification, license and installed-instance identities remain distinct; hashes prove content integrity only within their declared profile and never grant runtime authority."
+      },
+      {
+        "id": "ENTITLEMENT_NONAUTHORITY",
+        "rule": "License or certification entitlement permits declared product/service use only; it never substitutes for IAM identity, AccessCore authorization, runtime validation or dispatcher gating."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "hash mismatch only warns",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "valid hash means certified",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "download URL used as hash evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "hash match enables module",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "algorithm guessed",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_HASH",
+      "target_ref": "AIGMOS_ARTIFACT_CONTENT_HASH_CONTRACT",
+      "purpose": "Module validation uses explicit content hash semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define exact hash validation of downloaded/imported UserModule/Universal Module packages before install/export/certification acceptance.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

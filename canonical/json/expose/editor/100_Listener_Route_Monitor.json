@@ -1,0 +1,162 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_LISTENER_ROUTE_MONITOR_CONTRACT",
+    "name": "Listener and Route Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for named listeners, bindings, lifecycle state, routes and advertised endpoints.",
+  "scope": {
+    "owns": [
+      "Listener and Route Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "application operation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_LISTENER_ROUTE_MONITOR",
+      "name": "Listener and Route Monitor",
+      "purpose": "Define a read-only Expose monitor for named listeners, bindings, lifecycle state, routes and advertised endpoints.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_LISTENERS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_LISTENER_ROUTE_MONITOR_CONTRACT",
+        "TRANSPORT_NONAUTHORITY",
+        "INGRESS_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_LISTENERS",
+      "name": "Listeners",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_LISTENERS already referenced by 4 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 4,
+        "distinct_child_topics": 4,
+        "host_contract_ref": "AIGMOS_EXPOSE_LISTENER_ROUTE_MONITOR_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "listener registry",
+      "protocol/type",
+      "address/port/transport binding",
+      "runtime lifecycle",
+      "route bindings",
+      "handler/operation refs",
+      "endpoint advertisements",
+      "binding conflicts"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Listener, binding, runtime socket, route, advertisement and operation identities remain distinct.",
+    "action_rule": "start/stop/rebind/edit-route operations invoke separate authorized workflows.",
+    "authority_rule": "Viewing listener/route grants no application authority.",
+    "failure_rule": "conflict/failed/degraded/stopped states remain explicit.",
+    "graph_rule": "Listener→route→handler edges correspond only to explicit refs."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TRANSPORT_NONAUTHORITY",
+        "rule": "Listener, route, endpoint, connection, channel, peer reachability and cryptographic transport evidence never by themselves grant application, data or operation authority."
+      },
+      {
+        "id": "INGRESS_EFFECT_BOUNDARY",
+        "rule": "Inbound network data remains inert until explicit protocol parsing, validation, identity/context resolution, authorization and dispatcher routing succeed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor starts listener by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "port displayed as identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "route shown as permission",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "visual adjacency invents handler",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "conflict hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LIFE",
+      "target_ref": "AIGMOS_NETWORK_LISTENER_LIFECYCLE_CONTRACT",
+      "purpose": "Monitor projects listener runtime state."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for named listeners, bindings, lifecycle state, routes and advertised endpoints.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_LISTENERS solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

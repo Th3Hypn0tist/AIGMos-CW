@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_ERROR_IDENTITY_CONTRACT",
+    "name": "Runtime Error Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define runtime errors as explicit machine-readable evidence identities separate from the operation, execution, Event and resource that produced them.",
+  "scope": {
+    "owns": [
+      "Runtime Error Identity semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_ERROR_IDENTITY",
+      "name": "Runtime Error Identity",
+      "purpose": "Define runtime errors as explicit machine-readable evidence identities separate from the operation, execution, Event and resource that produced them.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_ERRORS",
+        "TOPIC_OBSERVABILITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RUNTIME_ERROR_IDENTITY_CONTRACT",
+        "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each machine-significant error occurrence has an explicit error/evidence identity.",
+    "code_rule": "Stable error type/code identity is separate from occurrence identity.",
+    "source_rule": "Error references exact originating component/operation/execution/step where available.",
+    "target_rule": "Affected resource/target identities are explicit.",
+    "message_rule": "Human message is descriptive and never the error semantic identity.",
+    "cause_rule": "Nested/root-cause refs are explicit.",
+    "authority_rule": "Error content grants no remediation authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "rule": "Machine-significant definitions, executions, evidence and runtime state use explicit identities and boundaries; visibility, file order, timestamps, transport reachability or UI placement never silently create semantic authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "free-text message used as error identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "source execution omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "error occurrence reused as operation identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "error grants remediation rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "root cause guessed from log proximity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RUN",
+      "target_ref": "AIGMOS_RUNNER_EXECUTION_IDENTITY_CONTRACT",
+      "purpose": "Runner failures retain exact execution provenance."
+    }
+  ],
+  "prose": {
+    "summary": "Define runtime errors as explicit machine-readable evidence identities separate from the operation, execution, Event and resource that produced them.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

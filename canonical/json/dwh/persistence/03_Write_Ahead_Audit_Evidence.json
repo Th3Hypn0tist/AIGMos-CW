@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_WRITE_AHEAD_AUDIT_CONTRACT",
+    "name": "DWH Write-Ahead and Audit Evidence",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define ordered durable mutation evidence sufficient for replay/recovery/audit without making implementation-specific WAL format canonical semantics.",
+  "scope": {
+    "owns": [
+      "DWH Write-Ahead and Audit Evidence semantics"
+    ],
+    "does_not_own": [
+      "domain schema ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation internals"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_WRITE_AHEAD_AUDIT",
+      "name": "DWH Write-Ahead and Audit Evidence",
+      "purpose": "Define ordered durable mutation evidence sufficient for replay/recovery/audit without making implementation-specific WAL format canonical semantics.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_PERSISTENCE_RECOVERY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_WRITE_AHEAD_AUDIT_CONTRACT",
+        "PERSISTENCE_NONIDENTITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "evidence_rule": "Mutation evidence records exact operation/execution/transaction/target/revision refs.",
+    "order_rule": "Recovery-relevant ordering or sequence identity is explicit.",
+    "durability_rule": "Durability point/profile is explicit where recovery semantics depend on it.",
+    "commit_rule": "Prepared/pending/committed/rolled-back states are distinguishable.",
+    "implementation_rule": "Physical WAL/log format is implementation-specific unless separately standardized.",
+    "audit_rule": "Audit evidence is immutable append/history governed.",
+    "replay_rule": "Replay re-applies only committed/eligible evidence according to explicit recovery policy.",
+    "authority_rule": "Audit/WAL evidence is not an alternate mutation API."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PERSISTENCE_NONIDENTITY",
+        "rule": "Physical storage location, file name, engine page, snapshot artifact or backup copy never replaces canonical data/schema/instance identity; persistence and recovery operate on exact semantic identities with explicit version/provenance evidence."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "audit log mutated to hide prior write",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "prepared write replayed as committed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "physical log line order assumed semantic without profile",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "WAL entry used as direct mutation bypass",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "transaction/target refs omitted",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TX",
+      "target_ref": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT",
+      "purpose": "Audit evidence records transaction state."
+    },
+    {
+      "id": "REF_REV",
+      "target_ref": "AIGMOS_DWH_RECORD_REVISION_CONTRACT",
+      "purpose": "Recovery evidence anchors exact revisions."
+    }
+  ],
+  "prose": {
+    "summary": "Define ordered durable mutation evidence sufficient for replay/recovery/audit without making implementation-specific WAL format canonical semantics.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH mutation, runtime snapshot, repository acceptance and retention contracts."
+    ]
+  }
+}

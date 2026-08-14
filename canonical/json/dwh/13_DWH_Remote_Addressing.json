@@ -1,0 +1,126 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_REMOTE_ADDRESSING_CONTRACT",
+    "name": "DWH Remote Addressing",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define `>` as the governed DWH remote-address marker, separating remote target resolution from local DWH addressing and from raw `$EXT` registration.",
+  "scope": {
+    "owns": [
+      "DWH Remote Addressing semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "IAM identity semantics",
+      "transport cryptography semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_REMOTE_ADDRESSING",
+      "name": "DWH Remote Addressing",
+      "purpose": "Define `>` as the governed DWH remote-address marker, separating remote target resolution from local DWH addressing and from raw `$EXT` registration.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_ACCESSCORE_AUTHORIZATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_REMOTE_ADDRESSING_CONTRACT",
+        "DWH_ORIGIN_TARGET_GOVERNANCE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "marker": ">",
+    "example": "#DWH:>warehouse:lights",
+    "resolution_rule": "Remote marker resolves a declared external/remote target through DWH remote semantics.",
+    "ext_rule": "EXT may provide target registration metadata but is not the governed data dereference itself when AC is active.",
+    "local_rule": "Local and remote addresses remain distinguishable in canonical parsing.",
+    "authority_rule": "Remote address resolution does not itself authorize read/write.",
+    "target_rule": "Resolved target evaluates its own applicable DWH/AccessCore policy.",
+    "failure_rule": "Unknown/ambiguous remote target hard-fails rather than falling back local.",
+    "trace_rule": "Resolution records original address, external target identity and resolved remote resource."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_ORIGIN_TARGET_GOVERNANCE",
+        "rule": "DWH applies data-boundary policy at the origin and target independently; remote addressing, transport reachability and external registration never substitute for AccessCore authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "remote address falls back to local silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "address resolution grants access",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "AC-active remote path dereferences raw EXT directly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "remote target ambiguous",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "target policy skipped",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EXT",
+      "target_ref": "AIGMOS_EXT_REGISTRATION_AUTHORITY_CONTRACT",
+      "purpose": "EXT supplies registration metadata only."
+    }
+  ],
+  "prose": {
+    "summary": "Define `>` as the governed DWH remote-address marker, separating remote target resolution from local DWH addressing and from raw `$EXT` registration.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH, EXT, AccessCore and transport contracts."
+    ]
+  }
+}

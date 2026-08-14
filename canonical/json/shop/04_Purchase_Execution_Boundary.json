@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_SHOP_PURCHASE_EXECUTION_BOUNDARY_CONTRACT",
+    "name": "Shopping to Purchase Execution Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the hard boundary between planning/recommendation/selection under `#SHOP` and any external cart, procurement, ordering or payment operation.",
+  "scope": {
+    "owns": [
+      "Shopping to Purchase Execution Boundary semantics"
+    ],
+    "does_not_own": [
+      "payment execution",
+      "merchant catalog truth",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_SHOP_PURCHASE_EXECUTION_BOUNDARY",
+      "name": "Shopping to Purchase Execution Boundary",
+      "purpose": "Define the hard boundary between planning/recommendation/selection under `#SHOP` and any external cart, procurement, ordering or payment operation.",
+      "parent_topic_refs": [
+        "TOPIC_SHOP",
+        "TOPIC_STUDIO_EVERYDAY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_SHOP_PURCHASE_EXECUTION_BOUNDARY_CONTRACT",
+        "SHOPPING_NONPURCHASE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "planning_rule": "Shopping-list/item state expresses intent and preparation only.",
+    "selection_rule": "Selecting a candidate merchant product is inert planning data.",
+    "external_rule": "Creating/updating merchant cart/order is a separate external/canonical operation.",
+    "payment_rule": "Payment is always a distinct high-authority operation outside #SHOP planning semantics.",
+    "authorization_rule": "Purchase/order/payment operations require their own exact target, validation and AccessCore authorization.",
+    "confirmation_rule": "No list state such as selected/needed/completed constitutes payment confirmation.",
+    "price_rule": "Observed price/availability is external evidence and may change without changing shopping-item identity.",
+    "failure_rule": "Failed external order/payment never marks item obtained/completed unless an explicit reconciled operation does so."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SHOPPING_NONPURCHASE",
+        "rule": "Shopping-list data expresses planning intent only; list/item existence, ranking, recommendation or selection never authorizes purchase, payment or external order execution."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "shopping item selection auto-purchases",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "completed list treated as payment confirmation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "merchant reachability grants purchase authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "failed payment marks item obtained",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "price observation becomes canonical transaction truth",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DISPATCH",
+      "target_ref": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+      "purpose": "External purchase effects cross normal dispatch."
+    },
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_ASSURANCE_GATED_RESOURCE_CONTRACT",
+      "purpose": "Order/payment authority remains separately governed."
+    }
+  ],
+  "prose": {
+    "summary": "Define the hard boundary between planning/recommendation/selection under `#SHOP` and any external cart, procurement, ordering or payment operation.",
+    "notes": [
+      "Unlocked pending reconciliation against #SHOP owner, Studio Everyday, units and external procurement/payment contracts."
+    ]
+  }
+}

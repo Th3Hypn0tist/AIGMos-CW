@@ -1,0 +1,216 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_TRANSPORT_SECURITY_ENVELOPE_CONTRACT",
+    "name": "DWH Transport Security Envelope",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the DWH peer transport security envelope as session-scoped protection layered over WebRTC transport, separated from semantic authorization and data ownership.",
+  "scope": {
+    "owns": [
+      "DWH Transport Security Envelope semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "transport implementation details",
+      "remote policy owned elsewhere"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_TRANSPORT_SECURITY",
+      "name": "DWH Transport Security",
+      "purpose": "Define the DWH peer transport security envelope as session-scoped protection layered over WebRTC transport, separated from semantic authorization and data ownership.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_WEBRTC",
+        "TOPIC_RUNTIME_DWH_TRANSPORT",
+        "TOPIC_RUNTIME_DEFINITION_STATE"
+      ],
+      "member_refs": [
+        "AIGMOS_DWH_TRANSPORT_SECURITY_ENVELOPE_CONTRACT",
+        "DWH_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_DWH_SESSION_HANDSHAKE",
+        "OP_DWH_SESSION_ENCRYPT",
+        "OP_DWH_SESSION_VERIFY",
+        "OP_DWH_SESSION_CLOSE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_DWH_SESSION_HANDSHAKE",
+        "name": "Establish DWH transport session",
+        "inputs": [
+          "peer identities",
+          "handshake metadata",
+          "security policy"
+        ],
+        "outputs": [
+          "tracked transport security context"
+        ],
+        "errors": [
+          "handshake failure",
+          "peer mismatch"
+        ],
+        "side_effects": [
+          "runtime security session state created"
+        ]
+      },
+      {
+        "id": "OP_DWH_SESSION_ENCRYPT",
+        "name": "Protect DWH transport payload",
+        "inputs": [
+          "validated payload",
+          "session security context"
+        ],
+        "outputs": [
+          "protected payload"
+        ],
+        "errors": [
+          "encryption failure"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_DWH_SESSION_VERIFY",
+        "name": "Verify DWH transport payload/session",
+        "inputs": [
+          "protected payload",
+          "session context"
+        ],
+        "outputs": [
+          "verified inert payload"
+        ],
+        "errors": [
+          "verification failure"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_DWH_SESSION_CLOSE",
+        "name": "Close DWH security session",
+        "inputs": [
+          "session context",
+          "reason"
+        ],
+        "outputs": [
+          "closed context"
+        ],
+        "errors": [
+          "cleanup failure"
+        ],
+        "side_effects": [
+          "runtime security session state removed"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "transport": "WebRTC",
+    "session_protection": "PGP/session-key based envelope according to the owning DWH transport security profile",
+    "handshake_marker": "MD5 handshake marker where retained by the current DWH protocol profile",
+    "handshake_rule": "Handshake/session verification establishes transport-session continuity only; it does not grant semantic authorization.",
+    "identity_rule": "Peer semantic identity must still resolve explicitly outside the cryptographic/session handle.",
+    "payload_rule": "Protected payload remains inert until DWH semantic/schema/origin validation.",
+    "key_state_rule": "Session key/security context is runtime state with bounded lifetime and explicit cleanup.",
+    "separation_rule": "Transport confidentiality/integrity/session continuity are separate from AccessCore authorization and DWH data policy."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_BOUNDARY_EXPLICIT",
+        "rule": "DWH local/remote, origin, schema, external identity, access path and transport-security semantics remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "successful handshake grants semantic authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "session/crypto handle becomes peer semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "protected payload bypasses schema/origin validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "session key/security state persisted as canonical definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "security session lifetime unbounded",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "transport protection substituted for AccessCore/DWH authorization",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_WEBRTC",
+      "target_ref": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT",
+      "purpose": "Security envelope rides on WebRTC P2P transport."
+    },
+    {
+      "id": "REF_DWH_TRANSPORT",
+      "target_ref": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT",
+      "purpose": "Payload transport remains separate from DWH semantics."
+    },
+    {
+      "id": "REF_STATE",
+      "target_ref": "AIGMOS_RUNTIME_DEFINITION_STATE_SEPARATION_CONTRACT",
+      "purpose": "Session key/security context is runtime state."
+    }
+  ],
+  "prose": {
+    "summary": "Define the DWH peer transport security envelope as session-scoped protection layered over WebRTC transport, separated from semantic authorization and data ownership.",
+    "notes": [
+      "Unlocked until reconciled against existing DWH/IAM/AC contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_INGEST_TRANSFORMATION_PROFILE_CONTRACT",
+    "name": "DWH Ingest Transformation Profile",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define typed, versioned transformations applied between mapped source and destination fields, including unit conversion, parsing, normalization and explicit lossiness.",
+  "scope": {
+    "owns": [
+      "DWH Ingest Transformation Profile semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "destination schema ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_INGEST_TRANSFORMATION_PROFILE",
+      "name": "DWH Ingest Transformation Profile",
+      "purpose": "Define typed, versioned transformations applied between mapped source and destination fields, including unit conversion, parsing, normalization and explicit lossiness.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_INGEST_MAPPING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_INGEST_TRANSFORMATION_PROFILE_CONTRACT",
+        "INGEST_MAPPING_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "transformation_types": [
+      "parse",
+      "cast",
+      "normalize",
+      "unit_convert",
+      "enum_map",
+      "split",
+      "combine",
+      "derive",
+      "other declared transformation"
+    ],
+    "identity_rule": "Each machine-significant transformation/profile has an explicit identity/version.",
+    "input_rule": "Transformation inputs are exact mapped source/intermediate refs.",
+    "output_rule": "Transformation outputs target exact destination/intermediate identities.",
+    "loss_rule": "Lossy transformations explicitly declare discarded/unrepresentable information.",
+    "unit_rule": "Unit conversion requires explicit compatible unit identities/profile.",
+    "determinism_rule": "Deterministic transformations produce semantically equivalent output for equivalent input/profile.",
+    "provenance_rule": "Transformation provenance is attached to accepted output lineage.",
+    "authority_rule": "Transformation itself grants no destination write authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "INGEST_MAPPING_EXPLICIT",
+        "rule": "External/input data enters DWH only through explicit source profiles, exact field/schema mappings and validated transformations; mapping never transfers ownership, fabricates missing semantics or bypasses origin governance."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "lossy transform presented as lossless",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "unit conversion guessed from display text",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "hidden arbitrary code used without declared profile",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "transformation provenance omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "transformation grants write authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROV",
+      "target_ref": "AIGMOS_DWH_TRANSFORMATION_PROVENANCE_CONTRACT",
+      "purpose": "Ingest transformations create explicit provenance."
+    },
+    {
+      "id": "REF_MAP",
+      "target_ref": "AIGMOS_DWH_FIELD_MAPPING_CONTRACT",
+      "purpose": "Transformations operate on explicit mappings."
+    }
+  ],
+  "prose": {
+    "summary": "Define typed, versioned transformations applied between mapped source and destination fields, including unit conversion, parsing, normalization and explicit lossiness.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH origin governance, schema binding, transformation provenance and adapter contracts."
+    ]
+  }
+}

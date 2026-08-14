@@ -1,0 +1,174 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_LIBRARY_ROOT_CONTRACT",
+    "name": "Runtime Library Roots",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit user and system library roots and prevent library storage paths from becoming semantic identity, authority or execution behavior.",
+  "scope": {
+    "owns": [
+      "Runtime Library Roots semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_LIBRARY_ROOTS",
+      "name": "Library Roots",
+      "purpose": "Define explicit user and system library roots and prevent library storage paths from becoming semantic identity, authority or execution behavior.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_USER_MODULES"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_LOADERS",
+        "TOPIC_CORE_ADDRESSING"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_LIBRARY_ROOT_CONTRACT",
+        "USERMODULE_SEMANTICS_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_LIBRARY_RESOLVE_ROOT",
+        "OP_LIBRARY_ENUMERATE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_LIBRARY_RESOLVE_ROOT",
+        "name": "Resolve library root",
+        "inputs": [
+          "library class",
+          "instance/system context"
+        ],
+        "outputs": [
+          "explicit library root"
+        ],
+        "errors": [
+          "root unresolved",
+          "root escape"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_LIBRARY_ENUMERATE",
+        "name": "Enumerate declared library content",
+        "inputs": [
+          "resolved root",
+          "allowed content type"
+        ],
+        "outputs": [
+          "candidate definitions"
+        ],
+        "errors": [
+          "unsupported content",
+          "path escape"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "user_root": "./library",
+    "system_root": "./system/library/",
+    "known_user_families": [
+      "UM",
+      "MCP",
+      "TOOLS",
+      "WEB",
+      "routines"
+    ],
+    "root_rule": "Library roots are explicit loader/configuration boundaries.",
+    "identity_rule": "Content identity comes from its definition, not its relative path.",
+    "execution_rule": "Library enumeration/load never executes content.",
+    "escape_rule": "Path traversal, absolute-path escape and symlink escape are forbidden.",
+    "system_rule": "System library material remains distinguishable from user-owned library material.",
+    "extension_rule": "New library families require explicit owning loader/registry semantics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "USERMODULE_SEMANTICS_EXPLICIT",
+        "rule": "UserModule identity, type, lifecycle, bindings and visibility are explicit canonical/runtime semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "library path used as semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "library enumeration executes content",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "path traversal or symlink escape allowed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "user/system ownership boundary lost",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "new library family accepted without explicit owner/loader semantics",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LOADER",
+      "target_ref": "AIGMOS_RUNTIME_LOADER_INERTNESS_CONTRACT",
+      "purpose": "Libraries are loader source boundaries."
+    },
+    {
+      "id": "REF_ADDRESS",
+      "target_ref": "AIGMOS_CORE_ADDRESSING_CONTRACT",
+      "purpose": "Storage paths do not become unrestricted semantic addressing."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit user and system library roots and prevent library storage paths from becoming semantic identity, authority or execution behavior.",
+    "notes": [
+      "Unlocked until reconciled against existing UserModule contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

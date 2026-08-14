@@ -1,0 +1,199 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT",
+    "name": "Runtime External Service Dispatch",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define named external/network service invocation as explicit bounded dispatch to declared service instances, with stable logical identity separated from transport bindings and inert responses.",
+  "scope": {
+    "owns": [
+      "Runtime External Service Dispatch semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+      "name": "External Services",
+      "purpose": "Define named external/network service invocation as explicit bounded dispatch to declared service instances, with stable logical identity separated from transport bindings and inert responses.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_EXTERNAL_BOUNDARY",
+        "TOPIC_RUNTIME_DISPATCHER",
+        "TOPIC_CORE_BOUNDED_OPERATION"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT",
+        "RUNTIME_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_SERVICE_RESOLVE",
+        "OP_SERVICE_VALIDATE_CALL",
+        "OP_SERVICE_CALL"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_SERVICE_RESOLVE",
+        "name": "Resolve named service instance",
+        "inputs": [
+          "service instance identity"
+        ],
+        "outputs": [
+          "exact service binding"
+        ],
+        "errors": [
+          "service unresolved",
+          "service ambiguous"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_SERVICE_VALIDATE_CALL",
+        "name": "Validate external service call",
+        "inputs": [
+          "service binding",
+          "request",
+          "authority context"
+        ],
+        "outputs": [
+          "validated call"
+        ],
+        "errors": [
+          "schema invalid",
+          "authority denied"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_SERVICE_CALL",
+        "name": "Perform bounded external service call",
+        "inputs": [
+          "validated call"
+        ],
+        "outputs": [
+          "structured inert response"
+        ],
+        "errors": [
+          "transport failure",
+          "timeout",
+          "response invalid"
+        ],
+        "side_effects": [
+          "declared external interaction"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Service instance has stable logical identity separate from port/address/transport binding.",
+    "protocol_examples": [
+      "REST",
+      "OSC",
+      "WebSocket",
+      "WebRTC",
+      "HTTP/nanoCMS",
+      "other installed protocol services"
+    ],
+    "binding_rule": "Transport binding changes do not redefine service semantics when compatible.",
+    "call_rule": "External call uses explicit schema, authority and dispatcher validation.",
+    "response_rule": "External response is inert and cannot grant authority or select arbitrary command/root.",
+    "timeout_rule": "External call has finite timeout/bounds.",
+    "port_rule": "Port/binding configuration is configuration state, not semantic identity."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RUNTIME_BOUNDARY_EXPLICIT",
+        "rule": "Runtime capabilities, dispatch and mutable state remain explicit, bounded and Core-governed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "transport address/port used as sole semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "external response grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "external response selects arbitrary command/root",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "external call bypasses schema/authority validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "external call unbounded/no timeout",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "transport binding change silently redefines service semantics",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EXTERNAL",
+      "target_ref": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT",
+      "purpose": "External services are explicit external boundaries."
+    },
+    {
+      "id": "REF_DISPATCH",
+      "target_ref": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+      "purpose": "Calls cross the Core dispatch boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define named external/network service invocation as explicit bounded dispatch to declared service instances, with stable logical identity separated from transport bindings and inert responses.",
+    "notes": [
+      "Unlocked until reconciled against existing runtime contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TRIGGER_EVALUATION_CONTRACT",
+    "name": "Trigger Evaluation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define evaluation of an exact Trigger definition against one exact Event/context, producing matched/not-matched/error evidence without itself executing downstream work.",
+  "scope": {
+    "owns": [
+      "Trigger Evaluation semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TRIGGER_EVALUATION",
+      "name": "Trigger Evaluation",
+      "purpose": "Define evaluation of an exact Trigger definition against one exact Event/context, producing matched/not-matched/error evidence without itself executing downstream work.",
+      "parent_topic_refs": [
+        "TOPIC_ORCHESTRATION",
+        "TOPIC_TRIGGERS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TRIGGER_EVALUATION_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "trigger_rule": "Evaluation references exact Trigger identity/revision.",
+    "event_rule": "Input Event identity is exact.",
+    "result_states": [
+      "matched",
+      "not_matched",
+      "error",
+      "unknown"
+    ],
+    "condition_rule": "Trigger conditions are explicit and deterministic under declared profile.",
+    "evidence_rule": "Evaluation evidence records relevant fields/refs without hidden mutation.",
+    "execution_rule": "Matched result may create a separate invocation/Runner request through explicit binding.",
+    "authority_rule": "Trigger match does not grant operation authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "matched trigger executes hidden code directly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Event selected by timestamp proximity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "unknown means matched",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "condition mutates source",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "trigger match grants rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TRIG",
+      "target_ref": "AIGMOS_TRIGGER_IDENTITY_CONTRACT",
+      "purpose": "Evaluation consumes exact Trigger definitions."
+    }
+  ],
+  "prose": {
+    "summary": "Define evaluation of an exact Trigger definition against one exact Event/context, producing matched/not-matched/error evidence without itself executing downstream work.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

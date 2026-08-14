@@ -1,0 +1,144 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ACCESSCORE_RESOURCE_ADDRESSING_CONTRACT",
+    "name": "AccessCore Resource Addressing",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define exact AC-addressable resources and operations so authorization targets are canonical identities/addresses rather than fuzzy labels, UI positions or transport endpoints.",
+  "scope": {
+    "owns": [
+      "AccessCore Resource Addressing semantics"
+    ],
+    "does_not_own": [
+      "IAM identity proofing",
+      "domain data semantics",
+      "presentation-only access hints"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ACCESSCORE_RESOURCE_ADDRESSING",
+      "name": "AccessCore Resource Addressing",
+      "purpose": "Define exact AC-addressable resources and operations so authorization targets are canonical identities/addresses rather than fuzzy labels, UI positions or transport endpoints.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE_AUTHORIZATION",
+        "TOPIC_STRUCTURE_AUTHORITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_ACCESSCORE_RESOURCE_ADDRESSING_CONTRACT",
+        "ACCESSCORE_AUTHORITY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "target_kinds": [
+      "canonical resource identity",
+      "module/subsystem identity",
+      "operation identity",
+      "explicit subarea identity"
+    ],
+    "examples": [
+      "MetaModule Editor",
+      "Site/#WEB",
+      "Instance",
+      "q",
+      "GUI",
+      "Form",
+      "Style",
+      "Monitors",
+      "Port Editor"
+    ],
+    "exact_rule": "Authorization target resolves exactly through canonical identity/addressing.",
+    "subarea_rule": "Expose/Editor subareas may be addressed independently.",
+    "transport_rule": "URL, port, socket or route is a binding unless explicitly mapped to a canonical governed resource.",
+    "hierarchy_rule": "Address hierarchy does not automatically imply inherited rights.",
+    "operation_rule": "Read, write and invoke rights are evaluated against explicit target/operation semantics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ACCESSCORE_AUTHORITY_EXPLICIT",
+        "rule": "AccessCore decisions are explicit policy evaluations over identity, resource and operation context; authentication assurance, visibility and ownership never silently become authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "resource target resolved fuzzily",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "URL/port used as authorization identity without mapping",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "parent address automatically grants child rights without policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "UI nesting defines authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "operation mode omitted where policy distinguishes read/write/invoke",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ADDR",
+      "target_ref": "AIGMOS_CORE_ADDRESSING_CONTRACT",
+      "purpose": "AC targets use exact canonical addressing."
+    },
+    {
+      "id": "REF_EXPOSE",
+      "target_ref": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT",
+      "purpose": "Editor subareas are independently addressable."
+    }
+  ],
+  "prose": {
+    "summary": "Define exact AC-addressable resources and operations so authorization targets are canonical identities/addresses rather than fuzzy labels, UI positions or transport endpoints.",
+    "notes": [
+      "Unlocked pending reconciliation against existing AccessCore/IAM contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

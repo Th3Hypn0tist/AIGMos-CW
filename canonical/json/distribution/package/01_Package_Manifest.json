@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_PACKAGE_MANIFEST_CONTRACT",
+    "name": "Package Manifest",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic machine-readable package contents, identities, versions, dependencies, hashes and declared install/export semantics.",
+  "scope": {
+    "owns": [
+      "Package Manifest semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_PACKAGE_MANIFEST",
+      "name": "Package Manifest",
+      "purpose": "Define deterministic machine-readable package contents, identities, versions, dependencies, hashes and declared install/export semantics.",
+      "parent_topic_refs": [
+        "TOPIC_DISTRIBUTION",
+        "TOPIC_PACKAGING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_PACKAGE_MANIFEST_CONTRACT",
+        "PACKAGE_IDENTITY_INTEGRITY",
+        "ENTITLEMENT_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Manifest belongs to one exact package identity/revision.",
+    "member_rule": "Each package member has an exact logical path/identity/type.",
+    "hash_rule": "Content integrity metadata is explicit per member where required.",
+    "dependency_rule": "Package dependencies are exact refs/constraints.",
+    "order_rule": "Archive member order never changes package semantics.",
+    "install_rule": "Install targets/actions are declarative and separately validated.",
+    "unknown_rule": "Unknown required manifest fields fail validation."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PACKAGE_IDENTITY_INTEGRITY",
+        "rule": "Package, artifact, module, certification, license and installed-instance identities remain distinct; hashes prove content integrity only within their declared profile and never grant runtime authority."
+      },
+      {
+        "id": "ENTITLEMENT_NONAUTHORITY",
+        "rule": "License or certification entitlement permits declared product/service use only; it never substitutes for IAM identity, AccessCore authorization, runtime validation or dispatcher gating."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "archive order defines precedence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "dependency inferred from filename",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "missing member silently ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "hash target ambiguous",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "manifest auto-executes install",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PACKAGE",
+      "target_ref": "AIGMOS_PACKAGE_IDENTITY_CONTRACT",
+      "purpose": "Manifest describes one exact package."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic machine-readable package contents, identities, versions, dependencies, hashes and declared install/export semantics.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_SIDE_EFFECT_CLASS_CONTRACT",
+    "name": "Operation Side-Effect Class",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit side-effect classes so read, local mutation, remote mutation, lifecycle, destructive and security-sensitive operations can be gated differently.",
+  "scope": {
+    "owns": [
+      "Operation Side-Effect Class semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_SIDE_EFFECT_CLASS",
+      "name": "Operation Side-Effect Class",
+      "purpose": "Define explicit side-effect classes so read, local mutation, remote mutation, lifecycle, destructive and security-sensitive operations can be gated differently.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME",
+        "TOPIC_LIMITS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_SIDE_EFFECT_CLASS_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "classes": [
+      "read_only",
+      "local_mutation",
+      "remote_mutation",
+      "lifecycle",
+      "destructive",
+      "security_sensitive",
+      "external_effect",
+      "custom declared class"
+    ],
+    "identity_rule": "Side-effect class is explicit operation metadata.",
+    "authorization_rule": "Different classes may require different authorization/assurance profiles.",
+    "dry_run_rule": "Dry-run semantics are explicit per operation and do not imply no hidden effects unless declared.",
+    "destructive_rule": "Destructive class requires exact target and explicit destructive gate.",
+    "external_rule": "External effect includes actions whose effect occurs outside local canonical store.",
+    "composition_rule": "Composite operation inherits the strongest relevant declared effect class unless explicit semantics say otherwise."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "destructive operation classified read_only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "dry-run assumed effect-free without contract",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "external call treated local read",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "composite hides child destructive effect",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "effect class grants authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_OP",
+      "target_ref": "AIGMOS_OPERATION_IDENTITY_CONTRACT",
+      "purpose": "Operations declare side-effect class."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit side-effect classes so read, local mutation, remote mutation, lifecycle, destructive and security-sensitive operations can be gated differently.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

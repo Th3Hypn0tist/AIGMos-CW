@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_OPERATION_REQUEST_CONTRACT",
+    "name": "Operation Request",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define an operation request as inert candidate intent containing exact operation, target, arguments, requester/context and optional execution constraints.",
+  "scope": {
+    "owns": [
+      "Operation Request semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_OPERATION_REQUEST",
+      "name": "Operation Request",
+      "purpose": "Define an operation request as inert candidate intent containing exact operation, target, arguments, requester/context and optional execution constraints.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME",
+        "TOPIC_OPERATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_OPERATION_REQUEST_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each machine-significant request has a distinct request identity.",
+    "operation_rule": "Request references one exact operation identity.",
+    "target_rule": "Request target is exact and never inferred from cwd, UI selection or display context.",
+    "argument_rule": "Arguments are explicit candidate data until validation succeeds.",
+    "context_rule": "Requester/auth/session/context refs are explicit where applicable.",
+    "constraint_rule": "Deadline, idempotency key, dry-run, resource budget and other execution constraints are explicit.",
+    "inert_rule": "A request has no side effect merely by existing.",
+    "authority_rule": "Request origin does not determine authorization outcome."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "target inferred from UI/cwd",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "request creation executes operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "model text treated as request without parsing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "missing operation guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "requester identity treated as authorization",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_OP",
+      "target_ref": "AIGMOS_OPERATION_IDENTITY_CONTRACT",
+      "purpose": "Requests target exact operation identities."
+    }
+  ],
+  "prose": {
+    "summary": "Define an operation request as inert candidate intent containing exact operation, target, arguments, requester/context and optional execution constraints.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

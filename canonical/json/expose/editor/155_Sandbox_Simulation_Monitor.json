@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_SANDBOX_SIMULATION_MONITOR_CONTRACT",
+    "name": "Sandbox, Dry-Run and Fault-Injection Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for sandbox identity/isolation, dry-run profiles, mocks/stubs, injected faults and simulation results.",
+  "scope": {
+    "owns": [
+      "Sandbox, Dry-Run and Fault-Injection Monitor semantics"
+    ],
+    "does_not_own": [
+      "production runtime authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_SANDBOX_SIMULATION_MONITOR",
+      "name": "Sandbox, Dry-Run and Fault-Injection Monitor",
+      "purpose": "Define a read-only Expose monitor for sandbox identity/isolation, dry-run profiles, mocks/stubs, injected faults and simulation results.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_VERIFICATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_SANDBOX_SIMULATION_MONITOR_CONTRACT",
+        "TEST_NONAUTHORITY",
+        "EVIDENCE_REPRODUCIBILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "sandbox registry",
+      "production-source snapshot refs",
+      "network/data/secret isolation",
+      "dry-run operation profile",
+      "mock/stub bindings",
+      "fault injection state",
+      "simulation results"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Sandbox, production target, test double, fault profile, simulation run and real execution identities remain distinct.",
+    "action_rule": "create-sandbox/run-dry-run/inject-fault/reset operations use separate authorized workflows.",
+    "authority_rule": "Viewing sandbox state grants no production authority.",
+    "failure_rule": "isolation-breach/fault-stuck/mock-drift/simulated-only states remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TEST_NONAUTHORITY",
+        "rule": "Test definitions, fixtures, results, coverage, simulations and release evidence never become production semantic authority or grant production execution rights merely by existing or passing."
+      },
+      {
+        "id": "EVIDENCE_REPRODUCIBILITY",
+        "rule": "Verification evidence binds exact test/profile/source/runtime revisions and declared environment inputs so a pass/fail result cannot silently float across unrelated versions or targets."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor injects fault by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "sandbox shown as prod",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "simulated result displayed real",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "production secret rendered",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "isolation breach hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SANDBOX",
+      "target_ref": "AIGMOS_VERIFICATION_SANDBOX_CONTRACT",
+      "purpose": "Monitor projects exact sandbox isolation."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for sandbox identity/isolation, dry-run profiles, mocks/stubs, injected faults and simulation results.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

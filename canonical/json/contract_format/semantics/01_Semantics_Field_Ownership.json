@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CF_SEMANTICS_FIELD_OWNERSHIP_CONTRACT",
+    "name": "Contract-Specific Semantic Field Ownership",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define who owns and interprets custom keys inside `semantics` and prevent cross-contract ad-hoc key collisions.",
+  "scope": {
+    "owns": [
+      "Contract-Specific Semantic Field Ownership semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CF_SEMANTICS_FIELD_OWNERSHIP",
+      "name": "Contract-Specific Semantic Field Ownership",
+      "purpose": "Define who owns and interprets custom keys inside `semantics` and prevent cross-contract ad-hoc key collisions.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_CONTRACTS",
+        "TOPIC_CONTRACT_FORMAT",
+        "TOPIC_SEMANTICS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CF_SEMANTICS_FIELD_OWNERSHIP_CONTRACT",
+        "FORMAT_SECTION_MEANING_EXPLICIT",
+        "BOOTSTRAP_NONRECURSIVE_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "owner_rule": "Defining contract/profile owns each machine-significant custom semantic key namespace.",
+    "key_rule": "Key meaning is explicit and stable under compatible identity/version.",
+    "reuse_rule": "Cross-contract reuse references shared value/type semantics rather than copying meaning inconsistently.",
+    "collision_rule": "Same custom key string in different contexts does not imply same semantics unless shared contract says so.",
+    "breaking_rule": "Changing custom key meaning is semantic change."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "FORMAT_SECTION_MEANING_EXPLICIT",
+        "rule": "Every Contract Format section and field has explicit machine-readable meaning; consumers never infer semantics from JSON ordering, filenames, indentation, prose style or neighboring fields."
+      },
+      {
+        "id": "BOOTSTRAP_NONRECURSIVE_AUTHORITY",
+        "rule": "These contracts document and constrain Contract Format semantics but do not replace the repository-root AIGMos_Canonical_Contract_Format_v1.4.0.json bootstrap authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "same key name globally assumed same meaning",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "consumer changes provider semantic key meaning",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "key copied without shared type contract",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "meaning changed silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "custom key inferred from prose",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define who owns and interprets custom keys inside `semantics` and prevent cross-contract ad-hoc key collisions.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "This contract constrains the semantic interpretation of Contract Format fields; root bootstrap authority remains external to canonical/json."
+    ]
+  }
+}

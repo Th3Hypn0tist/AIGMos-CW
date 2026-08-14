@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CANONICAL_REGISTRY_SNAPSHOT_CONTRACT",
+    "name": "Canonical Registry Snapshot",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define immutable build-time snapshot of identity/reference/alias/ownership registries for reproducible validation, diff and tooling.",
+  "scope": {
+    "owns": [
+      "Canonical Registry Snapshot semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CANONICAL_REGISTRY_SNAPSHOT",
+      "name": "Canonical Registry Snapshot",
+      "purpose": "Define immutable build-time snapshot of identity/reference/alias/ownership registries for reproducible validation, diff and tooling.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_CONTRACTS",
+        "TOPIC_REGISTRY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CANONICAL_REGISTRY_SNAPSHOT_CONTRACT",
+        "BOOTSTRAP_AUTHORITY_EXPLICIT",
+        "VALIDATE_BEFORE_ACCEPT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each registry snapshot has an explicit identity.",
+    "source_rule": "Snapshot references exact source-set build/snapshot.",
+    "members_rule": "Identity/reference/alias/ownership registry revisions are exact.",
+    "immutability_rule": "Snapshot is immutable evidence.",
+    "reproducibility_rule": "Same source-set/format/profile yields semantically equivalent registry snapshot.",
+    "cache_rule": "Snapshot cache is invalidated when source-set/format changes.",
+    "authority_rule": "Snapshot is derived evidence, not canonical definition."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOTSTRAP_AUTHORITY_EXPLICIT",
+        "rule": "Contract Format bootstrap authority, canonical contract sources, generated projections, historical artifacts and runtime state remain separate identities/roles; no file becomes authoritative merely by name, path order, timestamp or discovery order."
+      },
+      {
+        "id": "VALIDATE_BEFORE_ACCEPT",
+        "rule": "Candidate canonical changes remain inert until exact format validation, identity/reference resolution, semantic diff, applicable governance/authorization and repository acceptance succeed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "snapshot edits become source",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "stale snapshot used after source change",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "snapshot identity equals repository id",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "cache never invalidated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "timestamp alone proves snapshot equivalence",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REG",
+      "target_ref": "AIGMOS_CANONICAL_IDENTITY_REGISTRY_CONTRACT",
+      "purpose": "Snapshot captures exact identity registry."
+    }
+  ],
+  "prose": {
+    "summary": "Define immutable build-time snapshot of identity/reference/alias/ownership registries for reproducible validation, diff and tooling.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

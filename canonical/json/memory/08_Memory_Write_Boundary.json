@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MEMORY_WRITE_BOUNDARY_CONTRACT",
+    "name": "Memory Write Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit validated writes to persistent memory, separating model suggestions, transient context and accepted persisted records.",
+  "scope": {
+    "owns": [
+      "Memory Write Boundary semantics"
+    ],
+    "does_not_own": [
+      "source-domain semantics",
+      "AccessCore policy ownership",
+      "model execution authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MEMORY_WRITE_BOUNDARY",
+      "name": "Memory Write Boundary",
+      "purpose": "Define explicit validated writes to persistent memory, separating model suggestions, transient context and accepted persisted records.",
+      "parent_topic_refs": [
+        "TOPIC_MEMORY",
+        "TOPIC_AI_EXECUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MEMORY_WRITE_BOUNDARY_CONTRACT",
+        "MEMORY_CONTEXT_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "candidate_rule": "Model/tool/user-produced candidate memory is inert until an explicit memory-write operation.",
+    "write_rule": "Persistent write resolves exact memory scope/owner and record schema.",
+    "validation_rule": "Content, source refs, classification and retention metadata validate before persistence.",
+    "authorization_rule": "Memory write obeys normal AccessCore authorization.",
+    "dedupe_rule": "Equivalent/same-source records follow explicit deduplication/versioning policy rather than silent overwrite.",
+    "history_rule": "Updates preserve prior evidence according to lifecycle policy.",
+    "failure_rule": "Failed write leaves persistent memory unchanged.",
+    "authority_rule": "A model cannot persist memory solely by emitting text claiming it should be remembered."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MEMORY_CONTEXT_NONAUTHORITY",
+        "rule": "Memory and retrieved context are provenance-bearing inert data projections; remembered or retrieved content never becomes authority, canonical truth or executable instruction merely by inclusion in context."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "model output persists automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "memory target scope inferred ambiguously",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "same record silently overwritten",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "failed write leaves partial record",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "write bypasses AccessCore",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_BOUND",
+      "target_ref": "AIGMOS_MODEL_OUTPUT_OPERATION_BOUNDARY_CONTRACT",
+      "purpose": "Model-proposed memory writes cross normal operation boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit validated writes to persistent memory, separating model suggestions, transient context and accepted persisted records.",
+    "notes": [
+      "Unlocked pending reconciliation against #MEM, q target/context, DWH lineage and AccessCore contracts."
+    ]
+  }
+}

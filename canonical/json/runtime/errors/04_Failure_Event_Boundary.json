@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_FAILURE_EVENT_BOUNDARY_CONTRACT",
+    "name": "Failure to Event Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define optional emission of inert Events from runtime error/failure transitions before any alerting or automated recovery.",
+  "scope": {
+    "owns": [
+      "Failure to Event Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_FAILURE_EVENT_BOUNDARY",
+      "name": "Failure to Event Boundary",
+      "purpose": "Define optional emission of inert Events from runtime error/failure transitions before any alerting or automated recovery.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_ERRORS",
+        "TOPIC_EVENTS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_FAILURE_EVENT_BOUNDARY_CONTRACT",
+        "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "event_types": [
+      "operation_failed",
+      "runner_failed",
+      "dependency_failed",
+      "runtime_degraded",
+      "recovery_succeeded",
+      "other declared failure event"
+    ],
+    "binding_rule": "Which failures emit Events is explicit.",
+    "event_rule": "Emitted Event has its own identity and references exact error/execution/resource.",
+    "payload_rule": "Failure Event payload is inert and redaction-governed.",
+    "causality_rule": "Automated response still follows Event→Trigger→Runner/operation.",
+    "dedupe_rule": "Repeated observation of same unresolved failure does not emit uncontrolled duplicate transition Events.",
+    "authority_rule": "Failure Event never grants repair authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "rule": "Machine-significant definitions, executions, evidence and runtime state use explicit identities and boundaries; visibility, file order, timestamps, transport reachability or UI placement never silently create semantic authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "failure directly executes repair",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Event identity replaces error identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "duplicate failure events unbounded",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "event payload grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "recovery inferred without evidence",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EVENT",
+      "target_ref": "AIGMOS_EVENT_IDENTITY_CONTRACT",
+      "purpose": "Failures may emit distinct inert Events."
+    }
+  ],
+  "prose": {
+    "summary": "Define optional emission of inert Events from runtime error/failure transitions before any alerting or automated recovery.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

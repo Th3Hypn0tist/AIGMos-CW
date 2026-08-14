@@ -1,0 +1,146 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_VALIDATION_EXCEPTION_WAIVER_CONTRACT",
+    "name": "Validation Exception and Waiver",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit bounded exceptions for specific validation rules where the Contract Format permits an exception, preventing informal prose waivers from turning failures into passes.",
+  "scope": {
+    "owns": [
+      "Validation Exception and Waiver semantics"
+    ],
+    "does_not_own": [
+      "validated source semantics",
+      "runtime implementation",
+      "presentation-only reporting"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_VALIDATION_EXCEPTIONS",
+      "name": "Validation Exception and Waiver",
+      "purpose": "Define explicit bounded exceptions for specific validation rules where the Contract Format permits an exception, preventing informal prose waivers from turning failures into passes.",
+      "parent_topic_refs": [
+        "TOPIC_VALIDATION_RESULTS",
+        "TOPIC_LOCK_UNLOCK",
+        "TOPIC_STRUCTURE_AUTHORITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_VALIDATION_EXCEPTION_WAIVER_CONTRACT",
+        "VALIDATION_EVIDENCE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "required": [
+      "exception_id",
+      "rule_ref",
+      "target_ref",
+      "scope",
+      "reason",
+      "authority_ref",
+      "created_at",
+      "expiry_or_review_condition"
+    ],
+    "permission_rule": "Only rules explicitly marked exception-capable may be waived.",
+    "scope_rule": "Exception applies only to the exact declared target/rule/scope.",
+    "authority_rule": "Exception requires explicit authorized approval identity/policy.",
+    "expiry_rule": "Exception is bounded by expiry or review condition.",
+    "visibility_rule": "Validation results preserve applied exception refs and original underlying findings.",
+    "lock_rule": "Exception may contribute to lock eligibility only when the owning lock/conformance policy explicitly permits it.",
+    "no_prose_rule": "Free-form documentation alone never acts as an exception."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "VALIDATION_EVIDENCE_EXPLICIT",
+        "rule": "Validation outcomes, findings, exceptions, evidence, baselines and release decisions are explicit machine-readable facts and never silently rewrite source semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "non-exception-capable hard gate waived",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "waiver scope broader than declared",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "exception lacks authority or expiry/review condition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "underlying finding disappears when exception applies",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "prose note treated as machine-valid waiver",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "expired exception still used for pass/lock",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LOCK",
+      "target_ref": "AIGMOS_CANONICAL_LOCK_UNLOCK_LIFECYCLE_CONTRACT",
+      "purpose": "Exceptions affect lock eligibility only under explicit policy."
+    },
+    {
+      "id": "REF_AUTH",
+      "target_ref": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT",
+      "purpose": "Waiver approval authority is explicit."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit bounded exceptions for specific validation rules where the Contract Format permits an exception, preventing informal prose waivers from turning failures into passes.",
+    "notes": [
+      "Unlocked until exercised against the complete clean Contract Format 1.4 candidate tree."
+    ]
+  }
+}

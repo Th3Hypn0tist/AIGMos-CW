@@ -1,0 +1,659 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+    "name": "Core Topic Mechanism",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define how AIGMos uses Topics as recursive, many-to-many, inheritable and composable grouping/trace surfaces so mechanisms can be specified by reusing existing semantic definitions and declaring only genuinely new causality.",
+  "scope": {
+    "owns": [
+      "Topic grouping semantics",
+      "Topic inheritance semantics",
+      "Topic composition semantics",
+      "Topic membership resolution",
+      "Outsider classification semantics"
+    ],
+    "does_not_own": [
+      "semantics of Topic members",
+      "runtime authority",
+      "execution authority",
+      "dependency semantics",
+      "semantic containment",
+      "mechanism causality"
+    ]
+  },
+  "members": [
+    {
+      "id": "FSYM_CDBD099091F6DD755843",
+      "name": "canonical_reader",
+      "type": "flow_actor_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "actor_ref",
+        "source_literal": "canonical_reader",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_7417A360E0200C93054E",
+      "name": "topics",
+      "type": "flow_data_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "data_ref",
+        "source_literal": "topics",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_FC1A56F36E5E73B3CABA",
+      "name": "canonical_identity",
+      "type": "flow_target_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "target_ref",
+        "source_literal": "canonical_identity",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_61982F41BFCC9D7BDAE1",
+      "name": "direct_topic_memberships",
+      "type": "flow_result_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "result_refs",
+        "source_literal": "direct_topic_memberships",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_2180C038F8232EFF7E14",
+      "name": "unresolved topic reference",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "unresolved topic reference",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_6EAB5E50C54504FBAED6",
+      "name": "ambiguous topic reference",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "ambiguous topic reference",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_7F72A5594AFF5EF3DBE4",
+      "name": "parent_topic_refs",
+      "type": "flow_data_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "data_ref",
+        "source_literal": "parent_topic_refs",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_E765837D9DAED92CF65C",
+      "name": "direct_topic_memberships",
+      "type": "flow_target_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "target_ref",
+        "source_literal": "direct_topic_memberships",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_05E6902A89B5D610A0A2",
+      "name": "inherited_topic_memberships",
+      "type": "flow_result_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "result_refs",
+        "source_literal": "inherited_topic_memberships",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_FA1D377F3FE1EF327EE2",
+      "name": "topic inheritance cycle",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "topic inheritance cycle",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_9E217528F75395DA8958",
+      "name": "composed_topic_refs",
+      "type": "flow_data_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "data_ref",
+        "source_literal": "composed_topic_refs",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_FFE286870C36D573C922",
+      "name": "topic_trace_surface",
+      "type": "flow_target_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "target_ref",
+        "source_literal": "topic_trace_surface",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_334234AEF4274716B99F",
+      "name": "composed_trace_surfaces",
+      "type": "flow_result_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "result_refs",
+        "source_literal": "composed_trace_surfaces",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_6B4C71F2FAD9D3DBB0C2",
+      "name": "topic composition cycle",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "topic composition cycle",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_DBD3698C4F8BB4CB8F74",
+      "name": "resolved_topic_memberships",
+      "type": "flow_data_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "data_ref",
+        "source_literal": "resolved_topic_memberships",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_E36FCA6047E2ADAB7813",
+      "name": "no direct or inherited Topic membership",
+      "type": "flow_condition_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "condition_ref",
+        "source_literal": "no direct or inherited Topic membership",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_CAF9FB0703A43C0A3F5D",
+      "name": "outsider status or classified identity",
+      "type": "flow_result_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "result_refs",
+        "source_literal": "outsider status or classified identity",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    },
+    {
+      "id": "FSYM_FF1CC535C7CB47FDE3D3",
+      "name": "outsider reason missing",
+      "type": "flow_error_symbol",
+      "status": "defined",
+      "semantics": {
+        "owner_identity": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "flow_ref_field": "error_refs",
+        "source_literal": "outsider reason missing",
+        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      }
+    }
+  ],
+  "structure": {
+    "containment": [],
+    "relations": [
+      {
+        "id": "REL_TOPIC_PARENT",
+        "source_ref": "AIGMOS_CF_TOPIC_IDENTITY_METADATA_CONTRACT",
+        "relation_type": "topic_parent",
+        "target_ref": "AIGMOS_CF_TOPIC_IDENTITY_METADATA_CONTRACT",
+        "direction": "outbound"
+      },
+      {
+        "id": "REL_TOPIC_COMPOSES",
+        "source_ref": "AIGMOS_CF_TOPIC_IDENTITY_METADATA_CONTRACT",
+        "relation_type": "topic_composes",
+        "target_ref": "AIGMOS_CF_TOPIC_IDENTITY_METADATA_CONTRACT",
+        "direction": "outbound"
+      },
+      {
+        "id": "REL_TOPIC_MEMBER",
+        "source_ref": "AIGMOS_CF_TOPIC_IDENTITY_METADATA_CONTRACT",
+        "relation_type": "topic_member",
+        "target_ref": "AIGMOS_SEMANTIC_ENTITY_IDENTITY_CONTRACT",
+        "direction": "outbound"
+      }
+    ],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CORE_TOPIC_SYSTEM",
+      "name": "Topic System",
+      "purpose": "Group the canonical mechanism by which Topics organize and compose semantic trace surfaces.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "REL_TOPIC_PARENT",
+        "REL_TOPIC_COMPOSES",
+        "REL_TOPIC_MEMBER",
+        "TOPIC_NOT_AUTHORITY",
+        "TOPIC_COMPOSITION_REUSES",
+        "MECHANISM_CAUSALITY_EXPLICIT",
+        "GATE_TOPIC_ZERO_HIDDEN",
+        "GATE_TOPIC_INHERITANCE_CYCLE",
+        "GATE_TOPIC_COMPOSITION_CYCLE",
+        "GATE_TOPIC_SEMANTIC_COPY",
+        "GATE_TOPIC_CAUSALITY_INFERENCE",
+        "GATE_TOPIC_SEMANTIC_LEAK",
+        "FSYM_CDBD099091F6DD755843",
+        "FSYM_7417A360E0200C93054E",
+        "FSYM_FC1A56F36E5E73B3CABA",
+        "FSYM_61982F41BFCC9D7BDAE1",
+        "FSYM_2180C038F8232EFF7E14",
+        "FSYM_6EAB5E50C54504FBAED6",
+        "FSYM_7F72A5594AFF5EF3DBE4",
+        "FSYM_E765837D9DAED92CF65C",
+        "FSYM_05E6902A89B5D610A0A2",
+        "FSYM_FA1D377F3FE1EF327EE2",
+        "FSYM_9E217528F75395DA8958",
+        "FSYM_FFE286870C36D573C922",
+        "FSYM_334234AEF4274716B99F",
+        "FSYM_6B4C71F2FAD9D3DBB0C2",
+        "FSYM_DBD3698C4F8BB4CB8F74",
+        "FSYM_E36FCA6047E2ADAB7813",
+        "FSYM_CAF9FB0703A43C0A3F5D",
+        "FSYM_FF1CC535C7CB47FDE3D3"
+      ],
+      "relation_refs": [
+        "REL_TOPIC_PARENT",
+        "REL_TOPIC_COMPOSES",
+        "REL_TOPIC_MEMBER"
+      ],
+      "operation_refs": [
+        "OP_TOPIC_RESOLVE_MEMBERSHIP",
+        "OP_TOPIC_RESOLVE_INHERITANCE",
+        "OP_TOPIC_RESOLVE_COMPOSITION",
+        "OP_TOPIC_CLASSIFY_OUTSIDER"
+      ],
+      "event_refs": [],
+      "flow_refs": [
+        "FLOW_TOPIC_RESOLUTION"
+      ],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_TOPIC_RESOLVE_MEMBERSHIP",
+        "name": "Resolve Topic membership",
+        "inputs": [
+          "topic definitions",
+          "canonical identities"
+        ],
+        "outputs": [
+          "direct topic memberships"
+        ],
+        "errors": [
+          "unresolved topic reference",
+          "ambiguous topic reference"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_TOPIC_RESOLVE_INHERITANCE",
+        "name": "Resolve Topic inheritance",
+        "inputs": [
+          "direct topic memberships",
+          "parent_topic_refs"
+        ],
+        "outputs": [
+          "inherited ancestor topic memberships"
+        ],
+        "errors": [
+          "unresolved parent topic",
+          "topic inheritance cycle"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_TOPIC_RESOLVE_COMPOSITION",
+        "name": "Resolve Topic composition",
+        "inputs": [
+          "topic definitions",
+          "composed_topic_refs"
+        ],
+        "outputs": [
+          "composed reusable trace surfaces"
+        ],
+        "errors": [
+          "unresolved composed topic",
+          "topic composition cycle"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_TOPIC_CLASSIFY_OUTSIDER",
+        "name": "Classify unresolved identity as Outsider",
+        "inputs": [
+          "canonical identity",
+          "resolved direct and inherited memberships"
+        ],
+        "outputs": [
+          "outsider status"
+        ],
+        "errors": [
+          "outsider reason missing"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": [
+      {
+        "id": "FLOW_TOPIC_RESOLUTION",
+        "owner_ref": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+        "name": "Resolve canonical Topic view",
+        "flow_type": "deterministic_resolution",
+        "entry_refs": [
+          "OP_TOPIC_RESOLVE_MEMBERSHIP"
+        ],
+        "exit_refs": [
+          "OP_TOPIC_CLASSIFY_OUTSIDER"
+        ],
+        "steps": [
+          {
+            "id": "STEP_TOPIC_DIRECT",
+            "actor_ref": "FSYM_CDBD099091F6DD755843",
+            "action_ref": "OP_TOPIC_RESOLVE_MEMBERSHIP",
+            "data_ref": "FSYM_7417A360E0200C93054E",
+            "target_ref": "FSYM_FC1A56F36E5E73B3CABA",
+            "cause_ref": null,
+            "condition_ref": null,
+            "payload_ref": null,
+            "result_refs": [
+              "FSYM_61982F41BFCC9D7BDAE1"
+            ],
+            "error_refs": [
+              "FSYM_2180C038F8232EFF7E14",
+              "FSYM_6EAB5E50C54504FBAED6"
+            ],
+            "next_step_refs": [
+              "STEP_TOPIC_INHERITED"
+            ],
+            "subflow_refs": [],
+            "resume_ref": null
+          },
+          {
+            "id": "STEP_TOPIC_INHERITED",
+            "actor_ref": "FSYM_CDBD099091F6DD755843",
+            "action_ref": "OP_TOPIC_RESOLVE_INHERITANCE",
+            "data_ref": "FSYM_7F72A5594AFF5EF3DBE4",
+            "target_ref": "FSYM_E765837D9DAED92CF65C",
+            "cause_ref": "STEP_TOPIC_DIRECT",
+            "condition_ref": null,
+            "payload_ref": null,
+            "result_refs": [
+              "FSYM_05E6902A89B5D610A0A2"
+            ],
+            "error_refs": [
+              "FSYM_FA1D377F3FE1EF327EE2"
+            ],
+            "next_step_refs": [
+              "STEP_TOPIC_COMPOSED"
+            ],
+            "subflow_refs": [],
+            "resume_ref": null
+          },
+          {
+            "id": "STEP_TOPIC_COMPOSED",
+            "actor_ref": "FSYM_CDBD099091F6DD755843",
+            "action_ref": "OP_TOPIC_RESOLVE_COMPOSITION",
+            "data_ref": "FSYM_9E217528F75395DA8958",
+            "target_ref": "FSYM_FFE286870C36D573C922",
+            "cause_ref": "STEP_TOPIC_INHERITED",
+            "condition_ref": null,
+            "payload_ref": null,
+            "result_refs": [
+              "FSYM_334234AEF4274716B99F"
+            ],
+            "error_refs": [
+              "FSYM_6B4C71F2FAD9D3DBB0C2"
+            ],
+            "next_step_refs": [
+              "STEP_TOPIC_OUTSIDER"
+            ],
+            "subflow_refs": [],
+            "resume_ref": null
+          },
+          {
+            "id": "STEP_TOPIC_OUTSIDER",
+            "actor_ref": "FSYM_CDBD099091F6DD755843",
+            "action_ref": "OP_TOPIC_CLASSIFY_OUTSIDER",
+            "data_ref": "FSYM_DBD3698C4F8BB4CB8F74",
+            "target_ref": "FSYM_FC1A56F36E5E73B3CABA",
+            "cause_ref": "STEP_TOPIC_COMPOSED",
+            "condition_ref": "FSYM_E36FCA6047E2ADAB7813",
+            "payload_ref": null,
+            "result_refs": [
+              "FSYM_CAF9FB0703A43C0A3F5D"
+            ],
+            "error_refs": [
+              "FSYM_FF1CC535C7CB47FDE3D3"
+            ],
+            "next_step_refs": [],
+            "subflow_refs": [],
+            "resume_ref": null
+          }
+        ],
+        "metadata": {
+          "rule": "Composition affects trace reuse only. It does not create execution causality."
+        }
+      }
+    ]
+  },
+  "semantics": {
+    "topic": {
+      "membership_cardinality": "many_to_many",
+      "minimum_classification": "at least one direct or inherited Topic membership, otherwise explicit Outsider",
+      "inheritance": {
+        "recursive": true,
+        "multiple_parents_allowed": true,
+        "effect": "grouping context propagates from child Topic to ancestor Topics",
+        "semantic_transfer": false
+      },
+      "composition": {
+        "recursive": true,
+        "multiple_components_allowed": true,
+        "cross_tree_allowed": true,
+        "effect": "reuse existing Topic grouping and trace surfaces",
+        "semantic_copy": false,
+        "semantic_transfer": false,
+        "causality_transfer": false
+      },
+      "outsider": {
+        "is_topic": false,
+        "visible": true,
+        "reason_required": true
+      }
+    },
+    "mechanism_specification": {
+      "principle": "Define once -> inherit Topics -> compose Topics -> describe only the new causality.",
+      "rule": "A mechanism specification SHOULD compose existing Topics whenever they already define required semantics. The mechanism adds only missing participants and explicit mechanism-specific flow/causality.",
+      "gap_rule": "If existing Topics plus explicit mechanism-specific causality cannot describe the mechanism, the missing semantic definition is a canonical gap; do not duplicate or invent it."
+    }
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TOPIC_NOT_AUTHORITY",
+        "rule": "Topic relationships never grant semantic or runtime authority."
+      },
+      {
+        "id": "TOPIC_COMPOSITION_REUSES",
+        "rule": "Topic composition reuses definitions by reference rather than copying them."
+      },
+      {
+        "id": "MECHANISM_CAUSALITY_EXPLICIT",
+        "rule": "Mechanism-specific causality remains explicit flow data."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_TOPIC_ZERO_HIDDEN",
+        "condition": "Identity has no direct or inherited Topic membership and is not explicitly Outsider.",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_TOPIC_INHERITANCE_CYCLE",
+        "condition": "Topic inheritance cannot be deterministically resolved because of a cycle.",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_TOPIC_COMPOSITION_CYCLE",
+        "condition": "Topic composition cannot be deterministically resolved because of a cycle.",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_TOPIC_SEMANTIC_COPY",
+        "condition": "Composed Topic duplicates existing component semantics solely for documentation convenience.",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_TOPIC_CAUSALITY_INFERENCE",
+        "condition": "Execution causality is inferred from Topic inheritance or composition.",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_TOPIC_SEMANTIC_LEAK",
+        "condition": "Ownership, authority, dependency or containment is inferred from Topic inheritance, membership or composition.",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CORE_TOPIC_ROOT",
+      "target_ref": "AIGMOS_CORE_TOPIC_ROOT",
+      "purpose": "Places Topic System under the Core Topic hierarchy."
+    }
+  ],
+  "prose": {
+    "summary": "Defines Topic inheritance, composition, many-to-many membership and Outsider handling as the canonical mechanism for reusable recursive grouping and end-to-end trace views.",
+    "notes": [
+      "The contract is unlocked until the Core Topic root and repository-wide Topic references are validated together.",
+      "Pass 8 formalized previously free Flow actor/data/target/condition/payload/result/error tokens as exact owner-scoped member identities while preserving every source literal."
+    ]
+  }
+}

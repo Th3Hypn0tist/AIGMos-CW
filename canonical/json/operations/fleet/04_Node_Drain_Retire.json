@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NODE_DRAIN_RETIRE_CONTRACT",
+    "name": "Node Drain and Retirement",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define controlled removal of a compute node from workload placement, migration/drain of services and final retirement while preserving inventory/history.",
+  "scope": {
+    "owns": [
+      "Node Drain and Retirement semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "canonical documentation ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NODE_DRAIN_RETIRE",
+      "name": "Node Drain and Retirement",
+      "purpose": "Define controlled removal of a compute node from workload placement, migration/drain of services and final retirement while preserving inventory/history.",
+      "parent_topic_refs": [
+        "TOPIC_OPERATIONS",
+        "TOPIC_FLEET"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_NODE_DRAIN_RETIRE_CONTRACT",
+        "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "OPERATIONS_FAIL_SAFE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "node_rule": "Drain/retire targets exact node.",
+    "admission_rule": "New workload placement is blocked during drain.",
+    "service_rule": "Running services are explicitly migrated/stopped according to policy.",
+    "data_rule": "Local state/data evacuation/retention is explicit.",
+    "secret_rule": "Node-local credentials/secrets are revoked/removed according to policy.",
+    "retire_rule": "Retired node remains historical identity evidence.",
+    "authority_rule": "Node retirement does not delete domain data by implication."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "rule": "Release candidate, accepted release, deployment plan, deployment execution, installed artifact, active runtime instance and observed health remain separate identities/states."
+      },
+      {
+        "id": "OPERATIONS_FAIL_SAFE",
+        "rule": "Operational convenience, availability pressure, maintenance state, automation, recovery or rollback never silently bypass validation, authorization, integrity, governance or dispatcher boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "node disappears from inventory when powered off",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "drain deletes local data silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "services assumed migrated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "retired node credentials remain active",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "same hostname reused as old identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_NODE",
+      "target_ref": "AIGMOS_COMPUTE_NODE_IDENTITY_CONTRACT",
+      "purpose": "Retirement preserves exact node history."
+    }
+  ],
+  "prose": {
+    "summary": "Define controlled removal of a compute node from workload placement, migration/drain of services and final retirement while preserving inventory/history.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

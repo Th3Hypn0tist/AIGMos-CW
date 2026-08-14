@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_TRACE_SPAN_CONTRACT",
+    "name": "Runtime Trace and Span",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define distributed/runtime traces and spans as explicit execution-correlation evidence across commands, Runner steps, tools, protocols and DWH operations.",
+  "scope": {
+    "owns": [
+      "Runtime Trace and Span semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_TRACE_SPAN",
+      "name": "Runtime Trace and Span",
+      "purpose": "Define distributed/runtime traces and spans as explicit execution-correlation evidence across commands, Runner steps, tools, protocols and DWH operations.",
+      "parent_topic_refs": [
+        "TOPIC_OBSERVABILITY",
+        "TOPIC_EXECUTION_TRACE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RUNTIME_TRACE_SPAN_CONTRACT",
+        "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "trace_rule": "Each trace has an explicit trace identity.",
+    "span_rule": "Each span has an explicit span identity and exact parent/trace refs.",
+    "source_rule": "Span records exact operation/component/execution identity.",
+    "time_rule": "Start/end/duration are evidence only.",
+    "causality_rule": "Span parentage may reflect execution structure but does not replace canonical causality edges where effect causation matters.",
+    "cross_boundary_rule": "Trace context propagation across protocol/tool boundaries is explicit.",
+    "authority_rule": "Trace context grants no operation authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "rule": "Machine-significant definitions, executions, evidence and runtime state use explicit identities and boundaries; visibility, file order, timestamps, transport reachability or UI placement never silently create semantic authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "trace id becomes user/session identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "span parentage replaces causal Event graph automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "trace header grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "operation ref omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "cross-boundary trace guessed",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CAUSE",
+      "target_ref": "AIGMOS_EVENT_CAUSALITY_EDGE_CONTRACT",
+      "purpose": "Trace evidence complements explicit causality."
+    }
+  ],
+  "prose": {
+    "summary": "Define distributed/runtime traces and spans as explicit execution-correlation evidence across commands, Runner steps, tools, protocols and DWH operations.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

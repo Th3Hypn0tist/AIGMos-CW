@@ -1,0 +1,168 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CANONICAL_SOURCE_ROLE_REGISTRY_CONTRACT",
+    "name": "Canonical Source Role Registry",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the closed/extendable registry of canonical source roles used by Contract Format 1.4 so definitions, registries, boundary masters, reconciliation artifacts, history and projections are interpreted consistently.",
+  "scope": {
+    "owns": [
+      "Canonical Source Role Registry semantics"
+    ],
+    "does_not_own": [
+      "child semantic content unless explicitly stated",
+      "filesystem authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_SOURCE_ROLE_REGISTRY",
+      "name": "Source Role Registry",
+      "purpose": "Define the closed/extendable registry of canonical source roles used by Contract Format 1.4 so definitions, registries, boundary masters, reconciliation artifacts, history and projections are interpreted consistently.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_SOURCE_ROLES",
+        "TOPIC_REPOSITORY_MANIFEST"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CANONICAL_SOURCE_ROLE_REGISTRY_CONTRACT",
+        "MIGRATION_STATE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_SOURCE_ROLE_REGISTER",
+        "OP_SOURCE_ROLE_VALIDATE_ARTIFACT"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_SOURCE_ROLE_REGISTER",
+        "name": "Register canonical source role",
+        "inputs": [
+          "source_role identity",
+          "authority semantics"
+        ],
+        "outputs": [
+          "source-role definition"
+        ],
+        "errors": [
+          "role collision",
+          "semantics ambiguous"
+        ],
+        "side_effects": [
+          "source-role registry updated"
+        ]
+      },
+      {
+        "id": "OP_SOURCE_ROLE_VALIDATE_ARTIFACT",
+        "name": "Validate artifact source role",
+        "inputs": [
+          "artifact",
+          "declared source_role"
+        ],
+        "outputs": [
+          "valid source-role classification"
+        ],
+        "errors": [
+          "role missing",
+          "role invalid"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "baseline_roles": [
+      "definition",
+      "membership_registry",
+      "boundary_master",
+      "reconciliation",
+      "historical_or_migration",
+      "derived_projection"
+    ],
+    "role_rule": "Every canonical artifact declares one explicit source_role.",
+    "extension_rule": "New source role requires explicit authority semantics and compatibility with source precedence rules.",
+    "authority_rule": "Source role constrains what an artifact may authoritatively claim.",
+    "projection_rule": "derived_projection never becomes semantic owner.",
+    "history_rule": "historical_or_migration never competes as active definition.",
+    "registry_rule": "membership_registry indexes members but does not absorb member semantics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MIGRATION_STATE_EXPLICIT",
+        "rule": "Repository activation, migration state, validation state and replacement decisions are explicit and machine-readable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "artifact has no valid source_role",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "new source_role introduced without authority semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "derived projection treated as definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "historical artifact treated as active semantic owner",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "registry absorbs member semantics",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SOURCE",
+      "target_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+      "purpose": "Registry enumerates roles governed by precedence semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define the closed/extendable registry of canonical source roles used by Contract Format 1.4 so definitions, registries, boundary masters, reconciliation artifacts, history and projections are interpreted consistently.",
+    "notes": [
+      "Unlocked until the complete clean Contract Format 1.4 tree is assembled and validated."
+    ]
+  }
+}

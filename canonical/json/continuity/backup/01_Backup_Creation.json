@@ -1,0 +1,183 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_BACKUP_CREATION_CONTRACT",
+    "name": "Backup Creation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define consistent backup creation from exact source snapshot/transaction boundary with failure and partial-state semantics.",
+  "scope": {
+    "owns": [
+      "Backup Creation semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "canonical documentation ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_BACKUP_CREATION",
+      "name": "Backup Creation",
+      "purpose": "Define consistent backup creation from exact source snapshot/transaction boundary with failure and partial-state semantics.",
+      "parent_topic_refs": [
+        "TOPIC_CONTINUITY",
+        "TOPIC_BACKUP"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_BACKUP_CREATION_CONTRACT",
+        "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "OPERATIONS_FAIL_SAFE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_BACKUP",
+      "name": "Backup",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_BACKUP already referenced by 3 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 3,
+        "distinct_child_topics": 3,
+        "host_contract_ref": "AIGMOS_BACKUP_CREATION_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    },
+    {
+      "id": "TOPIC_CONTINUITY",
+      "name": "Continuity",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_CONTINUITY already referenced by 12 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 12,
+        "distinct_child_topics": 12,
+        "host_contract_ref": "AIGMOS_BACKUP_CREATION_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "source_rule": "Backup creation targets exact source/resource set.",
+    "consistency_rule": "Crash-consistent/application-consistent/transaction-consistent semantics are explicit.",
+    "snapshot_rule": "Snapshot/cut point is explicit.",
+    "result_states": [
+      "complete",
+      "partial",
+      "failed",
+      "cancelled"
+    ],
+    "partial_rule": "Partial backup never masquerades as complete.",
+    "verification_rule": "Integrity/completeness checks are explicit.",
+    "secret_rule": "Backup process does not expose secret material to logs.",
+    "authority_rule": "Backup creation requires exact read/export/backup authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "rule": "Release candidate, accepted release, deployment plan, deployment execution, installed artifact, active runtime instance and observed health remain separate identities/states."
+      },
+      {
+        "id": "OPERATIONS_FAIL_SAFE",
+        "rule": "Operational convenience, availability pressure, maintenance state, automation, recovery or rollback never silently bypass validation, authorization, integrity, governance or dispatcher boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "partial backup shown successful",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "consistency level unspecified",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "backup copies live-changing state without declared semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "secret dumped to log",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "read access automatically implies backup/export right",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_BACKUP",
+      "target_ref": "AIGMOS_BACKUP_IDENTITY_CONTRACT",
+      "purpose": "Creation produces exact backup identity."
+    }
+  ],
+  "prose": {
+    "summary": "Define consistent backup creation from exact source snapshot/transaction boundary with failure and partial-state semantics.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_BACKUP solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership.",
+      "Pass 6 hosts grouping-only Topic TOPIC_CONTINUITY solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

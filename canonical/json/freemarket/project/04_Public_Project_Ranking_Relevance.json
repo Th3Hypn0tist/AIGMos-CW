@@ -1,0 +1,172 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT",
+    "name": "Public Project Ranking and Relevance",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define public Project ranking and broker relevance as derived policy views over Project and Merit outcomes rather than new leaderboard or global weighting primitives.",
+  "scope": {
+    "owns": [
+      "Public Project Ranking and Relevance semantics"
+    ],
+    "does_not_own": [
+      "presentation semantics",
+      "transport implementation",
+      "unrelated identity semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_PROJECT_RANKING",
+      "name": "Project Ranking",
+      "purpose": "Define public Project ranking and broker relevance as derived policy views over Project and Merit outcomes rather than new leaderboard or global weighting primitives.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_PROJECT",
+        "TOPIC_MERITCORE",
+        "TOPIC_CORE_PROJECTION"
+      ],
+      "member_refs": [
+        "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT",
+        "PROJECT_MODEL_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_PROJECT_RANK",
+        "OP_PROJECT_RELEVANCE_FILTER"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_PROJECT_RANK",
+        "name": "Rank public Projects",
+        "inputs": [
+          "public Project evidence",
+          "Merit outcomes",
+          "ranking policy"
+        ],
+        "outputs": [
+          "derived ranking"
+        ],
+        "errors": [
+          "policy unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_PROJECT_RELEVANCE_FILTER",
+        "name": "Filter Projects by relevance policy",
+        "inputs": [
+          "Projects",
+          "broker/query context",
+          "explicit relevance policy"
+        ],
+        "outputs": [
+          "relevant Project set"
+        ],
+        "errors": [
+          "policy unresolved"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "ranking_rule": "Public Projects may be ranked using AIGM 1337 / explicit ranking policy based on Merit outcomes and Project evidence.",
+    "no_leaderboard_primitive_rule": "There is no separate canonical leaderboard primitive solely for ranking display.",
+    "relevance_rule": "Broker relevance is explicit contextual policy, not a global universal weighting baked into MeritCore.",
+    "projection_rule": "Rankings are derived projections and do not mutate underlying Project/Merit semantics.",
+    "public_rule": "Only explicitly public/eligible Project data participates in public ranking.",
+    "policy_provenance_rule": "Ranking/relevance results retain policy and source provenance."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PROJECT_MODEL_EXPLICIT",
+        "rule": "Project/task, execution, evidence and merit semantics are explicit and non-duplicated."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "ranking projection becomes new source of truth",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "private/ineligible Project data enters public ranking without explicit permission",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "global relevance weighting silently embedded into MeritCore",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "separate leaderboard primitive duplicates ranking projection semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "ranking loses source/policy provenance",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROJECT",
+      "target_ref": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT",
+      "purpose": "Ranking projects Project evidence."
+    },
+    {
+      "id": "REF_MERIT",
+      "target_ref": "AIGMOS_MERITCORE_CONTRACT",
+      "purpose": "Merit outcomes may inform ranking."
+    },
+    {
+      "id": "REF_PROJECTION",
+      "target_ref": "AIGMOS_CORE_PROJECTION_BOUNDARY_CONTRACT",
+      "purpose": "Ranking remains derived projection."
+    }
+  ],
+  "prose": {
+    "summary": "Define public Project ranking and broker relevance as derived policy views over Project and Merit outcomes rather than new leaderboard or global weighting primitives.",
+    "notes": [
+      "Unlocked until reconciled against existing FreeMarket/Project/Merit contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

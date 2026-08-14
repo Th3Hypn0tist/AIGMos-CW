@@ -1,0 +1,141 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_DWH_GOVERNANCE_MONITOR_CONTRACT",
+    "name": "DWH Governance Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for DWH policy bindings, record-scope filters, field masking/redaction, derived-result propagation and governance-decision evidence.",
+  "scope": {
+    "owns": [
+      "DWH Governance Monitor semantics"
+    ],
+    "does_not_own": [
+      "AccessCore authorization policy ownership",
+      "source domain ownership",
+      "transport security semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_DWH_GOVERNANCE_MONITOR",
+      "name": "DWH Governance Monitor",
+      "purpose": "Define a read-only Expose monitor for DWH policy bindings, record-scope filters, field masking/redaction, derived-result propagation and governance-decision evidence.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_GOVERNANCE_POLICY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_DWH_GOVERNANCE_MONITOR_CONTRACT",
+        "DWH_GOVERNANCE_NONEXPANSION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "governance policy registry",
+      "instance/schema/resource/field bindings",
+      "record-scope predicates",
+      "field visibility/masking profiles",
+      "classification inputs",
+      "derived-result propagation",
+      "effective projection",
+      "allow/deny/filter/mask evidence",
+      "AccessCore result alongside DWH result"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Policy, binding, resource, field, governance evaluation and AccessCore decision identities remain distinct.",
+    "authority_rule": "Viewing policy/effective access grants no data or policy-edit authority.",
+    "action_rule": "edit-policy/rebind/test-evaluate/reclassify/declassify operations invoke separate authorized canonical workflows.",
+    "derived_rule": "Effective visibility is displayed as a derived result over exact DWH+AccessCore inputs.",
+    "graph_rule": "Policy→scope→decision edges correspond only to explicit refs.",
+    "redaction_rule": "Monitor never reveals values hidden by the evaluated policy.",
+    "failure_rule": "Ambiguous policy, unknown result, policy conflict and AC-vs-DWH denial are surfaced explicitly."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_GOVERNANCE_NONEXPANSION",
+        "rule": "DWH governance may restrict or project data according to exact schema/classification/scope policy but never creates AccessCore rights, semantic ownership or broader visibility than the underlying authorized source set."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor reveals denied value",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "monitor conflates DWH and AccessCore policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "effective allow shown as ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "visual adjacency invents binding",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "viewing grants data authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_POLICY",
+      "target_ref": "AIGMOS_DWH_GOVERNANCE_POLICY_BINDING_CONTRACT",
+      "purpose": "Monitor projects explicit governance bindings."
+    },
+    {
+      "id": "REF_EVID",
+      "target_ref": "AIGMOS_DWH_GOVERNANCE_DECISION_EVIDENCE_CONTRACT",
+      "purpose": "Monitor exposes exact decision evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for DWH policy bindings, record-scope filters, field masking/redaction, derived-result propagation and governance-decision evidence.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH access governance, schema resolution, classification and AccessCore contracts."
+    ]
+  }
+}

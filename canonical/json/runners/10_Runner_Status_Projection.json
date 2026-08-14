@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNNER_STATUS_PROJECTION_CONTRACT",
+    "name": "Runner Status Projection",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define `run.status` and equivalent status views as read-only projections over explicit Runner/step execution evidence rather than mutable execution state authorities.",
+  "scope": {
+    "owns": [
+      "Runner Status Projection semantics"
+    ],
+    "does_not_own": [
+      "Event definition semantics",
+      "AccessCore policy ownership",
+      "domain operation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNNER_STATUS_PROJECTION",
+      "name": "Runner Status Projection",
+      "purpose": "Define `run.status` and equivalent status views as read-only projections over explicit Runner/step execution evidence rather than mutable execution state authorities.",
+      "parent_topic_refs": [
+        "TOPIC_RUNNERS",
+        "TOPIC_EXECUTION_TRACE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RUNNER_STATUS_PROJECTION_CONTRACT",
+        "RUNNER_EXECUTION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "command": "run.status",
+    "projection_rule": "Status is derived from exact Runner execution and step-execution records.",
+    "readonly_rule": "Status projection cannot mutate Runner execution.",
+    "identity_rule": "Definition status and concrete execution status remain distinct.",
+    "current_rule": "Current execution is selected by explicit execution identity/context, not newest timestamp heuristic alone.",
+    "history_rule": "Prior attempts/runs remain queryable.",
+    "failure_rule": "Unknown/missing execution is explicit rather than synthesized.",
+    "authorization_rule": "Status visibility follows applicable AccessCore/read policy."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RUNNER_EXECUTION_EXPLICIT",
+        "rule": "Runner definition, runner execution, individual step execution, operation dispatch and emitted Events are distinct explicit identities connected by traceable execution/causality relations."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "run.status mutates execution",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "newest timestamp silently selects ambiguous run",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "definition and execution status conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "missing execution synthesized",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "status bypasses read authorization",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RUN",
+      "target_ref": "AIGMOS_RUNNER_EXECUTION_IDENTITY_CONTRACT",
+      "purpose": "Status projects exact executions."
+    }
+  ],
+  "prose": {
+    "summary": "Define `run.status` and equivalent status views as read-only projections over explicit Runner/step execution evidence rather than mutable execution state authorities.",
+    "notes": [
+      "Unlocked pending reconciliation against Routine/Runner, Event/Trigger causality and command dispatch contracts."
+    ]
+  }
+}

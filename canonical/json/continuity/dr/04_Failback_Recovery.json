@@ -1,0 +1,154 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_FAILBACK_RECOVERY_CONTRACT",
+    "name": "Failback and Primary Recovery",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define controlled return from recovery site to repaired primary or new target with data reconciliation, fencing and verification.",
+  "scope": {
+    "owns": [
+      "Failback and Primary Recovery semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "canonical documentation ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_FAILBACK_RECOVERY",
+      "name": "Failback and Primary Recovery",
+      "purpose": "Define controlled return from recovery site to repaired primary or new target with data reconciliation, fencing and verification.",
+      "parent_topic_refs": [
+        "TOPIC_CONTINUITY",
+        "TOPIC_DISASTER_RECOVERY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_FAILBACK_RECOVERY_CONTRACT",
+        "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "OPERATIONS_FAIL_SAFE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_DISASTER_RECOVERY",
+      "name": "Disaster Recovery",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_DISASTER_RECOVERY already referenced by 5 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 5,
+        "distinct_child_topics": 5,
+        "host_contract_ref": "AIGMOS_FAILBACK_RECOVERY_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "source_rule": "Current active recovery site/state is exact.",
+    "target_rule": "Recovered/new primary identity is exact.",
+    "data_rule": "Data reconciliation direction/cutover point is explicit.",
+    "fence_rule": "Conflicting writers are fenced.",
+    "traffic_rule": "Traffic switch is explicit.",
+    "verification_rule": "Post-failback service/data/security checks are explicit.",
+    "history_rule": "Failover/failback lineage remains traceable.",
+    "authority_rule": "Primary restoration does not auto-trigger failback."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "rule": "Release candidate, accepted release, deployment plan, deployment execution, installed artifact, active runtime instance and observed health remain separate identities/states."
+      },
+      {
+        "id": "OPERATIONS_FAIL_SAFE",
+        "rule": "Operational convenience, availability pressure, maintenance state, automation, recovery or rollback never silently bypass validation, authorization, integrity, governance or dispatcher boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "repaired primary automatically takes traffic",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "data conflict ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "recovery writes lost silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "fencing omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "failback erases disaster evidence",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_FAILOVER",
+      "target_ref": "AIGMOS_FAILOVER_EXECUTION_CONTRACT",
+      "purpose": "Failback continues exact recovery lineage."
+    }
+  ],
+  "prose": {
+    "summary": "Define controlled return from recovery site to repaired primary or new target with data reconciliation, fencing and verification.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_DISASTER_RECOVERY solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

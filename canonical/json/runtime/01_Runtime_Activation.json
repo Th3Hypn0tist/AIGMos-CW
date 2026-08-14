@@ -1,0 +1,133 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_ACTIVATION_CONTRACT",
+    "name": "Runtime Activation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit activation of an accepted canonical snapshot into a runtime instance with validation, dependency resolution and controlled state transition.",
+  "scope": {
+    "owns": [
+      "Runtime Activation semantics"
+    ],
+    "does_not_own": [
+      "repository acceptance semantics",
+      "domain business semantics",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_ACTIVATION",
+      "name": "Runtime Activation",
+      "purpose": "Define explicit activation of an accepted canonical snapshot into a runtime instance with validation, dependency resolution and controlled state transition.",
+      "parent_topic_refs": [
+        "TOPIC_REPOSITORY_ACCEPTANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RUNTIME_ACTIVATION_CONTRACT",
+        "ACCEPTANCE_ACTIVATION_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "preconditions": [
+      "target snapshot accepted",
+      "runtime instance resolved",
+      "required dependencies available",
+      "boot/use profile valid"
+    ],
+    "operation_rule": "Activation explicitly names runtime instance and accepted snapshot.",
+    "load_rule": "Runtime loads only the target snapshot's canonical state plus explicit instance/runtime configuration.",
+    "validation_rule": "Runtime-specific validation occurs before commit to active state.",
+    "failure_rule": "Activation failure leaves previous active snapshot intact where transactional activation is supported.",
+    "authority_rule": "Activation operation itself is governed by AccessCore when AC is active.",
+    "repository_rule": "Activation never changes repository acceptance state."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ACCEPTANCE_ACTIVATION_SEPARATION",
+        "rule": "Repository acceptance establishes canonical source state; runtime activation/reload is a separate explicit lifecycle operation over an exact accepted snapshot."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "activation accepts candidate snapshot",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "activation implicitly changes repository accepted state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "target runtime unresolved",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "failed activation leaves ambiguous mixed state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "AccessCore bypassed when active",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ACTIVE",
+      "target_ref": "AIGMOS_RUNTIME_ACTIVE_SNAPSHOT_CONTRACT",
+      "purpose": "Successful activation updates active snapshot binding."
+    },
+    {
+      "id": "REF_REPL",
+      "target_ref": "AIGMOS_CANONICAL_CLEAN_TREE_REPLACEMENT_CONTRACT",
+      "purpose": "Repository replacement remains separate."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit activation of an accepted canonical snapshot into a runtime instance with validation, dependency resolution and controlled state transition.",
+    "notes": [
+      "Unlocked pending reconciliation against runtime lifecycle, repository acceptance and boot-profile contracts."
+    ]
+  }
+}

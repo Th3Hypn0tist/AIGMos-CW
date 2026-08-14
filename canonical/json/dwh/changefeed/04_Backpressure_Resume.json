@@ -1,0 +1,161 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_CHANGEFEED_BACKPRESSURE_CONTRACT",
+    "name": "DWH Changefeed Backpressure and Resume",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define bounded delivery queues, acknowledgment/cursor advancement, pause/resume and replay semantics so slow consumers cannot create silent loss, unbounded growth or duplicate accepted processing.",
+  "scope": {
+    "owns": [
+      "DWH Changefeed Backpressure and Resume semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "Event execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_CHANGEFEED_BACKPRESSURE",
+      "name": "DWH Changefeed Backpressure and Resume",
+      "purpose": "Define bounded delivery queues, acknowledgment/cursor advancement, pause/resume and replay semantics so slow consumers cannot create silent loss, unbounded growth or duplicate accepted processing.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_CHANGEFEED_CDC"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_CHANGEFEED_BACKPRESSURE_CONTRACT",
+        "CHANGEFEED_NONEXECUTION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_CHANGEFEED_CDC",
+      "name": "Changefeed CDC",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_CHANGEFEED_CDC already referenced by 6 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 6,
+        "distinct_child_topics": 6,
+        "host_contract_ref": "AIGMOS_DWH_CHANGEFEED_BACKPRESSURE_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "queue_rule": "Per-subscription delivery buffering has explicit size/age/rate bounds.",
+    "ack_rule": "Acknowledgment semantics are explicit and distinguish delivered from accepted/processed where needed.",
+    "cursor_rule": "Cursor advances according to explicit acknowledgment profile, not merely network send.",
+    "pause_rule": "Pause stops new active delivery while preserving explicit resume position/profile.",
+    "resume_rule": "Resume begins from exact accepted cursor/watermark evidence.",
+    "replay_rule": "Replay uses exact change identities and is bounded/idempotent.",
+    "overflow_rule": "Queue overflow policy is explicit: block, drop-with-evidence, fail, resnapshot or other declared policy.",
+    "authorization_rule": "Resume/replay rechecks applicable current subscription/source governance.",
+    "failure_rule": "Lost/overflowed range is surfaced explicitly and never represented as complete."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "CHANGEFEED_NONEXECUTION",
+        "rule": "DWH changefeeds expose committed mutation evidence as ordered provenance-bearing data/events; subscription delivery never directly executes downstream operations and never replaces the underlying record/revision identities."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "cursor advances on send when ack required",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "queue unbounded",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "overflow silently drops changes",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "resume position guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "replay duplicates accepted processing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "stale authorization assumed indefinitely",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SUB",
+      "target_ref": "AIGMOS_DWH_CHANGEFEED_SUBSCRIPTION_CONTRACT",
+      "purpose": "Backpressure state belongs to exact subscription runtime."
+    },
+    {
+      "id": "REF_SYNC",
+      "target_ref": "AIGMOS_DWH_OFFLINE_QUEUE_REPLAY_CONTRACT",
+      "purpose": "Replay follows bounded idempotent semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define bounded delivery queues, acknowledgment/cursor advancement, pause/resume and replay semantics so slow consumers cannot create silent loss, unbounded growth or duplicate accepted processing.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH mutation/persistence, Event causality, sync and remote-sharing contracts.",
+      "Pass 6 hosts grouping-only Topic TOPIC_CHANGEFEED_CDC solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

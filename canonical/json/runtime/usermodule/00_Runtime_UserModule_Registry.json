@@ -1,0 +1,179 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT",
+    "name": "Runtime UserModule Registry",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define UserModule identity and registry semantics so each module has stable logical identity independent of filesystem path, runtime instance state or presentation.",
+  "scope": {
+    "owns": [
+      "Runtime UserModule Registry semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+      "name": "UserModule Registry",
+      "purpose": "Define UserModule identity and registry semantics so each module has stable logical identity independent of filesystem path, runtime instance state or presentation.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_USER_MODULES"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+        "TOPIC_CORE_IDENTITY_RESOLUTION"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT",
+        "USERMODULE_SEMANTICS_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_UM_REGISTER",
+        "OP_UM_RESOLVE",
+        "OP_UM_ENUMERATE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_UM_REGISTER",
+        "name": "Register UserModule definition",
+        "inputs": [
+          "validated UserModule definition"
+        ],
+        "outputs": [
+          "registered UserModule identity"
+        ],
+        "errors": [
+          "identity collision",
+          "invalid module shape"
+        ],
+        "side_effects": [
+          "UserModule registry updated"
+        ]
+      },
+      {
+        "id": "OP_UM_RESOLVE",
+        "name": "Resolve UserModule identity",
+        "inputs": [
+          "literal UserModule id"
+        ],
+        "outputs": [
+          "exact module definition"
+        ],
+        "errors": [
+          "module unresolved",
+          "module ambiguous"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_UM_ENUMERATE",
+        "name": "Enumerate UserModules",
+        "inputs": [
+          "registry filter"
+        ],
+        "outputs": [
+          "registered module identities"
+        ],
+        "errors": [],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "symbol_root": "#UM",
+    "identity_rule": "UserModule identity is explicit and stable; filesystem path is storage, not identity.",
+    "registry_rule": "#UM resolves registered UserModule semantic identities and instances.",
+    "collision_rule": "Duplicate active logical identities are rejected.",
+    "path_rule": "Moving a module source file does not redefine its semantic identity when the declared identity is unchanged.",
+    "authority_rule": "Registration does not grant runtime authority beyond the module's declared capabilities and applicable policy.",
+    "instance_rule": "Module definition identity and runtime instance identity are separate when multiple instances are permitted."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "USERMODULE_SEMANTICS_EXPLICIT",
+        "rule": "UserModule identity, type, lifecycle, bindings and visibility are explicit canonical/runtime semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "UserModule identity inferred solely from directory path",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "duplicate active UserModule identity accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "module registration grants undeclared authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "runtime instance state overwrites module definition identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "display name used as semantic identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SYMBOLS",
+      "target_ref": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
+      "purpose": "#UM is a registered runtime symbol root."
+    },
+    {
+      "id": "REF_IDENTITY",
+      "target_ref": "AIGMOS_CORE_CANONICAL_IDENTITY_RESOLUTION_CONTRACT",
+      "purpose": "UserModule identities resolve deterministically."
+    }
+  ],
+  "prose": {
+    "summary": "Define UserModule identity and registry semantics so each module has stable logical identity independent of filesystem path, runtime instance state or presentation.",
+    "notes": [
+      "Unlocked until reconciled against existing UserModule contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_PORTFOLIOCORE_CONTRACT",
+    "name": "PortfolioCore",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define PortfolioCore as the owner of identity-linked references and descriptive evidence metadata without owning merit scoring, recommendations, trust or Tier calculation.",
+  "scope": {
+    "owns": [
+      "PortfolioCore semantics"
+    ],
+    "does_not_own": [
+      "presentation semantics",
+      "transport implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_PORTFOLIOCORE",
+      "name": "PortfolioCore",
+      "purpose": "Define PortfolioCore as the owner of identity-linked references and descriptive evidence metadata without owning merit scoring, recommendations, trust or Tier calculation.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_IDENTITY"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_IDENTITYCORE",
+        "TOPIC_CORE_PROVENANCE"
+      ],
+      "member_refs": [
+        "AIGMOS_PORTFOLIOCORE_CONTRACT",
+        "IDENTITY_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_PORTFOLIO_ADD_REFERENCE",
+        "OP_PORTFOLIO_RESOLVE_EVIDENCE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_PORTFOLIO_ADD_REFERENCE",
+        "name": "Add portfolio reference",
+        "inputs": [
+          "identity",
+          "reference",
+          "metadata"
+        ],
+        "outputs": [
+          "portfolio entry"
+        ],
+        "errors": [
+          "reference invalid",
+          "authority denied"
+        ],
+        "side_effects": [
+          "portfolio updated"
+        ]
+      },
+      {
+        "id": "OP_PORTFOLIO_RESOLVE_EVIDENCE",
+        "name": "Resolve portfolio evidence",
+        "inputs": [
+          "portfolio entry refs"
+        ],
+        "outputs": [
+          "linked evidence set"
+        ],
+        "errors": [
+          "reference unresolved"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "owns": [
+      "portfolio references",
+      "reference metadata",
+      "evidence links"
+    ],
+    "does_not_own": [
+      "merits",
+      "points",
+      "tiers",
+      "recommendations",
+      "trust",
+      "Project execution semantics"
+    ],
+    "evidence_rule": "Portfolio entries reference evidence; they do not convert evidence into merit by themselves.",
+    "identity_rule": "Portfolio entries belong to one explicit identity.",
+    "projection_rule": "CV/profile views are projections over PortfolioCore plus other explicitly composed identity Topics, not PortfolioCore authority.",
+    "provenance_rule": "Reference provenance remains explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_BOUNDARY_EXPLICIT",
+        "rule": "Identity, portfolio evidence and merit semantics have explicit owners and cannot silently substitute for one another."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "portfolio reference treated as verified merit automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "PortfolioCore calculates Tier/points/trust",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "portfolio entry has no explicit owning identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "projection/CV view becomes portfolio authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_IDENTITY",
+      "target_ref": "AIGMOS_IDENTITYCORE_CONTRACT",
+      "purpose": "Portfolio entries bind to explicit identities."
+    }
+  ],
+  "prose": {
+    "summary": "Define PortfolioCore as the owner of identity-linked references and descriptive evidence metadata without owning merit scoring, recommendations, trust or Tier calculation.",
+    "notes": [
+      "Unlocked until reconciled against existing IAM/PortfolioCore/MeritCore contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

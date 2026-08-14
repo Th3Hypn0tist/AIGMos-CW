@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_ACCESSCORE_DECISION_MONITOR_CONTRACT",
+    "name": "AccessCore Policy and Decision Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for policies, rights, protected resource scopes, assurance requirements and authorization decisions.",
+  "scope": {
+    "owns": [
+      "AccessCore Policy and Decision Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime operation implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_ACCESSCORE_DECISION_MONITOR",
+      "name": "AccessCore Policy and Decision Monitor",
+      "purpose": "Define a read-only Expose monitor for policies, rights, protected resource scopes, assurance requirements and authorization decisions.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_ACCESSCORE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_ACCESSCORE_DECISION_MONITOR_CONTRACT",
+        "IDENTITY_AUTHORITY_SEPARATION",
+        "FAIL_CLOSED_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "policy registry/revision",
+      "rights/operation mappings",
+      "resource scopes",
+      "subject/group/role applicability",
+      "assurance requirement",
+      "decision result/reason",
+      "conflict/default evidence"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Policy, right, resource, subject/session, decision and execution identities remain distinct.",
+    "action_rule": "edit-policy/test-decision/apply-policy operations invoke separate authorized workflows.",
+    "authority_rule": "Viewing or testing policy grants no protected-resource authority.",
+    "graph_rule": "Policy→right→resource→decision edges correspond only to explicit refs.",
+    "failure_rule": "deny/conflict/unknown/challenge remain distinct."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_AUTHORITY_SEPARATION",
+        "rule": "Identity, authentication assurance, authorization policy, authorization decision, delegation and runtime execution remain separate machine-significant identities/evidence; no one layer silently substitutes for another."
+      },
+      {
+        "id": "FAIL_CLOSED_AUTHORITY",
+        "rule": "Ambiguous, missing, stale or unverifiable authority for a protected effect fails closed rather than inheriting trust from locality, transport reachability, process ownership, UI visibility or previous success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor grants rights by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "decision test executes operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "policy/resource identities conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "visual hierarchy invents scope",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "denial reason hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DEC",
+      "target_ref": "AIGMOS_AUTHORIZATION_DECISION_CONTRACT",
+      "purpose": "Monitor projects exact decisions."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for policies, rights, protected resource scopes, assurance requirements and authorization decisions.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

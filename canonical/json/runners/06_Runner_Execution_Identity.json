@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNNER_EXECUTION_IDENTITY_CONTRACT",
+    "name": "Runner Execution Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each concrete Runner invocation as an explicit execution identity separate from the reusable Runner/Routine definition.",
+  "scope": {
+    "owns": [
+      "Runner Execution Identity semantics"
+    ],
+    "does_not_own": [
+      "Event definition semantics",
+      "AccessCore policy ownership",
+      "domain operation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNNER_EXECUTION_IDENTITY",
+      "name": "Runner Execution Identity",
+      "purpose": "Define each concrete Runner invocation as an explicit execution identity separate from the reusable Runner/Routine definition.",
+      "parent_topic_refs": [
+        "TOPIC_RUNNERS",
+        "TOPIC_EXECUTION_TRACE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RUNNER_EXECUTION_IDENTITY_CONTRACT",
+        "RUNNER_EXECUTION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "definition_rule": "Runner/Routine definition identity is stable and reusable.",
+    "execution_rule": "Every concrete invocation receives a distinct execution identity.",
+    "parent_rule": "Execution records the exact invoking Event/Trigger/command/parent-run ref where applicable.",
+    "snapshot_rule": "Execution binds to the exact canonical/runtime snapshot under which it ran.",
+    "actor_rule": "Caller/session/authority context is explicit where governed.",
+    "time_rule": "Start/end/status metadata belongs to execution identity, not definition.",
+    "result_rule": "Execution result and emitted Events reference the execution identity."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RUNNER_EXECUTION_EXPLICIT",
+        "rule": "Runner definition, runner execution, individual step execution, operation dispatch and emitted Events are distinct explicit identities connected by traceable execution/causality relations."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "definition identity reused as execution identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "execution has no invoking source ref",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "runtime snapshot unknown",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "caller context lost on governed execution",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "result detached from execution",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CAUSE",
+      "target_ref": "AIGMOS_EVENT_CAUSALITY_EDGE_CONTRACT",
+      "purpose": "Runner invocation participates in explicit causality."
+    }
+  ],
+  "prose": {
+    "summary": "Define each concrete Runner invocation as an explicit execution identity separate from the reusable Runner/Routine definition.",
+    "notes": [
+      "Unlocked pending reconciliation against Routine/Runner, Event/Trigger causality and command dispatch contracts."
+    ]
+  }
+}

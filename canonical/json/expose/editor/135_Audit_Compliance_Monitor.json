@@ -1,0 +1,138 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_AUDIT_COMPLIANCE_MONITOR_CONTRACT",
+    "name": "Audit and Compliance Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for audit events, evidence-chain integrity, access/mutation trails, retention and compliance findings.",
+  "scope": {
+    "owns": [
+      "Audit and Compliance Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "runtime execution authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_AUDIT_COMPLIANCE_MONITOR",
+      "name": "Audit and Compliance Monitor",
+      "purpose": "Define a read-only Expose monitor for audit events, evidence-chain integrity, access/mutation trails, retention and compliance findings.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_AUDIT"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_AUDIT_COMPLIANCE_MONITOR_CONTRACT",
+        "GOVERNANCE_EVIDENCE_SEPARATION",
+        "FAIL_CLOSED_PROTECTED_DATA",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "audit event stream",
+      "actor/operation/target refs",
+      "authorization/governance decisions",
+      "evidence chain integrity",
+      "access/denial events",
+      "admin/mutation events",
+      "retention/hold state",
+      "findings"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Audit event, operation, authorization decision, resource, source data and compliance finding identities remain distinct.",
+    "action_rule": "export-audit/verify-chain/place-hold operations use separate authorized workflows.",
+    "authority_rule": "Viewing audit grants no source/admin authority.",
+    "redaction_rule": "Protected payload/secret fields are minimized/redacted.",
+    "failure_rule": "gap/corruption/unknown/retention-conflict states remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "GOVERNANCE_EVIDENCE_SEPARATION",
+        "rule": "Policy, decision, evidence, audit record, consent, incident and compliance result remain separate machine-significant identities; no evidence artifact silently becomes source data, authorization or runtime authority."
+      },
+      {
+        "id": "FAIL_CLOSED_PROTECTED_DATA",
+        "rule": "Ambiguous or unresolved governance for protected data fails closed; UI visibility, transport reachability, cache presence, role title, prior access or audit-log presence never substitute for an explicit valid policy decision."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor repairs by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "audit event shown as source data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "viewing grants admin",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "denied payload leaked",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "chain corruption hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CHAIN",
+      "target_ref": "AIGMOS_AUDIT_EVIDENCE_CHAIN_CONTRACT",
+      "purpose": "Monitor projects exact audit chain integrity."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for audit events, evidence-chain integrity, access/mutation trails, retention and compliance findings.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

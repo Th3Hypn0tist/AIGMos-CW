@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_VIEW_MODULE_UI_ONLY_CONTRACT",
+    "name": "View Module UI-Only Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define view-type UserModules as read/projection-oriented UI surfaces with no independent domain mutation or authority semantics.",
+  "scope": {
+    "owns": [
+      "View Module UI-Only Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain data semantics",
+      "AccessCore policy ownership",
+      "protocol transport ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_VIEW_MODULE_UI_ONLY",
+      "name": "View Module UI-Only Boundary",
+      "purpose": "Define view-type UserModules as read/projection-oriented UI surfaces with no independent domain mutation or authority semantics.",
+      "parent_topic_refs": [
+        "TOPIC_USERMODULE_TYPES",
+        "TOPIC_INPUT_ADAPTER_VIEW"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_VIEW_MODULE_UI_ONLY_CONTRACT",
+        "MODULE_TYPE_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "type": "view",
+    "projection_rule": "View projects existing canonical/runtime data into a human-facing representation.",
+    "ownership_rule": "View does not own the domain semantics it displays.",
+    "mutation_rule": "Any user action that changes state invokes a separate declared canonical operation owned elsewhere.",
+    "layout_rule": "UI layout/grouping/order never creates semantic containment, dependency or authority.",
+    "identity_rule": "Widget/control identity does not replace represented resource identity.",
+    "authority_rule": "Visibility of a control/resource does not grant operation authority.",
+    "failure_rule": "Unavailable/denied data is shown as such rather than synthesized."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MODULE_TYPE_BOUNDARY",
+        "rule": "Command, input, adapter and view module types have distinct effect boundaries: command is one-shot operation, input writes declared instance data, adapter mounts/translates symbols without owning them, and view is UI-only."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "view directly owns domain mutation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "UI nesting creates semantic parent",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "visible control grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "widget identity replaces resource identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "denied data synthesized as valid",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EXPOSE",
+      "target_ref": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT",
+      "purpose": "Views follow presentation non-authority semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define view-type UserModules as read/projection-oriented UI surfaces with no independent domain mutation or authority semantics.",
+    "notes": [
+      "Unlocked pending reconciliation against UserModule type, DWH, protocol and Expose contracts."
+    ]
+  }
+}

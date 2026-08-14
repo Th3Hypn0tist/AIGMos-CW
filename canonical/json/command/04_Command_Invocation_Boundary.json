@@ -1,0 +1,153 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_COMMAND_INVOCATION_BOUNDARY_CONTRACT",
+    "name": "Command Invocation Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define command invocation as explicit conversion from parsed command/context into canonical Operation Request or declared Routine/q/import/export request before normal runtime gating.",
+  "scope": {
+    "owns": [
+      "Command Invocation Boundary semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_COMMAND_INVOCATION_BOUNDARY",
+      "name": "Command Invocation Boundary",
+      "purpose": "Define command invocation as explicit conversion from parsed command/context into canonical Operation Request or declared Routine/q/import/export request before normal runtime gating.",
+      "parent_topic_refs": [
+        "TOPIC_COMMANDS",
+        "TOPIC_EXECUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_COMMAND_INVOCATION_BOUNDARY_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_EXECUTION",
+      "name": "Execution",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_EXECUTION already referenced by 3 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 3,
+        "distinct_child_topics": 3,
+        "host_contract_ref": "AIGMOS_COMMAND_INVOCATION_BOUNDARY_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "request_rule": "Invocation creates a distinct request identity.",
+    "command_rule": "Request references exact command node identity.",
+    "operation_rule": "Effectful command maps to exact canonical operation/request boundary.",
+    "routine_rule": "Routine-related command may create an exact Routine invocation.",
+    "q_rule": "q-family command may create an exact model inference request.",
+    "authorization_rule": "CLI/shell ownership does not bypass IAM/AccessCore.",
+    "dispatcher_rule": "Effectful command cannot call implementation outside dispatcher path."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "shell process trusted as admin",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "command calls function directly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "same invocation reused across retries",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "q output executes automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "command visibility grants rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REQ",
+      "target_ref": "AIGMOS_OPERATION_REQUEST_CONTRACT",
+      "purpose": "Effectful commands create canonical operation requests."
+    }
+  ],
+  "prose": {
+    "summary": "Define command invocation as explicit conversion from parsed command/context into canonical Operation Request or declared Routine/q/import/export request before normal runtime gating.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_EXECUTION solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

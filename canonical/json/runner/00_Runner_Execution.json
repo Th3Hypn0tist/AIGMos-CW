@@ -1,0 +1,145 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNNER_EXECUTION_CONTRACT",
+    "name": "Runner Execution",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each Routine execution as a transient runner identity carrying routine snapshot/ref, caller context, current step, state, bounds and result provenance.",
+  "scope": {
+    "owns": [
+      "Runner Execution semantics"
+    ],
+    "does_not_own": [
+      "command implementation semantics",
+      "AccessCore policy",
+      "arbitrary hidden scheduler state"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNNER_EXECUTION",
+      "name": "Runner Execution",
+      "purpose": "Define each Routine execution as a transient runner identity carrying routine snapshot/ref, caller context, current step, state, bounds and result provenance.",
+      "parent_topic_refs": [
+        "TOPIC_ROUTINE",
+        "TOPIC_RUNNER"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RUNNER_EXECUTION_CONTRACT",
+        "ROUTINE_RUNNER_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each run has a unique runtime runner/execution identity.",
+    "definition_rule": "Runner references the exact Routine definition/version/snapshot being executed.",
+    "states": [
+      "created",
+      "ready",
+      "running",
+      "waiting",
+      "completed",
+      "failed",
+      "cancelled",
+      "timed_out"
+    ],
+    "step_rule": "Current/completed step state is explicit runtime state.",
+    "caller_rule": "Caller/session identity context is retained.",
+    "bound_rule": "Runner has finite timeout/resource/concurrency bounds according to policy.",
+    "result_rule": "Runner result is inert data plus execution provenance.",
+    "cleanup_rule": "All terminal states converge on deterministic cleanup."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ROUTINE_RUNNER_EXPLICIT",
+        "rule": "Routine definitions and runner executions are separate canonical identities; runners execute explicit ordered routine content through the normal governed dispatch boundary."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "two runs share ambiguous runtime identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "routine definition mutates implicitly during active run",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "runner lacks caller context",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "unbounded runner execution",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "terminal state skips cleanup",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "result auto-executes another action",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ROUTINE",
+      "target_ref": "AIGMOS_ROUTINE_DEFINITION_CONTRACT",
+      "purpose": "Runner executes a specific Routine definition."
+    },
+    {
+      "id": "REF_DISPATCH",
+      "target_ref": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+      "purpose": "Each effectful step uses governed dispatch."
+    }
+  ],
+  "prose": {
+    "summary": "Define each Routine execution as a transient runner identity carrying routine snapshot/ref, caller context, current step, state, bounds and result provenance.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Routine/Runner/Event/Trigger contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

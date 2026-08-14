@@ -1,0 +1,132 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CANONICAL_SOURCE_REGISTRY_CONTRACT",
+    "name": "Canonical Source Registry",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the explicit registry/index of candidate canonical source artifacts and their source roles, canonical identities, physical locations and active/historical status.",
+  "scope": {
+    "owns": [
+      "Canonical Source Registry semantics"
+    ],
+    "does_not_own": [
+      "Contract Format bootstrap semantics",
+      "canonical contract domain semantics",
+      "runtime business authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CANONICAL_SOURCE_REGISTRY",
+      "name": "Canonical Source Registry",
+      "purpose": "Define the explicit registry/index of candidate canonical source artifacts and their source roles, canonical identities, physical locations and active/historical status.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_SOURCE_RESOLUTION",
+        "TOPIC_REPOSITORY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CANONICAL_SOURCE_REGISTRY_CONTRACT",
+        "SOURCE_RESOLUTION_DETERMINISTIC",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "entry_fields": [
+      "source_artifact_id",
+      "canonical_identity_ref",
+      "source_role",
+      "location_binding",
+      "status",
+      "format_version",
+      "provenance"
+    ],
+    "identity_rule": "Source artifact identity and canonical semantic identity are distinct.",
+    "location_rule": "Filesystem path, archive member or remote locator is a physical binding.",
+    "role_rule": "Every machine-significant source artifact declares/resolves an explicit source role.",
+    "duplicate_rule": "Multiple physical artifacts may reference the same semantic identity only if source-role/precedence/reconciliation rules make the authoritative interpretation unambiguous.",
+    "active_rule": "Active accepted definition sources are distinguishable from candidate, generated, historical and reconciliation sources.",
+    "reader_rule": "Generic source readers can build the source set from the registry/manifest rather than filesystem naming heuristics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SOURCE_RESOLUTION_DETERMINISTIC",
+        "rule": "Canonical source resolution is deterministic, exact-identity based and provenance-preserving; filesystem location, transport or freshness never silently changes semantic authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "source artifact has no source role",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "physical path used as semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "same semantic identity has ambiguous competing active definitions",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "historical/generated source treated as active definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "reader requires undocumented filename heuristic",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ROLE",
+      "target_ref": "AIGMOS_CANONICAL_SOURCE_ROLE_REGISTRY_CONTRACT",
+      "purpose": "Registry entries use explicit source roles."
+    }
+  ],
+  "prose": {
+    "summary": "Define the explicit registry/index of candidate canonical source artifacts and their source roles, canonical identities, physical locations and active/historical status.",
+    "notes": [
+      "Unlocked pending reconciliation against BootstrapResolution, source-role and repository validation contracts."
+    ]
+  }
+}

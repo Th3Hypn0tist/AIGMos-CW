@@ -1,0 +1,158 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT",
+    "name": "Topic Membership",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Topic membership as explicit semantic classification/grouping: every canonical tree node belongs to one or more Topics or is explicitly classified as outsider.",
+  "scope": {
+    "owns": [
+      "Topic Membership semantics"
+    ],
+    "does_not_own": [
+      "runtime implementation details",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TOPIC_SYSTEM",
+      "name": "Topic System",
+      "purpose": "Define Topic membership as explicit semantic classification/grouping: every canonical tree node belongs to one or more Topics or is explicitly classified as outsider.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_STRUCTURE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT",
+        "TOPIC_GRAPH_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_TOPIC_ASSIGN",
+        "OP_TOPIC_RESOLVE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_TOPIC_ASSIGN",
+        "name": "Assign node to Topic",
+        "inputs": [
+          "node_ref",
+          "topic_ref"
+        ],
+        "outputs": [
+          "Topic membership"
+        ],
+        "errors": [
+          "node unresolved",
+          "Topic unresolved"
+        ],
+        "side_effects": [
+          "Topic graph updated"
+        ]
+      },
+      {
+        "id": "OP_TOPIC_RESOLVE",
+        "name": "Resolve node Topics",
+        "inputs": [
+          "node_ref"
+        ],
+        "outputs": [
+          "all direct/inherited/composed Topic memberships"
+        ],
+        "errors": [
+          "node unresolved"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "classification_rule": "Every machine-significant canonical node has at least one Topic membership unless explicitly outsider.",
+    "multiplicity_rule": "A node may belong to multiple Topics simultaneously.",
+    "grouping_rule": "Topic membership groups semantics for recursive reading and traversal; it does not imply containment, ownership or authority.",
+    "locality_rule": "Topic declarations belong with the semantic node/subtree whose material they group rather than in a mandatory separate Topic directory.",
+    "question_rule": "When adding semantics, first ask whether it belongs under an existing Topic; create a new Topic when no existing Topic expresses the grouping cleanly.",
+    "abundance_rule": "Topic count is not artificially minimized; semantic readability takes precedence.",
+    "recursive_rule": "A generic reader can recursively discover Topic membership from canonical nodes."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TOPIC_GRAPH_EXPLICIT",
+        "rule": "Every machine-significant canonical node is classified by explicit Topic membership or explicitly marked outsider; Topics may inherit and compose other Topics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "canonical node has neither Topic membership nor outsider classification",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "multiple Topic membership rejected",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "Topic membership treated as containment/ownership/authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "Topic information requires a separate disconnected directory to interpret local semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "new semantics left unclassified because Topic count is being minimized",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CONTAINMENT",
+      "target_ref": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT",
+      "purpose": "Topic grouping is distinct from containment."
+    }
+  ],
+  "prose": {
+    "summary": "Define Topic membership as explicit semantic classification/grouping: every canonical tree node belongs to one or more Topics or is explicitly classified as outsider.",
+    "notes": [
+      "Unlocked until reconciled against the assembled 1.4 Topic graph and repository-wide validation."
+    ]
+  }
+}

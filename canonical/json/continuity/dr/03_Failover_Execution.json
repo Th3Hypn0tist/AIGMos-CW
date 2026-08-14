@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_FAILOVER_EXECUTION_CONTRACT",
+    "name": "Failover Execution",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define concrete authorized failover execution with exact primary fencing, recovery activation, traffic transition and post-failover validation.",
+  "scope": {
+    "owns": [
+      "Failover Execution semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "canonical documentation ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_FAILOVER_EXECUTION",
+      "name": "Failover Execution",
+      "purpose": "Define concrete authorized failover execution with exact primary fencing, recovery activation, traffic transition and post-failover validation.",
+      "parent_topic_refs": [
+        "TOPIC_CONTINUITY",
+        "TOPIC_DISASTER_RECOVERY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_FAILOVER_EXECUTION_CONTRACT",
+        "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "OPERATIONS_FAIL_SAFE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each failover execution has distinct identity.",
+    "plan_rule": "Exact failover plan is referenced.",
+    "fence_rule": "Primary fencing/isolation result is explicit before conflicting recovery activation where required.",
+    "activation_rule": "Recovery services activate explicitly.",
+    "traffic_rule": "Traffic switch result is explicit.",
+    "validation_rule": "Data/service/security validation follows activation.",
+    "result_states": [
+      "completed",
+      "failed",
+      "partial",
+      "split_brain_risk",
+      "cancelled"
+    ],
+    "authority_rule": "Incident severity alone does not authorize failover."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "rule": "Release candidate, accepted release, deployment plan, deployment execution, installed artifact, active runtime instance and observed health remain separate identities/states."
+      },
+      {
+        "id": "OPERATIONS_FAIL_SAFE",
+        "rule": "Operational convenience, availability pressure, maintenance state, automation, recovery or rollback never silently bypass validation, authorization, integrity, governance or dispatcher boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "both primary and recovery writable without fencing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "failover by DNS change only considered complete",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "partial hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "incident auto-failover bypasses auth",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "validation skipped",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PLAN",
+      "target_ref": "AIGMOS_FAILOVER_PLAN_CONTRACT",
+      "purpose": "Execution instantiates exact failover plan."
+    }
+  ],
+  "prose": {
+    "summary": "Define concrete authorized failover execution with exact primary fencing, recovery activation, traffic transition and post-failover validation.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

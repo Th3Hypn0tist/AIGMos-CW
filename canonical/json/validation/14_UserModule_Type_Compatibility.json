@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_USERMODULE_TYPE_COMPATIBILITY_VALIDATION_CONTRACT",
+    "name": "UserModule Type Compatibility Validation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define validation that a UserModule's declared primary type matches its exposed interfaces, lifecycle, writes/effects and namespace behavior, preventing type labels from becoming cosmetic metadata.",
+  "scope": {
+    "owns": [
+      "UserModule Type Compatibility Validation semantics"
+    ],
+    "does_not_own": [
+      "unrelated module types",
+      "AccessCore policy",
+      "presentation semantics outside declared view scope"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_USERMODULE_TYPE_COMPATIBILITY_VALIDATION",
+      "name": "UserModule Type Compatibility Validation",
+      "purpose": "Define validation that a UserModule's declared primary type matches its exposed interfaces, lifecycle, writes/effects and namespace behavior, preventing type labels from becoming cosmetic metadata.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+        "TOPIC_USERMODULE_TYPES"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_USERMODULE_TYPE_COMPATIBILITY_VALIDATION_CONTRACT",
+        "TYPE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "checks": [
+      "declared type present",
+      "allowed interfaces",
+      "allowed effects",
+      "namespace/mount behavior",
+      "data writes",
+      "view mutation boundary",
+      "adapter nonauthority",
+      "input inertness"
+    ],
+    "command_rule": "Command type may execute only through explicit command/operation dispatch.",
+    "input_rule": "Input type may ingest/write declared data but cannot directly execute arbitrary effects.",
+    "adapter_rule": "Adapter type may translate/mount but cannot own hidden command/effect semantics.",
+    "view_rule": "View type may project/read and invoke separate explicit operations but cannot own backend mutation semantics.",
+    "composition_rule": "Composite/MetaModule behavior must declare the composition instead of mislabeling a broad module as one narrow type.",
+    "release_rule": "Type-boundary violation blocks lock/repository acceptance."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TYPE_BOUNDARY_EXPLICIT",
+        "rule": "UserModule type behavior is explicit and narrow: input acquires/writes inert data, adapter translates/mounts, view projects, and no type silently acquires another type's authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "declared type disagrees with actual canonical interfaces/effects",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "view owns hidden backend mutation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "input directly executes payload",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "adapter owns hidden effects",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "broad composite misdeclared as narrow single type",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "repository accepted with type-boundary violation",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TYPE",
+      "target_ref": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT",
+      "purpose": "Validator checks primary type semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define validation that a UserModule's declared primary type matches its exposed interfaces, lifecycle, writes/effects and namespace behavior, preventing type labels from becoming cosmetic metadata.",
+    "notes": [
+      "Unlocked pending reconciliation against existing UserModule/Input/Adapter/View contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

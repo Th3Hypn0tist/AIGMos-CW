@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MCP_TOOL_PROJECTION_CONTRACT",
+    "name": "MCP to Tool Projection",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the derived projection from validated MCP advertisements/bindings into the AIGMos Tool surface, preserving origin, local identity, schema and permission boundaries.",
+  "scope": {
+    "owns": [
+      "MCP to Tool Projection semantics"
+    ],
+    "does_not_own": [
+      "remote server internal semantics",
+      "unrelated runtime authority",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MCP_TOOL_PROJECTION",
+      "name": "MCP to Tool Projection",
+      "purpose": "Define the derived projection from validated MCP advertisements/bindings into the AIGMos Tool surface, preserving origin, local identity, schema and permission boundaries.",
+      "parent_topic_refs": [
+        "TOPIC_MCP_TOOL_SCHEMA",
+        "TOPIC_RUNTIME_TOOL_REGISTRY",
+        "TOPIC_CORE_PROVENANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MCP_TOOL_PROJECTION_CONTRACT",
+        "MCP_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "projection_rule": "MCP -> Tool is a derived registration/projection from a validated binding.",
+    "origin_rule": "Projected tool retains MCP server/tool origin provenance.",
+    "identity_rule": "Projected local tool identity is explicit and stable for the lifetime of its binding.",
+    "availability_rule": "Remote availability affects runtime availability state, not local semantic identity.",
+    "schema_rule": "Projected tool exposes only the validated local schema/effect surface.",
+    "removal_rule": "If binding/server is removed, projected runtime availability is removed without rewriting unrelated tool identities.",
+    "model_rule": "Model may see/use only tools that are both projected/available and permitted by current invocation policy."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MCP_BOUNDARY_EXPLICIT",
+        "rule": "MCP server identity, transport, tool schema, lifecycle and authority remain explicit and do not inherit trust from connectivity or advertised metadata."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "projection loses MCP origin provenance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "server availability becomes local semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "projected tool exposes unvalidated remote fields/effects",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "removing MCP server deletes unrelated local tool identities",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "model sees/invokes tool solely because remote server advertises it",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_BIND",
+      "target_ref": "AIGMOS_MCP_TOOL_SCHEMA_BINDING_CONTRACT",
+      "purpose": "Projection requires validated binding."
+    },
+    {
+      "id": "REF_TOOL",
+      "target_ref": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT",
+      "purpose": "Projection targets runtime tool registry."
+    }
+  ],
+  "prose": {
+    "summary": "Define the derived projection from validated MCP advertisements/bindings into the AIGMos Tool surface, preserving origin, local identity, schema and permission boundaries.",
+    "notes": [
+      "Unlocked pending reconciliation against existing MCP/tool/runtime contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

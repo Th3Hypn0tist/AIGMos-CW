@@ -1,0 +1,178 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT",
+    "name": "Core Capability and Authority Separation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define capability existence and authority to use that capability as separate canonical questions, preventing policy, payload, Topic or ownership data from creating functionality that is not explicitly defined.",
+  "scope": {
+    "owns": [
+      "Core Capability and Authority Separation semantics"
+    ],
+    "does_not_own": [
+      "domain-specific semantics",
+      "runtime implementation details"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+      "name": "Capability and Authority",
+      "purpose": "Define capability existence and authority to use that capability as separate canonical questions, preventing policy, payload, Topic or ownership data from creating functionality that is not explicitly defined.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_STRUCTURE_AUTHORITY"
+      ],
+      "member_refs": [
+        "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT",
+        "EXPLICIT_MACHINE_SEMANTICS",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_CAPABILITY_RESOLVE",
+        "OP_AUTHORITY_RESOLVE",
+        "OP_CAPABILITY_AUTHORITY_VALIDATE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_CAPABILITY_RESOLVE",
+        "name": "Resolve capability",
+        "inputs": [
+          "declared capability surface"
+        ],
+        "outputs": [
+          "capability exists/absent"
+        ],
+        "errors": [
+          "capability undefined"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_AUTHORITY_RESOLVE",
+        "name": "Resolve authority",
+        "inputs": [
+          "authority declarations",
+          "policy context"
+        ],
+        "outputs": [
+          "allowed/denied"
+        ],
+        "errors": [
+          "authority unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_CAPABILITY_AUTHORITY_VALIDATE",
+        "name": "Validate capability/authority separation",
+        "inputs": [
+          "capability result",
+          "authority result"
+        ],
+        "outputs": [
+          "valid execution eligibility"
+        ],
+        "errors": [
+          "capability inferred from authority",
+          "authority inferred from capability"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "capability_question": "Does this capability exist canonically?",
+    "authority_question": "Is this actor/context permitted to invoke/use the existing capability?",
+    "rule": "Authority can narrow or deny use of an existing capability but cannot create a missing capability.",
+    "payload_rule": "Payload/model/tool/backend output cannot grant authority or create capability.",
+    "ownership_rule": "Semantic ownership does not automatically grant runtime authority.",
+    "topic_rule": "Topic membership/composition does not create capability or authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_MACHINE_SEMANTICS",
+        "rule": "Machine-significant meaning is explicit structured canonical data and is not reconstructed by hidden heuristics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "authority declaration creates capability absent from canonical semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "capability existence is treated as permission to execute",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "ownership is treated as runtime authority without explicit authority semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "payload/model/tool/backend output grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "Topic membership or composition creates capability or authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_STRUCTURE",
+      "target_ref": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+      "purpose": "Authority is a distinct structural dimension."
+    },
+    {
+      "id": "REF_INVARIANTS",
+      "target_ref": "AIGMOS_CORE_INVARIANTS_CONTRACT",
+      "purpose": "Undefined capabilities do not exist and authority is not data."
+    }
+  ],
+  "prose": {
+    "summary": "Define capability existence and authority to use that capability as separate canonical questions, preventing policy, payload, Topic or ownership data from creating functionality that is not explicitly defined.",
+    "notes": [
+      "Unlocked until repository-wide 1.4 migration validates this boundary against the assembled active canonical graph."
+    ]
+  }
+}

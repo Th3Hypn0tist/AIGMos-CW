@@ -1,0 +1,153 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_CROSS_INSTANCE_LINEAGE_CONTRACT",
+    "name": "DWH Cross-Instance and Remote Lineage",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define preservation of lineage across UserModule instance, relation-bound and remote DWH boundaries so remote/local projection does not erase origin provenance.",
+  "scope": {
+    "owns": [
+      "DWH Cross-Instance and Remote Lineage semantics"
+    ],
+    "does_not_own": [
+      "AccessCore authorization policy",
+      "source domain semantics",
+      "transport cryptography"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_CROSS_INSTANCE_LINEAGE",
+      "name": "DWH Cross-Instance and Remote Lineage",
+      "purpose": "Define preservation of lineage across UserModule instance, relation-bound and remote DWH boundaries so remote/local projection does not erase origin provenance.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_PROVENANCE_LINEAGE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_CROSS_INSTANCE_LINEAGE_CONTRACT",
+        "LINEAGE_PROVENANCE_PRESERVED",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_PROVENANCE_LINEAGE",
+      "name": "Provenance Lineage",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_PROVENANCE_LINEAGE already referenced by 6 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 6,
+        "distinct_child_topics": 6,
+        "host_contract_ref": "AIGMOS_DWH_CROSS_INSTANCE_LINEAGE_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "instance_rule": "Lineage preserves full source UserModule instance identity.",
+    "relation_rule": "Relation-bound data retains relation/FK provenance used to traverse between instances.",
+    "remote_rule": "Remote DWH data retains origin instance/schema/resource identity plus governed remote-address provenance.",
+    "ext_rule": "EXT endpoint registration may appear as transport/addressing provenance but never replaces remote semantic source identity.",
+    "copy_rule": "Explicit import/copy creates a new local data identity while retaining lineage to remote/original source.",
+    "projection_rule": "Read-only projection does not create new semantic ownership merely by crossing instance boundaries.",
+    "privacy_rule": "Lineage detail exposure may be redacted while internal provenance remains preserved according to policy."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "LINEAGE_PROVENANCE_PRESERVED",
+        "rule": "Derived DWH data retains explicit source lineage, transformation provenance and applicable classification/taint state; transformations never silently erase origin or governance metadata."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "remote data loses origin identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "EXT endpoint replaces remote semantic source",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "copy/import erases source lineage",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "same schema across instances merges lineage identities",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "read-only projection becomes new semantic owner",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REMOTE",
+      "target_ref": "AIGMOS_DWH_REMOTE_ADDRESSING_CONTRACT",
+      "purpose": "Remote lineage records governed > resolution."
+    },
+    {
+      "id": "REF_ISO",
+      "target_ref": "AIGMOS_DWH_INSTANCE_DATA_ISOLATION_CONTRACT",
+      "purpose": "Lineage preserves full-instance isolation identity."
+    }
+  ],
+  "prose": {
+    "summary": "Define preservation of lineage across UserModule instance, relation-bound and remote DWH boundaries so remote/local projection does not erase origin provenance.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH schema, provenance, AccessCore and remote-data contracts.",
+      "Pass 6 hosts grouping-only Topic TOPIC_PROVENANCE_LINEAGE solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_IDENTITY_REFERENCE_VALIDATION_CONTRACT",
+    "name": "Identity and Reference Validation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define exact validation of canonical identities and all required references, including collision detection, active-source ambiguity and external-reference classification.",
+  "scope": {
+    "owns": [
+      "Identity and Reference Validation semantics"
+    ],
+    "does_not_own": [
+      "source semantic content",
+      "runtime implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_VALIDATION_IDENTITY_REFERENCE",
+      "name": "Identity and Reference Validation",
+      "purpose": "Define exact validation of canonical identities and all required references, including collision detection, active-source ambiguity and external-reference classification.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_VALIDATION",
+        "TOPIC_REFERENCE_RESOLUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_IDENTITY_REFERENCE_VALIDATION_CONTRACT",
+        "VALIDATION_NONAUTHORITATIVE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "checks": [
+      "required node identities",
+      "identity uniqueness",
+      "canonical ref resolution",
+      "registry target resolution",
+      "external ref declaration",
+      "historical-vs-active separation"
+    ],
+    "identity_rule": "Every required machine-significant node identity is present and exact.",
+    "collision_rule": "Conflicting active identity definitions hard-fail.",
+    "reference_rule": "Required internal refs resolve exactly once.",
+    "external_rule": "External refs must be explicitly declared as external and follow their owning boundary contract.",
+    "history_rule": "Historical/migration artifacts do not compete as active definitions.",
+    "diagnostic_rule": "Every failed ref reports source identity, field/ref and attempted target."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "VALIDATION_NONAUTHORITATIVE",
+        "rule": "Validation proves or rejects conformance; it never invents missing semantics or becomes semantic owner."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "required identity missing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "active identity collision",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "required internal ref unresolved",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "required ref resolves ambiguously",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "undeclared external reference accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "historical source competes with active definition",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ID",
+      "target_ref": "AIGMOS_CANONICAL_NODE_IDENTITY_CONTRACT",
+      "purpose": "Validates explicit canonical identity."
+    },
+    {
+      "id": "REF_REF",
+      "target_ref": "AIGMOS_CANONICAL_REFERENCE_RESOLUTION_CONTRACT",
+      "purpose": "Validates exact reference resolution."
+    }
+  ],
+  "prose": {
+    "summary": "Define exact validation of canonical identities and all required references, including collision detection, active-source ambiguity and external-reference classification.",
+    "notes": [
+      "Unlocked until exercised against the complete assembled Contract Format 1.4 tree."
+    ]
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_GRACEFUL_SHUTDOWN_CONTRACT",
+    "name": "Graceful Shutdown and Drain",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit stop/drain semantics preventing new work, handling in-flight work, releasing resources and terminating within bounded deadlines.",
+  "scope": {
+    "owns": [
+      "Graceful Shutdown and Drain semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "canonical documentation ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_GRACEFUL_SHUTDOWN",
+      "name": "Graceful Shutdown and Drain",
+      "purpose": "Define explicit stop/drain semantics preventing new work, handling in-flight work, releasing resources and terminating within bounded deadlines.",
+      "parent_topic_refs": [
+        "TOPIC_OPERATIONS",
+        "TOPIC_SERVICES"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_GRACEFUL_SHUTDOWN_CONTRACT",
+        "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "OPERATIONS_FAIL_SAFE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_SERVICES",
+      "name": "Services",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_SERVICES already referenced by 5 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 5,
+        "distinct_child_topics": 5,
+        "host_contract_ref": "AIGMOS_GRACEFUL_SHUTDOWN_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "states": [
+      "draining",
+      "stopping",
+      "stopped",
+      "forced",
+      "failed"
+    ],
+    "admission_rule": "New work admission stops according to exact drain policy.",
+    "inflight_rule": "In-flight operations are allowed to finish, cancel or migrate according to explicit semantics.",
+    "deadline_rule": "Graceful shutdown deadline is explicit.",
+    "force_rule": "Forced termination after deadline is explicit and auditable.",
+    "resource_rule": "Locks/leases/listeners/subscriptions cleanup follows exact contracts.",
+    "result_rule": "Shutdown completion does not imply all external operations had no effect.",
+    "authority_rule": "Shutdown requires lifecycle authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "rule": "Release candidate, accepted release, deployment plan, deployment execution, installed artifact, active runtime instance and observed health remain separate identities/states."
+      },
+      {
+        "id": "OPERATIONS_FAIL_SAFE",
+        "rule": "Operational convenience, availability pressure, maintenance state, automation, recovery or rollback never silently bypass validation, authorization, integrity, governance or dispatcher boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "new work continues during drain silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "timeout kills process without evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "inflight external effects assumed rolled back",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "locks released by assumption",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "shutdown bypasses auth",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LOCK",
+      "target_ref": "AIGMOS_LOCK_IDENTITY_CONTRACT",
+      "purpose": "Shutdown cleanup respects explicit lock/lease semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit stop/drain semantics preventing new work, handling in-flight work, releasing resources and terminating within bounded deadlines.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_SERVICES solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

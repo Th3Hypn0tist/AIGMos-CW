@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NANOCMS_ROUTE_BINDING_CONTRACT",
+    "name": "nanoCMS Route Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define route bindings from HTTP/web paths to exact nanoCMS structural nodes or placed MetaModule views without making URLs the canonical identity of content.",
+  "scope": {
+    "owns": [
+      "nanoCMS Route Binding semantics"
+    ],
+    "does_not_own": [
+      "MetaModule business semantics",
+      "runtime authority",
+      "domain data semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NANOCMS_ROUTE_BINDING",
+      "name": "nanoCMS Route Binding",
+      "purpose": "Define route bindings from HTTP/web paths to exact nanoCMS structural nodes or placed MetaModule views without making URLs the canonical identity of content.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_NANOCMS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_NANOCMS_ROUTE_BINDING_CONTRACT",
+        "NANOCMS_STRUCTURE_ONLY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "route_rule": "Route maps an explicit route pattern/path to an exact target identity.",
+    "identity_rule": "Changing a route does not change target semantic identity.",
+    "uniqueness_rule": "Conflicting active route bindings in the same listener/site scope hard-fail unless explicit routing precedence exists.",
+    "parameter_rule": "Route parameters are explicit binding inputs.",
+    "redirect_rule": "Redirect/alias semantics are explicit and do not duplicate target identity.",
+    "listener_rule": "Route is evaluated within an explicit named web/nanoCMS listener instance.",
+    "authority_rule": "Route reachability does not grant AccessCore authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "NANOCMS_STRUCTURE_ONLY",
+        "rule": "nanoCMS owns canonical web/site structure, routes, navigation and MetaModule placement/bindings; it never becomes owner of the placed MetaModule's semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "URL used as semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "route conflict silently resolved by file order",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "redirect creates duplicate content identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "route reachability bypasses authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "listener scope omitted where ambiguous",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TREE",
+      "target_ref": "AIGMOS_NANOCMS_SITE_TREE_CONTRACT",
+      "purpose": "Routes bind to site-tree identities."
+    },
+    {
+      "id": "REF_PORT",
+      "target_ref": "AIGMOS_PORT_EDITOR_CONTRACT",
+      "purpose": "Routes operate within named listener instances."
+    }
+  ],
+  "prose": {
+    "summary": "Define route bindings from HTTP/web paths to exact nanoCMS structural nodes or placed MetaModule views without making URLs the canonical identity of content.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Expose/nanoCMS contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

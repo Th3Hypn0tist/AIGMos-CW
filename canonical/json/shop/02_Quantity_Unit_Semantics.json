@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_SHOP_QUANTITY_UNIT_CONTRACT",
+    "name": "Shopping Quantity and Unit Semantics",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define desired amount, count, unit, package and tolerance semantics explicitly so shopping quantities are machine-readable without guessing from free text.",
+  "scope": {
+    "owns": [
+      "Shopping Quantity and Unit Semantics semantics"
+    ],
+    "does_not_own": [
+      "payment execution",
+      "merchant catalog truth",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_SHOP_QUANTITY_UNIT",
+      "name": "Shopping Quantity and Unit Semantics",
+      "purpose": "Define desired amount, count, unit, package and tolerance semantics explicitly so shopping quantities are machine-readable without guessing from free text.",
+      "parent_topic_refs": [
+        "TOPIC_SHOP",
+        "TOPIC_STUDIO_EVERYDAY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_SHOP_QUANTITY_UNIT_CONTRACT",
+        "SHOPPING_NONPURCHASE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "quantity_rule": "Desired quantity is a typed numeric/value field where applicable.",
+    "unit_rule": "Unit identity/profile is explicit when quantity is dimensional.",
+    "count_rule": "Discrete count and dimensional quantity remain distinct.",
+    "package_rule": "Desired amount and merchant package size are separate values.",
+    "tolerance_rule": "Minimum/maximum/approximate tolerance is explicit when used.",
+    "conversion_rule": "Unit conversion uses declared compatible units/profile and never changes the underlying desired quantity semantics silently.",
+    "unknown_rule": "Unknown/unspecified quantity remains explicit rather than guessed."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SHOPPING_NONPURCHASE",
+        "rule": "Shopping-list data expresses planning intent only; list/item existence, ranking, recommendation or selection never authorizes purchase, payment or external order execution."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "quantity parsed only from free-text label",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "package size replaces desired amount",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "unit guessed silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "count and mass conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "unknown quantity defaulted without policy",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ITEM",
+      "target_ref": "AIGMOS_SHOPPING_ITEM_IDENTITY_CONTRACT",
+      "purpose": "Quantity belongs to exact shopping item."
+    }
+  ],
+  "prose": {
+    "summary": "Define desired amount, count, unit, package and tolerance semantics explicitly so shopping quantities are machine-readable without guessing from free text.",
+    "notes": [
+      "Unlocked pending reconciliation against #SHOP owner, Studio Everyday, units and external procurement/payment contracts."
+    ]
+  }
+}

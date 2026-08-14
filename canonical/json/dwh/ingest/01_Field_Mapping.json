@@ -1,0 +1,149 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_FIELD_MAPPING_CONTRACT",
+    "name": "DWH Field Mapping",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define exact source-field to destination-field bindings, constants/defaults and explicit unmapped-field behavior so ingest never relies on matching names or positions.",
+  "scope": {
+    "owns": [
+      "DWH Field Mapping semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "destination schema ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_FIELD_MAPPING",
+      "name": "DWH Field Mapping",
+      "purpose": "Define exact source-field to destination-field bindings, constants/defaults and explicit unmapped-field behavior so ingest never relies on matching names or positions.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_INGEST_MAPPING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_FIELD_MAPPING_CONTRACT",
+        "INGEST_MAPPING_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_INGEST_MAPPING",
+      "name": "Ingest Mapping",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_INGEST_MAPPING already referenced by 6 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 6,
+        "distinct_child_topics": 6,
+        "host_contract_ref": "AIGMOS_DWH_FIELD_MAPPING_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "source_rule": "Each mapping entry references an exact source field/path identity within the declared source profile.",
+    "destination_rule": "Each mapping entry references an exact destination schema/field identity.",
+    "name_rule": "Matching field names never imply a mapping.",
+    "position_rule": "Column/array position is used only when the source profile explicitly defines positional semantics.",
+    "constant_rule": "Constants/default values are explicit mapping entries with provenance.",
+    "missing_rule": "Missing source field behavior is explicit: fail, default, omit or other declared action.",
+    "extra_rule": "Unmapped source fields are explicitly ignored/rejected/preserved according to profile.",
+    "ownership_rule": "Field mapping does not transfer field semantic ownership."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "INGEST_MAPPING_EXPLICIT",
+        "rule": "External/input data enters DWH only through explicit source profiles, exact field/schema mappings and validated transformations; mapping never transfers ownership, fabricates missing semantics or bypasses origin governance."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "fields auto-mapped by similar names",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "column position guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "missing field silently fabricated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "extra source field silently changes target schema",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "destination field selected by UI label only",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_FIELD",
+      "target_ref": "AIGMOS_SCHEMA_FIELD_IDENTITY_CONTRACT",
+      "purpose": "Destination mappings target exact field identities."
+    }
+  ],
+  "prose": {
+    "summary": "Define exact source-field to destination-field bindings, constants/defaults and explicit unmapped-field behavior so ingest never relies on matching names or positions.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH origin governance, schema binding, transformation provenance and adapter contracts.",
+      "Pass 6 hosts grouping-only Topic TOPIC_INGEST_MAPPING solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EMPLOYMENT_AS_PROJECT_CONTRACT",
+    "name": "Employment as Project",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define an employment contract/relationship as a long-running Project whose recurring periods and concrete work are represented by child/leaf Projects.",
+  "scope": {
+    "owns": [
+      "Employment as Project semantics"
+    ],
+    "does_not_own": [
+      "presentation semantics",
+      "transport implementation",
+      "unrelated identity semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EMPLOYMENT_PROJECT",
+      "name": "Employment Project",
+      "purpose": "Define an employment contract/relationship as a long-running Project whose recurring periods and concrete work are represented by child/leaf Projects.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_PROJECT"
+      ],
+      "member_refs": [
+        "AIGMOS_EMPLOYMENT_AS_PROJECT_CONTRACT",
+        "PROJECT_MODEL_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_EMPLOYMENT_PROJECT_CREATE",
+        "OP_EMPLOYMENT_PERIOD_CREATE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_EMPLOYMENT_PROJECT_CREATE",
+        "name": "Create employment Project",
+        "inputs": [
+          "relationship parties",
+          "employment terms/context"
+        ],
+        "outputs": [
+          "long-running employment Project"
+        ],
+        "errors": [
+          "party unresolved"
+        ],
+        "side_effects": [
+          "Project registry updated"
+        ]
+      },
+      {
+        "id": "OP_EMPLOYMENT_PERIOD_CREATE",
+        "name": "Create recurring child work Project",
+        "inputs": [
+          "employment Project",
+          "period/work scope"
+        ],
+        "outputs": [
+          "child Project"
+        ],
+        "errors": [
+          "parent unresolved"
+        ],
+        "side_effects": [
+          "Project tree updated"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "representation_rule": "Employment contract is a Project because it establishes continuing recurring work.",
+    "parent_rule": "The employment Project represents the continuing relationship/work scope.",
+    "recurrence_rule": "Recurring periods such as week-by-week work may be child Projects.",
+    "task_rule": "Concrete assignments remain Projects/leaf Projects, not a separate employment-task primitive.",
+    "evidence_rule": "Merit/evidence links to the actual relevant Project periods/work units.",
+    "legal_boundary_rule": "Project representation models canonical work structure; it does not by itself replace external legal requirements or terms."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PROJECT_MODEL_EXPLICIT",
+        "rule": "Project/task, execution, evidence and merit semantics are explicit and non-duplicated."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "separate employment-work primitive duplicates Project semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "recurring work stored outside Project tree without explicit reason",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "all employment merits collapsed to relationship root without underlying work evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "Project representation claimed to override external legal requirements",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROJECT",
+      "target_ref": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT",
+      "purpose": "Employment reuses the universal Project primitive."
+    }
+  ],
+  "prose": {
+    "summary": "Define an employment contract/relationship as a long-running Project whose recurring periods and concrete work are represented by child/leaf Projects.",
+    "notes": [
+      "Unlocked until reconciled against existing FreeMarket/Project/Merit contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

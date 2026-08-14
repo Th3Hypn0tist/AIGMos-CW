@@ -1,0 +1,177 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CORE_INVARIANTS_CONTRACT",
+    "name": "Core Invariants",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the root non-overridable Core invariants already required by canonical addressing, bounded operation, value inertness, capability/authority separation, namespace roots and automation dispatch.",
+  "scope": {
+    "owns": [
+      "root Core invariant declarations"
+    ],
+    "does_not_own": [
+      "domain-specific stricter invariants",
+      "AccessCore authorization decisions",
+      "runtime execution state"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CORE_INVARIANT_FLOOR",
+      "name": "Core Invariant Floor",
+      "purpose": "Group the exact root Core invariant and hard-gate records owned by the Core Invariants contract.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_INVARIANTS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CORE_INVARIANTS_CONTRACT",
+        "CORE_IDENTITY_EXACT",
+        "CORE_DATA_INERT",
+        "CORE_AUTHORITY_NOT_DATA",
+        "CORE_CAPABILITY_EXPLICIT",
+        "CORE_OPERATION_BOUNDED",
+        "CORE_ADDRESSING_EXPLICIT",
+        "CORE_CAUSALITY_EXPLICIT",
+        "GATE_CORE_IDENTITY_AMBIGUITY",
+        "GATE_CORE_IMPLICIT_AUTHORITY",
+        "GATE_CORE_UNBOUNDED_OPERATION"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "owner_scope_rule": "Constraint identities are owner-scoped and are therefore classified in a Topic declared by their defining contract.",
+        "ownership_nontransfer": true
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "root_rule": "These invariants are the non-overridable Core floor. Child/domain contracts may narrow behavior more strictly but may not weaken them.",
+    "identity_rule": "Machine-significant identities and references resolve explicitly; labels, paths and proximity are not identity.",
+    "data_rule": "Canonical/model/tool/imported data is inert until an explicit governed operation creates an effect.",
+    "authority_rule": "Data, ownership, Topic membership, capability availability, connection state and model output do not create authorization.",
+    "capability_rule": "Undefined capabilities do not exist and installed/discovered capability is distinct from enabled/authorized execution.",
+    "bounds_rule": "Dynamic recursion, traversal, retries, queueing and execution are explicitly bounded.",
+    "address_rule": "Roots, namespaces and addresses resolve through declared canonical semantics and never by dynamic path guessing.",
+    "causality_rule": "Execution causality is explicit; time, adjacency, layout and correlation alone do not establish cause."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "CORE_IDENTITY_EXACT",
+        "rule": "Machine-significant identities and references are exact and never selected through fuzzy/path/newest/mtime inference."
+      },
+      {
+        "id": "CORE_DATA_INERT",
+        "rule": "Data, model output, tool result and imported content remain inert until an explicit validated operation crosses an effect boundary."
+      },
+      {
+        "id": "CORE_AUTHORITY_NOT_DATA",
+        "rule": "Authority is never created by payload data, Topic membership, semantic ownership, UI visibility, connectivity or successful parsing."
+      },
+      {
+        "id": "CORE_CAPABILITY_EXPLICIT",
+        "rule": "A capability must be explicitly defined and available before it can be considered for execution; availability remains separate from authorization."
+      },
+      {
+        "id": "CORE_OPERATION_BOUNDED",
+        "rule": "Dynamic canonical and runtime operations are bounded and fail closed when required bounds cannot be established."
+      },
+      {
+        "id": "CORE_ADDRESSING_EXPLICIT",
+        "rule": "Reserved roots, namespaces and semantic addresses resolve only through explicit canonical declarations."
+      },
+      {
+        "id": "CORE_CAUSALITY_EXPLICIT",
+        "rule": "Causal execution links are explicit; timestamps, adjacency, correlation and visual layout are evidence or presentation only."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_CORE_IDENTITY_AMBIGUITY",
+        "condition": "required semantic identity or reference resolves ambiguously or by heuristic fallback",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_CORE_IMPLICIT_AUTHORITY",
+        "condition": "runtime authority would be created from data, ownership, Topic grouping, availability, connectivity or UI state without explicit authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_CORE_UNBOUNDED_OPERATION",
+        "condition": "required recursion, traversal, retry, queue or execution bound is absent or unknown",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_HIERARCHY",
+      "target_ref": "AIGMOS_CORE_INVARIANT_HIERARCHY_CONTRACT",
+      "purpose": "Child invariants may narrow but never weaken the root Core invariant floor."
+    },
+    {
+      "id": "REF_IDENTITY",
+      "target_ref": "AIGMOS_CORE_CANONICAL_IDENTITY_RESOLUTION_CONTRACT",
+      "purpose": "Exact identity resolution implements the root identity invariant."
+    },
+    {
+      "id": "REF_BOUNDS",
+      "target_ref": "AIGMOS_CORE_BOUNDED_OPERATION_CONTRACT",
+      "purpose": "Bounded operation implements the root boundedness invariant."
+    },
+    {
+      "id": "REF_AUTHORITY",
+      "target_ref": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT",
+      "purpose": "Capability and authority remain separate."
+    },
+    {
+      "id": "REF_VALUES",
+      "target_ref": "AIGMOS_CORE_VALUE_SEMANTICS_CONTRACT",
+      "purpose": "Canonical values remain inert."
+    },
+    {
+      "id": "REF_ADDRESSING",
+      "target_ref": "AIGMOS_CORE_ADDRESSING_CONTRACT",
+      "purpose": "Addressing and roots remain explicit."
+    },
+    {
+      "id": "REF_CAUSALITY",
+      "target_ref": "AIGMOS_CORE_EXPLICIT_CAUSALITY_CONTRACT",
+      "purpose": "Causality remains explicit."
+    }
+  ],
+  "prose": {
+    "summary": "Root non-overridable Core invariant floor reconstructed from exact active references already present in the supplied base specification.",
+    "notes": [
+      "Added in Clean Staging Pass 5 because the supplied source contained eight exact references to this identity but no active definition.",
+      "Unlocked pending whole-tree validation.",
+      "Topic classification is provided by the existing TOPIC_CORE_INVARIANTS definition in AIGMOS_CORE_INVARIANT_HIERARCHY_CONTRACT; no duplicate Topic definition is introduced."
+    ]
+  }
+}

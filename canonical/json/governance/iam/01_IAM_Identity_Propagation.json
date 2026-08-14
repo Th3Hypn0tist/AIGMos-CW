@@ -1,0 +1,188 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_IAM_IDENTITY_PROPAGATION_CONTRACT",
+    "name": "IAM Identity Propagation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define propagation of the authenticated origin identity across internal and remote requests so transports, proxies, peers and service instances cannot silently substitute a different semantic identity.",
+  "scope": {
+    "owns": [
+      "IAM Identity Propagation semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "transport implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_IAM_IDENTITY_PROPAGATION",
+      "name": "Identity Propagation",
+      "purpose": "Define propagation of the authenticated origin identity across internal and remote requests so transports, proxies, peers and service instances cannot silently substitute a different semantic identity.",
+      "parent_topic_refs": [
+        "TOPIC_IAM_ASSURANCE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_DWH_GOVERNED_REMOTE",
+        "TOPIC_CORE_PROVENANCE"
+      ],
+      "member_refs": [
+        "AIGMOS_IAM_IDENTITY_PROPAGATION_CONTRACT",
+        "GOVERNANCE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_IDENTITY_PROPAGATE",
+        "OP_IDENTITY_VALIDATE_HOP",
+        "OP_IDENTITY_BIND_REMOTE_POLICY"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_IDENTITY_PROPAGATE",
+        "name": "Propagate origin identity",
+        "inputs": [
+          "authenticated origin identity",
+          "request/message context"
+        ],
+        "outputs": [
+          "identity-bearing request context"
+        ],
+        "errors": [
+          "identity context missing"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_IDENTITY_VALIDATE_HOP",
+        "name": "Validate identity across hop",
+        "inputs": [
+          "incoming identity context",
+          "transport/session metadata"
+        ],
+        "outputs": [
+          "preserved origin identity"
+        ],
+        "errors": [
+          "identity mismatch",
+          "identity substitution"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_IDENTITY_BIND_REMOTE_POLICY",
+        "name": "Bind preserved identity to remote policy evaluation",
+        "inputs": [
+          "origin identity",
+          "remote target"
+        ],
+        "outputs": [
+          "remote authorization subject"
+        ],
+        "errors": [
+          "identity unresolved remotely"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "origin_rule": "Identity originates at the authenticating origin boundary.",
+    "propagation_rule": "Requests/messages carry explicit origin identity context through governed hops.",
+    "transport_rule": "Transport/session identity is not a substitute for semantic user/org identity.",
+    "remote_rule": "Remote authorization evaluates the preserved origin identity according to remote policy.",
+    "proxy_rule": "A proxy/service may act on behalf of an identity only when delegation/on-behalf-of semantics are explicit.",
+    "trace_rule": "Identity propagation retains provenance across hops.",
+    "privacy_rule": "Only identity data required by the owning policy/context should be propagated; propagation is not unrestricted disclosure."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "GOVERNANCE_BOUNDARY_EXPLICIT",
+        "rule": "Identity assurance, authorization, remote delegation and activation state remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "transport/session id silently substitutes semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "proxy/service invents or replaces origin identity without explicit delegation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "remote policy evaluates a different identity because origin context was lost",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "identity propagation provenance lost",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "payload self-asserted identity trusted without origin authentication",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "unnecessary identity data propagated without owning policy need",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DWH",
+      "target_ref": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT",
+      "purpose": "Remote DWH access evaluates the preserved origin identity."
+    },
+    {
+      "id": "REF_PROVENANCE",
+      "target_ref": "AIGMOS_CORE_PROVENANCE_EVIDENCE_CONTRACT",
+      "purpose": "Identity context retains hop provenance."
+    }
+  ],
+  "prose": {
+    "summary": "Define propagation of the authenticated origin identity across internal and remote requests so transports, proxies, peers and service instances cannot silently substitute a different semantic identity.",
+    "notes": [
+      "Unlocked until reconciled against existing IAM/AC/DWH contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NETWORK_CONNECTION_BACKPRESSURE_CONTRACT",
+    "name": "Network Connection Backpressure",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define bounded inbound/outbound buffering, flow control and overload handling per connection/channel without silently dropping accepted semantic messages.",
+  "scope": {
+    "owns": [
+      "Network Connection Backpressure semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "application operation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NETWORK_CONNECTION_BACKPRESSURE",
+      "name": "Network Connection Backpressure",
+      "purpose": "Define bounded inbound/outbound buffering, flow control and overload handling per connection/channel without silently dropping accepted semantic messages.",
+      "parent_topic_refs": [
+        "TOPIC_NETWORK",
+        "TOPIC_FLOW_CONTROL"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_NETWORK_CONNECTION_BACKPRESSURE_CONTRACT",
+        "TRANSPORT_NONAUTHORITY",
+        "INGRESS_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_FLOW_CONTROL",
+      "name": "FLOW Control",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_FLOW_CONTROL already referenced by 1 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 1,
+        "distinct_child_topics": 1,
+        "host_contract_ref": "AIGMOS_NETWORK_CONNECTION_BACKPRESSURE_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "buffer_rule": "Inbound/outbound buffers have explicit bounds.",
+    "flow_rule": "Protocol flow-control semantics are explicit where supported.",
+    "overflow_rule": "Overflow behavior is explicit: backpressure, reject, drop-with-evidence, close or other declared policy.",
+    "message_rule": "Dropping transport bytes/messages never masquerades as successful application acceptance.",
+    "priority_rule": "Transport prioritization cannot bypass authorization or semantic ordering guarantees.",
+    "resource_rule": "Per-connection resource budgets are explicit.",
+    "failure_rule": "Overload/degraded state is observable."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TRANSPORT_NONAUTHORITY",
+        "rule": "Listener, route, endpoint, connection, channel, peer reachability and cryptographic transport evidence never by themselves grant application, data or operation authority."
+      },
+      {
+        "id": "INGRESS_EFFECT_BOUNDARY",
+        "rule": "Inbound network data remains inert until explicit protocol parsing, validation, identity/context resolution, authorization and dispatcher routing succeed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "unbounded buffer",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "dropped message shown accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "priority bypasses auth",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "overflow silently truncates request",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "flow control changes application semantics",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_WORK",
+      "target_ref": "AIGMOS_DWH_RESOURCE_BUDGET_CONTRACT",
+      "purpose": "Connection resource control follows bounded workload principles."
+    }
+  ],
+  "prose": {
+    "summary": "Define bounded inbound/outbound buffering, flow control and overload handling per connection/channel without silently dropping accepted semantic messages.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_FLOW_CONTROL solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

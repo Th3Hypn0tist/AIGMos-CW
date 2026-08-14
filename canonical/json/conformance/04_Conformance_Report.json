@@ -1,0 +1,142 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CONFORMANCE_REPORT_CONTRACT",
+    "name": "Conformance Report",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the machine-readable report emitted by a Contract Format 1.4 conformance run, including implementation identity, profile, fixture versions, pass/fail evidence and unsupported optional capabilities.",
+  "scope": {
+    "owns": [
+      "Conformance Report semantics"
+    ],
+    "does_not_own": [
+      "domain-specific semantics",
+      "implementation language",
+      "presentation formatting"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CONFORMANCE_REPORT",
+      "name": "Conformance Report",
+      "purpose": "Define the machine-readable report emitted by a Contract Format 1.4 conformance run, including implementation identity, profile, fixture versions, pass/fail evidence and unsupported optional capabilities.",
+      "parent_topic_refs": [
+        "TOPIC_CONTRACT_FORMAT_CONFORMANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CONFORMANCE_REPORT_CONTRACT",
+        "CONFORMANCE_EVIDENCE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "required_fields": [
+      "implementation_id",
+      "implementation_version",
+      "format_version",
+      "profile_id",
+      "fixture_suite_version",
+      "executed_tests",
+      "passed",
+      "failed",
+      "unsupported_optional",
+      "timestamp_or_run_identity"
+    ],
+    "result_states": [
+      "conformant",
+      "non_conformant",
+      "partial_profile"
+    ],
+    "evidence_rule": "Each failed test references fixture, violated gate and diagnostic evidence.",
+    "profile_rule": "Conformance is always claimed against an explicit profile/version, never generically.",
+    "optional_rule": "Unsupported optional capabilities are explicit and cannot masquerade as passed.",
+    "repro_rule": "Report contains enough fixture/profile identity to reproduce the run."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "CONFORMANCE_EVIDENCE_EXPLICIT",
+        "rule": "A Contract Format 1.4 conformance claim is backed by reproducible machine-readable fixtures, validation results and exact profile/version identity."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "report claims conformance without profile/version",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "failed test omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "unsupported mandatory capability marked optional",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "failure lacks fixture/gate evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "run cannot be reproduced from declared suite/profile",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_POS",
+      "target_ref": "AIGMOS_GOLDEN_FIXTURE_SUITE_CONTRACT",
+      "purpose": "Report references positive fixtures."
+    },
+    {
+      "id": "REF_NEG",
+      "target_ref": "AIGMOS_NEGATIVE_FIXTURE_SUITE_CONTRACT",
+      "purpose": "Report references negative fixtures."
+    }
+  ],
+  "prose": {
+    "summary": "Define the machine-readable report emitted by a Contract Format 1.4 conformance run, including implementation identity, profile, fixture versions, pass/fail evidence and unsupported optional capabilities.",
+    "notes": [
+      "Unlocked pending implementation of executable conformance fixtures and whole-tree validation."
+    ]
+  }
+}

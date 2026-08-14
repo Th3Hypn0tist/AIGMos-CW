@@ -1,0 +1,162 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT",
+    "name": "Canonical Containment",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define containment as the explicit structural dimension for semantic inside/part-of organization, separate from Topic grouping, relation, ownership, authority and dependency.",
+  "scope": {
+    "owns": [
+      "Canonical Containment semantics"
+    ],
+    "does_not_own": [
+      "runtime implementation details",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_STRUCTURE_CONTAINMENT",
+      "name": "Containment",
+      "purpose": "Define containment as the explicit structural dimension for semantic inside/part-of organization, separate from Topic grouping, relation, ownership, authority and dependency.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_STRUCTURE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_ORDERING"
+      ],
+      "member_refs": [
+        "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT",
+        "STRUCTURAL_DIMENSION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_CONTAINMENT_DEFINE",
+        "OP_CONTAINMENT_VALIDATE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_CONTAINMENT_DEFINE",
+        "name": "Define containment edge",
+        "inputs": [
+          "container_ref",
+          "contained_ref",
+          "containment semantics"
+        ],
+        "outputs": [
+          "containment edge"
+        ],
+        "errors": [
+          "endpoint unresolved",
+          "invalid containment cycle"
+        ],
+        "side_effects": [
+          "structure updated"
+        ]
+      },
+      {
+        "id": "OP_CONTAINMENT_VALIDATE",
+        "name": "Validate containment graph",
+        "inputs": [
+          "containment edges"
+        ],
+        "outputs": [
+          "validated containment graph"
+        ],
+        "errors": [
+          "cycle forbidden",
+          "multiple-container violation"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "dimension": "containment",
+    "meaning": "semantic inside/part-of structure",
+    "topic_rule": "Topic membership or inheritance does not imply containment.",
+    "filesystem_rule": "Directory nesting does not imply canonical containment.",
+    "ownership_rule": "Containment does not imply ownership.",
+    "authority_rule": "Containment does not imply authority.",
+    "ordering_rule": "Sibling order is non-semantic unless explicitly declared."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "STRUCTURAL_DIMENSION_EXPLICIT",
+        "rule": "Structural dimensions and registries remain explicit and are never collapsed into generic hierarchy."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "Topic membership treated as containment",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "filesystem nesting treated as containment without explicit edge",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "containment grants ownership or authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "renderer nesting creates containment",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "forbidden containment cycle accepted",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_STRUCTURE",
+      "target_ref": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+      "purpose": "Containment is one explicit structural dimension."
+    }
+  ],
+  "prose": {
+    "summary": "Define containment as the explicit structural dimension for semantic inside/part-of organization, separate from Topic grouping, relation, ownership, authority and dependency.",
+    "notes": [
+      "Unlocked until reconciled against the assembled 1.4 architecture tree and reference/trace closure."
+    ]
+  }
+}

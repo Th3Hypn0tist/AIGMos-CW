@@ -1,0 +1,188 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT",
+    "name": "Expose WebSocket Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define WebSocket as an optional persistent protocol binding for canonical events, values and operations while keeping session state, semantic identity and authority separate.",
+  "scope": {
+    "owns": [
+      "Expose WebSocket Binding semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "unrelated domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_WEBSOCKET_BINDING",
+      "name": "WebSocket Binding",
+      "purpose": "Define WebSocket as an optional persistent protocol binding for canonical events, values and operations while keeping session state, semantic identity and authority separate.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_PROTOCOL_OPTIONALITY",
+        "TOPIC_RUNTIME_NETWORK_IDENTITY",
+        "TOPIC_EVENT"
+      ],
+      "member_refs": [
+        "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT",
+        "EXPOSE_RUNTIME_BINDING_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_WS_BIND",
+        "OP_WS_SESSION_OPEN",
+        "OP_WS_SESSION_CLOSE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_WS_BIND",
+        "name": "Bind WebSocket surface",
+        "inputs": [
+          "named listener/service",
+          "canonical event/value/operation refs"
+        ],
+        "outputs": [
+          "WebSocket binding"
+        ],
+        "errors": [
+          "source unresolved",
+          "binding invalid"
+        ],
+        "side_effects": [
+          "WebSocket config updated"
+        ]
+      },
+      {
+        "id": "OP_WS_SESSION_OPEN",
+        "name": "Open governed WebSocket session",
+        "inputs": [
+          "binding",
+          "request identity/context"
+        ],
+        "outputs": [
+          "tracked session"
+        ],
+        "errors": [
+          "authority denied",
+          "handshake failure"
+        ],
+        "side_effects": [
+          "runtime session state created"
+        ]
+      },
+      {
+        "id": "OP_WS_SESSION_CLOSE",
+        "name": "Close WebSocket session",
+        "inputs": [
+          "session",
+          "reason"
+        ],
+        "outputs": [
+          "closed session"
+        ],
+        "errors": [],
+        "side_effects": [
+          "runtime session state removed"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "protocol": "WebSocket",
+    "optional_rule": "WebSocket is explicit optional protocol capability.",
+    "session_rule": "Connection/session handle is transient runtime state.",
+    "identity_rule": "WebSocket session is not user/service semantic identity.",
+    "authority_rule": "Handshake/session establishment does not grant canonical operation authority.",
+    "event_rule": "Published/subscribed event/value identities are explicit canonical refs.",
+    "cleanup_rule": "Disconnect/error releases session/subscription runtime state.",
+    "semantic_rule": "WebSocket framing does not own domain/event semantics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPOSE_RUNTIME_BINDING_EXPLICIT",
+        "rule": "Web instances, protocol bindings and exposed surfaces retain explicit stable identity, binding, lifecycle and authority boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "WebSocket session handle used as semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "successful handshake grants operation authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "subscription uses unresolved/fuzzy event identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "disconnect leaves unbounded session/subscription state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "WebSocket protocol redefines canonical event semantics",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROTOCOL",
+      "target_ref": "AIGMOS_RUNTIME_PROTOCOL_OPTIONALITY_CONTRACT",
+      "purpose": "WebSocket is optional."
+    },
+    {
+      "id": "REF_NETWORK",
+      "target_ref": "AIGMOS_RUNTIME_NETWORK_IDENTITY_BINDING_CONTRACT",
+      "purpose": "Session binding differs from semantic identity."
+    }
+  ],
+  "prose": {
+    "summary": "Define WebSocket as an optional persistent protocol binding for canonical events, values and operations while keeping session state, semantic identity and authority separate.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose/runtime contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

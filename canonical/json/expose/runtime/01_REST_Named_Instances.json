@@ -1,0 +1,166 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_REST_INSTANCE_CONTRACT",
+    "name": "REST Named Instances",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define REST services with the same stable named-instance model as nanoCMS, separating logical identity, configurable port/listen binding and runtime lifecycle.",
+  "scope": {
+    "owns": [
+      "REST Named Instances semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "unrelated domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_REST_INSTANCES",
+      "name": "REST Instances",
+      "purpose": "Define REST services with the same stable named-instance model as nanoCMS, separating logical identity, configurable port/listen binding and runtime lifecycle.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_RUNTIME_REST",
+        "TOPIC_RUNTIME_SERVICE_INSTANCES"
+      ],
+      "member_refs": [
+        "AIGMOS_EXPOSE_REST_INSTANCE_CONTRACT",
+        "EXPOSE_RUNTIME_BINDING_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_REST_INSTANCE_DEFINE",
+        "OP_REST_INSTANCE_LIFECYCLE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_REST_INSTANCE_DEFINE",
+        "name": "Define REST instance",
+        "inputs": [
+          "logical name",
+          "binding",
+          "exposure config"
+        ],
+        "outputs": [
+          "named REST instance"
+        ],
+        "errors": [
+          "name collision",
+          "binding invalid"
+        ],
+        "side_effects": [
+          "REST config updated"
+        ]
+      },
+      {
+        "id": "OP_REST_INSTANCE_LIFECYCLE",
+        "name": "Invoke REST lifecycle",
+        "inputs": [
+          "instance",
+          "start/stop/reload"
+        ],
+        "outputs": [
+          "runtime result"
+        ],
+        "errors": [
+          "binding conflict",
+          "operation denied"
+        ],
+        "side_effects": [
+          "REST runtime state changed"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "REST instance has stable logical name independent of port.",
+    "port_rule": "REST port is configurable; no universal default REST port is defined here.",
+    "lifecycle_rule": "Declared REST configuration is separate from running state.",
+    "exposure_rule": "REST exposes canonical operations/data surfaces and does not create new domain semantics.",
+    "authority_rule": "REST reachability does not grant operation/data authority.",
+    "multiplicity_rule": "Multiple named REST instances may coexist subject to valid bindings."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPOSE_RUNTIME_BINDING_EXPLICIT",
+        "rule": "Web instances, protocol bindings and exposed surfaces retain explicit stable identity, binding, lifecycle and authority boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "REST port treated as semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "default REST port invented without canonical definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "REST endpoint creates hidden domain semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "network reachability grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "stopping REST deletes declared instance",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RUNTIME_REST",
+      "target_ref": "AIGMOS_RUNTIME_REST_INSTANCE_CONTRACT",
+      "purpose": "REST runtime follows canonical named service semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define REST services with the same stable named-instance model as nanoCMS, separating logical identity, configurable port/listen binding and runtime lifecycle.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose/runtime contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

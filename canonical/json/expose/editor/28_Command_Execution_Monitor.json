@@ -1,0 +1,138 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_COMMAND_EXECUTION_MONITOR_CONTRACT",
+    "name": "Command Execution Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for parse/resolve/authorize/dispatch/result/error traces across command executions without exposing sensitive arguments or granting execution authority.",
+  "scope": {
+    "owns": [
+      "Command Execution Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "transport presentation",
+      "implicit authorization"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_COMMAND_EXECUTION_MONITOR",
+      "name": "Command Execution Monitor",
+      "purpose": "Define a read-only Expose monitor for parse/resolve/authorize/dispatch/result/error traces across command executions without exposing sensitive arguments or granting execution authority.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_COMMAND_REGISTRY",
+        "TOPIC_COMMAND_PARSING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_COMMAND_EXECUTION_MONITOR_CONTRACT",
+        "COMMAND_EXECUTION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "command identity",
+      "caller/context",
+      "argument validation state",
+      "capability resolution",
+      "authorization/assurance result",
+      "dispatch lifecycle",
+      "result/error class",
+      "duration/cleanup"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "redaction_rule": "Secrets/restricted arguments/results are redacted according to policy.",
+    "identity_rule": "Display preserves exact command/caller/target refs.",
+    "authority_rule": "Viewing execution trace does not grant re-run/cancel/write authority.",
+    "action_rule": "Re-run/cancel controls, if exposed, invoke separate authorized canonical operations.",
+    "trace_rule": "Each execution retains stable runtime execution identity and provenance to command definition."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "COMMAND_EXECUTION_EXPLICIT",
+        "rule": "Executable commands resolve by exact canonical identity and schema, cross one governed dispatcher boundary, and never infer authority from capability presence or parser success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor exposes secrets",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "viewing trace grants re-run authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "command identified only by display label",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "monitor mutates execution directly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "execution trace loses command definition ref",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DISPATCH",
+      "target_ref": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+      "purpose": "Monitor projects dispatch lifecycle."
+    },
+    {
+      "id": "REF_ERR",
+      "target_ref": "AIGMOS_COMMAND_ERROR_REMEDIATION_CONTRACT",
+      "purpose": "Monitor exposes structured errors safely."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for parse/resolve/authorize/dispatch/result/error traces across command executions without exposing sensitive arguments or granting execution authority.",
+    "notes": [
+      "Unlocked pending reconciliation against existing command/runtime contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

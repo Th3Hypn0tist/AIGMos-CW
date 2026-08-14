@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_SCHEMA_EVOLUTION_CONTRACT",
+    "name": "Schema Evolution",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define additive and breaking schema evolution, migration requirements and compatibility evidence without silently reinterpreting existing stored data or relation semantics.",
+  "scope": {
+    "owns": [
+      "Schema Evolution semantics"
+    ],
+    "does_not_own": [
+      "instance data values",
+      "presentation labels",
+      "AccessCore policy"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_SCHEMA_EVOLUTION",
+      "name": "Schema Evolution",
+      "purpose": "Define additive and breaking schema evolution, migration requirements and compatibility evidence without silently reinterpreting existing stored data or relation semantics.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_SCHEMA",
+        "TOPIC_CORE_RELATIONS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_SCHEMA_EVOLUTION_CONTRACT",
+        "SCHEMA_RELATION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "additive_rule": "Compatible additive fields/relations may preserve schema identity/version compatibility according to policy.",
+    "breaking_rule": "Breaking semantic change requires explicit incompatible version/new identity where owning versioning policy requires.",
+    "migration_rule": "Stored/instance data migration is explicit and separate from schema definition change.",
+    "field_rule": "Field rename, split, merge, type change or semantic repurpose is explicitly mapped.",
+    "relation_rule": "Relation/cardinality/FK changes are explicit compatibility/migration events.",
+    "default_rule": "Adding a default does not silently backfill historical data unless migration explicitly does so.",
+    "evidence_rule": "Compatibility/migration decision retains semantic diff and provenance."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SCHEMA_RELATION_EXPLICIT",
+        "rule": "Schema, field and relation identities are explicit and stable; instance data, presentation labels and physical storage never define canonical schema semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "breaking field semantics published as compatible silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "historical data reinterpreted without migration",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "field rename loses old/new mapping",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "relation change hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "default silently backfills history",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DIFF",
+      "target_ref": "AIGMOS_SEMANTIC_DIFF_CONTRACT",
+      "purpose": "Schema evolution uses semantic diff evidence."
+    },
+    {
+      "id": "REF_COMPAT",
+      "target_ref": "AIGMOS_COMPATIBILITY_DECLARATION_CONTRACT",
+      "purpose": "Compatibility is explicit."
+    }
+  ],
+  "prose": {
+    "summary": "Define additive and breaking schema evolution, migration requirements and compatibility evidence without silently reinterpreting existing stored data or relation semantics.",
+    "notes": [
+      "Unlocked pending reconciliation against existing schema/relation contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

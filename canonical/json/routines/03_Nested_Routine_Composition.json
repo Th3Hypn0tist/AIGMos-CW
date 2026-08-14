@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NESTED_ROUTINE_COMPOSITION_CONTRACT",
+    "name": "Nested Routine Composition",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit Routine-to-Routine composition with exact refs, bounded recursion and preserved child execution provenance.",
+  "scope": {
+    "owns": [
+      "Nested Routine Composition semantics"
+    ],
+    "does_not_own": [
+      "Runner execution state",
+      "AccessCore policy ownership",
+      "domain operation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NESTED_ROUTINE_COMPOSITION",
+      "name": "Nested Routine Composition",
+      "purpose": "Define explicit Routine-to-Routine composition with exact refs, bounded recursion and preserved child execution provenance.",
+      "parent_topic_refs": [
+        "TOPIC_ROUTINES",
+        "TOPIC_RUNNERS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_NESTED_ROUTINE_COMPOSITION_CONTRACT",
+        "ROUTINE_DEFINITION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "reference_rule": "Nested Routine target is an exact canonical Routine identity.",
+    "composition_rule": "Parent Routine references child Routine definition without copying its semantics.",
+    "execution_rule": "Child invocation creates its own nested Runner/execution scope according to runner policy.",
+    "input_rule": "Parent-to-child parameter mapping is explicit.",
+    "output_rule": "Child outputs returned to parent are explicit and provenance-bearing.",
+    "recursion_rule": "Recursive Routine composition is allowed only under explicit finite recursion/reentry bounds.",
+    "failure_rule": "Child failure propagation/handling is explicit.",
+    "history_rule": "Execution trace preserves parent and child Routine/execution identities."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ROUTINE_DEFINITION_EXPLICIT",
+        "rule": "Routine definitions are explicit canonical ordered compositions of exact commands/operations/routines; runtime execution state is never embedded into the reusable definition."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "nested Routine copied into parent as duplicate authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "recursive Routine unbounded",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "child execution identity lost",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "input/output mapping implicit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "child failure handling guessed",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ID",
+      "target_ref": "AIGMOS_ROUTINE_IDENTITY_CONTRACT",
+      "purpose": "Nested composition references exact Routine identities."
+    },
+    {
+      "id": "REF_LOOP",
+      "target_ref": "AIGMOS_CAUSALITY_LOOP_BOUNDS_CONTRACT",
+      "purpose": "Recursive execution remains bounded."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit Routine-to-Routine composition with exact refs, bounded recursion and preserved child execution provenance.",
+    "notes": [
+      "Unlocked pending reconciliation against existing #R, &, Runner and command contracts."
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TOOLCHAIN_REGISTRY_SNAPSHOT_BUILDER_CONTRACT",
+    "name": "Registry Snapshot Builder",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define immutable combined snapshot of identity, reference, alias, ownership, dependency and topology indexes.",
+  "scope": {
+    "owns": [
+      "Registry Snapshot Builder semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime application authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TOOLCHAIN_REGISTRY_SNAPSHOT_BUILDER",
+      "name": "Registry Snapshot Builder",
+      "purpose": "Define immutable combined snapshot of identity, reference, alias, ownership, dependency and topology indexes.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_TOOLCHAIN",
+        "TOPIC_RECONCILIATION_EXECUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TOOLCHAIN_REGISTRY_SNAPSHOT_BUILDER_CONTRACT",
+        "TOOLING_NONAUTHORITY",
+        "DETERMINISTIC_EXACT_INPUTS",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each combined snapshot has explicit identity.",
+    "input_rule": "Exact scan/source/bootstrap snapshot inputs recorded.",
+    "members": [
+      "identity_registry",
+      "reference_graph",
+      "alias_registry",
+      "ownership_registry",
+      "dependency_graph",
+      "topology_graph"
+    ],
+    "immutability_rule": "Snapshot immutable.",
+    "cache_rule": "Cache invalidates on any source/profile input change.",
+    "projection_rule": "Snapshot derived."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TOOLING_NONAUTHORITY",
+        "rule": "Toolchain code, scans, indexes, reports and generated artifacts remain implementation/evidence surfaces; they never become canonical semantic authority unless an explicit accepted canonical definition says so."
+      },
+      {
+        "id": "DETERMINISTIC_EXACT_INPUTS",
+        "rule": "Every toolchain execution binds exact bootstrap/source/profile/input revisions and must not resolve ambiguity through filesystem order, newest-wins, mtime, fuzzy names or UI layout."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "stale registry mixed with new source",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "snapshot mutated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "bootstrap omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "timestamp-only cache",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "snapshot becomes source truth",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SNAP",
+      "target_ref": "AIGMOS_CANONICAL_REGISTRY_SNAPSHOT_CONTRACT",
+      "purpose": "Operationalizes canonical registry snapshot."
+    }
+  ],
+  "prose": {
+    "summary": "Define immutable combined snapshot of identity, reference, alias, ownership, dependency and topology indexes.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Implementation contracts operationalize canonical semantics but do not replace canonical source authority."
+    ]
+  }
+}

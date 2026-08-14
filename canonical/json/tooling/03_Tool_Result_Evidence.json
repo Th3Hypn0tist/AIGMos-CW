@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TOOL_RESULT_EVIDENCE_CONTRACT",
+    "name": "Tool Result Evidence",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define tool results as inert execution evidence with exact invocation/execution/tool provenance, classification and failure/partial status.",
+  "scope": {
+    "owns": [
+      "Tool Result Evidence semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TOOL_RESULT_EVIDENCE",
+      "name": "Tool Result Evidence",
+      "purpose": "Define tool results as inert execution evidence with exact invocation/execution/tool provenance, classification and failure/partial status.",
+      "parent_topic_refs": [
+        "TOPIC_TOOLS",
+        "TOPIC_MCP"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TOOL_RESULT_EVIDENCE_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each material tool result has explicit identity.",
+    "request_rule": "Result references exact tool invocation request/execution.",
+    "tool_rule": "Exact tool/provider identity is preserved.",
+    "status_rule": "Success/partial/failed/timeout/cancelled/unknown are distinct.",
+    "payload_rule": "Result payload is inert data.",
+    "classification_rule": "Result may inherit classification/lineage from accessed sources.",
+    "secondary_rule": "Result cannot silently trigger secondary operations.",
+    "authority_rule": "Tool output contents grant no downstream authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "tool result calls another tool automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "partial shown success",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "result text treated command",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "source classification dropped",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "result grants rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_BOUND",
+      "target_ref": "AIGMOS_TOOL_INVOCATION_RESULT_BOUNDARY_CONTRACT",
+      "purpose": "Results stay inert across tool boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define tool results as inert execution evidence with exact invocation/execution/tool provenance, classification and failure/partial status.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

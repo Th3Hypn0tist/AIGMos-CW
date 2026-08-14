@@ -1,0 +1,199 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT",
+    "name": "Expose Port Editor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Port Editor as an Expose projection/editor for named network/service listener configuration and lifecycle across web HTTP, REST, OSC, WebSocket and other installed port-bound protocols.",
+  "scope": {
+    "owns": [
+      "Expose Port Editor semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "unrelated domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_PORT_EDITOR",
+      "name": "Port Editor",
+      "purpose": "Define Port Editor as an Expose projection/editor for named network/service listener configuration and lifecycle across web HTTP, REST, OSC, WebSocket and other installed port-bound protocols.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE_EDITOR"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_LISTENERS",
+        "TOPIC_RUNTIME_SERVICE_INSTANCES",
+        "TOPIC_EXPOSE_EDITOR"
+      ],
+      "member_refs": [
+        "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT",
+        "EDITOR_TOOL_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_PORT_EDITOR_READ",
+        "OP_PORT_EDITOR_UPDATE",
+        "OP_PORT_EDITOR_LIFECYCLE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_PORT_EDITOR_READ",
+        "name": "Read listener configuration",
+        "inputs": [
+          "named service refs"
+        ],
+        "outputs": [
+          "listener/binding model"
+        ],
+        "errors": [
+          "service unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_PORT_EDITOR_UPDATE",
+        "name": "Update listener binding",
+        "inputs": [
+          "named service",
+          "validated binding delta"
+        ],
+        "outputs": [
+          "updated listener config"
+        ],
+        "errors": [
+          "authority denied",
+          "binding conflict"
+        ],
+        "side_effects": [
+          "listener configuration updated"
+        ]
+      },
+      {
+        "id": "OP_PORT_EDITOR_LIFECYCLE",
+        "name": "Invoke listener lifecycle",
+        "inputs": [
+          "named service",
+          "start/stop/reload operation"
+        ],
+        "outputs": [
+          "runtime lifecycle result"
+        ],
+        "errors": [
+          "operation denied",
+          "lifecycle failure"
+        ],
+        "side_effects": [
+          "only canonical lifecycle effects"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "managed_fields": [
+      "logical instance name",
+      "protocol/type",
+      "listen binding",
+      "port",
+      "transport where applicable",
+      "runtime state"
+    ],
+    "service_identity_rule": "Port Editor edits bindings attached to stable named service identities; it does not use port as identity.",
+    "protocol_scope": [
+      "web/nanoCMS HTTP",
+      "REST",
+      "OSC",
+      "WebSocket",
+      "other installed port-bound services"
+    ],
+    "authority_rule": "Port Editor receives no independent listener/runtime authority.",
+    "write_rule": "Changes invoke canonical listener/service operations.",
+    "state_rule": "Declared configuration and runtime running state remain distinct.",
+    "default_web_rule": "nanoCMS public instance default port 80 remains its canonical default binding."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EDITOR_TOOL_BOUNDARY_EXPLICIT",
+        "rule": "Editor subtools are projections/operation surfaces over canonical semantics and do not become independent authorities."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "Port Editor treats port as service identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Port Editor directly mutates listener runtime outside canonical operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "Editor grants itself authority by controlling listener UI",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "declared binding conflated with running state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "protocol service semantics redefined inside Port Editor",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LISTENER",
+      "target_ref": "AIGMOS_RUNTIME_LISTENER_BINDING_CONTRACT",
+      "purpose": "Port Editor edits canonical listener bindings."
+    },
+    {
+      "id": "REF_SERVICE",
+      "target_ref": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT",
+      "purpose": "Bindings attach to named service instances."
+    }
+  ],
+  "prose": {
+    "summary": "Define Port Editor as an Expose projection/editor for named network/service listener configuration and lifecycle across web HTTP, REST, OSC, WebSocket and other installed port-bound protocols.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose Editor contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

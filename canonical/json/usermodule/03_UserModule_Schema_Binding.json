@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_USERMODULE_SCHEMA_BINDING_CONTRACT",
+    "name": "UserModule Schema Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the explicit schema/data-model binding of a UserModule definition or instance, including creation from an existing schema and selection/composition of declared domain modules.",
+  "scope": {
+    "owns": [
+      "UserModule Schema Binding semantics"
+    ],
+    "does_not_own": [
+      "domain semantics not declared by the module",
+      "AccessCore policy",
+      "presentation-only placement"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_USERMODULE_SCHEMA_BINDING",
+      "name": "UserModule Schema Binding",
+      "purpose": "Define the explicit schema/data-model binding of a UserModule definition or instance, including creation from an existing schema and selection/composition of declared domain modules.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+        "TOPIC_NAMESPACE_UM"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_USERMODULE_SCHEMA_BINDING_CONTRACT",
+        "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "schema_rule": "UserModule references an explicit canonical schema identity/version.",
+    "existing_rule": "Instance Editor may create a module/schema binding from an existing compatible schema without copying semantic ownership.",
+    "domain_rule": "Selected Domain modules are explicit composition refs rather than inferred imports.",
+    "instance_rule": "Per-instance data binding is explicit and follows local/relation semantics where DWH applies.",
+    "relation_rule": "Cross-schema/domain relations require explicit canonical relation refs.",
+    "validation_rule": "Schema compatibility and required relations validate before module activation.",
+    "ownership_rule": "Binding a schema/domain does not transfer ownership of their semantics to the UserModule."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
+        "rule": "UserModule identity, primary type, schema, instance identity and lifecycle state are explicit and never inferred from filesystem location or implementation behavior."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "schema semantics copied into module as duplicate authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "domain module inferred from directory/import name only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "relation inferred without canonical ref",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "incompatible schema activated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "schema binding transfers semantic ownership",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_CORE_SCHEMA_SEMANTICS_CONTRACT",
+      "purpose": "UserModules bind explicit schemas."
+    },
+    {
+      "id": "REF_DOMAIN",
+      "target_ref": "AIGMOS_DOMAIN_COMPOSITION_CONTRACT",
+      "purpose": "Domain modules are explicit compositions."
+    }
+  ],
+  "prose": {
+    "summary": "Define the explicit schema/data-model binding of a UserModule definition or instance, including creation from an existing schema and selection/composition of declared domain modules.",
+    "notes": [
+      "Unlocked pending reconciliation against existing UserModule runtime contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

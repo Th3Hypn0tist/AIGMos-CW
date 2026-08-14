@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_CHANGE_EVENT_BOUNDARY_CONTRACT",
+    "name": "DWH Change to Event Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define optional conversion of an eligible DWH change record into an inert AIGMos Event, preserving exact CDC provenance before normal Trigger/Runner causality.",
+  "scope": {
+    "owns": [
+      "DWH Change to Event Boundary semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "Event execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_CHANGE_EVENT_BOUNDARY",
+      "name": "DWH Change to Event Boundary",
+      "purpose": "Define optional conversion of an eligible DWH change record into an inert AIGMos Event, preserving exact CDC provenance before normal Trigger/Runner causality.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_CHANGEFEED_CDC"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_CHANGE_EVENT_BOUNDARY_CONTRACT",
+        "CHANGEFEED_NONEXECUTION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "flow": [
+      "observe committed change",
+      "resolve eligible subscription/binding",
+      "emit DWH-change Event",
+      "evaluate Trigger",
+      "request downstream Runner/operation through normal dispatch"
+    ],
+    "event_rule": "Emitted Event has its own identity and references exact change-record/source revision identities.",
+    "payload_rule": "Event payload is inert and schema-bounded.",
+    "binding_rule": "Which change types/scopes emit Events is explicit.",
+    "causality_rule": "Event→Trigger→Runner edges remain explicit and separate from DWH change identity.",
+    "authority_rule": "A data change or emitted Event never grants downstream execution authority.",
+    "dedupe_rule": "Same eligible change/binding does not emit duplicate semantic Event deliveries without explicit replay identity.",
+    "failure_rule": "Event-emission failure is explicit and never rewrites the committed DWH mutation."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "CHANGEFEED_NONEXECUTION",
+        "rule": "DWH changefeeds expose committed mutation evidence as ordered provenance-bearing data/events; subscription delivery never directly executes downstream operations and never replaces the underlying record/revision identities."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "DWH write directly executes routine",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Event identity reused as change identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "change payload grants execution authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "event-emission failure rolls back unrelated committed write silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "same change emitted repeatedly without replay evidence",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EVENT",
+      "target_ref": "AIGMOS_EVENT_IDENTITY_CONTRACT",
+      "purpose": "CDC may emit distinct inert Events."
+    },
+    {
+      "id": "REF_CAUSE",
+      "target_ref": "AIGMOS_EVENT_CAUSALITY_EDGE_CONTRACT",
+      "purpose": "Downstream effects use normal causality."
+    }
+  ],
+  "prose": {
+    "summary": "Define optional conversion of an eligible DWH change record into an inert AIGMos Event, preserving exact CDC provenance before normal Trigger/Runner causality.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH mutation/persistence, Event causality, sync and remote-sharing contracts."
+    ]
+  }
+}

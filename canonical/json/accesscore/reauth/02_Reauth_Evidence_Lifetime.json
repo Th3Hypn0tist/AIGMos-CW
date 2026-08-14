@@ -1,0 +1,128 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_REAUTH_EVIDENCE_LIFETIME_CONTRACT",
+    "name": "Reauthentication Evidence Lifetime",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define bounded reuse of fresh assurance evidence by exact resource/operation profile without converting one successful challenge into permanent elevation.",
+  "scope": {
+    "owns": [
+      "Reauthentication Evidence Lifetime semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime operation implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_REAUTH_EVIDENCE_LIFETIME",
+      "name": "Reauthentication Evidence Lifetime",
+      "purpose": "Define bounded reuse of fresh assurance evidence by exact resource/operation profile without converting one successful challenge into permanent elevation.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE",
+        "TOPIC_REAUTH"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_REAUTH_EVIDENCE_LIFETIME_CONTRACT",
+        "IDENTITY_AUTHORITY_SEPARATION",
+        "FAIL_CLOSED_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "evidence_rule": "Successful reauth produces explicit evidence linked to auth attempt/session/challenge.",
+    "scope_rule": "Reuse scope is explicit: resource, operation/right, assurance level and session/identity.",
+    "lifetime_rule": "Validity start/end are explicit.",
+    "rotation_rule": "Where configured, successful reauth may rotate session/auth keys through explicit IAM lifecycle semantics.",
+    "expiry_rule": "Expired evidence cannot satisfy new requests.",
+    "nonexpansion_rule": "Evidence for one scope cannot broaden to unrelated sensitive resources.",
+    "revocation_rule": "Session/identity/relevant-factor revocation invalidates dependent evidence."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_AUTHORITY_SEPARATION",
+        "rule": "Identity, authentication assurance, authorization policy, authorization decision, delegation and runtime execution remain separate machine-significant identities/evidence; no one layer silently substitutes for another."
+      },
+      {
+        "id": "FAIL_CLOSED_AUTHORITY",
+        "rule": "Ambiguous, missing, stale or unverifiable authority for a protected effect fails closed rather than inheriting trust from locality, transport reachability, process ownership, UI visibility or previous success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "one reauth unlocks all resources",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "reauth lasts forever",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "expired evidence accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "evidence grants new rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "revoked session evidence remains valid",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CHAL",
+      "target_ref": "AIGMOS_REAUTH_CHALLENGE_CONTRACT",
+      "purpose": "Satisfied challenges create bounded evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define bounded reuse of fresh assurance evidence by exact resource/operation profile without converting one successful challenge into permanent elevation.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

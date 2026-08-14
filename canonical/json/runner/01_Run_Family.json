@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUN_COMMAND_FAMILY_CONTRACT",
+    "name": "Run Command Family",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the recursive `run` command family, including concrete execution/control/status commands such as `run`, `run.go`, `run.status` and cycle semantics where declared.",
+  "scope": {
+    "owns": [
+      "Run Command Family semantics"
+    ],
+    "does_not_own": [
+      "command implementation semantics",
+      "AccessCore policy",
+      "arbitrary hidden scheduler state"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUN_COMMAND_FAMILY",
+      "name": "Run Command Family",
+      "purpose": "Define the recursive `run` command family, including concrete execution/control/status commands such as `run`, `run.go`, `run.status` and cycle semantics where declared.",
+      "parent_topic_refs": [
+        "TOPIC_ROUTINE",
+        "TOPIC_RUNNER"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RUN_COMMAND_FAMILY_CONTRACT",
+        "ROUTINE_RUNNER_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "family": "run",
+    "members": [
+      "run",
+      "run.go",
+      "run.status",
+      "cycle"
+    ],
+    "namespace_rule": "Family/member identities follow the recursive command namespace contract.",
+    "run_rule": "Concrete run invocation resolves an exact Routine/runner target and creates or advances explicit execution state according to command semantics.",
+    "go_rule": "`run.go` advances/starts the explicitly targeted runner according to its state machine.",
+    "status_rule": "`run.status` is read-only projection of exact runner identity/state.",
+    "cycle_rule": "Cycle behavior is explicit bounded runner policy, not implicit infinite looping.",
+    "authority_rule": "Each concrete command is independently authorized.",
+    "help_rule": "Family root may carry master help without becoming executable unless explicitly declared."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ROUTINE_RUNNER_EXPLICIT",
+        "rule": "Routine definitions and runner executions are separate canonical identities; runners execute explicit ordered routine content through the normal governed dispatch boundary."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "family root executes implicitly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "run.status mutates runner",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "cycle defaults to unbounded infinite loop",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "subcommand authority inherited implicitly without policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "runner target inferred by last-used hidden state",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_NS",
+      "target_ref": "AIGMOS_RECURSIVE_COMMAND_NAMESPACE_CONTRACT",
+      "purpose": "Run family is recursively namespaced."
+    },
+    {
+      "id": "REF_RUNNER",
+      "target_ref": "AIGMOS_RUNNER_EXECUTION_CONTRACT",
+      "purpose": "Commands act on explicit runner identities."
+    }
+  ],
+  "prose": {
+    "summary": "Define the recursive `run` command family, including concrete execution/control/status commands such as `run`, `run.go`, `run.status` and cycle semantics where declared.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Routine/Runner/Event/Trigger contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CURRENCY_AMOUNT_CONTRACT",
+    "name": "Currency Amount",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define monetary amounts as exact numeric amount plus explicit currency identity and precision/rounding semantics.",
+  "scope": {
+    "owns": [
+      "Currency Amount semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "domain-specific semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CURRENCY_AMOUNT",
+      "name": "Currency Amount",
+      "purpose": "Define monetary amounts as exact numeric amount plus explicit currency identity and precision/rounding semantics.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_SEMANTICS",
+        "TOPIC_MONEY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CURRENCY_AMOUNT_CONTRACT",
+        "EXPLICIT_IDENTITY_AND_MEANING",
+        "DERIVED_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_MONEY",
+      "name": "Money",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_MONEY already referenced by 1 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 1,
+        "distinct_child_topics": 1,
+        "host_contract_ref": "AIGMOS_CURRENCY_AMOUNT_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "amount_rule": "Amount uses exact decimal/number representation profile.",
+    "currency_rule": "Currency code/identity is explicit.",
+    "minor_rule": "Minor-unit precision is explicit by currency/profile.",
+    "conversion_rule": "Currency conversion requires exact rate/source/time/profile evidence.",
+    "comparison_rule": "Amounts in different currencies are not directly equivalent without conversion.",
+    "tax_rule": "Tax/VAT inclusion/exclusion is separately explicit.",
+    "authority_rule": "Amount does not imply payment authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_IDENTITY_AND_MEANING",
+        "rule": "Machine-significant identity, type, relation, state and meaning are explicit and never inferred solely from display text, path, layout, file order, timestamp or implementation accident."
+      },
+      {
+        "id": "DERIVED_NONAUTHORITY",
+        "rule": "Resolved, projected, indexed, cached, formatted or derived representations never become source-of-truth or authority merely because they are convenient or available."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "currency inferred from locale",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "float rounding unspecified",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "EUR/USD compared directly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "price amount triggers payment",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "VAT status guessed",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define monetary amounts as exact numeric amount plus explicit currency identity and precision/rounding semantics.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_MONEY solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

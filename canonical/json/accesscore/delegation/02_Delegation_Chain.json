@@ -1,0 +1,152 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_AUTHORITY_DELEGATION_CHAIN_CONTRACT",
+    "name": "Authority Delegation Chain",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define onward delegation chains with exact parent grants, bounded depth and intersection/non-expansion semantics.",
+  "scope": {
+    "owns": [
+      "Authority Delegation Chain semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime operation implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_AUTHORITY_DELEGATION_CHAIN",
+      "name": "Authority Delegation Chain",
+      "purpose": "Define onward delegation chains with exact parent grants, bounded depth and intersection/non-expansion semantics.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE",
+        "TOPIC_DELEGATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_AUTHORITY_DELEGATION_CHAIN_CONTRACT",
+        "IDENTITY_AUTHORITY_SEPARATION",
+        "FAIL_CLOSED_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_DELEGATION",
+      "name": "Delegation",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_DELEGATION already referenced by 5 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 5,
+        "distinct_child_topics": 5,
+        "host_contract_ref": "AIGMOS_AUTHORITY_DELEGATION_CHAIN_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "parent_rule": "Each onward delegation references exact parent delegation/authority source.",
+    "intersection_rule": "Effective child scope is no broader than the intersection of parent delegable scope and child declaration.",
+    "depth_rule": "Maximum onward-delegation depth is explicit where enabled.",
+    "cycle_rule": "Delegation cycles are invalid or bounded by explicit canonical semantics; they never multiply authority.",
+    "expiry_rule": "Child delegation cannot remain valid beyond required parent authority unless explicitly re-anchored.",
+    "revocation_rule": "Parent revocation invalidates dependent chain segments according to exact dependency semantics.",
+    "evidence_rule": "Effective chain can be reconstructed deterministically."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_AUTHORITY_SEPARATION",
+        "rule": "Identity, authentication assurance, authorization policy, authorization decision, delegation and runtime execution remain separate machine-significant identities/evidence; no one layer silently substitutes for another."
+      },
+      {
+        "id": "FAIL_CLOSED_AUTHORITY",
+        "rule": "Ambiguous, missing, stale or unverifiable authority for a protected effect fails closed rather than inheriting trust from locality, transport reachability, process ownership, UI visibility or previous success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "child delegation broader than parent",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "cycle multiplies rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "child outlives revoked parent silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "parent inferred by same issuer",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "depth unlimited accidentally",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SCOPE",
+      "target_ref": "AIGMOS_AUTHORITY_DELEGATION_SCOPE_CONTRACT",
+      "purpose": "Chain intersection preserves bounded scope."
+    }
+  ],
+  "prose": {
+    "summary": "Define onward delegation chains with exact parent grants, bounded depth and intersection/non-expansion semantics.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_DELEGATION solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

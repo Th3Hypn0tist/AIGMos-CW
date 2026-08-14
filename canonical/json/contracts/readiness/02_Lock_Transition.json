@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CONTRACT_LOCK_TRANSITION_CONTRACT",
+    "name": "Canonical Lock Transition",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit unlocked→locked transition using exact validation/readiness evidence and accepted source revision.",
+  "scope": {
+    "owns": [
+      "Canonical Lock Transition semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CONTRACT_LOCK_TRANSITION",
+      "name": "Canonical Lock Transition",
+      "purpose": "Define explicit unlocked→locked transition using exact validation/readiness evidence and accepted source revision.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_CONTRACTS",
+        "TOPIC_READINESS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CONTRACT_LOCK_TRANSITION_CONTRACT",
+        "BOOTSTRAP_AUTHORITY_EXPLICIT",
+        "VALIDATE_BEFORE_ACCEPT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "contract_rule": "Transition targets exact contract identity/revision.",
+    "profile_rule": "Exact readiness profile is referenced.",
+    "validation_rule": "Required validation report/finding state is exact.",
+    "reference_rule": "Cross-contract ref/ownership closure must be valid under profile.",
+    "transition_rule": "Status change is an accepted canonical patch/change.",
+    "runtime_rule": "Locking does not activate runtime code/config.",
+    "rollback_rule": "Unlock/reopen requires explicit new change/review evidence.",
+    "authority_rule": "Lock operation requires canonical administration authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOTSTRAP_AUTHORITY_EXPLICIT",
+        "rule": "Contract Format bootstrap authority, canonical contract sources, generated projections, historical artifacts and runtime state remain separate identities/roles; no file becomes authoritative merely by name, path order, timestamp or discovery order."
+      },
+      {
+        "id": "VALIDATE_BEFORE_ACCEPT",
+        "rule": "Candidate canonical changes remain inert until exact format validation, identity/reference resolution, semantic diff, applicable governance/authorization and repository acceptance succeed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "status bit flipped outside canonical change flow",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "locked despite dangling refs",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "locking deploys runtime",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "lock chosen by UI checkbox without apply",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "validation evidence omitted",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROFILE",
+      "target_ref": "AIGMOS_CONTRACT_READINESS_PROFILE_CONTRACT",
+      "purpose": "Lock transition requires exact readiness profile."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit unlocked→locked transition using exact validation/readiness evidence and accepted source revision.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

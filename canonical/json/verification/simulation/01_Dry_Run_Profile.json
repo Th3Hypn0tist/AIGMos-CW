@@ -1,0 +1,153 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DRY_RUN_PROFILE_CONTRACT",
+    "name": "Dry-Run Semantics",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define per-operation dry-run behavior explicitly rather than assuming a generic flag means no effects for every operation.",
+  "scope": {
+    "owns": [
+      "Dry-Run Semantics semantics"
+    ],
+    "does_not_own": [
+      "production runtime authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DRY_RUN_PROFILE",
+      "name": "Dry-Run Semantics",
+      "purpose": "Define per-operation dry-run behavior explicitly rather than assuming a generic flag means no effects for every operation.",
+      "parent_topic_refs": [
+        "TOPIC_VERIFICATION",
+        "TOPIC_SIMULATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DRY_RUN_PROFILE_CONTRACT",
+        "TEST_NONAUTHORITY",
+        "EVIDENCE_REPRODUCIBILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_SIMULATION",
+      "name": "Simulation",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_SIMULATION already referenced by 3 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 3,
+        "distinct_child_topics": 3,
+        "host_contract_ref": "AIGMOS_DRY_RUN_PROFILE_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each reusable dry-run profile has explicit identity.",
+    "operation_rule": "Supported operation identities are exact.",
+    "effect_rule": "Which validations/resolutions/planning/external calls are executed is explicit.",
+    "noeffect_rule": "No-effect guarantee applies only when the exact operation/profile declares it.",
+    "result_rule": "Dry-run produces predicted/candidate evidence distinct from real execution result.",
+    "destructive_rule": "Destructive dry-run never performs destructive effect.",
+    "authority_rule": "Dry-run still may require read/inspection authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TEST_NONAUTHORITY",
+        "rule": "Test definitions, fixtures, results, coverage, simulations and release evidence never become production semantic authority or grant production execution rights merely by existing or passing."
+      },
+      {
+        "id": "EVIDENCE_REPRODUCIBILITY",
+        "rule": "Verification evidence binds exact test/profile/source/runtime revisions and declared environment inputs so a pass/fail result cannot silently float across unrelated versions or targets."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "generic `--dry-run` assumed safe for unknown command",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "dry-run sends external write",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "predicted result shown accepted result",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "destructive preview deletes target",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "dry-run bypasses source read rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SIDE",
+      "target_ref": "AIGMOS_SIDE_EFFECT_CLASS_CONTRACT",
+      "purpose": "Dry-run semantics depend on exact effect class."
+    }
+  ],
+  "prose": {
+    "summary": "Define per-operation dry-run behavior explicitly rather than assuming a generic flag means no effects for every operation.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_SIMULATION solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

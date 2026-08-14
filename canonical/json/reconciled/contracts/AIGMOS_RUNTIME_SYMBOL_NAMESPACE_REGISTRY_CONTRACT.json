@@ -1,0 +1,295 @@
+{
+  "behavior": {
+    "events": [],
+    "flows": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "errors": [
+          "root collision",
+          "invalid grammar"
+        ],
+        "id": "OP_SYMBOL_REGISTER",
+        "inputs": [
+          "explicit root definition"
+        ],
+        "name": "Register declared symbol root",
+        "outputs": [
+          "registered root"
+        ],
+        "side_effects": [
+          "runtime registry updated"
+        ]
+      },
+      {
+        "errors": [
+          "unknown root",
+          "invalid segment",
+          "ambiguous address"
+        ],
+        "id": "OP_SYMBOL_RESOLVE",
+        "inputs": [
+          "typed symbol address",
+          "registered roots"
+        ],
+        "name": "Resolve symbol address",
+        "outputs": [
+          "resolved runtime semantic target"
+        ],
+        "side_effects": []
+      }
+    ],
+    "states": []
+  },
+  "constraints": {
+    "hard_gates": [
+      {
+        "id": "GATE_0FEFD56595",
+        "condition": "namespace root inferred only from directory presence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_C1F4114859",
+        "condition": "same active root assigned to conflicting owners",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_65B0E50990",
+        "condition": "namespace existence grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_DE75F783AE",
+        "condition": "root resolved fuzzily/case-insensitively where canonical spelling is exact",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_1A75675059",
+        "condition": "dynamic namespace family exists without declared family semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_30FE64E3E9",
+        "condition": "undefined root accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_8AC6B1EAAB",
+        "condition": "! assigned non-Trigger semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_A5C1434FA4",
+        "condition": "@ assigned non-Event semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_EE78521251",
+        "condition": "% assigned non-Runner semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_532A697C10",
+        "condition": "dynamic root selection from payload/model/backend output",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "casefold/root collision accepted",
+        "result": "hard_fail"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "NAMESPACE_EXPLICIT",
+        "rule": "Runtime symbol namespaces, roots, mounts and dynamic families are explicit, collision-free and never inferred solely from filesystem layout or display labels."
+      },
+      {
+        "id": "RUNTIME_SEMANTICS_EXPLICIT",
+        "rule": "Runtime-significant semantics are explicit and do not arise from payload, path, projection or implementation heuristics."
+      }
+    ]
+  },
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
+    "name": "Runtime Symbol Namespace Registry",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "members": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending reconciliation against existing runtime symbol/module contracts and whole-tree Contract Format 1.4 validation.",
+      "Unlocked until reconciled against the existing runtime contracts and repository-wide 1.4 traceability validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: namespaces/00_Runtime_Symbol_Namespace_Registry.json, runtime/symbols/00_Runtime_Symbol_Namespace_Registry.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define the canonical registry of AIGMos runtime symbol roots and namespace families so semantic addressing resolves by explicit namespace identity rather than implementation path. [2] Define the runtime symbol-root registry and deterministic namespace/address resolution, including exclusive sigil/root semantics."
+  },
+  "purpose": "Reconciled source purposes: [1] Define the canonical registry of AIGMos runtime symbol roots and namespace families so semantic addressing resolves by explicit namespace identity rather than implementation path. [2] Define the runtime symbol-root registry and deterministic namespace/address resolution, including exclusive sigil/root semantics.",
+  "references": [
+    {
+      "id": "REF_ADDRESS",
+      "target_ref": "AIGMOS_CORE_ADDRESSING_CONTRACT",
+      "purpose": "Symbol roots participate in canonical addressing."
+    },
+    {
+      "id": "REF_ADDRESSING",
+      "target_ref": "AIGMOS_CORE_ADDRESSING_CONTRACT",
+      "purpose": "Uses Core semantic addressing rules."
+    },
+    {
+      "id": "REF_INVARIANTS",
+      "target_ref": "AIGMOS_CORE_INVARIANTS_CONTRACT",
+      "purpose": "Root and sigil invariants."
+    }
+  ],
+  "scope": {
+    "does_not_own": [
+      "mounted module internal semantics",
+      "runtime authorization policy",
+      "presentation semantics",
+      "domain semantics",
+      "projection semantics"
+    ],
+    "owns": [
+      "Runtime Symbol Namespace Registry semantics",
+      "Runtime Symbol and Namespace Registry semantics"
+    ]
+  },
+  "semantics": {
+    "addressing_rule": "Symbol addressing uses semantic grammar and does not become unrestricted filesystem addressing.",
+    "authority_rule": "Namespace existence does not grant read/write/invoke authority.",
+    "case_rule": "Canonical namespace spelling/case is exact.",
+    "collision_rule": "Casefold/root collisions are rejected.",
+    "dynamic_root_rule": "Payload/model/backend-selected root resolution is forbidden.",
+    "exclusive_locks": {
+      "!": "Trigger",
+      "%": "Runner",
+      "@": "Event"
+    },
+    "family_examples": [
+      "#INPUT:*"
+    ],
+    "identity_rule": "Each reserved root/family has explicit canonical namespace identity and owner.",
+    "module_namespace_separator": ".",
+    "mount_rule": "Namespace registry resolves a root to its declared semantic owner/mount semantics.",
+    "path_rule": "Filesystem directory name does not create or own a namespace.",
+    "path_separator": ":",
+    "registry_role": "runtime namespace index",
+    "root_examples": [
+      "#I",
+      "#A",
+      "#P",
+      "#R",
+      "#T",
+      "#MCP",
+      "#OSC",
+      "#REST",
+      "#UM",
+      "#MEM",
+      "#HELP",
+      "#CAL",
+      "#SHOP"
+    ],
+    "root_prefixes": [
+      "#",
+      "$",
+      "&",
+      "?",
+      "%",
+      "!",
+      "@",
+      "|"
+    ],
+    "root_rule": "A runtime root exists only when explicitly declared by canonical runtime semantics."
+  },
+  "source_role": "definition",
+  "status": "locked",
+  "structure": {
+    "authority": [],
+    "containment": [],
+    "dependencies": [],
+    "ownership": [],
+    "relations": []
+  },
+  "topics": [
+    {
+      "child_topics": [],
+      "composed_topic_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_RUNTIME_NAMESPACES",
+      "member_refs": [
+        "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
+        "NAMESPACE_EXPLICIT",
+        "RUNTIME_SEMANTICS_EXPLICIT",
+        "GATE_0FEFD56595",
+        "GATE_C1F4114859",
+        "GATE_65B0E50990",
+        "GATE_DE75F783AE",
+        "GATE_1A75675059",
+        "GATE_30FE64E3E9",
+        "GATE_8AC6B1EAAB",
+        "GATE_A5C1434FA4",
+        "GATE_EE78521251",
+        "GATE_532A697C10",
+        "GATE_6"
+      ],
+      "metadata": {},
+      "name": "Runtime Symbol Namespace Registry",
+      "operation_refs": [
+        "OP_SYMBOL_REGISTER",
+        "OP_SYMBOL_RESOLVE"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_CORE_ADDRESSING",
+        "TOPIC_CORE_RUNTIME"
+      ],
+      "purpose": "Define the canonical registry of AIGMos runtime symbol roots and namespace families so semantic addressing resolves by explicit namespace identity rather than implementation path.",
+      "relation_refs": []
+    },
+    {
+      "child_topics": [],
+      "composed_topic_refs": [
+        "TOPIC_CORE_ADDRESSING"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+      "member_refs": [
+        "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
+        "NAMESPACE_EXPLICIT",
+        "RUNTIME_SEMANTICS_EXPLICIT",
+        "GATE_0FEFD56595",
+        "GATE_C1F4114859",
+        "GATE_65B0E50990",
+        "GATE_DE75F783AE",
+        "GATE_1A75675059",
+        "GATE_30FE64E3E9",
+        "GATE_8AC6B1EAAB",
+        "GATE_A5C1434FA4",
+        "GATE_EE78521251",
+        "GATE_532A697C10",
+        "GATE_6"
+      ],
+      "metadata": {},
+      "name": "Symbol Registry",
+      "operation_refs": [
+        "OP_SYMBOL_REGISTER",
+        "OP_SYMBOL_RESOLVE"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_SYMBOLS"
+      ],
+      "purpose": "Define the runtime symbol-root registry and deterministic namespace/address resolution, including exclusive sigil/root semantics.",
+      "relation_refs": []
+    }
+  ]
+}

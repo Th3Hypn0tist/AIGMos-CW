@@ -1,0 +1,140 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RECONCILIATION_READINESS_PROFILE_CONTRACT",
+    "name": "Whole-Tree Reconciliation Readiness Profile",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define repository/closure-level requirements that must pass before contracts may be proposed for locked status after reconciliation.",
+  "scope": {
+    "owns": [
+      "Whole-Tree Reconciliation Readiness Profile semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RECONCILIATION_READINESS_PROFILE",
+      "name": "Whole-Tree Reconciliation Readiness Profile",
+      "purpose": "Define repository/closure-level requirements that must pass before contracts may be proposed for locked status after reconciliation.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_RECONCILIATION",
+        "TOPIC_READINESS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RECONCILIATION_READINESS_PROFILE_CONTRACT",
+        "RECONCILIATION_IS_EVIDENCE_DRIVEN",
+        "NO_SILENT_FINALIZATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each reconciliation readiness profile has explicit identity/version.",
+    "required_results": [
+      "inventory",
+      "identity",
+      "reference",
+      "ownership_authority",
+      "dependency_topology",
+      "documentation",
+      "legacy_cleanup",
+      "cross_kernel_invariants",
+      "canonical_validation",
+      "repository_conformance"
+    ],
+    "severity_rule": "Blocking/advisory finding semantics are explicit.",
+    "exception_rule": "Allowed exceptions must be explicit, scoped, owned and optionally expiring.",
+    "scope_rule": "Profile applies to exact repository/closure set.",
+    "lock_rule": "Readiness pass makes lock transition eligible only; it does not modify status."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RECONCILIATION_IS_EVIDENCE_DRIVEN",
+        "rule": "Whole-tree reconciliation operates only on exact accepted/candidate source snapshots, identities, references and declared semantics; it never repairs ambiguity through filename, path order, timestamp, nearest-name or UI layout heuristics."
+      },
+      {
+        "id": "NO_SILENT_FINALIZATION",
+        "rule": "A contract, closure set or repository remains unlocked/not-ready until all required reconciliation findings for its declared readiness profile are explicitly resolved or accepted through an explicit bounded exception."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "lock based on JSON parse only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "unresolved identity collision ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "exception implicit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "pass locks automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "profile selected by filename",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_READY",
+      "target_ref": "AIGMOS_CONTRACT_READINESS_PROFILE_CONTRACT",
+      "purpose": "Whole-tree profile composes contract readiness criteria."
+    }
+  ],
+  "prose": {
+    "summary": "Define repository/closure-level requirements that must pass before contracts may be proposed for locked status after reconciliation.",
+    "notes": [
+      "Unlocked pending application to the final merged review tree.",
+      "This contract defines reconciliation semantics; it does not claim that repository-wide reconciliation has already passed."
+    ]
+  }
+}

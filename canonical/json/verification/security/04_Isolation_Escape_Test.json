@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ISOLATION_ESCAPE_VERIFICATION_CONTRACT",
+    "name": "Isolation and Boundary Escape Verification",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define tests proving module instances, DWH origins, sandboxes, local/remote scopes and protocol peers cannot cross declared isolation boundaries without explicit relation/delegation.",
+  "scope": {
+    "owns": [
+      "Isolation and Boundary Escape Verification semantics"
+    ],
+    "does_not_own": [
+      "production runtime authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ISOLATION_ESCAPE_VERIFICATION",
+      "name": "Isolation and Boundary Escape Verification",
+      "purpose": "Define tests proving module instances, DWH origins, sandboxes, local/remote scopes and protocol peers cannot cross declared isolation boundaries without explicit relation/delegation.",
+      "parent_topic_refs": [
+        "TOPIC_VERIFICATION",
+        "TOPIC_SECURITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_ISOLATION_ESCAPE_VERIFICATION_CONTRACT",
+        "TEST_NONAUTHORITY",
+        "EVIDENCE_REPRODUCIBILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "boundaries": [
+      "module_instance",
+      "sandbox",
+      "DWH_origin",
+      "local_remote",
+      "peer",
+      "site",
+      "listener",
+      "project_context",
+      "other declared boundary"
+    ],
+    "test_rule": "Exact source/target boundary pair is explicit.",
+    "expected_rule": "Unauthorized cross-boundary read/write/lifecycle action must fail.",
+    "relation_rule": "Only explicit relation/delegation/sharing semantics may allow crossing.",
+    "side_effect_rule": "Denied escape attempt produces no protected effect.",
+    "audit_rule": "Escape attempt may be auditable.",
+    "authority_rule": "Test harness cannot hold hidden all-boundary bypass rights."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TEST_NONAUTHORITY",
+        "rule": "Test definitions, fixtures, results, coverage, simulations and release evidence never become production semantic authority or grant production execution rights merely by existing or passing."
+      },
+      {
+        "id": "EVIDENCE_REPRODUCIBILITY",
+        "rule": "Verification evidence binds exact test/profile/source/runtime revisions and declared environment inputs so a pass/fail result cannot silently float across unrelated versions or targets."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "same module type shares instance state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "remote peer inherits local rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "sandbox reaches prod storage",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "DWH source crosses origin silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "network connection grants cross-boundary access",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REMOTE",
+      "target_ref": "AIGMOS_REMOTE_AUTHORITY_NONEXPANSION_CONTRACT",
+      "purpose": "Isolation verification includes remote non-expansion."
+    }
+  ],
+  "prose": {
+    "summary": "Define tests proving module instances, DWH origins, sandboxes, local/remote scopes and protocol peers cannot cross declared isolation boundaries without explicit relation/delegation.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

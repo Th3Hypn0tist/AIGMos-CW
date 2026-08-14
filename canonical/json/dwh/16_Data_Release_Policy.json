@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_DATA_RELEASE_POLICY_CONTRACT",
+    "name": "DWH Data Release Policy",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the final DWH release decision as composition of requested scope, schema resolution, taint/classification, identity/authorization and destination policy before data crosses an external boundary.",
+  "scope": {
+    "owns": [
+      "DWH Data Release Policy semantics"
+    ],
+    "does_not_own": [
+      "domain payload semantics",
+      "transport implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_DATA_RELEASE",
+      "name": "DWH Data Release Policy",
+      "purpose": "Define the final DWH release decision as composition of requested scope, schema resolution, taint/classification, identity/authorization and destination policy before data crosses an external boundary.",
+      "parent_topic_refs": [
+        "TOPIC_DWH_REMOTE_AC",
+        "TOPIC_DWH_DECLASSIFICATION",
+        "TOPIC_DWH_REMOTE_OUTPUT"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_DATA_RELEASE_POLICY_CONTRACT",
+        "DWH_POLICY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "inputs": [
+      "requested remote scope",
+      "resolved schema/data target",
+      "lineage/taint state",
+      "caller identity/assurance",
+      "AccessCore rights",
+      "destination/external identity"
+    ],
+    "decision_states": [
+      "allow",
+      "deny",
+      "allow_transformed"
+    ],
+    "transform_rule": "allow_transformed requires an explicit authorized projection/sanitization/declassification operation.",
+    "least_release_rule": "Only data required and permitted for the explicit request is released.",
+    "evidence_rule": "Decision records policy inputs, result and transformation refs where applicable.",
+    "failure_rule": "Missing required policy input fails closed.",
+    "transport_rule": "Release decision occurs independently from transport availability."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_POLICY_EXPLICIT",
+        "rule": "DWH scope, release, remote access and policy decisions remain explicit, provenance-preserving and separate from transport reachability."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "missing policy input defaults to allow",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "release exceeds requested/authorized scope",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "taint ignored in release decision",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "allow_transformed lacks explicit transformation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "transport availability treated as release permission",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DEC",
+      "target_ref": "AIGMOS_DWH_SANITIZATION_DECLASSIFICATION_CONTRACT",
+      "purpose": "Transformed release uses explicit declassification/sanitization."
+    }
+  ],
+  "prose": {
+    "summary": "Define the final DWH release decision as composition of requested scope, schema resolution, taint/classification, identity/authorization and destination policy before data crosses an external boundary.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH local/remote, AC/IAM and lineage contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

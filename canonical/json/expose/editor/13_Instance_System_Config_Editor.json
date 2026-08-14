@@ -1,0 +1,149 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_INSTANCE_SYSTEM_CONFIG_EDITOR_CONTRACT",
+    "name": "Instance and System Config Editor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the Editor surface for instance/system configuration as a schema-driven authorized projection over instance-config and canonical lifecycle operations, including separate IAM parent and AC parent controls.",
+  "scope": {
+    "owns": [
+      "Instance and System Config Editor semantics"
+    ],
+    "does_not_own": [
+      "runtime implementation internals",
+      "unrelated domain semantics",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_INSTANCE_CONFIG_EDITOR",
+      "name": "Instance and System Config Editor",
+      "purpose": "Define the Editor surface for instance/system configuration as a schema-driven authorized projection over instance-config and canonical lifecycle operations, including separate IAM parent and AC parent controls.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE_EDITOR",
+        "TOPIC_INSTANCE_CONFIG",
+        "TOPIC_ACCESSCORE_AUTHORIZATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_INSTANCE_SYSTEM_CONFIG_EDITOR_CONTRACT",
+        "INSTANCE_CONFIG_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "targets": [
+      "instance name",
+      "instance-config fields",
+      "IAM parent",
+      "AC parent",
+      "boot/profile config refs",
+      "service/listener config refs"
+    ],
+    "schema_rule": "Editor fields derive from explicit configuration schema.",
+    "parent_rule": "IAM parent and AC parent are separate controls/relations.",
+    "write_rule": "Edits write through canonical configuration operations and change-control semantics.",
+    "authority_rule": "Editor has no privileged configuration bypass.",
+    "preview_rule": "Candidate changes may be previewed/validated before apply.",
+    "runtime_rule": "Runtime state indicators are shown separately from declared config.",
+    "self_hosting_rule": "Editing configuration that affects Expose/Editor still follows normal validation/recovery boundaries."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "INSTANCE_CONFIG_EXPLICIT",
+        "rule": "Instance identity, configuration parents, activation state and reload behavior remain explicit and do not derive authority from UI or runtime state."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "IAM parent and AC parent collapsed into one UI field",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Editor writes config outside canonical change operations",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "UI visibility grants configuration authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "declared config and current runtime state shown/treated as same field",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "invalid candidate applied without validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "Editor bypasses AccessCore for instance/system config",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_INSTANCE",
+      "target_ref": "AIGMOS_INSTANCE_CONFIG_CONTRACT",
+      "purpose": "Editor projects authoritative instance configuration."
+    },
+    {
+      "id": "REF_IAM_PARENT",
+      "target_ref": "AIGMOS_INSTANCE_IAM_PARENT_CONTRACT",
+      "purpose": "IAM parent edited separately."
+    },
+    {
+      "id": "REF_AC_PARENT",
+      "target_ref": "AIGMOS_INSTANCE_ACCESSCORE_PARENT_CONTRACT",
+      "purpose": "AC parent edited separately."
+    }
+  ],
+  "prose": {
+    "summary": "Define the Editor surface for instance/system configuration as a schema-driven authorized projection over instance-config and canonical lifecycle operations, including separate IAM parent and AC parent controls.",
+    "notes": [
+      "Unlocked pending reconciliation against existing instance/system configuration contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

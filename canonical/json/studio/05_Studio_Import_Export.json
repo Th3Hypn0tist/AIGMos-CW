@@ -1,0 +1,127 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_STUDIO_IMPORT_EXPORT_CONTRACT",
+    "name": "Studio Import and Export",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Studio import/export as explicit serialization operations over canonical data, projections and presets; JSON/CSV/files remain data formats only.",
+  "scope": {
+    "owns": [
+      "Studio Import and Export semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "source domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_STUDIO_IO",
+      "name": "Import and Export",
+      "purpose": "Define Studio import/export as explicit serialization operations over canonical data, projections and presets; JSON/CSV/files remain data formats only.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_STUDIO_IMPORT_EXPORT_CONTRACT",
+        "STUDIO_IS_COMPOSITION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "format_rule": "JSON, CSV and other files are serialization/data formats only.",
+    "namespace_rule": "Import/export command families may be recursively hierarchical; family roots need not be executable.",
+    "export_rule": "Export selects explicit source semantics/projections and a format.",
+    "import_rule": "Imported data is inert until schema/identity validation and explicit application.",
+    "identity_rule": "Filename/path does not define semantic identity.",
+    "round_trip_rule": "Claimed semantic round-trip must preserve its declared semantic surface.",
+    "authority_rule": "Import contents cannot grant authority or select arbitrary semantic roots."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "STUDIO_IS_COMPOSITION",
+        "rule": "Studio surfaces compose or project existing canonical semantics and do not become parallel authorities."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "serialization format treated as domain semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "import data mutates before validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "filename/path used as semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "import payload grants authority or arbitrary root selection",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "claimed semantic round-trip loses meaning",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_VALUES",
+      "target_ref": "AIGMOS_CORE_VALUE_SEMANTICS_CONTRACT",
+      "purpose": "Imported serialized data is inert."
+    },
+    {
+      "id": "REF_ROUNDTRIP",
+      "target_ref": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+      "purpose": "Round-trip claims require validation."
+    }
+  ],
+  "prose": {
+    "summary": "Define Studio import/export as explicit serialization operations over canonical data, projections and presets; JSON/CSV/files remain data formats only.",
+    "notes": [
+      "Unlocked until reconciled against repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

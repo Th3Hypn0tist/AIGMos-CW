@@ -1,0 +1,128 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_IAM_SESSION_REVOCATION_CONTRACT",
+    "name": "IAM Session Revocation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit revocation of one session, all sessions for an identity, or a bounded session set while preserving historical authentication evidence.",
+  "scope": {
+    "owns": [
+      "IAM Session Revocation semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime operation implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_IAM_SESSION_REVOCATION",
+      "name": "IAM Session Revocation",
+      "purpose": "Define explicit revocation of one session, all sessions for an identity, or a bounded session set while preserving historical authentication evidence.",
+      "parent_topic_refs": [
+        "TOPIC_IAM",
+        "TOPIC_AUTHENTICATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_IAM_SESSION_REVOCATION_CONTRACT",
+        "IDENTITY_AUTHORITY_SEPARATION",
+        "FAIL_CLOSED_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "target_rule": "Revocation targets exact session identity/set/subject scope.",
+    "authority_rule": "Revocation requires explicit IAM/session-management authority.",
+    "effect_rule": "Revocation prevents future protected use of targeted sessions.",
+    "history_rule": "Historical authentication/session evidence remains auditable.",
+    "token_rule": "Revocation invalidates associated active session credentials according to provider/runtime profile.",
+    "propagation_rule": "Distributed revocation propagation semantics are explicit.",
+    "failure_rule": "Partially propagated revocation remains explicit and may fail closed for protected paths."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_AUTHORITY_SEPARATION",
+        "rule": "Identity, authentication assurance, authorization policy, authorization decision, delegation and runtime execution remain separate machine-significant identities/evidence; no one layer silently substitutes for another."
+      },
+      {
+        "id": "FAIL_CLOSED_AUTHORITY",
+        "rule": "Ambiguous, missing, stale or unverifiable authority for a protected effect fails closed rather than inheriting trust from locality, transport reachability, process ownership, UI visibility or previous success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "revocation deletes history",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "session revoked by display name match",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "partial revocation shown complete",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "revocation authority inferred from same user",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "revoked token accepted until restart",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SESSION",
+      "target_ref": "AIGMOS_IAM_AUTH_SESSION_CONTRACT",
+      "purpose": "Revocation targets exact sessions."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit revocation of one session, all sessions for an identity, or a bounded session set while preserving historical authentication evidence.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

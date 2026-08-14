@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_MEMORY_MONITOR_CONTRACT",
+    "name": "Memory Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor/editor boundary for inspecting memory records, provenance, scope, lifecycle and retrieval traces while keeping mutations behind explicit authorized memory operations.",
+  "scope": {
+    "owns": [
+      "Memory Monitor semantics"
+    ],
+    "does_not_own": [
+      "model hidden state",
+      "runtime authorization policy",
+      "unrelated domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_MEMORY_MONITOR",
+      "name": "Memory Monitor",
+      "purpose": "Define a read-only Expose monitor/editor boundary for inspecting memory records, provenance, scope, lifecycle and retrieval traces while keeping mutations behind explicit authorized memory operations.",
+      "parent_topic_refs": [
+        "TOPIC_NAMESPACE_MEM",
+        "TOPIC_CORE_PROVENANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_MEMORY_MONITOR_CONTRACT",
+        "MEMORY_EXPLICIT_DATA",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "memory registry",
+      "record details",
+      "scope/lifetime",
+      "provenance",
+      "retrieval trace",
+      "expired/tombstoned records where authorized"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "edit_rule": "Create/update/remove controls, if exposed, invoke separate explicit Memory operations.",
+    "authority_rule": "Viewing a record does not grant write/delete authority.",
+    "redaction_rule": "Restricted memory content/metadata is redacted according to scope/policy.",
+    "trace_rule": "Retrieval trace shows which memory refs were projected into which consumer context where policy permits.",
+    "layout_rule": "UI grouping/order does not create memory relations or priority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MEMORY_EXPLICIT_DATA",
+        "rule": "Machine-significant memory is explicit addressable provenance-bearing data; retrieval and storage never create hidden authority or implicit execution."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor directly mutates memory without explicit operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "viewing record grants write authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "restricted memory leaks through monitor",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "UI order creates memory relevance/priority semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "retrieval trace lacks record refs",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MON",
+      "target_ref": "AIGMOS_EXPOSE_MONITOR_CONTRACT",
+      "purpose": "Memory Monitor follows generic monitor non-authority semantics."
+    },
+    {
+      "id": "REF_RETR",
+      "target_ref": "AIGMOS_MEMORY_RETRIEVAL_CONTEXT_PROJECTION_CONTRACT",
+      "purpose": "Monitor may display bounded retrieval traces."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor/editor boundary for inspecting memory records, provenance, scope, lifecycle and retrieval traces while keeping mutations behind explicit authorized memory operations.",
+    "notes": [
+      "Unlocked pending reconciliation against existing memory/runtime contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RECONCILIATION_SOURCE_SNAPSHOT_CONTRACT",
+    "name": "Reconciliation Source Snapshot Freeze",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define immutable source-tree snapshot used as the exact basis for one whole-tree reconciliation run.",
+  "scope": {
+    "owns": [
+      "Reconciliation Source Snapshot Freeze semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RECONCILIATION_SOURCE_SNAPSHOT",
+      "name": "Reconciliation Source Snapshot Freeze",
+      "purpose": "Define immutable source-tree snapshot used as the exact basis for one whole-tree reconciliation run.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_RECONCILIATION",
+        "TOPIC_INVENTORY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RECONCILIATION_SOURCE_SNAPSHOT_CONTRACT",
+        "RECONCILIATION_IS_EVIDENCE_DRIVEN",
+        "NO_SILENT_FINALIZATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each reconciliation snapshot has explicit identity.",
+    "bootstrap_rule": "Exact root Contract Format hash/revision is included.",
+    "source_rule": "Exact canonical definition file paths/hashes are included.",
+    "history_rule": "Excluded historical/generated file sets are recorded.",
+    "patch_rule": "Applied patch/revision provenance is recorded where available.",
+    "immutability_rule": "Any source change produces a new snapshot/reconciliation run.",
+    "authority_rule": "Snapshot freeze is analysis evidence, not repository write lock."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RECONCILIATION_IS_EVIDENCE_DRIVEN",
+        "rule": "Whole-tree reconciliation operates only on exact accepted/candidate source snapshots, identities, references and declared semantics; it never repairs ambiguity through filename, path order, timestamp, nearest-name or UI layout heuristics."
+      },
+      {
+        "id": "NO_SILENT_FINALIZATION",
+        "rule": "A contract, closure set or repository remains unlocked/not-ready until all required reconciliation findings for its declared readiness profile are explicitly resolved or accepted through an explicit bounded exception."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "tree changes mid-run without new snapshot",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "snapshot identified by timestamp only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "bootstrap hash omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "excluded files not recorded",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "snapshot means repo cannot change operationally",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_INV",
+      "target_ref": "AIGMOS_REPOSITORY_TREE_INVENTORY_CONTRACT",
+      "purpose": "Snapshot freezes exact inventoried tree."
+    }
+  ],
+  "prose": {
+    "summary": "Define immutable source-tree snapshot used as the exact basis for one whole-tree reconciliation run.",
+    "notes": [
+      "Unlocked pending application to the final merged review tree.",
+      "This contract defines reconciliation semantics; it does not claim that repository-wide reconciliation has already passed."
+    ]
+  }
+}

@@ -1,0 +1,285 @@
+{
+  "behavior": {
+    "events": [],
+    "flows": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "errors": [
+          "source unresolved"
+        ],
+        "id": "OP_EDITOR_PROJECT",
+        "inputs": [
+          "nanoCMS Editor layout",
+          "MetaModule editor semantics",
+          "authorized source refs"
+        ],
+        "name": "Project Editor UI",
+        "outputs": [
+          "Editor SPA projection"
+        ],
+        "side_effects": []
+      },
+      {
+        "errors": [
+          "authority denied",
+          "validation failure"
+        ],
+        "id": "OP_EDITOR_EDIT_COPY",
+        "inputs": [
+          "current Editor definition",
+          "authorized delta"
+        ],
+        "name": "Edit candidate copy of Editor definition",
+        "outputs": [
+          "candidate Editor definition"
+        ],
+        "side_effects": [
+          "candidate definition updated"
+        ]
+      },
+      {
+        "errors": [
+          "activation failure"
+        ],
+        "id": "OP_EDITOR_ACTIVATE_COPY",
+        "inputs": [
+          "validated candidate"
+        ],
+        "name": "Activate validated Editor copy",
+        "outputs": [
+          "active Editor definition"
+        ],
+        "side_effects": [
+          "active Editor configuration updated"
+        ]
+      }
+    ],
+    "states": []
+  },
+  "constraints": {
+    "hard_gates": [
+      {
+        "id": "GATE_6BD80DE97F",
+        "condition": "Editor receives privileged AccessCore bypass",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_74392A39F9",
+        "condition": "running Editor irreversibly mutates its only active definition without candidate validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_616623BF30",
+        "condition": "Editor layout duplicated in hard-coded private model instead of canonical nanoCMS structure",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_D053701A04",
+        "condition": "invalid candidate activated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_9B8FE5C7AC",
+        "condition": "no recovery path exists for self-editing failure",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_F1A8ACC104",
+        "condition": "Editor implemented as privileged special runtime class",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_24AC2F59A2",
+        "condition": "Editor layout hard-coded in parallel tree",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2AA09A4339",
+        "condition": "active Editor irreversibly self-mutates with no recovery copy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5FD987E9B1",
+        "condition": "invalid self-edit activated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_22328D8026",
+        "condition": "self-hosting bypasses AccessCore",
+        "result": "hard_fail"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "EXPOSE_BOUNDARY_EXPLICIT",
+        "rule": "Expose, nanoCMS, MetaModules and Editor remain projections/compositions over canonical semantics and never create hidden runtime authority."
+      },
+      {
+        "id": "NANOCMS_STRUCTURE_ONLY",
+        "rule": "nanoCMS owns canonical web/site structure, routes, navigation and MetaModule placement/bindings; it never becomes owner of the placed MetaModule's semantics."
+      }
+    ]
+  },
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT",
+    "name": "Expose Editor Self-Hosting",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "members": [],
+  "prose": {
+    "notes": [
+      "Unlocked until reconciled against existing Expose/nanoCMS/Meta contracts and repository-wide Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against existing Expose/nanoCMS contracts and whole-tree Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: expose/editor/00_Editor_Self_Hosting.json, expose/nanocms/04_Editor_Self_Hosting.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define the Editor as an ordinary MetaModule under nanoCMS, governed by AccessCore and capable of self-editing only through copy-validate-activate semantics with a recovery path. [2] Define the Expose Editor itself as a normal MetaModule placed under nanoCMS, with its own internal editor sections/views organized by the same nanoCMS structure and a safe copy-validate-activate recovery path."
+  },
+  "purpose": "Reconciled source purposes: [1] Define the Editor as an ordinary MetaModule under nanoCMS, governed by AccessCore and capable of self-editing only through copy-validate-activate semantics with a recovery path. [2] Define the Expose Editor itself as a normal MetaModule placed under nanoCMS, with its own internal editor sections/views organized by the same nanoCMS structure and a safe copy-validate-activate recovery path.",
+  "references": [
+    {
+      "id": "REF_META",
+      "target_ref": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT",
+      "purpose": "Editor is an ordinary MetaModule."
+    },
+    {
+      "id": "REF_NANOCMS",
+      "target_ref": "AIGMOS_NANOCMS_STRUCTURE_CONTRACT",
+      "purpose": "Editor layout/navigation uses nanoCMS."
+    },
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_AUTHORIZATION_CONTRACT",
+      "purpose": "Editor is normally governed by AccessCore."
+    },
+    {
+      "id": "REF_PLACE",
+      "target_ref": "AIGMOS_NANOCMS_METAMODULE_PLACEMENT_CONTRACT",
+      "purpose": "Editor is placed as a normal MetaModule."
+    },
+    {
+      "id": "REF_REPLACE",
+      "target_ref": "AIGMOS_CANONICAL_CLEAN_TREE_REPLACEMENT_CONTRACT",
+      "purpose": "Self-edit uses candidate validation/activation semantics."
+    }
+  ],
+  "scope": {
+    "does_not_own": [
+      "runtime execution authority unless explicitly referenced",
+      "unrelated domain semantics",
+      "MetaModule business semantics",
+      "runtime authority",
+      "domain data semantics"
+    ],
+    "owns": [
+      "Expose Editor Self-Hosting semantics"
+    ]
+  },
+  "semantics": {
+    "ac_rule": "AC off means no AccessCore restrictions; AC on governs Editor and its subareas through normal policy.",
+    "activation_rule": "Only validated candidate may become active.",
+    "authority_rule": "Editor self-hosting never bypasses AccessCore.",
+    "layout_rule": "Reconciled source clauses: [1] Editor internal navigation/layout is represented through nanoCMS site/page structure. [2] Editor internal navigation/layout is represented by nanoCMS site/page structure.",
+    "module_rule": "Editor is a normal MetaModule, not a privileged runtime class.",
+    "no_bypass_rule": "Editor has no privileged AC/runtime bypass.",
+    "placement_rule": "Editor is placed/bound through nanoCMS like other outward-facing MetaModules.",
+    "recovery_rule": "Reconciled source clauses: [1] A bootstrap/recovery path remains available if the candidate Editor is invalid. [2] A bootstrap/recovery path remains available if candidate Editor configuration is invalid.",
+    "runtime_class": "ordinary MetaModule",
+    "self_edit_rule": "Reconciled source clauses: [1] Running Editor edits/validates a candidate copy rather than irreversibly mutating the only active definition. [2] Running Editor edits a candidate/copy of its own MetaModule/structure rather than irreversibly mutating the only active definition.",
+    "spa_rule": "Editor may present SPA-style UI over normal canonical operations/REST bindings.",
+    "validation_rule": "Candidate self-edit validates before activation/reload."
+  },
+  "source_role": "definition",
+  "status": "locked",
+  "structure": {
+    "authority": [],
+    "containment": [],
+    "dependencies": [],
+    "ownership": [],
+    "relations": []
+  },
+  "topics": [
+    {
+      "child_topics": [],
+      "composed_topic_refs": [
+        "TOPIC_METAMODULE",
+        "TOPIC_NANOCMS",
+        "TOPIC_ACCESSCORE_AUTHORIZATION",
+        "TOPIC_CORE_CHANGE_CONTROL"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_EXPOSE_EDITOR",
+      "member_refs": [
+        "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT",
+        "EXPOSE_BOUNDARY_EXPLICIT",
+        "NANOCMS_STRUCTURE_ONLY",
+        "GATE_6BD80DE97F",
+        "GATE_74392A39F9",
+        "GATE_616623BF30",
+        "GATE_D053701A04",
+        "GATE_9B8FE5C7AC",
+        "GATE_F1A8ACC104",
+        "GATE_24AC2F59A2",
+        "GATE_2AA09A4339",
+        "GATE_5FD987E9B1",
+        "GATE_22328D8026"
+      ],
+      "metadata": {},
+      "name": "Editor",
+      "operation_refs": [
+        "OP_EDITOR_PROJECT",
+        "OP_EDITOR_EDIT_COPY",
+        "OP_EDITOR_ACTIVATE_COPY"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "purpose": "Define the Editor as an ordinary MetaModule under nanoCMS, governed by AccessCore and capable of self-editing only through copy-validate-activate semantics with a recovery path.",
+      "relation_refs": []
+    },
+    {
+      "child_topics": [],
+      "composed_topic_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+      "member_refs": [
+        "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT",
+        "EXPOSE_BOUNDARY_EXPLICIT",
+        "NANOCMS_STRUCTURE_ONLY",
+        "GATE_6BD80DE97F",
+        "GATE_74392A39F9",
+        "GATE_616623BF30",
+        "GATE_D053701A04",
+        "GATE_9B8FE5C7AC",
+        "GATE_F1A8ACC104",
+        "GATE_24AC2F59A2",
+        "GATE_2AA09A4339",
+        "GATE_5FD987E9B1",
+        "GATE_22328D8026"
+      ],
+      "metadata": {},
+      "name": "Expose Editor Self-Hosting",
+      "operation_refs": [
+        "OP_EDITOR_PROJECT",
+        "OP_EDITOR_EDIT_COPY",
+        "OP_EDITOR_ACTIVATE_COPY"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_NANOCMS"
+      ],
+      "purpose": "Define the Expose Editor itself as a normal MetaModule placed under nanoCMS, with its own internal editor sections/views organized by the same nanoCMS structure and a safe copy-validate-activate recovery path.",
+      "relation_refs": []
+    }
+  ]
+}

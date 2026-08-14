@@ -1,0 +1,165 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_EVENT_CONTRACT",
+    "name": "Runtime Event",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Event as the exclusive @ automation occurrence primitive: inert event identity and payload with explicit cause/provenance, never authority and never implicit command execution.",
+  "scope": {
+    "owns": [
+      "Runtime Event semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_EVENT_CREATE",
+        "name": "Create inert Event occurrence",
+        "inputs": [
+          "event identity",
+          "validated payload",
+          "cause_ref"
+        ],
+        "outputs": [
+          "Event occurrence"
+        ],
+        "errors": [
+          "payload invalid"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_EVENT_EMIT",
+        "name": "Emit Event",
+        "inputs": [
+          "Event occurrence"
+        ],
+        "outputs": [
+          "published Event occurrence"
+        ],
+        "errors": [
+          "event channel unavailable"
+        ],
+        "side_effects": [
+          "Event stream/state updated"
+        ]
+      },
+      {
+        "id": "OP_EVENT_ROUTE",
+        "name": "Resolve explicit Event bindings",
+        "inputs": [
+          "Event occurrence",
+          "declared bindings"
+        ],
+        "outputs": [
+          "dispatch requests"
+        ],
+        "errors": [
+          "binding unresolved"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "sigil": "@",
+    "exclusive_semantics": true,
+    "payload_rule": "Event payload is inert data.",
+    "authority_rule": "Event payload cannot grant capability or authority.",
+    "dispatch_rule": "Event occurrence does not itself execute a command or Routine; explicit bindings produce dispatcher requests.",
+    "required_fields": [
+      "event_id",
+      "timestamp",
+      "cause_ref"
+    ],
+    "optional_fields": [
+      "source_ref",
+      "trigger_ref",
+      "dedup_key"
+    ],
+    "payload_bound_rule": "Event payload size is bounded.",
+    "provenance_rule": "Event retains cause/source provenance."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "AUTOMATION_EXPLICIT",
+        "rule": "Automation semantics are explicit, bounded, and do not gain authority from data or composition."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "@ used for non-Event semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Event payload grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "Event payload directly dispatches arbitrary command",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "Event has no stable identity/timestamp",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "Event payload size unbounded",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "Event loses causal provenance",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_VALUES",
+      "target_ref": "AIGMOS_CORE_VALUE_SEMANTICS_CONTRACT",
+      "purpose": "Event payload is inert typed data."
+    },
+    {
+      "id": "REF_DISPATCH",
+      "target_ref": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+      "purpose": "Event routing produces explicit dispatch requests."
+    }
+  ],
+  "prose": {
+    "summary": "Define Event as the exclusive @ automation occurrence primitive: inert event identity and payload with explicit cause/provenance, never authority and never implicit command execution.",
+    "notes": [
+      "Unlocked until reconciled against the existing automation/runtime contracts and repository-wide 1.4 traceability validation."
+    ]
+  }
+}

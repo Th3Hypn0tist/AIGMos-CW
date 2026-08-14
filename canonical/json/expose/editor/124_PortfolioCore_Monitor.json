@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_PORTFOLIOCORE_MONITOR_CONTRACT",
+    "name": "PortfolioCore Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only/candidate-edit Expose view for portfolio items, references, artifacts/Project links, verification metadata and visibility.",
+  "scope": {
+    "owns": [
+      "PortfolioCore Monitor semantics"
+    ],
+    "does_not_own": [
+      "IAM authentication/session semantics",
+      "AccessCore authorization policy",
+      "Project semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_PORTFOLIOCORE_MONITOR",
+      "name": "PortfolioCore Monitor",
+      "purpose": "Define a read-only/candidate-edit Expose view for portfolio items, references, artifacts/Project links, verification metadata and visibility.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_PORTFOLIOCORE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_PORTFOLIOCORE_MONITOR_CONTRACT",
+        "EVIDENCE_NONFABRICATION",
+        "IDENTITY_ISOLATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "portfolio item registry",
+      "reference/issuer evidence",
+      "Project/artifact links",
+      "verification state",
+      "visibility/publication",
+      "public projection preview"
+    ],
+    "readonly_rule": "Default is read-only; edits create candidates.",
+    "identity_rule": "IdentityCore, portfolio item, reference, Project, artifact and projection identities remain distinct.",
+    "action_rule": "add/edit/publish/unpublish/revoke-reference operations use separate authorized workflows.",
+    "authority_rule": "Viewing portfolio grants no source/Project authority.",
+    "privacy_rule": "Restricted/private evidence is protected.",
+    "failure_rule": "broken/unverified/revoked refs remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EVIDENCE_NONFABRICATION",
+        "rule": "Identity, portfolio, merit, recommendation, trust and competence states derive only from explicit provenance-bearing evidence; display text, self-authored claims, ranking position or AI inference never become verified evidence by themselves."
+      },
+      {
+        "id": "IDENTITY_ISOLATION",
+        "rule": "Distinct canonical identities maintain independent evidence histories; merit, Tier, trust and recommendation histories are not mergeable across identities unless a future explicit canonical identity-merger contract exists."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor treats portfolio as merit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "viewing grants artifact access",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "public projection leaks private refs",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "Project and item identities conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "revoked reference hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROJ",
+      "target_ref": "AIGMOS_PORTFOLIO_PROJECTION_CONTRACT",
+      "purpose": "Monitor previews derived portfolio projection."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only/candidate-edit Expose view for portfolio items, references, artifacts/Project links, verification metadata and visibility.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

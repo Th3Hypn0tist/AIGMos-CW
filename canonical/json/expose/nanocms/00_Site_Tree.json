@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NANOCMS_SITE_TREE_CONTRACT",
+    "name": "nanoCMS Site Tree",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define `#WEB` site hierarchy as explicit recursive site/page structure owned by nanoCMS, independent from filesystem layout and MetaModule semantics.",
+  "scope": {
+    "owns": [
+      "nanoCMS Site Tree semantics"
+    ],
+    "does_not_own": [
+      "MetaModule business semantics",
+      "runtime authority",
+      "domain data semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NANOCMS_SITE_TREE",
+      "name": "nanoCMS Site Tree",
+      "purpose": "Define `#WEB` site hierarchy as explicit recursive site/page structure owned by nanoCMS, independent from filesystem layout and MetaModule semantics.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_NANOCMS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_NANOCMS_SITE_TREE_CONTRACT",
+        "NANOCMS_STRUCTURE_ONLY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "root": "#WEB",
+    "node_types": [
+      "site",
+      "section",
+      "page"
+    ],
+    "identity_rule": "Every site-tree node has an explicit stable identity.",
+    "recursive_rule": "Site-tree nodes may contain child structural nodes recursively.",
+    "path_rule": "Route/path is a binding of a node, not its semantic identity.",
+    "module_rule": "Placed MetaModules are referenced/bound to nodes and retain their own semantic ownership.",
+    "order_rule": "Navigation/display order is explicit presentation metadata where used.",
+    "cycle_rule": "Illegal containment cycles hard-fail."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "NANOCMS_STRUCTURE_ONLY",
+        "rule": "nanoCMS owns canonical web/site structure, routes, navigation and MetaModule placement/bindings; it never becomes owner of the placed MetaModule's semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "site/page identity inferred solely from URL/path",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "MetaModule semantics copied into nanoCMS ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "containment cycle accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "filesystem hierarchy treated as canonical site tree",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "display order inferred from JSON order only",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_WEB",
+      "target_ref": "AIGMOS_NANOCMS_STRUCTURE_CONTRACT",
+      "purpose": "#WEB exposes canonical web structure."
+    }
+  ],
+  "prose": {
+    "summary": "Define `#WEB` site hierarchy as explicit recursive site/page structure owned by nanoCMS, independent from filesystem layout and MetaModule semantics.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Expose/nanoCMS contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

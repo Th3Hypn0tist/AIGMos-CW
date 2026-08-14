@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_CANCELLATION_PREEMPTION_CONTRACT",
+    "name": "DWH Cancellation and Preemption",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit cancellation, timeout and optional preemption semantics for DWH executions so interrupted work cannot masquerade as successful completion or leave ambiguous accepted writes.",
+  "scope": {
+    "owns": [
+      "DWH Cancellation and Preemption semantics"
+    ],
+    "does_not_own": [
+      "query semantic ownership",
+      "AccessCore policy ownership",
+      "runtime scheduler implementation details"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_CANCELLATION_PREEMPTION",
+      "name": "DWH Cancellation and Preemption",
+      "purpose": "Define explicit cancellation, timeout and optional preemption semantics for DWH executions so interrupted work cannot masquerade as successful completion or leave ambiguous accepted writes.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_WORKLOAD_CONTROL"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_CANCELLATION_PREEMPTION_CONTRACT",
+        "WORKLOAD_CONTROL_NONSEMANTIC",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "states": [
+      "cancel_requested",
+      "cancelling",
+      "cancelled",
+      "timeout",
+      "preempted",
+      "completed",
+      "failed"
+    ],
+    "request_rule": "Cancellation targets an exact execution identity.",
+    "authorization_rule": "Cancellation/preemption requires explicit lifecycle authority where governed.",
+    "read_rule": "Cancelled read/query results are incomplete unless the operation profile explicitly accepts partial output.",
+    "write_rule": "Interrupted mutations obey transaction/atomicity semantics and cannot leave ambiguous accepted state.",
+    "preemption_rule": "Preempted work retains exact resume/restart policy and evidence if resumable.",
+    "timeout_rule": "Timeout is explicit failure/termination evidence and never success.",
+    "cleanup_rule": "Cancellation releases bounded runtime resources/subscriptions/locks according to lifecycle contracts.",
+    "history_rule": "Cancelled/preempted execution evidence remains traceable."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "WORKLOAD_CONTROL_NONSEMANTIC",
+        "rule": "Admission, quotas, concurrency, priority, cancellation and resource budgets may control when/how work executes but never change canonical query/write semantics, data ownership, classification or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "cancelled query shown complete",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "cancelled write leaves ambiguous partial accepted state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "timeout shown success",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "cancel request targets newest execution heuristically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "preemption erases prior execution evidence",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TX",
+      "target_ref": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT",
+      "purpose": "Interrupted writes preserve atomicity."
+    },
+    {
+      "id": "REF_RUN",
+      "target_ref": "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT",
+      "purpose": "Cancellation uses explicit runtime failure/recovery semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit cancellation, timeout and optional preemption semantics for DWH executions so interrupted work cannot masquerade as successful completion or leave ambiguous accepted writes.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH query, mutation, service-level and runtime execution contracts."
+    ]
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_DWH_CATALOG_MONITOR_CONTRACT",
+    "name": "DWH Catalog and Metadata Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor/editor projection for datasets, catalog entries, annotations, ownership/steward refs, search metadata, classification summaries and registration state.",
+  "scope": {
+    "owns": [
+      "DWH Catalog and Metadata Monitor semantics"
+    ],
+    "does_not_own": [
+      "source domain semantics",
+      "AccessCore policy ownership",
+      "physical storage ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_DWH_CATALOG_MONITOR",
+      "name": "DWH Catalog and Metadata Monitor",
+      "purpose": "Define a read-only Expose monitor/editor projection for datasets, catalog entries, annotations, ownership/steward refs, search metadata, classification summaries and registration state.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_CATALOG_METADATA"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_DWH_CATALOG_MONITOR_CONTRACT",
+        "CATALOG_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "dataset/resource registry",
+      "catalog entries/state",
+      "schema/resource refs",
+      "annotations/tags/glossary refs",
+      "owner/steward refs",
+      "source/provenance",
+      "classification/sensitivity summary",
+      "search facets/ranking evidence",
+      "duplicate/conflict findings"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Dataset, catalog entry, annotation, schema/resource and search-result identities remain distinct.",
+    "authority_rule": "Viewing or discovering resources grants no underlying data authority.",
+    "action_rule": "register/edit-metadata/deprecate/reconcile/reclassify operations invoke separate authorized canonical workflows.",
+    "derived_rule": "Ranking, summaries and metadata projections are displayed as derived/descriptive evidence.",
+    "graph_rule": "Catalog→resource→schema/lineage edges correspond only to explicit refs.",
+    "failure_rule": "Duplicate entries, stale annotations, ownership mismatches and classification conflicts are surfaced explicitly."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "CATALOG_NONAUTHORITY",
+        "rule": "Catalog and metadata records describe exact DWH resources and evidence; discovery, labels, annotations, ranking or catalog visibility never replace canonical resource identity, semantic ownership, classification policy or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor conflates catalog entry and dataset identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "search rank displayed as semantic priority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "monitor directly declassifies via tag edit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "viewing grants source data access",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "visual adjacency invents ownership",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REG",
+      "target_ref": "AIGMOS_DWH_CATALOG_REGISTRATION_CONTRACT",
+      "purpose": "Monitor projects explicit catalog registrations."
+    },
+    {
+      "id": "REF_CLASS",
+      "target_ref": "AIGMOS_DWH_CATALOG_SENSITIVITY_METADATA_CONTRACT",
+      "purpose": "Monitor exposes classification metadata as projection only."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor/editor projection for datasets, catalog entries, annotations, ownership/steward refs, search metadata, classification summaries and registration state.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH schema, lineage, classification and discovery contracts."
+    ]
+  }
+}

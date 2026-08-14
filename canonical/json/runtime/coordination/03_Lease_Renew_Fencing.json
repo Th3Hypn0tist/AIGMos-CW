@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_LEASE_RENEW_FENCING_CONTRACT",
+    "name": "Lease Renewal and Fencing",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define bounded renewal and fencing so stale holders cannot continue mutating protected resources after lease loss.",
+  "scope": {
+    "owns": [
+      "Lease Renewal and Fencing semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_LEASE_RENEW_FENCING",
+      "name": "Lease Renewal and Fencing",
+      "purpose": "Define bounded renewal and fencing so stale holders cannot continue mutating protected resources after lease loss.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME",
+        "TOPIC_COORDINATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_LEASE_RENEW_FENCING_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "renew_rule": "Renewal targets exact active lease identity/epoch.",
+    "fence_rule": "Protected mutation may require current fencing token/epoch.",
+    "stale_rule": "Stale holder/token is rejected even if process remains alive.",
+    "expiry_rule": "Renewal after expiry follows explicit reacquire semantics rather than silent resurrection.",
+    "failure_rule": "Uncertain renewal state is explicit.",
+    "authorization_rule": "Fencing complements, never replaces, normal authorization.",
+    "history_rule": "Lease epochs/renewals remain traceable."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "expired lease silently renewed as same epoch",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "stale holder mutation accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "fencing token treated as authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "uncertain renewal shown active",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "old epoch reused",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LEASE",
+      "target_ref": "AIGMOS_LEASE_IDENTITY_CONTRACT",
+      "purpose": "Fencing protects lease-coordinated effects."
+    }
+  ],
+  "prose": {
+    "summary": "Define bounded renewal and fencing so stale holders cannot continue mutating protected resources after lease loss.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

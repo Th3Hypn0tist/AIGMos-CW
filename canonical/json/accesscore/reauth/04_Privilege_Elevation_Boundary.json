@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_PRIVILEGE_ELEVATION_BOUNDARY_CONTRACT",
+    "name": "Privilege Elevation Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define temporary elevation as an explicit bounded authorization state/profile rather than a hidden side effect of stronger authentication.",
+  "scope": {
+    "owns": [
+      "Privilege Elevation Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime operation implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_PRIVILEGE_ELEVATION_BOUNDARY",
+      "name": "Privilege Elevation Boundary",
+      "purpose": "Define temporary elevation as an explicit bounded authorization state/profile rather than a hidden side effect of stronger authentication.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE",
+        "TOPIC_REAUTH"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_PRIVILEGE_ELEVATION_BOUNDARY_CONTRACT",
+        "IDENTITY_AUTHORITY_SEPARATION",
+        "FAIL_CLOSED_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Temporary elevation, if supported, has an explicit grant/evidence identity.",
+    "source_rule": "Elevation source policy/approver/delegation is explicit.",
+    "scope_rule": "Elevated rights/resources/operations are exact.",
+    "assurance_rule": "Higher assurance may be prerequisite but never sole source of elevated rights.",
+    "lifetime_rule": "Elevation lifetime is explicit and bounded.",
+    "revocation_rule": "Elevation can be revoked independently from session authentication.",
+    "nonexpansion_rule": "Elevation cannot exceed its exact authorized grant.",
+    "audit_rule": "Elevation creation/use/revocation is audited."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_AUTHORITY_SEPARATION",
+        "rule": "Identity, authentication assurance, authorization policy, authorization decision, delegation and runtime execution remain separate machine-significant identities/evidence; no one layer silently substitutes for another."
+      },
+      {
+        "id": "FAIL_CLOSED_AUTHORITY",
+        "rule": "Ambiguous, missing, stale or unverifiable authority for a protected effect fails closed rather than inheriting trust from locality, transport reachability, process ownership, UI visibility or previous success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "strong auth automatically becomes admin",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "elevation hidden in session flag without identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "elevation unlimited lifetime",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "elevation expands beyond grant",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "logout required as only revocation mechanism",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AUTH",
+      "target_ref": "AIGMOS_AUTHORIZATION_DECISION_CONTRACT",
+      "purpose": "Elevation changes authorization inputs through explicit grant semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define temporary elevation as an explicit bounded authorization state/profile rather than a hidden side effect of stronger authentication.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_IMPORT_EXPORT_MONITOR_CONTRACT",
+    "name": "Import/Export Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for import/export jobs, source/target identities, profiles, semantic diffs, conflicts, lossiness and roundtrip evidence.",
+  "scope": {
+    "owns": [
+      "Import/Export Monitor semantics"
+    ],
+    "does_not_own": [
+      "source domain semantics",
+      "AccessCore policy ownership",
+      "arbitrary filesystem authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_IMPORT_EXPORT_MONITOR",
+      "name": "Import/Export Monitor",
+      "purpose": "Define a read-only Expose monitor for import/export jobs, source/target identities, profiles, semantic diffs, conflicts, lossiness and roundtrip evidence.",
+      "parent_topic_refs": [
+        "TOPIC_COMMAND_NAMESPACE",
+        "TOPIC_SERIALIZATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_IMPORT_EXPORT_MONITOR_CONTRACT",
+        "IMPORT_EXPORT_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "command/profile",
+      "source/target refs",
+      "job status",
+      "serialization profile",
+      "lossless/lossy declaration",
+      "semantic diff",
+      "conflicts",
+      "validation result",
+      "roundtrip test/evidence"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Source, target, import/export job and serialized artifact identities remain separate.",
+    "action_rule": "Import/export/retry/reconcile operations invoke separate authorized commands.",
+    "authority_rule": "Viewing transfer jobs grants no read/write authority beyond monitor scope.",
+    "redaction_rule": "Sensitive exported/imported values may be redacted according to policy.",
+    "trace_rule": "Job results retain exact source/target/profile/hash/diff refs.",
+    "failure_rule": "Lossy/conflicted/failed jobs are displayed explicitly and never as successful equivalent backups."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IMPORT_EXPORT_EXPLICIT",
+        "rule": "Import/export families resolve exact source/target identities and explicit serialization profiles; conversion never silently changes semantic ownership, identity or authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor directly applies import",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "job/source/target identities conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "lossy export displayed as equivalent backup",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "viewing grants mutation authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "job trace loses profile/diff refs",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_IMPORT",
+      "target_ref": "AIGMOS_IMPORT_VALIDATION_CHANGE_BOUNDARY_CONTRACT",
+      "purpose": "Monitor projects import validation/apply state."
+    },
+    {
+      "id": "REF_RT",
+      "target_ref": "AIGMOS_IMPORT_EXPORT_ROUNDTRIP_PROFILE_CONTRACT",
+      "purpose": "Monitor shows roundtrip guarantees."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for import/export jobs, source/target identities, profiles, semantic diffs, conflicts, lossiness and roundtrip evidence.",
+    "notes": [
+      "Unlocked pending reconciliation against recursive command namespace, serialization and canonical change contracts."
+    ]
+  }
+}

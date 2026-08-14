@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MEMORY_CLASSIFICATION_LINEAGE_CONTRACT",
+    "name": "Memory Classification and Lineage",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define preservation of source classification, lineage and privacy constraints when data is copied, summarized or derived into memory.",
+  "scope": {
+    "owns": [
+      "Memory Classification and Lineage semantics"
+    ],
+    "does_not_own": [
+      "source-domain semantics",
+      "AccessCore policy ownership",
+      "model execution authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MEMORY_CLASSIFICATION_LINEAGE",
+      "name": "Memory Classification and Lineage",
+      "purpose": "Define preservation of source classification, lineage and privacy constraints when data is copied, summarized or derived into memory.",
+      "parent_topic_refs": [
+        "TOPIC_MEMORY",
+        "TOPIC_AI_EXECUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MEMORY_CLASSIFICATION_LINEAGE_CONTRACT",
+        "MEMORY_CONTEXT_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "lineage_rule": "Memory derived from governed data retains source lineage refs.",
+    "classification_rule": "Memory classification propagates from source according to explicit policy.",
+    "summary_rule": "Summarization does not implicitly declassify source information.",
+    "multi_source_rule": "Memory derived from multiple sources uses explicit classification join semantics.",
+    "declassification_rule": "Lowering classification requires an explicit authorized declassification/sanitization boundary.",
+    "remote_rule": "Remote/external source lineage remains distinguishable from local memory identity.",
+    "redaction_rule": "Retrieval projection may redact content while internal lineage remains preserved."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MEMORY_CONTEXT_NONAUTHORITY",
+        "rule": "Memory and retrieved context are provenance-bearing inert data projections; remembered or retrieved content never becomes authority, canonical truth or executable instruction merely by inclusion in context."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "summary silently becomes public",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "source lineage erased after memory write",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "remote source becomes local-origin data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "multi-source classification guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "memory write implicitly declassifies",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TAINT",
+      "target_ref": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT",
+      "purpose": "Memory reuses formal classification propagation."
+    },
+    {
+      "id": "REF_DECL",
+      "target_ref": "AIGMOS_DWH_DECLASSIFICATION_BOUNDARY_CONTRACT",
+      "purpose": "Declassification remains explicit."
+    }
+  ],
+  "prose": {
+    "summary": "Define preservation of source classification, lineage and privacy constraints when data is copied, summarized or derived into memory.",
+    "notes": [
+      "Unlocked pending reconciliation against #MEM, q target/context, DWH lineage and AccessCore contracts."
+    ]
+  }
+}

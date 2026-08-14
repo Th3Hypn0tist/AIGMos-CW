@@ -1,0 +1,182 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_LOADER_INERTNESS_CONTRACT",
+    "name": "Runtime Loader Inertness",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define loaders as bounded source-to-registry mechanisms that parse and register inert definitions without executing loaded content.",
+  "scope": {
+    "owns": [
+      "Runtime Loader Inertness semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_LOADERS",
+      "name": "Loaders",
+      "purpose": "Define loaders as bounded source-to-registry mechanisms that parse and register inert definitions without executing loaded content.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_VALUES",
+        "TOPIC_CORE_BOUNDED_OPERATION",
+        "TOPIC_CORE_ERRORS"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_LOADER_INERTNESS_CONTRACT",
+        "RUNTIME_SEMANTICS_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_LOADER_DISCOVER",
+        "OP_LOADER_PARSE",
+        "OP_LOADER_COMMIT"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_LOADER_DISCOVER",
+        "name": "Discover declared definition sources",
+        "inputs": [
+          "explicit loader roots/config"
+        ],
+        "outputs": [
+          "candidate definition sources"
+        ],
+        "errors": [
+          "root escape",
+          "unsupported source"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_LOADER_PARSE",
+        "name": "Parse inert definition",
+        "inputs": [
+          "definition source"
+        ],
+        "outputs": [
+          "inert canonical/runtime definition"
+        ],
+        "errors": [
+          "parse failure",
+          "schema failure"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_LOADER_COMMIT",
+        "name": "Commit validated inert definition",
+        "inputs": [
+          "validated definition",
+          "owned registry"
+        ],
+        "outputs": [
+          "registered definition"
+        ],
+        "errors": [
+          "ownership collision"
+        ],
+        "side_effects": [
+          "owned registry updated"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "inert_rule": "Loading, parsing, validating or registering a definition does not execute it.",
+    "root_rule": "Each loader has explicit owned source roots and target registries.",
+    "escape_rule": "Traversal, symlink escape and absolute-path escape are forbidden.",
+    "reload_rule": "Reload updates only entries owned by the relevant source/loader and does not overwrite unrelated runtime/user-owned state.",
+    "error_rule": "Loader errors are visible and leave registries in a deterministic state.",
+    "authority_rule": "Definition content cannot grant loader/core authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RUNTIME_SEMANTICS_EXPLICIT",
+        "rule": "Runtime-significant semantics are explicit and do not arise from payload, path, projection or implementation heuristics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "definition executes during load/parse/register",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "loader reads outside declared source root",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "reload overwrites unrelated runtime/user-owned entry",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "loader error silently leaves partial ambiguous registry state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "loaded payload grants authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_VALUES",
+      "target_ref": "AIGMOS_CORE_VALUE_SEMANTICS_CONTRACT",
+      "purpose": "Loaded values/definitions are inert."
+    },
+    {
+      "id": "REF_BOUNDS",
+      "target_ref": "AIGMOS_CORE_BOUNDED_OPERATION_CONTRACT",
+      "purpose": "Loading and expansion are bounded."
+    }
+  ],
+  "prose": {
+    "summary": "Define loaders as bounded source-to-registry mechanisms that parse and register inert definitions without executing loaded content.",
+    "notes": [
+      "Unlocked until reconciled against the existing runtime contracts and repository-wide 1.4 traceability validation."
+    ]
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NAMESPACE_MOUNTING_CONTRACT",
+    "name": "Namespace Mounting",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit mounting of modules, adapters and service surfaces into registered namespaces without transferring semantic ownership or creating hidden executable roots.",
+  "scope": {
+    "owns": [
+      "Namespace Mounting semantics"
+    ],
+    "does_not_own": [
+      "mounted module internal semantics",
+      "runtime authorization policy",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_NAMESPACE_MOUNTING",
+      "name": "Namespace Mounting",
+      "purpose": "Define explicit mounting of modules, adapters and service surfaces into registered namespaces without transferring semantic ownership or creating hidden executable roots.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NAMESPACES",
+        "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+        "TOPIC_RUNTIME_INPUT_ADAPTERS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_NAMESPACE_MOUNTING_CONTRACT",
+        "NAMESPACE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "mount_rule": "Mount binds an explicit namespace/address to an explicit canonical owner/surface.",
+    "adapter_rule": "Adapter mounts symbols/translations only and gains no independent execution authority.",
+    "module_rule": "UserModule instances mount under their declared `#UM` identity/instance surface.",
+    "service_rule": "Optional service/protocol roots expose declared service semantics but remain separate from transport binding state.",
+    "ownership_rule": "Mount location does not transfer semantic ownership from mounted source.",
+    "unmount_rule": "Unmount removes availability/binding, not the authoritative semantic definition unless lifecycle semantics explicitly delete it.",
+    "authority_rule": "Mounting a writable/invokable surface does not bypass applicable authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "NAMESPACE_EXPLICIT",
+        "rule": "Runtime symbol namespaces, roots, mounts and dynamic families are explicit, collision-free and never inferred solely from filesystem layout or display labels."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "mount location becomes semantic owner",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "adapter mount gains hidden command authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "unmount deletes unrelated authoritative definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "mount bypasses authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "namespace target inferred from filesystem path only",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_UM",
+      "target_ref": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT",
+      "purpose": "UserModules mount under explicit #UM identities."
+    },
+    {
+      "id": "REF_ADAPTER",
+      "target_ref": "AIGMOS_RUNTIME_INPUT_ADAPTER_BOUNDARY_CONTRACT",
+      "purpose": "Adapters are symbol mounts/translation boundaries."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit mounting of modules, adapters and service surfaces into registered namespaces without transferring semantic ownership or creating hidden executable roots.",
+    "notes": [
+      "Unlocked pending reconciliation against existing runtime symbol/module contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

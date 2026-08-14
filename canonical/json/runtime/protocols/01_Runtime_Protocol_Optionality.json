@@ -1,0 +1,176 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_PROTOCOL_OPTIONALITY_CONTRACT",
+    "name": "Runtime Protocol Optionality",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define REST, OSC, WebSocket, WebRTC and other protocol services as explicit installable/removable capabilities rather than implicit mandatory runtime semantics, except where an owning profile/use-case explicitly requires them.",
+  "scope": {
+    "owns": [
+      "Runtime Protocol Optionality semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "remote authorization policy",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_PROTOCOL_OPTIONALITY",
+      "name": "Protocol Optionality",
+      "purpose": "Define REST, OSC, WebSocket, WebRTC and other protocol services as explicit installable/removable capabilities rather than implicit mandatory runtime semantics, except where an owning profile/use-case explicitly requires them.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_BOOT_PROFILE",
+        "TOPIC_CORE_CAPABILITY_AUTHORITY"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_PROTOCOL_OPTIONALITY_CONTRACT",
+        "NETWORK_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_PROTOCOL_CAPABILITY_RESOLVE",
+        "OP_PROTOCOL_DEPENDENCY_VALIDATE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_PROTOCOL_CAPABILITY_RESOLVE",
+        "name": "Resolve installed protocol capability",
+        "inputs": [
+          "protocol identity",
+          "boot/profile config"
+        ],
+        "outputs": [
+          "installed/enabled/disabled"
+        ],
+        "errors": [
+          "protocol unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_PROTOCOL_DEPENDENCY_VALIDATE",
+        "name": "Validate protocol dependency",
+        "inputs": [
+          "consumer",
+          "required protocol capability"
+        ],
+        "outputs": [
+          "dependency valid"
+        ],
+        "errors": [
+          "required protocol absent"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "protocol_examples": [
+      "REST",
+      "OSC",
+      "WebSocket",
+      "WebRTC"
+    ],
+    "default_rule": "Protocol capability existence is explicit and profile/config driven.",
+    "dependency_rule": "A consumer requiring a protocol declares that dependency and hard-fails when absent; runtime never auto-enables it.",
+    "removal_rule": "Removing a protocol capability must expose dependent consumers as invalid/unavailable rather than silently substituting another protocol.",
+    "fallback_rule": "Protocol fallback requires explicit semantic policy.",
+    "authority_rule": "Enabling a protocol does not grant operation/data authority.",
+    "core_rule": "Core semantic model is not defined by the presence of any optional protocol binding."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "NETWORK_BOUNDARY_EXPLICIT",
+        "rule": "Network identity, transport, remote authority and payload semantics remain explicit and separate."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "missing protocol auto-enabled",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "protocol silently substituted by another transport",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "enabled protocol grants operation/data authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "dependent consumer remains marked valid when required protocol absent",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "optional protocol treated as universal Core semantic requirement",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "protocol presence inferred from listener/file existence only",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_BOOT",
+      "target_ref": "AIGMOS_RUNTIME_BOOT_PROFILE_CONTRACT",
+      "purpose": "Protocol capability presence follows explicit boot/profile semantics."
+    },
+    {
+      "id": "REF_AUTH",
+      "target_ref": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT",
+      "purpose": "Protocol capability existence is separate from authority."
+    }
+  ],
+  "prose": {
+    "summary": "Define REST, OSC, WebSocket, WebRTC and other protocol services as explicit installable/removable capabilities rather than implicit mandatory runtime semantics, except where an owning profile/use-case explicitly requires them.",
+    "notes": [
+      "Unlocked until reconciled against DWH, messaging, transport and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

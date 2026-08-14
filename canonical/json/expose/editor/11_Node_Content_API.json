@@ -1,0 +1,191 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_NODE_CONTENT_API_CONTRACT",
+    "name": "Expose Node Content API",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Node Content API as the extensible typed content layer for node graph content, initially including comment and example, without allowing node renderers to invent hidden semantic types.",
+  "scope": {
+    "owns": [
+      "Expose Node Content API semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "unrelated domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_NODE_CONTENT",
+      "name": "Node Content API",
+      "purpose": "Define Node Content API as the extensible typed content layer for node graph content, initially including comment and example, without allowing node renderers to invent hidden semantic types.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_EXPOSE_NODE_GRAPH",
+        "TOPIC_CORE_SCHEMA"
+      ],
+      "member_refs": [
+        "AIGMOS_EXPOSE_NODE_CONTENT_API_CONTRACT",
+        "EXPOSE_COMPONENT_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_NODE_CONTENT_REGISTER",
+        "OP_NODE_CONTENT_BIND",
+        "OP_NODE_CONTENT_PROJECT"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_NODE_CONTENT_REGISTER",
+        "name": "Register Node Content type",
+        "inputs": [
+          "content type identity",
+          "schema",
+          "render/editor metadata"
+        ],
+        "outputs": [
+          "registered content type"
+        ],
+        "errors": [
+          "identity collision",
+          "schema invalid"
+        ],
+        "side_effects": [
+          "Node Content registry updated"
+        ]
+      },
+      {
+        "id": "OP_NODE_CONTENT_BIND",
+        "name": "Bind Node Content",
+        "inputs": [
+          "node",
+          "content type",
+          "content value/ref"
+        ],
+        "outputs": [
+          "node content binding"
+        ],
+        "errors": [
+          "content type unresolved",
+          "schema mismatch"
+        ],
+        "side_effects": [
+          "node graph updated"
+        ]
+      },
+      {
+        "id": "OP_NODE_CONTENT_PROJECT",
+        "name": "Project Node Content",
+        "inputs": [
+          "node content binding",
+          "view mode"
+        ],
+        "outputs": [
+          "rendered/edited content view"
+        ],
+        "errors": [
+          "renderer unavailable"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "engine_rule": "Node graph engine owns nodes, ports and edges; Node Content API owns registered node-content types and bindings.",
+    "initial_content_types": [
+      "comment",
+      "example"
+    ],
+    "type_rule": "Each content type has explicit identity and schema.",
+    "semantic_rule": "Content type meaning is explicit; renderer/UI does not infer hidden semantics from arbitrary blobs.",
+    "extension_rule": "New content types register through the API with schema/metadata.",
+    "projection_rule": "Rendering/editing a content type is projection; canonical content remains typed source data.",
+    "authority_rule": "Node content cannot grant runtime authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPOSE_COMPONENT_EXPLICIT",
+        "rule": "Expose components reuse canonical semantics and remain non-privileged projection/composition surfaces."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "renderer invents unregistered semantic content type",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "opaque node blob requires hidden heuristic interpretation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "content schema omitted for machine-significant structured content",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "node content grants runtime authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "comment/example renderer output treated as canonical source",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_NODE",
+      "target_ref": "AIGMOS_EXPOSE_NODE_GRAPH_CONTRACT",
+      "purpose": "Node Content API extends the node graph content surface."
+    },
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_CORE_SCHEMA_SEMANTICS_CONTRACT",
+      "purpose": "Structured node content uses explicit schema."
+    }
+  ],
+  "prose": {
+    "summary": "Define Node Content API as the extensible typed content layer for node graph content, initially including comment and example, without allowing node renderers to invent hidden semantic types.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

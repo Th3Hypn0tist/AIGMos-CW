@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_SCHEDULE_RECURRENCE_TIMEZONE_CONTRACT",
+    "name": "Schedule Recurrence and Timezone",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic one-time and recurring schedule semantics with explicit timezone, recurrence rule and daylight-saving behavior.",
+  "scope": {
+    "owns": [
+      "Schedule Recurrence and Timezone semantics"
+    ],
+    "does_not_own": [
+      "Runner execution semantics",
+      "AccessCore policy ownership",
+      "external calendar provider semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_SCHEDULE_RECURRENCE_TIMEZONE",
+      "name": "Schedule Recurrence and Timezone",
+      "purpose": "Define deterministic one-time and recurring schedule semantics with explicit timezone, recurrence rule and daylight-saving behavior.",
+      "parent_topic_refs": [
+        "TOPIC_CALENDAR",
+        "TOPIC_SCHEDULING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_SCHEDULE_RECURRENCE_TIMEZONE_CONTRACT",
+        "SCHEDULE_NONEXECUTION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "schedule_types": [
+      "one_time",
+      "recurring"
+    ],
+    "timezone_rule": "Wall-clock schedules declare an explicit IANA timezone or explicitly declared UTC semantics.",
+    "recurrence_rule": "Recurring schedules use an explicit machine-readable recurrence profile/rule.",
+    "dst_rule": "Ambiguous/nonexistent local times across daylight-saving transitions follow an explicit policy.",
+    "date_rule": "Calendar-date semantics and fixed-duration interval semantics are distinct.",
+    "anchor_rule": "Recurring schedules retain an explicit recurrence anchor.",
+    "next_rule": "Next occurrence is derived from schedule definition, anchor and occurrence history; it is not canonical source data.",
+    "locale_rule": "Locale/display formatting never changes schedule semantics.",
+    "failure_rule": "Invalid timezone/recurrence hard-fails rather than silently falling back to host-local time."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SCHEDULE_NONEXECUTION",
+        "rule": "A schedule determines when a scheduling occurrence may be emitted; it never directly executes a Routine, command or operation. Execution requires the normal explicit Event→Trigger→Runner/operation causality chain."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "timezone omitted for wall-clock schedule",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "host timezone silently used",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "DST ambiguity guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "calendar recurrence conflated with fixed seconds interval",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "display locale changes recurrence",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SCHED",
+      "target_ref": "AIGMOS_SCHEDULE_IDENTITY_CONTRACT",
+      "purpose": "Recurrence defines temporal behavior of exact schedules."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic one-time and recurring schedule semantics with explicit timezone, recurrence rule and daylight-saving behavior.",
+    "notes": [
+      "Unlocked pending reconciliation against #CAL, Event/Trigger causality, Runner and timezone/runtime contracts."
+    ]
+  }
+}

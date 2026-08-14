@@ -1,0 +1,204 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT",
+    "name": "Runtime Cancellation and Cleanup",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define cancellation, timeout and cleanup as explicit tracked runtime lifecycle semantics across runners, tools, routines, queues and external calls.",
+  "scope": {
+    "owns": [
+      "Runtime Cancellation and Cleanup semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_CANCELLATION",
+      "name": "Cancellation and Cleanup",
+      "purpose": "Define cancellation, timeout and cleanup as explicit tracked runtime lifecycle semantics across runners, tools, routines, queues and external calls.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNNER",
+        "TOPIC_RUNTIME_INFLIGHT",
+        "TOPIC_CORE_ERRORS",
+        "TOPIC_CORE_BOUNDED_OPERATION"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT",
+        "RUNTIME_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_CANCEL_REQUEST",
+        "OP_CANCEL_PROPAGATE",
+        "OP_CLEANUP_FINALIZE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_CANCEL_REQUEST",
+        "name": "Request cancellation",
+        "inputs": [
+          "tracked runtime identity",
+          "cause"
+        ],
+        "outputs": [
+          "cancel request accepted/rejected"
+        ],
+        "errors": [
+          "target unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_CANCEL_PROPAGATE",
+        "name": "Propagate cancellation",
+        "inputs": [
+          "cancel request",
+          "tracked child operations"
+        ],
+        "outputs": [
+          "bounded cancellation propagation"
+        ],
+        "errors": [
+          "child cancellation failed"
+        ],
+        "side_effects": [
+          "tracked runtime state updated"
+        ]
+      },
+      {
+        "id": "OP_CLEANUP_FINALIZE",
+        "name": "Finalize cleanup",
+        "inputs": [
+          "runtime context",
+          "completion/error/timeout/cancel"
+        ],
+        "outputs": [
+          "resources released",
+          "final state"
+        ],
+        "errors": [
+          "cleanup failure"
+        ],
+        "side_effects": [
+          "resources/gates/slots released"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "tracked_rule": "Cancellation addresses tracked runtime identities only.",
+    "propagation_rule": "Cancellation propagation to child work is explicit and bounded.",
+    "cleanup_reasons": [
+      "success",
+      "error",
+      "timeout",
+      "cancel"
+    ],
+    "cleanup_targets": [
+      "inflight gates",
+      "runner slots",
+      "queue reservations",
+      "temporary resources",
+      "external call contexts"
+    ],
+    "idempotence_rule": "Cleanup should be safe against repeated invocation where applicable.",
+    "visibility_rule": "Final cleanup state and cleanup failures are visible.",
+    "definition_rule": "Cancellation/cleanup state is runtime state, not authored definition."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RUNTIME_BOUNDARY_EXPLICIT",
+        "rule": "Runtime capabilities, dispatch and mutable state remain explicit, bounded and Core-governed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "untracked work cannot be cancelled/cleaned deterministically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "timeout path skips cleanup",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "cancel path skips cleanup",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "cleanup failure hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "gate/resource remains held after terminal state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "cancellation state stored as authored definition",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RUNNER",
+      "target_ref": "AIGMOS_RUNTIME_RUNNER_CONTRACT",
+      "purpose": "Runner lifecycle uses cancellation/cleanup."
+    },
+    {
+      "id": "REF_INFLIGHT",
+      "target_ref": "AIGMOS_RUNTIME_INFLIGHT_GATE_CONTRACT",
+      "purpose": "Inflight gates must release on all terminal paths."
+    }
+  ],
+  "prose": {
+    "summary": "Define cancellation, timeout and cleanup as explicit tracked runtime lifecycle semantics across runners, tools, routines, queues and external calls.",
+    "notes": [
+      "Unlocked until reconciled against existing runtime contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

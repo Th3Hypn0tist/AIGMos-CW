@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_COMMAND_PARSE_RESOLVE_CONTRACT",
+    "name": "Command Parse and Resolution",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic parse and exact command-tree resolution before argument validation or execution.",
+  "scope": {
+    "owns": [
+      "Command Parse and Resolution semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_COMMAND_PARSE_RESOLVE",
+      "name": "Command Parse and Resolution",
+      "purpose": "Define deterministic parse and exact command-tree resolution before argument validation or execution.",
+      "parent_topic_refs": [
+        "TOPIC_COMMANDS",
+        "TOPIC_COMMAND_TREE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_COMMAND_PARSE_RESOLVE_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "flow": [
+      "tokenize",
+      "resolve recursive family path",
+      "resolve exact concrete command",
+      "parse options/arguments",
+      "normalize typed values",
+      "produce inert invocation request"
+    ],
+    "exact_rule": "Resolution requires an exact concrete command or explicit alias match.",
+    "family_rule": "Stopping on a non-executable family returns help/error rather than guessing a descendant.",
+    "unknown_rule": "Unknown command never falls back to fuzzy nearest match for execution.",
+    "argument_rule": "Unknown/invalid options fail according to exact command schema.",
+    "context_rule": "Targets/context are explicit and not inferred from hidden UI/cwd unless the command contract explicitly defines them.",
+    "inert_rule": "Successful parse creates inert invocation data only."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "fuzzy nearest command executes",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "family name auto-selects first child",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "unknown option ignored silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "cwd becomes hidden target",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "parsing performs side effect",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_NODE",
+      "target_ref": "AIGMOS_COMMAND_NODE_IDENTITY_CONTRACT",
+      "purpose": "Parser resolves exact concrete command nodes."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic parse and exact command-tree resolution before argument validation or execution.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT",
+    "name": "DWH Statistics Evidence",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define optimizer statistics as derived, revision/snapshot-bound evidence about data distribution, size and selectivity rather than canonical domain facts.",
+  "scope": {
+    "owns": [
+      "DWH Statistics Evidence semantics"
+    ],
+    "does_not_own": [
+      "source schema ownership",
+      "AccessCore policy ownership",
+      "query semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_STATISTICS_EVIDENCE",
+      "name": "DWH Statistics Evidence",
+      "purpose": "Define optimizer statistics as derived, revision/snapshot-bound evidence about data distribution, size and selectivity rather than canonical domain facts.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_QUERY_OPTIMIZATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT",
+        "OPTIMIZATION_NONSEMANTIC",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "statistics_types": [
+      "row_count",
+      "distinct_count",
+      "null_fraction",
+      "distribution/histogram",
+      "size",
+      "selectivity",
+      "other declared metric"
+    ],
+    "identity_rule": "Each statistics set/evidence record has an explicit identity.",
+    "scope_rule": "Statistics reference exact schema/resource/field and source revision/snapshot/watermark.",
+    "derived_rule": "Statistics are derived evidence and never canonical business/domain truth.",
+    "freshness_rule": "Collection time and source revision/watermark are explicit.",
+    "stale_rule": "Stale statistics remain identifiable and may affect planning quality but not query semantics.",
+    "privacy_rule": "Statistics exposure obeys governance where distributions may reveal sensitive information.",
+    "authority_rule": "Statistics do not grant source data authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "OPTIMIZATION_NONSEMANTIC",
+        "rule": "Indexes, statistics, caches and optimizer plans may change execution strategy only; they never change canonical query semantics, data identity, ownership, classification or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "statistics shown as domain truth",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "source revision omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "stale stats treated as current without evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "statistics bypass privacy governance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "statistics grant underlying data access",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SNAP",
+      "target_ref": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT",
+      "purpose": "Statistics can bind exact captured state."
+    }
+  ],
+  "prose": {
+    "summary": "Define optimizer statistics as derived, revision/snapshot-bound evidence about data distribution, size and selectivity rather than canonical domain facts.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH query, persistence, changefeed and schema-migration contracts."
+    ]
+  }
+}

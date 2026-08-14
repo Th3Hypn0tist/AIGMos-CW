@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_REMOTE_READONLY_BOUNDARY_CONTRACT",
+    "name": "DWH Remote Read-Only Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define read-only external/remote DWH projection semantics that hide mutators rather than merely denying them after exposing a writable interface.",
+  "scope": {
+    "owns": [
+      "DWH Remote Read-Only Boundary semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "IAM identity semantics",
+      "transport cryptography semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_REMOTE_READONLY_BOUNDARY",
+      "name": "DWH Remote Read-Only Boundary",
+      "purpose": "Define read-only external/remote DWH projection semantics that hide mutators rather than merely denying them after exposing a writable interface.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_ACCESSCORE_AUTHORIZATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_REMOTE_READONLY_BOUNDARY_CONTRACT",
+        "DWH_ORIGIN_TARGET_GOVERNANCE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "readonly_rule": "Read-only remote projection exposes no mutating operations.",
+    "interface_rule": "Mutators are absent/hidden from the projected interface where the boundary is read-only.",
+    "policy_rule": "A separate explicit writable remote contract/policy is required to expose mutation.",
+    "ac_rule": "Remote AccessCore authorization still applies to reads and any separately permitted writes.",
+    "schema_rule": "Read-only projection retains the same schema/identity provenance as its source.",
+    "failure_rule": "Attempted undeclared mutation hard-fails and cannot fall through to raw transport/EXT operation.",
+    "transport_rule": "Transport capability to send data does not imply writable semantic interface."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_ORIGIN_TARGET_GOVERNANCE",
+        "rule": "DWH applies data-boundary policy at the origin and target independently; remote addressing, transport reachability and external registration never substitute for AccessCore authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "read-only interface exposes mutators as normal operations",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "transport send capability treated as write authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "raw EXT mutation bypasses DWH read-only boundary",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "AccessCore skipped for remote reads",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "writable mode inferred implicitly",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ADDR",
+      "target_ref": "AIGMOS_DWH_REMOTE_ADDRESSING_CONTRACT",
+      "purpose": "Read-only projection applies after governed remote resolution."
+    }
+  ],
+  "prose": {
+    "summary": "Define read-only external/remote DWH projection semantics that hide mutators rather than merely denying them after exposing a writable interface.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH, EXT, AccessCore and transport contracts."
+    ]
+  }
+}

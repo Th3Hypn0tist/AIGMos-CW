@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_IAM_CORE_BOUNDARIES_CONTRACT",
+    "name": "IAM Core Boundaries",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define machine-readable ownership boundaries between IdentityCore, PortfolioCore, MeritCore, authentication/assurance and AccessCore.",
+  "scope": {
+    "owns": [
+      "IAM Core Boundaries semantics"
+    ],
+    "does_not_own": [
+      "component-core semantics owned elsewhere",
+      "AccessCore authorization policy",
+      "runtime business-domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_IAM_CORE_BOUNDARIES",
+      "name": "IAM Core Boundaries",
+      "purpose": "Define machine-readable ownership boundaries between IdentityCore, PortfolioCore, MeritCore, authentication/assurance and AccessCore.",
+      "parent_topic_refs": [
+        "TOPIC_IAM",
+        "TOPIC_IDENTITYCORE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_IAM_CORE_BOUNDARIES_CONTRACT",
+        "IAM_COMPOSITION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "boundaries": {
+      "IdentityCore": "person/organization identity, approvals and explicit identity relations",
+      "PortfolioCore": "references, artifacts, evidence metadata and portfolio/history presentation sources",
+      "MeritCore": "merits, points, Tier, recommendations and trust",
+      "Authentication": "credentials, factors, login/session authentication methods",
+      "Assurance": "current authenticated confidence/level context",
+      "AccessCore": "authorization decisions and governed rights"
+    },
+    "no_inheritance_rule": "No component silently inherits another component's ownership.",
+    "relation_rule": "Cross-core links use exact canonical refs/relations.",
+    "write_rule": "Mutation is routed to the owning component operation.",
+    "read_rule": "Combined readers preserve source owner provenance.",
+    "validation_rule": "Duplicate/conflicting ownership across IAM cores hard-fails."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IAM_COMPOSITION_BOUNDARY",
+        "rule": "IAM composes identity, authentication/assurance, PortfolioCore and MeritCore references while preserving each component's ownership; AccessCore authorization remains orthogonal."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "same semantic field owned by multiple IAM cores",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "mutation routed to non-owning core",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "combined reader loses owner provenance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "authorization stored as IdentityCore profile field",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "recommendation stored as PortfolioCore-owned semantic",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_POLICY_IDENTITY_CONTRACT",
+      "purpose": "AccessCore remains orthogonal authorization owner."
+    }
+  ],
+  "prose": {
+    "summary": "Define machine-readable ownership boundaries between IdentityCore, PortfolioCore, MeritCore, authentication/assurance and AccessCore.",
+    "notes": [
+      "Unlocked pending reconciliation against existing IAM/IdentityCore/PortfolioCore/MeritCore/AccessCore contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

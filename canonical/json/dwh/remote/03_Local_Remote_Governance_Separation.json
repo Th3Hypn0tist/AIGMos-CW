@@ -1,0 +1,154 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_LOCAL_REMOTE_GOVERNANCE_SEPARATION_CONTRACT",
+    "name": "DWH Local and Remote Governance Separation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define local DWH data governance and remote-sharing governance as distinct policy dimensions that compose with AccessCore but do not collapse into one implicit permission model.",
+  "scope": {
+    "owns": [
+      "DWH Local and Remote Governance Separation semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "AccessCore policy ownership",
+      "transport cryptography"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_LOCAL_REMOTE_GOVERNANCE_SEPARATION",
+      "name": "DWH Local and Remote Governance Separation",
+      "purpose": "Define local DWH data governance and remote-sharing governance as distinct policy dimensions that compose with AccessCore but do not collapse into one implicit permission model.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_REMOTE_SHARING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_LOCAL_REMOTE_GOVERNANCE_SEPARATION_CONTRACT",
+        "REMOTE_SHARING_NONEXPANSION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_REMOTE_SHARING",
+      "name": "Remote Sharing",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_REMOTE_SHARING already referenced by 6 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 6,
+        "distinct_child_topics": 6,
+        "host_contract_ref": "AIGMOS_DWH_LOCAL_REMOTE_GOVERNANCE_SEPARATION_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "local_rule": "Local DWH read/write availability follows exact local schema/instance and applicable governance.",
+    "remote_rule": "Remote exposure/delegation is independently declared and may be narrower than local access.",
+    "ac_rule": "AccessCore authorization remains orthogonal and must be evaluated where active/applicable.",
+    "nonexpansion_rule": "Broader local owner rights never automatically expand delegated remote rights.",
+    "delegation_rule": "Remote delegation is exact, bounded and target-specific.",
+    "off_rule": "DWH local/remote scope semantics remain meaningful independently from whether AC is globally active; when AC is active it composes as an additional authorization gate.",
+    "identity_rule": "Local identity, remote peer identity and source resource identity remain distinct.",
+    "failure_rule": "Missing remote policy denies remote exposure even if local access succeeds."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "REMOTE_SHARING_NONEXPANSION",
+        "rule": "Remote DWH sharing exposes only explicitly scoped and schema-governed data; transport reachability, endpoint registration, local authorization or broader local ownership never silently expands delegated remote rights."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "local admin rights copied automatically to remote peer",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "remote rights expanded from local ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "AC state used to erase DWH scope semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "missing remote policy defaults to local policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "peer identity conflated with source identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT",
+      "purpose": "Delegated remote rights cannot silently expand."
+    },
+    {
+      "id": "REF_SCOPE",
+      "target_ref": "AIGMOS_DWH_REMOTE_SHARING_SCOPE_CONTRACT",
+      "purpose": "Remote exposure uses explicit scope identity."
+    }
+  ],
+  "prose": {
+    "summary": "Define local DWH data governance and remote-sharing governance as distinct policy dimensions that compose with AccessCore but do not collapse into one implicit permission model.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH access governance, EXT addressing, AccessCore and remote transport contracts.",
+      "Pass 6 hosts grouping-only Topic TOPIC_REMOTE_SHARING solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

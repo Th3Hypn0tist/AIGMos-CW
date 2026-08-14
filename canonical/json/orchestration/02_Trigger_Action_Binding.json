@@ -1,0 +1,133 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TRIGGER_ACTION_BINDING_CONTRACT",
+    "name": "Trigger Action Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit Trigger→Routine/Runner/Operation action bindings so a matched Trigger cannot choose actions heuristically.",
+  "scope": {
+    "owns": [
+      "Trigger Action Binding semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TRIGGER_ACTION_BINDING",
+      "name": "Trigger Action Binding",
+      "purpose": "Define explicit Trigger→Routine/Runner/Operation action bindings so a matched Trigger cannot choose actions heuristically.",
+      "parent_topic_refs": [
+        "TOPIC_ORCHESTRATION",
+        "TOPIC_TRIGGERS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TRIGGER_ACTION_BINDING_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "trigger_rule": "Binding references exact Trigger identity.",
+    "action_types": [
+      "routine_invocation",
+      "runner_definition",
+      "operation_request_template"
+    ],
+    "target_rule": "Exact target Routine/Runner/operation identity is explicit.",
+    "parameter_map_rule": "Event/context→action parameters mapping is explicit.",
+    "authority_rule": "Binding does not bypass current authorization.",
+    "inert_rule": "Binding is declarative until a matched evaluation creates an action request.",
+    "failure_rule": "Unresolved binding hard-fails rather than guessing."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "matched trigger chooses nearest Routine",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "parameter mapping inferred by same names",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "binding grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "unresolved action skipped silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "Trigger owns operation semantics",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EVAL",
+      "target_ref": "AIGMOS_TRIGGER_EVALUATION_CONTRACT",
+      "purpose": "Matched evaluations use explicit action bindings."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit Trigger→Routine/Runner/Operation action bindings so a matched Trigger cannot choose actions heuristically.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

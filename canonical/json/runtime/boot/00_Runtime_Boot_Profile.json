@@ -1,0 +1,188 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_BOOT_PROFILE_CONTRACT",
+    "name": "Runtime Boot Profile",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Absolute Base Zero plus additive USE/profile semantics: runtime capabilities start from an explicit minimum, components are enabled only by declared configuration, and dependencies validate without auto-enabling missing components.",
+  "scope": {
+    "owns": [
+      "Runtime Boot Profile semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_BOOT_PROFILE",
+      "name": "Boot Profile",
+      "purpose": "Define Absolute Base Zero plus additive USE/profile semantics: runtime capabilities start from an explicit minimum, components are enabled only by declared configuration, and dependencies validate without auto-enabling missing components.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_CAPABILITY_AUTHORITY",
+        "TOPIC_RUNTIME_DEFINITION_STATE"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_BOOT_PROFILE_CONTRACT",
+        "RUNTIME_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_BOOT_RESOLVE_PROFILE",
+        "OP_BOOT_VALIDATE_DEPENDENCIES",
+        "OP_BOOT_START"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_BOOT_RESOLVE_PROFILE",
+        "name": "Resolve boot profile",
+        "inputs": [
+          "instance configuration",
+          "USE/pruning declarations"
+        ],
+        "outputs": [
+          "explicit enabled component set"
+        ],
+        "errors": [
+          "profile invalid",
+          "dependency missing"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_BOOT_VALIDATE_DEPENDENCIES",
+        "name": "Validate boot dependencies",
+        "inputs": [
+          "enabled component set"
+        ],
+        "outputs": [
+          "valid boot graph"
+        ],
+        "errors": [
+          "required dependency absent"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_BOOT_START",
+        "name": "Start explicit boot components",
+        "inputs": [
+          "validated boot graph"
+        ],
+        "outputs": [
+          "started tracked components"
+        ],
+        "errors": [
+          "component start failure"
+        ],
+        "side_effects": [
+          "runtime components started"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "baseline": "Absolute Base Zero",
+    "enable_rule": "Capabilities/components are additive from the baseline.",
+    "use_rule": "When explicit use/user selection is present, only listed components are enabled subject to required baseline semantics.",
+    "dependency_rule": "Dependencies are validated but never auto-enabled.",
+    "failure_rule": "Missing required dependency causes hard failure with one clear remediation path.",
+    "pruning_rule": "Negative pruning is explicit and must not produce hidden fallback capability.",
+    "autostart_rule": "Only explicitly configured runtime components may autostart.",
+    "authority_rule": "Boot configuration enables declared capability presence; it does not bypass later authority checks."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RUNTIME_BOUNDARY_EXPLICIT",
+        "rule": "Runtime capabilities, dispatch and mutable state remain explicit, bounded and Core-governed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "missing dependency auto-enabled silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "undeclared component starts",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "pruned component reappears through fallback",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "boot dependency failure silently ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "boot configuration bypasses runtime authority validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "autostart order/capability inferred from filesystem presence",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AUTH",
+      "target_ref": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT",
+      "purpose": "Enabled capability existence remains separate from permission."
+    },
+    {
+      "id": "REF_STATE",
+      "target_ref": "AIGMOS_RUNTIME_DEFINITION_STATE_SEPARATION_CONTRACT",
+      "purpose": "Boot configuration and runtime state remain distinct."
+    }
+  ],
+  "prose": {
+    "summary": "Define Absolute Base Zero plus additive USE/profile semantics: runtime capabilities start from an explicit minimum, components are enabled only by declared configuration, and dependencies validate without auto-enabling missing components.",
+    "notes": [
+      "Unlocked until reconciled against existing runtime contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

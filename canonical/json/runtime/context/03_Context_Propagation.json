@@ -1,0 +1,153 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CONTEXT_PROPAGATION_CONTRACT",
+    "name": "Execution Context Propagation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit propagation rules across nested Routines, tools, MCP, REST/OSC/WebSocket/WebRTC and remote DWH boundaries.",
+  "scope": {
+    "owns": [
+      "Execution Context Propagation semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CONTEXT_PROPAGATION",
+      "name": "Execution Context Propagation",
+      "purpose": "Define explicit propagation rules across nested Routines, tools, MCP, REST/OSC/WebSocket/WebRTC and remote DWH boundaries.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME",
+        "TOPIC_CONTEXT"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CONTEXT_PROPAGATION_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_CONTEXT",
+      "name": "Context",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_CONTEXT already referenced by 5 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 5,
+        "distinct_child_topics": 5,
+        "host_contract_ref": "AIGMOS_CONTEXT_PROPAGATION_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "allowlist_rule": "Only declared context fields propagate across each boundary.",
+    "identity_rule": "Child receives a new bound context snapshot with parent refs.",
+    "trace_rule": "Correlation/trace refs may propagate explicitly.",
+    "secret_rule": "Secret material never propagates as generic context.",
+    "auth_rule": "Authorization decisions are not blindly forwarded as universal authority across remote boundaries.",
+    "delegation_rule": "Remote delegated authority uses exact bounded delegation refs.",
+    "privacy_rule": "Context fields are redacted/minimized per boundary.",
+    "failure_rule": "Required missing context fails rather than being guessed."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "entire process environment propagated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "AccessCore decision forwarded as universal remote authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "secret copied into trace context",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "missing requester guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "child context mutates parent",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CTX",
+      "target_ref": "AIGMOS_EXECUTION_CONTEXT_CONTRACT",
+      "purpose": "Propagation creates explicit child context snapshots."
+    },
+    {
+      "id": "REF_REMOTE",
+      "target_ref": "AIGMOS_DWH_LOCAL_REMOTE_GOVERNANCE_SEPARATION_CONTRACT",
+      "purpose": "Remote boundaries preserve non-expanding authority."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit propagation rules across nested Routines, tools, MCP, REST/OSC/WebSocket/WebRTC and remote DWH boundaries.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_CONTEXT solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

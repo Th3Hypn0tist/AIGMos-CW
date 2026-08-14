@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_SESSION_IDENTITY_PROPAGATION_CONTRACT",
+    "name": "Session Identity Propagation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define how authenticated identity and assurance context are attached to runtime sessions/requests and propagated across local/remote operations without turning session handles into semantic identity.",
+  "scope": {
+    "owns": [
+      "Session Identity Propagation semantics"
+    ],
+    "does_not_own": [
+      "AccessCore authorization",
+      "PortfolioCore evidence",
+      "MeritCore scoring"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_SESSION_IDENTITY_PROPAGATION",
+      "name": "Session Identity Propagation",
+      "purpose": "Define how authenticated identity and assurance context are attached to runtime sessions/requests and propagated across local/remote operations without turning session handles into semantic identity.",
+      "parent_topic_refs": [
+        "TOPIC_IDENTITYCORE",
+        "TOPIC_IAM_ASSURANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_SESSION_IDENTITY_PROPAGATION_CONTRACT",
+        "IDENTITY_LIFECYCLE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "session_rule": "Session has transient runtime identity distinct from IdentityCore identity.",
+    "binding_rule": "Authenticated session binds to an explicit identity plus current assurance context.",
+    "propagation_rule": "Calls/requests carry identity/assurance provenance according to the owning protocol/runtime boundary.",
+    "remote_rule": "Remote target receives origin identity context while evaluating its own rights/policy.",
+    "transport_rule": "Transport/session identifier does not replace semantic identity.",
+    "expiry_rule": "Expired/terminated session loses its active authentication binding.",
+    "authority_rule": "Session authentication context is input to authorization, not authorization itself."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_LIFECYCLE_EXPLICIT",
+        "rule": "Identity lifecycle, authentication assurance, credential state and session state remain explicit and cannot be inferred from authorization, transport or profile data."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "session id used as semantic person/org identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "remote call loses origin identity context",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "session authentication grants rights directly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "expired session remains authenticated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "transport endpoint replaces identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROP",
+      "target_ref": "AIGMOS_IAM_IDENTITY_PROPAGATION_CONTRACT",
+      "purpose": "Runtime sessions carry identity context."
+    },
+    {
+      "id": "REF_REMOTE",
+      "target_ref": "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT",
+      "purpose": "Remote target evaluates its own rights."
+    }
+  ],
+  "prose": {
+    "summary": "Define how authenticated identity and assurance context are attached to runtime sessions/requests and propagated across local/remote operations without turning session handles into semantic identity.",
+    "notes": [
+      "Unlocked pending reconciliation against existing IAM/IdentityCore contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

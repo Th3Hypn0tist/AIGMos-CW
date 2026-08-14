@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_AUTHORIZATION_DECISION_CACHE_CONTRACT",
+    "name": "Authorization Decision Cache",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define bounded caching of authorization decisions keyed to exact subject/session/assurance/operation/resource/policy revision/context constraints.",
+  "scope": {
+    "owns": [
+      "Authorization Decision Cache semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime operation implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_AUTHORIZATION_DECISION_CACHE",
+      "name": "Authorization Decision Cache",
+      "purpose": "Define bounded caching of authorization decisions keyed to exact subject/session/assurance/operation/resource/policy revision/context constraints.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE",
+        "TOPIC_POLICY_CHANGE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_AUTHORIZATION_DECISION_CACHE_CONTRACT",
+        "IDENTITY_AUTHORITY_SEPARATION",
+        "FAIL_CLOSED_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "key_rule": "Cache key contains all policy-material decision inputs required by profile.",
+    "policy_rule": "Cache entry binds exact policy revision/evaluator snapshot.",
+    "session_rule": "Session/assurance expiry bounds cache validity.",
+    "delegation_rule": "Delegation/group/role validity bounds cache validity.",
+    "resource_rule": "Decision cannot be reused for a different resource/operation.",
+    "deny_rule": "Allow/deny caching policies are explicit.",
+    "authority_rule": "Cache is optimization evidence and never an independent source of authority.",
+    "fallback_rule": "Stale/unresolved cache entry triggers fresh evaluation or deny."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_AUTHORITY_SEPARATION",
+        "rule": "Identity, authentication assurance, authorization policy, authorization decision, delegation and runtime execution remain separate machine-significant identities/evidence; no one layer silently substitutes for another."
+      },
+      {
+        "id": "FAIL_CLOSED_AUTHORITY",
+        "rule": "Ambiguous, missing, stale or unverifiable authority for a protected effect fails closed rather than inheriting trust from locality, transport reachability, process ownership, UI visibility or previous success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "cached allow reused for different target",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "cache survives policy revision indefinitely",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "session expiry ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "cache becomes authority source",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "missing key field ignored",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DEC",
+      "target_ref": "AIGMOS_AUTHORIZATION_DECISION_CONTRACT",
+      "purpose": "Cache stores exact scoped decisions only."
+    }
+  ],
+  "prose": {
+    "summary": "Define bounded caching of authorization decisions keyed to exact subject/session/assurance/operation/resource/policy revision/context constraints.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

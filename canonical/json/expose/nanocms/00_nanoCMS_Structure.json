@@ -1,0 +1,176 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NANOCMS_STRUCTURE_CONTRACT",
+    "name": "nanoCMS Structure",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define nanoCMS as the owner of canonical web structure (#WEB): site hierarchy, pages, routes, navigation metadata and MetaModule placement/bindings, but not MetaModule semantics.",
+  "scope": {
+    "owns": [
+      "nanoCMS Structure semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority unless explicitly referenced",
+      "unrelated domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NANOCMS",
+      "name": "nanoCMS",
+      "purpose": "Define nanoCMS as the owner of canonical web structure (#WEB): site hierarchy, pages, routes, navigation metadata and MetaModule placement/bindings, but not MetaModule semantics.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_CORE_STRUCTURE"
+      ],
+      "member_refs": [
+        "AIGMOS_NANOCMS_STRUCTURE_CONTRACT",
+        "EXPOSE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_NANOCMS_DEFINE_SITE",
+        "OP_NANOCMS_BIND_METAMODULE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_NANOCMS_DEFINE_SITE",
+        "name": "Define nanoCMS site structure",
+        "inputs": [
+          "site identity",
+          "page/route/nav tree"
+        ],
+        "outputs": [
+          "#WEB canonical structure"
+        ],
+        "errors": [
+          "route collision",
+          "invalid tree"
+        ],
+        "side_effects": [
+          "#WEB structure updated"
+        ]
+      },
+      {
+        "id": "OP_NANOCMS_BIND_METAMODULE",
+        "name": "Bind MetaModule to site structure",
+        "inputs": [
+          "MetaModule ref",
+          "site/page binding"
+        ],
+        "outputs": [
+          "placement binding"
+        ],
+        "errors": [
+          "module unresolved",
+          "binding invalid"
+        ],
+        "side_effects": [
+          "#WEB placement updated"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "symbol_root": "#WEB",
+    "owns": [
+      "site hierarchy",
+      "pages",
+      "routes",
+      "navigation metadata",
+      "MetaModule placement/bindings"
+    ],
+    "does_not_own": [
+      "MetaModule semantics",
+      "runtime execution",
+      "domain data semantics"
+    ],
+    "tree_rule": "Site/page structure is explicit and recursively readable.",
+    "route_rule": "Routes are explicit and collision-validated.",
+    "placement_rule": "MetaModule placement references existing MetaModule identity.",
+    "projection_rule": "Breadcrumbs, nav, sitemap and routes are derived from canonical #WEB structure.",
+    "editor_rule": "Editor layout/navigation may itself be represented by the same nanoCMS structure."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPOSE_BOUNDARY_EXPLICIT",
+        "rule": "Expose, nanoCMS, MetaModules and Editor remain projections/compositions over canonical semantics and never create hidden runtime authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "nanoCMS absorbs MetaModule semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "route inferred only from filesystem path",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "MetaModule placement lacks explicit module identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "Editor layout hard-coded outside nanoCMS despite being modeled as canonical site structure",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "navigation projection becomes separate authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EXPOSE",
+      "target_ref": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT",
+      "purpose": "nanoCMS is an Expose component."
+    }
+  ],
+  "prose": {
+    "summary": "Define nanoCMS as the owner of canonical web structure (#WEB): site hierarchy, pages, routes, navigation metadata and MetaModule placement/bindings, but not MetaModule semantics.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose/nanoCMS/Meta contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

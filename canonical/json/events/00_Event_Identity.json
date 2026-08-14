@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EVENT_IDENTITY_CONTRACT",
+    "name": "Event Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Event as an explicit inert occurrence record with stable event identity, type, source, time and payload/provenance refs.",
+  "scope": {
+    "owns": [
+      "Event Identity semantics"
+    ],
+    "does_not_own": [
+      "runner implementation semantics",
+      "domain payload semantics",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EVENT_IDENTITY",
+      "name": "Event Identity",
+      "purpose": "Define Event as an explicit inert occurrence record with stable event identity, type, source, time and payload/provenance refs.",
+      "parent_topic_refs": [
+        "TOPIC_EVENTS",
+        "TOPIC_TRIGGERS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EVENT_IDENTITY_CONTRACT",
+        "CAUSALITY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Every machine-significant Event has an explicit event identity.",
+    "type_rule": "Event type/topic is explicit.",
+    "source_rule": "Event source identity is exact and separate from Event identity.",
+    "payload_rule": "Event payload is inert data.",
+    "time_rule": "Occurrence time/run ordering metadata is explicit where machine-significant.",
+    "authority_rule": "Event existence/content never grants execution authority.",
+    "immutability_rule": "Past Event evidence is append/history governed and not silently rewritten.",
+    "correlation_rule": "Correlation/causation refs are explicit and separate from identity."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "CAUSALITY_EXPLICIT",
+        "rule": "Event, Trigger, Runner and resulting Event are separate explicit identities connected only by declared causality edges; matching or adjacency never implies execution."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "event payload executes directly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "source identity omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "event inferred only from log text",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "event content grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "past event rewritten silently",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROV",
+      "target_ref": "AIGMOS_CORE_PROVENANCE_EVIDENCE_CONTRACT",
+      "purpose": "Events retain provenance evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define Event as an explicit inert occurrence record with stable event identity, type, source, time and payload/provenance refs.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Event/Trigger/Runner contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

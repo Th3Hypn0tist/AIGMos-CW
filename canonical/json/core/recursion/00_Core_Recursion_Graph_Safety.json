@@ -1,0 +1,170 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CORE_RECURSION_GRAPH_SAFETY_CONTRACT",
+    "name": "Core Recursion and Graph Safety",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define bounded deterministic recursion and cycle handling for canonical trees, Topic inheritance/composition, references, relations and flows without banning valid recursive semantic structures.",
+  "scope": {
+    "owns": [
+      "Core Recursion and Graph Safety semantics"
+    ],
+    "does_not_own": [
+      "domain-specific semantics",
+      "runtime implementation details"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CORE_RECURSION",
+      "name": "Recursion",
+      "purpose": "Define bounded deterministic recursion and cycle handling for canonical trees, Topic inheritance/composition, references, relations and flows without banning valid recursive semantic structures.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_BOUNDED_OPERATION",
+        "TOPIC_CORE_REFERENCE_CLOSURE",
+        "TOPIC_CORE_TOPIC_SYSTEM"
+      ],
+      "member_refs": [
+        "AIGMOS_CORE_RECURSION_GRAPH_SAFETY_CONTRACT",
+        "EXPLICIT_SEMANTIC_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_GRAPH_TRAVERSE",
+        "OP_GRAPH_VALIDATE_CYCLE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_GRAPH_TRAVERSE",
+        "name": "Traverse recursive canonical graph",
+        "inputs": [
+          "entry refs",
+          "graph semantics",
+          "bounds"
+        ],
+        "outputs": [
+          "reachable graph + cycle observations"
+        ],
+        "errors": [
+          "bound exceeded"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_GRAPH_VALIDATE_CYCLE",
+        "name": "Validate graph cycle",
+        "inputs": [
+          "cycle",
+          "owning semantic dimension"
+        ],
+        "outputs": [
+          "allowed | forbidden"
+        ],
+        "errors": [
+          "cycle semantics unresolved"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "recursion_rule": "Recursion is allowed where the owning semantic model permits it.",
+    "visited_rule": "Readers maintain visited identity/edge/ref context to prevent infinite traversal.",
+    "cycle_rule": "Cycles are semantic facts to validate, not traversal bugs to silently remove.",
+    "acyclic_rule": "Acyclicity applies only where explicitly required by the owning semantic dimension.",
+    "bound_rule": "Traversal is bounded by resource rules but bound failures remain visible and cannot be reported as complete results.",
+    "projection_rule": "A projection may choose a finite view depth, but truncation is projection metadata, not canonical absence."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_SEMANTIC_BOUNDARY",
+        "rule": "Machine-significant semantics are explicit and deterministic."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "valid recursive structure rejected solely because it is recursive",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "forbidden cycle silently ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "reader loops indefinitely because visited tracking is absent",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "bounded/truncated graph reported as complete canonical graph",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "projection depth truncation interpreted as semantic absence",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_BOUNDS",
+      "target_ref": "AIGMOS_CORE_BOUNDED_OPERATION_CONTRACT",
+      "purpose": "Graph traversal must be bounded."
+    },
+    {
+      "id": "REF_CLOSURE",
+      "target_ref": "AIGMOS_CORE_REFERENCE_CLOSURE_CONTRACT",
+      "purpose": "Reference traversal records and validates cycles."
+    },
+    {
+      "id": "REF_TOPICS",
+      "target_ref": "AIGMOS_CORE_TOPIC_MECHANISM_CONTRACT",
+      "purpose": "Topic inheritance/composition recursion has explicit cycle rules."
+    }
+  ],
+  "prose": {
+    "summary": "Define bounded deterministic recursion and cycle handling for canonical trees, Topic inheritance/composition, references, relations and flows without banning valid recursive semantic structures.",
+    "notes": [
+      "Unlocked until repository-wide Contract Format 1.4 migration validates this boundary."
+    ]
+  }
+}

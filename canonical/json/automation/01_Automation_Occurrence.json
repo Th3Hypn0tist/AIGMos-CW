@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_AUTOMATION_OCCURRENCE_CONTRACT",
+    "name": "Automation Occurrence",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each due schedule/condition occurrence as explicit evidence separate from automation definition and concrete Runner/operation execution.",
+  "scope": {
+    "owns": [
+      "Automation Occurrence semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_AUTOMATION_OCCURRENCE",
+      "name": "Automation Occurrence",
+      "purpose": "Define each due schedule/condition occurrence as explicit evidence separate from automation definition and concrete Runner/operation execution.",
+      "parent_topic_refs": [
+        "TOPIC_AUTOMATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_AUTOMATION_OCCURRENCE_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each occurrence has an explicit identity.",
+    "automation_rule": "Occurrence references exact automation definition/revision.",
+    "schedule_rule": "Schedule occurrence/wall-clock/timezone evidence is exact.",
+    "condition_rule": "Condition occurrence/evaluation evidence is exact where applicable.",
+    "state_values": [
+      "due",
+      "suppressed",
+      "missed",
+      "dispatched",
+      "completed",
+      "failed",
+      "cancelled"
+    ],
+    "execution_rule": "Occurrence may create a separate invocation/execution through explicit binding.",
+    "dedupe_rule": "Same semantic occurrence is not dispatched repeatedly unless replay policy is explicit.",
+    "authority_rule": "Occurrence does not grant action authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "same cron tick dispatched twice invisibly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "occurrence reused as Runner execution identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "due means operation authorized",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "condition occurrence inferred from polling time only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "missed occurrence shown completed",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AUTO",
+      "target_ref": "AIGMOS_AUTOMATION_DEFINITION_CONTRACT",
+      "purpose": "Occurrences instantiate exact automation definitions."
+    }
+  ],
+  "prose": {
+    "summary": "Define each due schedule/condition occurrence as explicit evidence separate from automation definition and concrete Runner/operation execution.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

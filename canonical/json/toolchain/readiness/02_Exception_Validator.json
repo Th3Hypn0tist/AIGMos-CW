@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TOOLCHAIN_EXCEPTION_VALIDATOR_CONTRACT",
+    "name": "Bounded Exception Validator",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define validation that reconciliation exceptions are exact, scoped, authorized, non-expired and do not waive prohibited hard gates.",
+  "scope": {
+    "owns": [
+      "Bounded Exception Validator semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime application authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TOOLCHAIN_EXCEPTION_VALIDATOR",
+      "name": "Bounded Exception Validator",
+      "purpose": "Define validation that reconciliation exceptions are exact, scoped, authorized, non-expired and do not waive prohibited hard gates.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_TOOLCHAIN",
+        "TOPIC_RECONCILIATION_EXECUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TOOLCHAIN_EXCEPTION_VALIDATOR_CONTRACT",
+        "TOOLING_NONAUTHORITY",
+        "DETERMINISTIC_EXACT_INPUTS",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "finding_rule": "Exception references exact finding.",
+    "scope_rule": "Scope exact.",
+    "owner_rule": "Approver/owner evidence exact.",
+    "expiry_rule": "Current validity explicit.",
+    "prohibited_rule": "Non-waivable bootstrap/security/authority/integrity gates remain blocked.",
+    "result_states": [
+      "valid",
+      "invalid",
+      "expired",
+      "prohibited",
+      "unknown"
+    ],
+    "authority_rule": "Exception never expands runtime rights."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TOOLING_NONAUTHORITY",
+        "rule": "Toolchain code, scans, indexes, reports and generated artifacts remain implementation/evidence surfaces; they never become canonical semantic authority unless an explicit accepted canonical definition says so."
+      },
+      {
+        "id": "DETERMINISTIC_EXACT_INPUTS",
+        "rule": "Every toolchain execution binds exact bootstrap/source/profile/input revisions and must not resolve ambiguity through filesystem order, newest-wins, mtime, fuzzy names or UI layout."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "one exception waives repo",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "expired exception valid",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "bootstrap conflict waived",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "finding ref missing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "exception grants runtime bypass",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EX",
+      "target_ref": "AIGMOS_RECONCILIATION_BOUNDED_EXCEPTION_CONTRACT",
+      "purpose": "Validates bounded exceptions."
+    }
+  ],
+  "prose": {
+    "summary": "Define validation that reconciliation exceptions are exact, scoped, authorized, non-expired and do not waive prohibited hard gates.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Implementation contracts operationalize canonical semantics but do not replace canonical source authority."
+    ]
+  }
+}

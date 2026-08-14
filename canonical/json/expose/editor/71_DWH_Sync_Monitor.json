@@ -1,0 +1,140 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_DWH_SYNC_MONITOR_CONTRACT",
+    "name": "DWH Replication and Sync Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for replicas, sync positions, propagated changes, stale/conflicted state, offline queues and reconciliation provenance.",
+  "scope": {
+    "owns": [
+      "DWH Replication and Sync Monitor semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "AccessCore policy ownership",
+      "transport implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_DWH_SYNC_MONITOR",
+      "name": "DWH Replication and Sync Monitor",
+      "purpose": "Define a read-only Expose monitor for replicas, sync positions, propagated changes, stale/conflicted state, offline queues and reconciliation provenance.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_REPLICATION_SYNC"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_DWH_SYNC_MONITOR_CONTRACT",
+        "REPLICA_NONOWNERSHIP",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "replica registry/roles",
+      "source/destination refs",
+      "sync watermark/cursor",
+      "current/stale state",
+      "pending/propagated changes",
+      "schema/classification/lineage refs",
+      "conflicts/reconciliation",
+      "offline queue/replay",
+      "errors/gaps/resync state"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Source record, replica, sync cursor, propagated change, queue entry and reconciliation identities remain distinct.",
+    "authority_rule": "Viewing sync state grants no source/destination mutation authority.",
+    "action_rule": "sync/resync/replay/reconcile/drop-queue/promote-role operations invoke separate authorized canonical workflows.",
+    "graph_rule": "Source→replica and change edges correspond only to explicit configured bindings/change refs.",
+    "derived_rule": "Current/stale health is derived state and not source ownership evidence.",
+    "failure_rule": "Sequence gaps, stale replicas, denied replay and unresolved conflicts are surfaced explicitly."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "REPLICA_NONOWNERSHIP",
+        "rule": "Replica/sync state, transport position or local copy never replaces the semantic identity or ownership of the authoritative source data; propagation is explicit, provenance-bearing and conflict-aware."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor treats newest replica as authoritative by timestamp",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "cursor and record identity conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "monitor auto-replays queue",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "viewing grants write authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "unresolved conflict hidden as current",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REP",
+      "target_ref": "AIGMOS_DWH_REPLICA_IDENTITY_CONTRACT",
+      "purpose": "Monitor projects explicit replica identities."
+    },
+    {
+      "id": "REF_CONFLICT",
+      "target_ref": "AIGMOS_DWH_REPLICATION_CONFLICT_RECONCILIATION_CONTRACT",
+      "purpose": "Monitor surfaces replication conflicts."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for replicas, sync positions, propagated changes, stale/conflicted state, offline queues and reconciliation provenance.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH persistence, remote addressing, mutation and reconciliation contracts."
+    ]
+  }
+}

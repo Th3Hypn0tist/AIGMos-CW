@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_FLEET_NODE_MONITOR_CONTRACT",
+    "name": "Fleet and Compute Node Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for compute nodes, enrollment, capabilities, workload placement and drain/retirement.",
+  "scope": {
+    "owns": [
+      "Fleet and Compute Node Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "canonical documentation ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_FLEET_NODE_MONITOR",
+      "name": "Fleet and Compute Node Monitor",
+      "purpose": "Define a read-only Expose monitor for compute nodes, enrollment, capabilities, workload placement and drain/retirement.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_FLEET"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_FLEET_NODE_MONITOR_CONTRACT",
+        "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "OPERATIONS_FAIL_SAFE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "node registry",
+      "environment/fleet membership",
+      "addresses/hostnames metadata",
+      "capabilities/software",
+      "enrollment state",
+      "workload placements",
+      "drain/retirement state"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Node, hostname/address, service, placement and runtime instance identities remain distinct.",
+    "action_rule": "enroll/refresh-capabilities/drain/retire operations use separate authorized workflows.",
+    "authority_rule": "Viewing fleet grants no node/service admin authority.",
+    "failure_rule": "stale-capability/pending-enrollment/draining/retired states remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "rule": "Release candidate, accepted release, deployment plan, deployment execution, installed artifact, active runtime instance and observed health remain separate identities/states."
+      },
+      {
+        "id": "OPERATIONS_FAIL_SAFE",
+        "rule": "Operational convenience, availability pressure, maintenance state, automation, recovery or rollback never silently bypass validation, authorization, integrity, governance or dispatcher boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor enrolls by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "IP shown canonical identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "placement shown deployment",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "retired hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "viewing grants fleet admin",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PLACE",
+      "target_ref": "AIGMOS_WORKLOAD_PLACEMENT_CONTRACT",
+      "purpose": "Monitor projects exact placement decisions."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for compute nodes, enrollment, capabilities, workload placement and drain/retirement.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

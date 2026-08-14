@@ -1,0 +1,132 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_IDENTITY_DEACTIVATION_HISTORY_CONTRACT",
+    "name": "Identity Deactivation and History",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deactivation of an identity as a lifecycle state that preserves historical PortfolioCore/MeritCore/project evidence and provenance while preventing new governed activity according to policy.",
+  "scope": {
+    "owns": [
+      "Identity Deactivation and History semantics"
+    ],
+    "does_not_own": [
+      "AccessCore authorization",
+      "PortfolioCore evidence",
+      "MeritCore scoring"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_IDENTITY_DEACTIVATION_HISTORY",
+      "name": "Identity Deactivation and History",
+      "purpose": "Define deactivation of an identity as a lifecycle state that preserves historical PortfolioCore/MeritCore/project evidence and provenance while preventing new governed activity according to policy.",
+      "parent_topic_refs": [
+        "TOPIC_IDENTITYCORE",
+        "TOPIC_IAM_ASSURANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_IDENTITY_DEACTIVATION_HISTORY_CONTRACT",
+        "IDENTITY_LIFECYCLE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "states": [
+      "active",
+      "deactivated"
+    ],
+    "deactivation_rule": "Deactivation changes lifecycle status; it does not delete or merge identity history.",
+    "history_rule": "Existing PortfolioCore, MeritCore and Project evidence retains its original identity refs.",
+    "credential_rule": "Deactivation revokes/disables applicable credentials/sessions according to IAM policy.",
+    "authorization_rule": "Deactivated identity cannot perform new governed activity unless an explicit reactivation policy permits it.",
+    "reactivation_rule": "If supported, reactivation restores the same semantic identity rather than creating a merged/new identity.",
+    "privacy_rule": "Historical visibility is controlled by explicit policy and may differ from activity rights."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_LIFECYCLE_EXPLICIT",
+        "rule": "Identity lifecycle, authentication assurance, credential state and session state remain explicit and cannot be inferred from authorization, transport or profile data."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "deactivation deletes merit/project history",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "deactivated identity merged into another identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "credentials remain usable without explicit policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "reactivation creates a silently merged identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "historical visibility inferred from activity rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ID",
+      "target_ref": "AIGMOS_IDENTITYCORE_CONTRACT",
+      "purpose": "Lifecycle state belongs to stable identity."
+    },
+    {
+      "id": "REF_MERIT",
+      "target_ref": "AIGMOS_MERITCORE_CONTRACT",
+      "purpose": "Historical merit remains identity-scoped."
+    }
+  ],
+  "prose": {
+    "summary": "Define deactivation of an identity as a lifecycle state that preserves historical PortfolioCore/MeritCore/project evidence and provenance while preventing new governed activity according to policy.",
+    "notes": [
+      "Unlocked pending reconciliation against existing IAM/IdentityCore contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

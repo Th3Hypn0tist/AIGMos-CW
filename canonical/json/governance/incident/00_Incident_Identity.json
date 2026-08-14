@@ -1,0 +1,131 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_INCIDENT_IDENTITY_CONTRACT",
+    "name": "Security and Governance Incident Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each security/privacy/governance incident as an explicit case identity separate from alerts, Events, errors, audit records and remediation operations.",
+  "scope": {
+    "owns": [
+      "Security and Governance Incident Identity semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "runtime execution authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_INCIDENT_IDENTITY",
+      "name": "Security and Governance Incident Identity",
+      "purpose": "Define each security/privacy/governance incident as an explicit case identity separate from alerts, Events, errors, audit records and remediation operations.",
+      "parent_topic_refs": [
+        "TOPIC_GOVERNANCE",
+        "TOPIC_INCIDENT"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_INCIDENT_IDENTITY_CONTRACT",
+        "GOVERNANCE_EVIDENCE_SEPARATION",
+        "FAIL_CLOSED_PROTECTED_DATA",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each incident has an explicit stable identity.",
+    "category_rule": "Incident category/severity/classification are explicit.",
+    "source_rule": "Triggering alert/Event/error/audit refs are explicit.",
+    "scope_rule": "Affected resource/data/identity/system scope is exact.",
+    "state_values": [
+      "open",
+      "triage",
+      "contained",
+      "eradication",
+      "recovery",
+      "closed",
+      "reopened"
+    ],
+    "ownership_rule": "Incident coordination ownership is explicit and does not imply resource semantic ownership.",
+    "authority_rule": "Incident existence grants no remediation rights by itself."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "GOVERNANCE_EVIDENCE_SEPARATION",
+        "rule": "Policy, decision, evidence, audit record, consent, incident and compliance result remain separate machine-significant identities; no evidence artifact silently becomes source data, authorization or runtime authority."
+      },
+      {
+        "id": "FAIL_CLOSED_PROTECTED_DATA",
+        "rule": "Ambiguous or unresolved governance for protected data fails closed; UI visibility, transport reachability, cache presence, role title, prior access or audit-log presence never substitute for an explicit valid policy decision."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "alert id reused as incident identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "incident severity grants admin",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "affected scope inferred from logs",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "incident close deletes history",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "incident automatically executes containment",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define each security/privacy/governance incident as an explicit case identity separate from alerts, Events, errors, audit records and remediation operations.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

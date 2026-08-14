@@ -1,0 +1,138 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_QUERY_JOIN_CONTRACT",
+    "name": "DWH Query Join",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define query joins exclusively over explicit declared relations or explicitly declared compatible join keys, preserving relation provenance and preventing heuristic joins.",
+  "scope": {
+    "owns": [
+      "DWH Query Join semantics"
+    ],
+    "does_not_own": [
+      "source schema ownership",
+      "AccessCore policy ownership",
+      "materialized destination ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_QUERY_JOIN",
+      "name": "DWH Query Join",
+      "purpose": "Define query joins exclusively over explicit declared relations or explicitly declared compatible join keys, preserving relation provenance and preventing heuristic joins.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_QUERY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_QUERY_JOIN_CONTRACT",
+        "QUERY_EXPLICIT_AND_NONOWNING",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "join_types": [
+      "inner",
+      "left",
+      "right",
+      "full",
+      "semi",
+      "anti"
+    ],
+    "relation_rule": "Preferred joins reference exact canonical relation identities.",
+    "key_rule": "Explicit ad-hoc compatible-key joins, if permitted, declare exact left/right field refs and comparison semantics.",
+    "heuristic_rule": "Matching names, values or positions never imply a join.",
+    "cardinality_rule": "Join execution retains declared/observed cardinality evidence.",
+    "identity_rule": "Joined result does not merge source record identities into one canonical source identity.",
+    "lineage_rule": "Each output row/value retains contributing source lineage.",
+    "classification_rule": "Joined output uses explicit classification join/propagation semantics.",
+    "authority_rule": "Authorization must cover applicable contributing source data."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "QUERY_EXPLICIT_AND_NONOWNING",
+        "rule": "A DWH query is an explicit read/projection definition over exact resolved schema/instance/relation identities; querying, filtering, joining, aggregating, ordering or paginating never silently changes source ownership, identity or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "join inferred from matching field names",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "joined records collapse source identities",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "lineage lost",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "classification lowered by join",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "one-side read authority grants unrestricted access to other side",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REL",
+      "target_ref": "AIGMOS_DWH_RELATION_INSTANCE_BINDING_CONTRACT",
+      "purpose": "Relation joins use exact declared relations."
+    },
+    {
+      "id": "REF_LINE",
+      "target_ref": "AIGMOS_DWH_DATA_LINEAGE_IDENTITY_CONTRACT",
+      "purpose": "Joined outputs retain multi-source lineage."
+    }
+  ],
+  "prose": {
+    "summary": "Define query joins exclusively over explicit declared relations or explicitly declared compatible join keys, preserving relation provenance and preventing heuristic joins.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH schema binding, lineage/classification and output-governance contracts."
+    ]
+  }
+}

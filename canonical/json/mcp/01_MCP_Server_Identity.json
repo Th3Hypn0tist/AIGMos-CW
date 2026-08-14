@@ -1,0 +1,128 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MCP_SERVER_IDENTITY_CONTRACT",
+    "name": "MCP Server Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define stable MCP server identity separately from executable command, process handle, URL, socket, transport session and advertised server display name.",
+  "scope": {
+    "owns": [
+      "MCP Server Identity semantics"
+    ],
+    "does_not_own": [
+      "remote server internal semantics",
+      "unrelated runtime authority",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MCP_SERVER_IDENTITY",
+      "name": "MCP Server Identity",
+      "purpose": "Define stable MCP server identity separately from executable command, process handle, URL, socket, transport session and advertised server display name.",
+      "parent_topic_refs": [
+        "TOPIC_MCP_REGISTRY",
+        "TOPIC_RUNTIME_NETWORK_IDENTITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MCP_SERVER_IDENTITY_CONTRACT",
+        "MCP_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each configured MCP server has an explicit stable logical identity.",
+    "binding_examples": [
+      "command/stdin-stdout binding",
+      "local socket",
+      "HTTP-like endpoint",
+      "other supported transport binding"
+    ],
+    "binding_rule": "Transport/process binding locates or starts the server but is not the semantic identity.",
+    "display_rule": "Advertised server name/display metadata is descriptive only unless explicitly mapped.",
+    "rebinding_rule": "Compatible transport rebinding preserves server identity.",
+    "provenance_rule": "Tool/resource advertisements retain the server identity that supplied them."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MCP_BOUNDARY_EXPLICIT",
+        "rule": "MCP server identity, transport, tool schema, lifecycle and authority remain explicit and do not inherit trust from connectivity or advertised metadata."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "URL/process command used as sole semantic server identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "display name trusted as canonical identity without mapping",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "reconnect creates new semantic server identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "tool advertisement loses originating server provenance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "same active server identity maps to conflicting bindings without explicit multi-binding semantics",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_NETWORK",
+      "target_ref": "AIGMOS_RUNTIME_NETWORK_IDENTITY_BINDING_CONTRACT",
+      "purpose": "Server identity remains separate from mutable transport binding."
+    }
+  ],
+  "prose": {
+    "summary": "Define stable MCP server identity separately from executable command, process handle, URL, socket, transport session and advertised server display name.",
+    "notes": [
+      "Unlocked pending reconciliation against existing MCP/tool/runtime contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

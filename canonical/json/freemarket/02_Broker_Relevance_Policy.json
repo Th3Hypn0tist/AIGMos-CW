@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_FREEMARKET_BROKER_RELEVANCE_POLICY_CONTRACT",
+    "name": "Broker Relevance Policy",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define contextual relevance policy used by Broker matching without imposing a hidden global weighting function on MeritCore or PortfolioCore.",
+  "scope": {
+    "owns": [
+      "Broker Relevance Policy semantics"
+    ],
+    "does_not_own": [
+      "Project work semantics",
+      "MeritCore scoring",
+      "IdentityCore authentication",
+      "AccessCore authorization"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_FREEMARKET_BROKER_RELEVANCE_POLICY",
+      "name": "Broker Relevance Policy",
+      "purpose": "Define contextual relevance policy used by Broker matching without imposing a hidden global weighting function on MeritCore or PortfolioCore.",
+      "parent_topic_refs": [
+        "TOPIC_FREEMARKET",
+        "TOPIC_PROJECT"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_FREEMARKET_BROKER_RELEVANCE_POLICY_CONTRACT",
+        "FREEMARKET_DERIVED_MATCHING",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "policy_rule": "Relevance criteria/weights/filters are explicit Broker policy.",
+    "context_rule": "Relevance may vary by Project, role, competence criterion or market query context.",
+    "merit_rule": "Broker relevance never rewrites stored global MeritCore points/Tier/trust.",
+    "recency_rule": "Recency may be used only when the relevant competence/Project policy explicitly requires it; there is no generic hidden decay.",
+    "version_rule": "Policy identity/version is explicit and included in match provenance.",
+    "explain_rule": "Machine-significant ranking factors are traceable enough to explain the evidence basis for a result.",
+    "no_global_rule": "No universal global weighting is implied merely because Broker ranks candidates."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "FREEMARKET_DERIVED_MATCHING",
+        "rule": "FreeMarket/Broker matching and ranking operate over explicit Project, identity, PortfolioCore and MeritCore semantics without creating duplicate work, identity or merit authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "Broker policy silently mutates MeritCore",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "generic time decay introduced through matching",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "ranking factors hidden where policy claims explainability",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "policy version omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "one contextual relevance policy treated as universal global merit weighting",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_POINTS",
+      "target_ref": "AIGMOS_MERIT_POINTS_CALCULATION_CONTRACT",
+      "purpose": "Broker relevance is separate from MeritCore point calculation."
+    }
+  ],
+  "prose": {
+    "summary": "Define contextual relevance policy used by Broker matching without imposing a hidden global weighting function on MeritCore or PortfolioCore.",
+    "notes": [
+      "Unlocked pending reconciliation against existing FreeMarket/Broker contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

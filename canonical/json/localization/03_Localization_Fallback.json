@@ -1,0 +1,128 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT",
+    "name": "Localization Fallback",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic fallback when a requested translation is missing, while keeping fallback behavior visible and preventing silent substitution of machine identifiers as UI text.",
+  "scope": {
+    "owns": [
+      "Localization Fallback semantics"
+    ],
+    "does_not_own": [
+      "command identities",
+      "internal canonical identifiers",
+      "domain semantics outside label presentation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_LOCALIZATION_FALLBACK",
+      "name": "Localization Fallback",
+      "purpose": "Define deterministic fallback when a requested translation is missing, while keeping fallback behavior visible and preventing silent substitution of machine identifiers as UI text.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_DOCUMENTATION_HUMAN"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT",
+        "LOCALIZATION_PRESENTATION_ONLY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "fallback_order": [
+      "requested language",
+      "configured fallback language",
+      "source label text"
+    ],
+    "default_fallback": "en where configured as UI fallback; exact deployment policy remains explicit",
+    "missing_rule": "Missing translation is detectable and reportable.",
+    "identifier_rule": "Canonical machine IDs/commands are not used as fallback UI text unless the UI explicitly requests raw identifier display.",
+    "runtime_rule": "Fallback affects presentation only.",
+    "trace_rule": "Rendered localized value can report which fallback level produced it.",
+    "lock_rule": "Required production localization completeness may be a release gate per product/deployment policy."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "LOCALIZATION_PRESENTATION_ONLY",
+        "rule": "Localization changes human-facing labels and explanatory text only; canonical identities, commands and machine semantics remain language-independent."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "missing translation silently disappears",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "canonical machine ID used as accidental user-facing translation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "fallback changes semantic value",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "fallback source cannot be traced",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "deployment claims complete localization while required entries are missing",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PACK",
+      "target_ref": "AIGMOS_LANGUAGE_PACK_CONTRACT",
+      "purpose": "Fallback resolves missing pack entries."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic fallback when a requested translation is missing, while keeping fallback behavior visible and preventing silent substitution of machine identifiers as UI text.",
+    "notes": [
+      "Unlocked pending reconciliation against Expose/UI label contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

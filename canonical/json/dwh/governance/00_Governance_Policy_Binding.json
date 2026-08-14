@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_GOVERNANCE_POLICY_BINDING_CONTRACT",
+    "name": "DWH Governance Policy Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit binding of DWH governance policies to exact instance/schema/resource/field/classification scopes, separate from AccessCore authorization policy.",
+  "scope": {
+    "owns": [
+      "DWH Governance Policy Binding semantics"
+    ],
+    "does_not_own": [
+      "AccessCore authorization policy ownership",
+      "source domain ownership",
+      "transport security semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_GOVERNANCE_POLICY_BINDING",
+      "name": "DWH Governance Policy Binding",
+      "purpose": "Define explicit binding of DWH governance policies to exact instance/schema/resource/field/classification scopes, separate from AccessCore authorization policy.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_GOVERNANCE_POLICY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_GOVERNANCE_POLICY_BINDING_CONTRACT",
+        "DWH_GOVERNANCE_NONEXPANSION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each machine-significant DWH governance policy/binding has an explicit identity.",
+    "scope_rule": "Policy targets exact instance/schema/resource/field/classification identities.",
+    "accesscore_rule": "DWH governance and AccessCore authorization are orthogonal; both may need to pass.",
+    "classification_rule": "Policy may consume classification/taint metadata as input.",
+    "direction_rule": "Input, read/output, write, remote-share and materialization scopes may have distinct bindings.",
+    "precedence_rule": "Multiple applicable policies resolve through explicit composition/precedence semantics, never file order.",
+    "default_rule": "Unknown or ambiguous governed scope fails closed where protected data is involved.",
+    "ownership_rule": "Policy binding does not transfer semantic ownership."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_GOVERNANCE_NONEXPANSION",
+        "rule": "DWH governance may restrict or project data according to exact schema/classification/scope policy but never creates AccessCore rights, semantic ownership or broader visibility than the underlying authorized source set."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "DWH policy replaces AccessCore",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "policy scope inferred by path/name",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "multiple policies resolved by file order",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "ambiguous protected scope allowed by default",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "policy binding changes resource ownership",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_RIGHTS_EVALUATION_CONTRACT",
+      "purpose": "DWH governance composes with, never replaces, AccessCore."
+    },
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_DWH_SCHEMA_RESOLUTION_CONTRACT",
+      "purpose": "Governance targets exact resolved schema/resource identities."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit binding of DWH governance policies to exact instance/schema/resource/field/classification scopes, separate from AccessCore authorization policy.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH access governance, schema resolution, classification and AccessCore contracts."
+    ]
+  }
+}

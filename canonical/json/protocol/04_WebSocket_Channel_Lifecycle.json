@@ -1,0 +1,133 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_WEBSOCKET_CHANNEL_LIFECYCLE_CONTRACT",
+    "name": "WebSocket Channel Lifecycle",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define WebSocket connection/channel lifecycle, subscriptions and message routing separately from protocol instance and application resource identities.",
+  "scope": {
+    "owns": [
+      "WebSocket Channel Lifecycle semantics"
+    ],
+    "does_not_own": [
+      "domain business semantics",
+      "AccessCore policy ownership",
+      "listener binding ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_WEBSOCKET_CHANNEL_LIFECYCLE",
+      "name": "WebSocket Channel Lifecycle",
+      "purpose": "Define WebSocket connection/channel lifecycle, subscriptions and message routing separately from protocol instance and application resource identities.",
+      "parent_topic_refs": [
+        "TOPIC_PROTOCOL_BINDINGS",
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_WEBSOCKET_CHANNEL_LIFECYCLE_CONTRACT",
+        "PROTOCOL_BINDING_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "protocol": "WebSocket",
+    "states": [
+      "connecting",
+      "open",
+      "subscribed",
+      "closing",
+      "closed",
+      "failed"
+    ],
+    "connection_rule": "Each connection/session has transient runtime identity.",
+    "channel_rule": "Subscriptions/topics/channels are explicit protocol bindings.",
+    "target_rule": "Published/subscribed messages map to exact canonical resources/events/operations according to binding.",
+    "payload_rule": "Received payload is inert until validated/routed.",
+    "auth_rule": "Authentication/authorization context is explicit per connection/request where required.",
+    "cleanup_rule": "Closed/failed connections release subscriptions/session resources.",
+    "identity_rule": "Connection/channel identity never replaces semantic resource identity."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PROTOCOL_BINDING_SEPARATION",
+        "rule": "Protocol identity, named listener instance, route/address/channel binding and domain operation identity remain separate; protocol exposure never creates semantic ownership or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "connection id becomes semantic resource identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "payload executes before validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "subscription grants write authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "closed connection leaves active subscriptions",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "channel target fuzzy",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ROUTE",
+      "target_ref": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
+      "purpose": "WebSocket channels bind to exact resources."
+    }
+  ],
+  "prose": {
+    "summary": "Define WebSocket connection/channel lifecycle, subscriptions and message routing separately from protocol instance and application resource identities.",
+    "notes": [
+      "Unlocked pending reconciliation against listener, REST/OSC/WebSocket and Expose contracts."
+    ]
+  }
+}

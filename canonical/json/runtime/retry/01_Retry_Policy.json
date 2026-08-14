@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RETRY_POLICY_CONTRACT",
+    "name": "Retry Policy",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define bounded retry semantics over exact failure classes, attempts, delays and total budgets.",
+  "scope": {
+    "owns": [
+      "Retry Policy semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RETRY_POLICY",
+      "name": "Retry Policy",
+      "purpose": "Define bounded retry semantics over exact failure classes, attempts, delays and total budgets.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME",
+        "TOPIC_RETRY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RETRY_POLICY_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each reusable retry policy has an explicit identity.",
+    "eligibility_rule": "Retryable failure/error classes are explicit.",
+    "attempt_rule": "Maximum attempts is explicit and bounded.",
+    "delay_rule": "Delay/backoff/jitter profile is explicit.",
+    "budget_rule": "Total duration/resource/deadline interaction is explicit.",
+    "idempotency_rule": "Effectful retries require idempotency or explicit safe-retry semantics.",
+    "attempt_identity": "Each retry attempt has a distinct execution/attempt identity.",
+    "authority_rule": "Retry does not bypass current authorization/validation where recheck is required."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "unbounded retries",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "destructive operation retried without idempotency/safe semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "retry attempt reuses same execution identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "authorization never rechecked despite expiry",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "unknown error treated retryable",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ERR",
+      "target_ref": "AIGMOS_RUNTIME_ERROR_SEVERITY_CONTRACT",
+      "purpose": "Retry eligibility can consume explicit error classification."
+    }
+  ],
+  "prose": {
+    "summary": "Define bounded retry semantics over exact failure classes, attempts, delays and total budgets.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

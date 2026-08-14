@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_RELATION_COMPOSITION_MONITOR_CONTRACT",
+    "name": "Relation and Composition Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only/candidate-edit Expose graph for relation types, relation instances, containment, composition closure and reference integrity.",
+  "scope": {
+    "owns": [
+      "Relation and Composition Monitor semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "presentation/layout semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_RELATION_COMPOSITION_MONITOR",
+      "name": "Relation and Composition Monitor",
+      "purpose": "Define a read-only/candidate-edit Expose graph for relation types, relation instances, containment, composition closure and reference integrity.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_RELATIONS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_RELATION_COMPOSITION_MONITOR_CONTRACT",
+        "COMPOSITION_NONOWNERSHIP",
+        "EXPLICIT_STRUCTURE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "relation-type registry",
+      "relation edges",
+      "containment tree",
+      "composition closure",
+      "dangling refs",
+      "cardinality/type validation",
+      "cycles/conflicts"
+    ],
+    "readonly_rule": "Default is read-only; graph edits create candidate relation changes.",
+    "identity_rule": "Relation type, relation instance, endpoint, containment and composition identities remain distinct.",
+    "authority_rule": "Viewing/drawing candidate edge grants no endpoint authority.",
+    "graph_rule": "Only explicit accepted edges are semantic.",
+    "failure_rule": "dangling/invalid/cyclic/conflicting refs remain explicit.",
+    "action_rule": "add/remove/retype/apply relation operations use separate authorized workflows."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "COMPOSITION_NONOWNERSHIP",
+        "rule": "Composition never silently transfers semantic ownership: universal modules own their primitives, domains own their composition semantics, and composed members retain their own identities and contracts."
+      },
+      {
+        "id": "EXPLICIT_STRUCTURE",
+        "rule": "Containment, relation, dependency, composition and projection edges exist only through explicit typed references; naming, file hierarchy, UI adjacency or shared values never create semantic structure."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "visual line creates live relation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "tree parent inferred from coordinates",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "relation and endpoint identity conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "viewing grants edit rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "dangling ref hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_INT",
+      "target_ref": "AIGMOS_REFERENCE_INTEGRITY_CONTRACT",
+      "purpose": "Monitor surfaces exact reference failures."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only/candidate-edit Expose graph for relation types, relation instances, containment, composition closure and reference integrity.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MESSAGE_REQUEST_THROTTLE_CONTRACT",
+    "name": "Messaging Request Throttling",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define bounded pre-conversation message/contact request throttling, requester blocking and anti-abuse state.",
+  "scope": {
+    "owns": [
+      "Messaging Request Throttling semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "application operation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MESSAGE_REQUEST_THROTTLE",
+      "name": "Messaging Request Throttling",
+      "purpose": "Define bounded pre-conversation message/contact request throttling, requester blocking and anti-abuse state.",
+      "parent_topic_refs": [
+        "TOPIC_MESSAGING",
+        "TOPIC_ABUSE_CONTROL"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MESSAGE_REQUEST_THROTTLE_CONTRACT",
+        "TRANSPORT_NONAUTHORITY",
+        "INGRESS_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_ABUSE_CONTROL",
+      "name": "Abuse Control",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_ABUSE_CONTROL already referenced by 1 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 1,
+        "distinct_child_topics": 1,
+        "host_contract_ref": "AIGMOS_MESSAGE_REQUEST_THROTTLE_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "scope_rule": "Throttle binds exact requester→recipient relationship/profile.",
+    "rate_rule": "Allowed request rate/window is explicit.",
+    "default_rule": "Default pre-conversation throttle may be configured, e.g. one request per week, but remains explicit policy.",
+    "block_rule": "Recipient may block exact requester identity.",
+    "identity_rule": "Network address is not sufficient requester identity.",
+    "delivery_rule": "Throttled/rejected request does not enter normal conversation history as accepted message unless profile says so.",
+    "authority_rule": "Throttle clearance grants messaging request eligibility only."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TRANSPORT_NONAUTHORITY",
+        "rule": "Listener, route, endpoint, connection, channel, peer reachability and cryptographic transport evidence never by themselves grant application, data or operation authority."
+      },
+      {
+        "id": "INGRESS_EFFECT_BOUNDARY",
+        "rule": "Inbound network data remains inert until explicit protocol parsing, validation, identity/context resolution, authorization and dispatcher routing succeed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "IP address used as requester identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "blocked requester bypasses via reconnect",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "throttle means app authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "rate limit guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "rejected request shown delivered",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PEER",
+      "target_ref": "AIGMOS_NETWORK_PEER_IDENTITY_BINDING_CONTRACT",
+      "purpose": "Throttle uses exact requester identity."
+    }
+  ],
+  "prose": {
+    "summary": "Define bounded pre-conversation message/contact request throttling, requester blocking and anti-abuse state.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_ABUSE_CONTROL solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NAMESPACE_MIGRATION_ALIAS_CONTRACT",
+    "name": "Namespace Migration and Alias",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit migration/compatibility aliases for legacy namespace names or addresses without allowing aliases to become competing canonical identities.",
+  "scope": {
+    "owns": [
+      "Namespace Migration and Alias semantics"
+    ],
+    "does_not_own": [
+      "unrelated domain semantics",
+      "presentation semantics",
+      "implicit runtime authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NAMESPACE_MIGRATION",
+      "name": "Namespace Migration and Alias",
+      "purpose": "Define explicit migration/compatibility aliases for legacy namespace names or addresses without allowing aliases to become competing canonical identities.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NAMESPACES",
+        "TOPIC_RELEASE_DEPRECATION",
+        "TOPIC_CANONICAL_MIGRATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_NAMESPACE_MIGRATION_ALIAS_CONTRACT",
+        "NAMESPACE_OWNER_CLOSURE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "role": "migration/compatibility mapping",
+    "alias_rule": "Legacy alias maps explicitly to one current canonical namespace identity.",
+    "canonical_rule": "Alias never becomes a second authoritative namespace identity.",
+    "direction_rule": "Alias mapping direction and supported compatibility period are explicit.",
+    "collision_rule": "Alias cannot shadow another active canonical root.",
+    "deprecation_rule": "Deprecated aliases retain migration provenance and may be removed only through explicit supersession/retirement policy.",
+    "help_rule": "Introspection may display aliases as compatibility metadata while returning the canonical root identity.",
+    "write_rule": "Writes/invocations through supported aliases resolve to the same canonical owner/policy as the canonical address."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "NAMESPACE_OWNER_CLOSURE",
+        "rule": "Every active reserved runtime root has exactly one explicit owner contract and remains distinguishable from runtime availability, Topic grouping and physical implementation location."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "legacy alias becomes competing semantic owner",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "alias target resolved fuzzily",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "alias shadows active canonical root",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "alias bypasses canonical owner/authorization semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "deprecated alias removed without migration/supersession trace",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DEP",
+      "target_ref": "AIGMOS_DEPRECATION_SUPERSESSION_CONTRACT",
+      "purpose": "Alias deprecation/supersession is explicit."
+    },
+    {
+      "id": "REF_MIG",
+      "target_ref": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT",
+      "purpose": "Legacy namespaces retain migration provenance."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit migration/compatibility aliases for legacy namespace names or addresses without allowing aliases to become competing canonical identities.",
+    "notes": [
+      "Unlocked pending reconciliation against the complete reserved-root set and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

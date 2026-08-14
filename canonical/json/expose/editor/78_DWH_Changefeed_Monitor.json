@@ -1,0 +1,146 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT",
+    "name": "DWH Changefeed and CDC Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for change records, subscriptions, cursors, snapshot-stream handoff, emitted Events, lag/backpressure and replay/failure state.",
+  "scope": {
+    "owns": [
+      "DWH Changefeed and CDC Monitor semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "Event execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR",
+      "name": "DWH Changefeed and CDC Monitor",
+      "purpose": "Define a read-only Expose monitor for change records, subscriptions, cursors, snapshot-stream handoff, emitted Events, lag/backpressure and replay/failure state.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_CHANGEFEED_CDC"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT",
+        "CHANGEFEED_NONEXECUTION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "change records/source revisions",
+      "subscription registry",
+      "source/filter/projection refs",
+      "cursor/watermark",
+      "snapshot→stream handoff",
+      "emitted DWH-change Events",
+      "delivery/ack state",
+      "lag/backpressure",
+      "overflow/replay",
+      "errors/gaps"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Record, revision, change record, subscription, cursor, Event and delivery/replay identities remain distinct.",
+    "authority_rule": "Viewing CDC state grants no source mutation or downstream execution authority.",
+    "action_rule": "create/pause/resume/replay/resnapshot/close subscription operations invoke separate authorized canonical workflows.",
+    "graph_rule": "Change→subscription→Event and snapshot→stream edges correspond only to explicit refs.",
+    "derived_rule": "Lag/current/healthy status is derived runtime evidence and not source authority.",
+    "failure_rule": "Gaps, overflow, failed Event emission and stale subscriptions are surfaced explicitly."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "CHANGEFEED_NONEXECUTION",
+        "rule": "DWH changefeeds expose committed mutation evidence as ordered provenance-bearing data/events; subscription delivery never directly executes downstream operations and never replaces the underlying record/revision identities."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor conflates change and Event identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "monitor resumes/replays by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "gap hidden as current",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "visual adjacency invents subscription",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "viewing grants downstream execution authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CHANGE",
+      "target_ref": "AIGMOS_DWH_CHANGE_RECORD_IDENTITY_CONTRACT",
+      "purpose": "Monitor projects exact CDC records."
+    },
+    {
+      "id": "REF_HANDOFF",
+      "target_ref": "AIGMOS_DWH_SNAPSHOT_STREAM_HANDOFF_CONTRACT",
+      "purpose": "Monitor exposes snapshot/stream continuity."
+    },
+    {
+      "id": "REF_BP",
+      "target_ref": "AIGMOS_DWH_CHANGEFEED_BACKPRESSURE_CONTRACT",
+      "purpose": "Monitor exposes lag/backpressure/replay state."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for change records, subscriptions, cursors, snapshot-stream handoff, emitted Events, lag/backpressure and replay/failure state.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH mutation/persistence, Event causality, sync and remote-sharing contracts."
+    ]
+  }
+}

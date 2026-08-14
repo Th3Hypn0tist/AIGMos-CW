@@ -1,0 +1,151 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MERITCORE_TIME_ATOM_CONTRACT",
+    "name": "MeritCore Time Atoms",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define weekly MeritCore reporting intervals anchored to each identity's registration-date cadence, with subdivision to hour atoms that cannot multiply Tier evidence.",
+  "scope": {
+    "owns": [
+      "MeritCore Time Atoms semantics"
+    ],
+    "does_not_own": [
+      "presentation semantics",
+      "transport implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MERIT_TIME",
+      "name": "Merit Time",
+      "purpose": "Define weekly MeritCore reporting intervals anchored to each identity's registration-date cadence, with subdivision to hour atoms that cannot multiply Tier evidence.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_IDENTITY"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_MERITCORE"
+      ],
+      "member_refs": [
+        "AIGMOS_MERITCORE_TIME_ATOM_CONTRACT",
+        "IDENTITY_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_MERIT_BUCKET_WEEK",
+        "OP_MERIT_SPLIT_ATOM"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_MERIT_BUCKET_WEEK",
+        "name": "Bucket merit evidence into reporting week",
+        "inputs": [
+          "identity registration date",
+          "evidence timestamp"
+        ],
+        "outputs": [
+          "weekly reporting interval"
+        ],
+        "errors": [
+          "timestamp invalid"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_MERIT_SPLIT_ATOM",
+        "name": "Split Project time atom",
+        "inputs": [
+          "week atom",
+          "worked duration"
+        ],
+        "outputs": [
+          "hour-granularity atoms"
+        ],
+        "errors": [
+          "duration invalid"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "base_atom": "one week",
+    "anchor": "identity registration date",
+    "subdivision": "hour atom",
+    "reporting_rule": "Merit evidence is bucketed into recurring one-week intervals based on the identity registration-date cadence.",
+    "anti_multiplication_rule": "Splitting a Project/week into hour atoms cannot multiply qualifying Tier evidence beyond the actual underlying work/evidence.",
+    "temporal_rule": "Points/evidence retain time distribution instead of collapsing into one timeless total."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_BOUNDARY_EXPLICIT",
+        "rule": "Identity, portfolio evidence and merit semantics have explicit owners and cannot silently substitute for one another."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "weekly cadence anchored to Project start instead of identity registration",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "sub-hour atom used as canonical merit atom",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "splitting atoms multiplies Tier evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "temporal distribution discarded",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MERIT",
+      "target_ref": "AIGMOS_MERITCORE_CONTRACT",
+      "purpose": "Time atoms constrain MeritCore evidence/points."
+    }
+  ],
+  "prose": {
+    "summary": "Define weekly MeritCore reporting intervals anchored to each identity's registration-date cadence, with subdivision to hour atoms that cannot multiply Tier evidence.",
+    "notes": [
+      "Unlocked until reconciled against existing IAM/PortfolioCore/MeritCore contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CANDIDATE_REVIEW_TREE_CONTRACT",
+    "name": "Candidate Review Tree",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the candidate/review tree as a complete parallel canonical source tree used for migration, reconciliation and validation before replacing the accepted canonical tree.",
+  "scope": {
+    "owns": [
+      "Candidate Review Tree semantics"
+    ],
+    "does_not_own": [
+      "domain semantic content",
+      "runtime business authority",
+      "commercial licensing"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CANDIDATE_REVIEW_TREE",
+      "name": "Candidate Review Tree",
+      "purpose": "Define the candidate/review tree as a complete parallel canonical source tree used for migration, reconciliation and validation before replacing the accepted canonical tree.",
+      "parent_topic_refs": [
+        "TOPIC_REPOSITORY_ACCEPTANCE",
+        "TOPIC_RELEASE_GOVERNANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CANDIDATE_REVIEW_TREE_CONTRACT",
+        "ACCEPTANCE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Candidate tree/snapshot has an explicit review identity.",
+    "source_rule": "Candidate tree is built from explicit source artifacts/patches/reconciliation outcomes.",
+    "separation_rule": "Candidate tree is not the accepted canonical source until explicit acceptance.",
+    "completeness_rule": "Candidate must be structurally complete enough to run all mandatory repository validations.",
+    "mutation_rule": "Source accepted tree is not modified in place while building/reviewing candidate.",
+    "manifest_rule": "Candidate carries source/migration/patch provenance sufficient to reproduce it.",
+    "runtime_rule": "Candidate existence does not automatically activate runtime configuration."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ACCEPTANCE_EXPLICIT",
+        "rule": "Candidate canonical trees become accepted/locked only through explicit reproducible validation and clean replacement; review state, acceptance state and runtime activation remain distinct."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "candidate tree treated as accepted automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "accepted source mutated in-place during review",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "candidate lacks reproducible source provenance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "candidate activation occurs before acceptance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "candidate validation performed on incomplete/partial tree without declared partial profile",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SOURCE",
+      "target_ref": "AIGMOS_CANONICAL_SOURCE_REGISTRY_CONTRACT",
+      "purpose": "Candidate is assembled from explicit source artifacts."
+    }
+  ],
+  "prose": {
+    "summary": "Define the candidate/review tree as a complete parallel canonical source tree used for migration, reconciliation and validation before replacing the accepted canonical tree.",
+    "notes": [
+      "Unlocked pending end-to-end repository acceptance validation under Contract Format 1.4."
+    ]
+  }
+}

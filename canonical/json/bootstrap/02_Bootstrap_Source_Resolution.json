@@ -1,0 +1,127 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_BOOTSTRAP_SOURCE_RESOLUTION_CONTRACT",
+    "name": "Bootstrap Source Resolution",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic local/package Contract Format source resolution without fallback to the retired canonical/json bootstrap path.",
+  "scope": {
+    "owns": [
+      "Bootstrap Source Resolution semantics"
+    ],
+    "does_not_own": [
+      "canonical contract domain semantics",
+      "filesystem semantics beyond declared bootstrap bindings",
+      "runtime business authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_BOOTSTRAP_SOURCE_RESOLUTION",
+      "name": "Bootstrap Source Resolution",
+      "purpose": "Define deterministic local/package Contract Format source resolution without fallback to the retired canonical/json bootstrap path.",
+      "parent_topic_refs": [
+        "TOPIC_CONTRACT_FORMAT",
+        "TOPIC_CANONICAL_SOURCE_RESOLUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_BOOTSTRAP_SOURCE_RESOLUTION_CONTRACT",
+        "BOOTSTRAP_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "priority": [
+      "project/package root exact Contract Format filename",
+      "explicit caller-supplied compatible bootstrap artifact",
+      "bundled exact Contract Format artifact where the tool contract permits it"
+    ],
+    "forbidden_fallback": "canonical/json/00_Contract_Format.json",
+    "exact_rule": "Resolution is exact and version/profile-aware; no fuzzy filename search.",
+    "failure_rule": "No valid bootstrap source produces explicit hard failure.",
+    "local_rule": "Local-source resolution cannot reinterpret an ordinary canonical contract as the format authority.",
+    "provenance_rule": "Resolved bootstrap source/path/hash/version is retained in validation/build evidence."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOTSTRAP_SEPARATION",
+        "rule": "Contract Format bootstrap authority is resolved before the canonical contract tree and is never treated as an ordinary canonical contract inside canonical/json/**."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "legacy canonical/json bootstrap used as fallback",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "bootstrap filename matched fuzzily",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "missing bootstrap silently guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "bootstrap source provenance lost",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "wrong version accepted without compatibility validation",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_BOOT",
+      "target_ref": "AIGMOS_CONTRACT_FORMAT_BOOTSTRAP_CONTRACT",
+      "purpose": "Resolver locates the actual bootstrap artifact."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic local/package Contract Format source resolution without fallback to the retired canonical/json bootstrap path.",
+    "notes": [
+      "Bootstrap correction: project-root Contract Format authority is intentionally outside canonical/json/**."
+    ]
+  }
+}

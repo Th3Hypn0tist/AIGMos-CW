@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_SCHEMA_MIGRATION_IDENTITY_CONTRACT",
+    "name": "DWH Schema Migration Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each schema migration as an explicit canonical identity linking exact source and target schema versions, declared transformations and acceptance criteria.",
+  "scope": {
+    "owns": [
+      "DWH Schema Migration Identity semantics"
+    ],
+    "does_not_own": [
+      "domain ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation details"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_SCHEMA_MIGRATION_IDENTITY",
+      "name": "DWH Schema Migration Identity",
+      "purpose": "Define each schema migration as an explicit canonical identity linking exact source and target schema versions, declared transformations and acceptance criteria.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_SCHEMA_EVOLUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_SCHEMA_MIGRATION_IDENTITY_CONTRACT",
+        "SCHEMA_EVOLUTION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Every machine-significant migration has an explicit stable identity.",
+    "source_rule": "Migration references exact source schema identity/version.",
+    "target_rule": "Migration references exact target schema identity/version.",
+    "direction_rule": "Forward and reverse/rollback migrations are separate explicit semantics.",
+    "transformation_rule": "Field/relation/data transformation operations are explicit refs.",
+    "criteria_rule": "Preconditions, validation criteria and postconditions are explicit.",
+    "ownership_rule": "Migration does not transfer domain ownership away from the schema owner.",
+    "authority_rule": "Migration definition visibility does not grant execution authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SCHEMA_EVOLUTION_EXPLICIT",
+        "rule": "Schema evolution is an explicit versioned migration between exact schema identities/versions with validated compatibility and data transformation provenance; runtime/file order never silently changes active data meaning."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "migration inferred only from version number difference",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "source/target schema ambiguous",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "reverse migration assumed automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "migration changes ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "migration visibility grants execution authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EVOL",
+      "target_ref": "AIGMOS_SCHEMA_EVOLUTION_CONTRACT",
+      "purpose": "DWH migration specializes explicit schema evolution."
+    }
+  ],
+  "prose": {
+    "summary": "Define each schema migration as an explicit canonical identity linking exact source and target schema versions, declared transformations and acceptance criteria.",
+    "notes": [
+      "Unlocked pending reconciliation against Schema Evolution, DWH mutation, persistence and runtime activation contracts."
+    ]
+  }
+}

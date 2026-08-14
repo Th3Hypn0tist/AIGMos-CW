@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TOOL_INVOCATION_REQUEST_CONTRACT",
+    "name": "Tool Invocation Request",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a tool call as an inert request with exact tool identity, arguments, target/context, execution bounds and requester provenance.",
+  "scope": {
+    "owns": [
+      "Tool Invocation Request semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TOOL_INVOCATION_REQUEST",
+      "name": "Tool Invocation Request",
+      "purpose": "Define a tool call as an inert request with exact tool identity, arguments, target/context, execution bounds and requester provenance.",
+      "parent_topic_refs": [
+        "TOPIC_TOOLS",
+        "TOPIC_MCP"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TOOL_INVOCATION_REQUEST_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each tool invocation request has an explicit identity.",
+    "tool_rule": "Exact tool identity/version/provider binding is referenced.",
+    "argument_rule": "Arguments validate against exact tool schema.",
+    "context_rule": "Requester/execution/model/Routine refs are explicit.",
+    "bound_rule": "Timeout/resource/side-effect constraints are explicit.",
+    "inert_rule": "Request has no side effect before runtime validation/authorization/dispatch.",
+    "model_rule": "Model-generated tool call is candidate request, not authority.",
+    "authority_rule": "Caller/model does not inherit tool-provider permissions."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "model JSON directly invokes tool",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "tool selected by fuzzy name",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "arguments coerced silently beyond schema",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "tool provider rights inherited",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "request executes during parse",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DEF",
+      "target_ref": "AIGMOS_TOOL_DEFINITION_IDENTITY_CONTRACT",
+      "purpose": "Invocation targets exact validated tool."
+    }
+  ],
+  "prose": {
+    "summary": "Define a tool call as an inert request with exact tool identity, arguments, target/context, execution bounds and requester provenance.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

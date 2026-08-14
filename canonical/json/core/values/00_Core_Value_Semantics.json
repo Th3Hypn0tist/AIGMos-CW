@@ -1,0 +1,169 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CORE_VALUE_SEMANTICS_CONTRACT",
+    "name": "Core Value Semantics",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define canonical value semantics as inert typed data and separate values from executable code, authority and callable behavior.",
+  "scope": {
+    "owns": [
+      "Core Value Semantics semantics"
+    ],
+    "does_not_own": [
+      "domain-specific semantics",
+      "runtime implementation details"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CORE_VALUES",
+      "name": "Values",
+      "purpose": "Define canonical value semantics as inert typed data and separate values from executable code, authority and callable behavior.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_OPERATIONS"
+      ],
+      "member_refs": [
+        "AIGMOS_CORE_VALUE_SEMANTICS_CONTRACT",
+        "EXPLICIT_SEMANTIC_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_VALUE_VALIDATE",
+        "OP_VALUE_NORMALIZE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_VALUE_VALIDATE",
+        "name": "Validate canonical value",
+        "inputs": [
+          "value",
+          "declared schema/type"
+        ],
+        "outputs": [
+          "validated inert value"
+        ],
+        "errors": [
+          "type mismatch",
+          "unsupported value kind"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_VALUE_NORMALIZE",
+        "name": "Normalize canonical value",
+        "inputs": [
+          "validated value"
+        ],
+        "outputs": [
+          "semantically equivalent normalized value"
+        ],
+        "errors": [
+          "semantic loss"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "allowed_value_kinds": [
+      "null",
+      "boolean",
+      "number",
+      "string",
+      "array",
+      "object"
+    ],
+    "inert_rule": "Canonical values are inert unless interpreted by an explicit owning operation/runtime contract.",
+    "code_rule": "Arbitrary executable code or callable values are not baseline canonical value kinds.",
+    "authority_rule": "A value cannot grant authority.",
+    "identity_rule": "References represented as values must still use explicit canonical reference semantics when machine-significant.",
+    "normalization_rule": "Normalization may change serialization form but not semantic value."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_SEMANTIC_BOUNDARY",
+        "rule": "Machine-significant semantics are explicit and deterministic."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "canonical value executes because it is loaded or read",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "payload/value grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "callable/code value accepted without explicit owning contract",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "normalization changes semantic value",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "machine-significant reference is hidden inside an opaque string requiring interpretation",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_OPERATIONS",
+      "target_ref": "AIGMOS_CORE_CANONICAL_OPERATION_CONTRACT",
+      "purpose": "Operations interpret inert values explicitly."
+    },
+    {
+      "id": "REF_INVARIANTS",
+      "target_ref": "AIGMOS_CORE_INVARIANTS_CONTRACT",
+      "purpose": "Data is inert and authority is not data."
+    }
+  ],
+  "prose": {
+    "summary": "Define canonical value semantics as inert typed data and separate values from executable code, authority and callable behavior.",
+    "notes": [
+      "Unlocked until repository-wide Contract Format 1.4 migration validates this boundary."
+    ]
+  }
+}

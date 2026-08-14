@@ -1,0 +1,198 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_NANOCMS_INSTANCE_CONTRACT",
+    "name": "Runtime nanoCMS Web Instances",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define nanoCMS web serving as named runtime instances with stable logical identity, explicit listener bindings and canonical #WEB/site structure owned outside the listener runtime.",
+  "scope": {
+    "owns": [
+      "Runtime nanoCMS Web Instances semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "presentation layout unless explicitly stated"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_WEB_INSTANCES",
+      "name": "Web Instances",
+      "purpose": "Define nanoCMS web serving as named runtime instances with stable logical identity, explicit listener bindings and canonical #WEB/site structure owned outside the listener runtime.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_SERVICE_INSTANCES",
+        "TOPIC_RUNTIME_LISTENERS",
+        "TOPIC_CORE_PROJECTION"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_NANOCMS_INSTANCE_CONTRACT",
+        "SERVICE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_WEB_START",
+        "OP_WEB_STOP",
+        "OP_WEB_RELOAD"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_WEB_START",
+        "name": "Start nanoCMS web instance",
+        "inputs": [
+          "named web instance",
+          "listener binding"
+        ],
+        "outputs": [
+          "running web instance"
+        ],
+        "errors": [
+          "binding unavailable",
+          "site definition invalid"
+        ],
+        "side_effects": [
+          "web runtime state created"
+        ]
+      },
+      {
+        "id": "OP_WEB_STOP",
+        "name": "Stop nanoCMS web instance",
+        "inputs": [
+          "running web instance"
+        ],
+        "outputs": [
+          "stopped web instance"
+        ],
+        "errors": [
+          "stop failure"
+        ],
+        "side_effects": [
+          "web runtime state removed"
+        ]
+      },
+      {
+        "id": "OP_WEB_RELOAD",
+        "name": "Reload nanoCMS web instance",
+        "inputs": [
+          "named web instance",
+          "updated canonical web structure/style"
+        ],
+        "outputs": [
+          "reloaded web instance"
+        ],
+        "errors": [
+          "validation failure"
+        ],
+        "side_effects": [
+          "web runtime state reconciled"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "instance_model": "named service instance",
+    "default_instance": {
+      "name": "public",
+      "default_port": 80,
+      "canonically_exists_even_when_stopped": true
+    },
+    "multiple_instances_allowed": true,
+    "identity_rule": "web instance name is stable identity; port is binding only.",
+    "structure_rule": "nanoCMS canonical site/page/route/nav structure is not owned by runtime listener state.",
+    "reload_rule": "Reload validates and activates updated canonical web structure without changing service semantic identity.",
+    "editor_rule": "Editor is a normal MetaModule/site composition and receives no privileged web-runtime authority.",
+    "authority_rule": "Web visibility does not grant backend/runtime authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SERVICE_BOUNDARY_EXPLICIT",
+        "rule": "Network/service identity, binding, lifecycle and authority remain explicit and separate."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "public instance missing from canonical model",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "port 80 treated as semantic identity instead of default binding",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "web runtime owns nanoCMS semantic structure",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "Editor receives privileged runtime bypass",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "web visibility grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "reload activates invalid web structure",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SERVICE",
+      "target_ref": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT",
+      "purpose": "Web uses named service instance model."
+    },
+    {
+      "id": "REF_LISTENER",
+      "target_ref": "AIGMOS_RUNTIME_LISTENER_BINDING_CONTRACT",
+      "purpose": "Web port 80 is a listener binding."
+    }
+  ],
+  "prose": {
+    "summary": "Define nanoCMS web serving as named runtime instances with stable logical identity, explicit listener bindings and canonical #WEB/site structure owned outside the listener runtime.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose/REST/web contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

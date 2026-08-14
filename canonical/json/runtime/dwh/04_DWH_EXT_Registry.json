@@ -1,0 +1,214 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_EXTERNAL_REGISTRY_CONTRACT",
+    "name": "DWH External Registry",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define $EXT as the explicit registry for external identities/endpoints with unique identity, bounded lifecycle operations and read-only-by-default semantics.",
+  "scope": {
+    "owns": [
+      "DWH External Registry semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "transport implementation details",
+      "remote policy owned elsewhere"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_EXT",
+      "name": "DWH $EXT",
+      "purpose": "Define $EXT as the explicit registry for external identities/endpoints with unique identity, bounded lifecycle operations and read-only-by-default semantics.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_EXTERNAL_BOUNDARY",
+        "TOPIC_RUNTIME_NETWORK_IDENTITY"
+      ],
+      "member_refs": [
+        "AIGMOS_DWH_EXTERNAL_REGISTRY_CONTRACT",
+        "DWH_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_EXT_ADD",
+        "OP_EXT_EDIT",
+        "OP_EXT_REMOVE",
+        "OP_EXT_PING"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_EXT_ADD",
+        "name": "Add external identity",
+        "inputs": [
+          "external identity definition"
+        ],
+        "outputs": [
+          "registered $EXT identity"
+        ],
+        "errors": [
+          "identity collision",
+          "invalid external definition"
+        ],
+        "side_effects": [
+          "$EXT registry updated"
+        ]
+      },
+      {
+        "id": "OP_EXT_EDIT",
+        "name": "Edit external identity metadata",
+        "inputs": [
+          "external identity",
+          "validated delta"
+        ],
+        "outputs": [
+          "updated identity"
+        ],
+        "errors": [
+          "identity unresolved"
+        ],
+        "side_effects": [
+          "$EXT registry updated"
+        ]
+      },
+      {
+        "id": "OP_EXT_REMOVE",
+        "name": "Remove external identity",
+        "inputs": [
+          "external identity"
+        ],
+        "outputs": [
+          "removed identity"
+        ],
+        "errors": [
+          "identity unresolved",
+          "active dependency"
+        ],
+        "side_effects": [
+          "$EXT registry updated"
+        ]
+      },
+      {
+        "id": "OP_EXT_PING",
+        "name": "Probe external identity reachability",
+        "inputs": [
+          "external identity"
+        ],
+        "outputs": [
+          "reachability result"
+        ],
+        "errors": [
+          "probe failure"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "symbol_root": "$EXT",
+    "operations": [
+      "add",
+      "edit",
+      "remove",
+      "ping"
+    ],
+    "uniqueness_rule": "External identities are unique and explicitly resolved.",
+    "default_access": "read_only",
+    "identity_rule": "External semantic identity is separate from transport endpoint/binding.",
+    "mutation_rule": "External registry mutation does not automatically grant remote data write authority.",
+    "ping_rule": "Reachability probe is informational and does not establish trust/authorization.",
+    "ac_boundary_rule": "When governed remote access is required, $EXT is registry metadata and not an alternate bypass channel."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_BOUNDARY_EXPLICIT",
+        "rule": "DWH local/remote, origin, schema, external identity, access path and transport-security semantics remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "duplicate external identity accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "external endpoint/binding used as sole semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "write authority granted by registry presence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "ping success treated as trust/authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "$EXT used as governed-access bypass",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "external registry mutation silently changes unrelated remote authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EXTERNAL",
+      "target_ref": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT",
+      "purpose": "$EXT contains explicit external identities."
+    },
+    {
+      "id": "REF_NETWORK_ID",
+      "target_ref": "AIGMOS_RUNTIME_NETWORK_IDENTITY_BINDING_CONTRACT",
+      "purpose": "External identity remains separate from network binding."
+    }
+  ],
+  "prose": {
+    "summary": "Define $EXT as the explicit registry for external identities/endpoints with unique identity, bounded lifecycle operations and read-only-by-default semantics.",
+    "notes": [
+      "Unlocked until reconciled against existing DWH/IAM/AC contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

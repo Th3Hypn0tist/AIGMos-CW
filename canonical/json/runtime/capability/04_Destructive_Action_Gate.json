@@ -1,0 +1,153 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DESTRUCTIVE_ACTION_GATE_CONTRACT",
+    "name": "Destructive Action Gate",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define an additional fail-closed gate for delete, purge, revoke, overwrite, irreversible migration and equivalent destructive effects.",
+  "scope": {
+    "owns": [
+      "Destructive Action Gate semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DESTRUCTIVE_ACTION_GATE",
+      "name": "Destructive Action Gate",
+      "purpose": "Define an additional fail-closed gate for delete, purge, revoke, overwrite, irreversible migration and equivalent destructive effects.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME",
+        "TOPIC_DESTRUCTIVE_ACTIONS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DESTRUCTIVE_ACTION_GATE_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_DESTRUCTIVE_ACTIONS",
+      "name": "Destructive Actions",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_DESTRUCTIVE_ACTIONS already referenced by 1 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 1,
+        "distinct_child_topics": 1,
+        "host_contract_ref": "AIGMOS_DESTRUCTIVE_ACTION_GATE_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "target_rule": "Destructive action resolves exact target identity and current revision/state where applicable.",
+    "effect_rule": "Destructive effect and cascade scope are explicit.",
+    "authorization_rule": "Destructive authority is evaluated explicitly.",
+    "hold_rule": "Applicable retention/hold/protection constraints are checked.",
+    "dry_run_rule": "Preview/dry-run produces inert candidate evidence only.",
+    "irreversible_rule": "Irreversible effects are declared and surfaced before execution.",
+    "audit_rule": "Accepted destructive execution retains provenance/audit evidence.",
+    "unknown_rule": "Ambiguous target or cascade hard-fails."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "ambiguous delete target accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "cascade inferred",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "dry-run performs deletion",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "hold ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "irreversible effect hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SIDE",
+      "target_ref": "AIGMOS_SIDE_EFFECT_CLASS_CONTRACT",
+      "purpose": "Destructive operations receive stronger gating."
+    },
+    {
+      "id": "REF_PURGE",
+      "target_ref": "AIGMOS_DWH_EXPIRY_PURGE_BOUNDARY_CONTRACT",
+      "purpose": "DWH purge is a destructive specialization."
+    }
+  ],
+  "prose": {
+    "summary": "Define an additional fail-closed gate for delete, purge, revoke, overwrite, irreversible migration and equivalent destructive effects.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_DESTRUCTIVE_ACTIONS solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

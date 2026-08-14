@@ -1,0 +1,128 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_OWNERSHIP_AUTHORITY_RECONCILIATION_RESULT_CONTRACT",
+    "name": "Ownership and Authority Reconciliation Result",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define immutable result over semantic owner uniqueness/completeness and authority-boundary audit for one reconciliation snapshot.",
+  "scope": {
+    "owns": [
+      "Ownership and Authority Reconciliation Result semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_OWNERSHIP_AUTHORITY_RECONCILIATION_RESULT",
+      "name": "Ownership and Authority Reconciliation Result",
+      "purpose": "Define immutable result over semantic owner uniqueness/completeness and authority-boundary audit for one reconciliation snapshot.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_RECONCILIATION",
+        "TOPIC_OWNERSHIP"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_OWNERSHIP_AUTHORITY_RECONCILIATION_RESULT_CONTRACT",
+        "RECONCILIATION_IS_EVIDENCE_DRIVEN",
+        "NO_SILENT_FINALIZATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "snapshot_rule": "Exact reconciliation snapshot is referenced.",
+    "ownership_rule": "Owner conflicts/missing owners/resolutions are enumerated.",
+    "authority_rule": "Authority-boundary findings are enumerated.",
+    "registry_rule": "Rebuilt ownership/component-boundary registry snapshot is referenced.",
+    "result_states": [
+      "pass",
+      "blocked",
+      "partial",
+      "unknown"
+    ],
+    "separation_rule": "Pass means semantic ownership/authority-model consistency only, not runtime authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RECONCILIATION_IS_EVIDENCE_DRIVEN",
+        "rule": "Whole-tree reconciliation operates only on exact accepted/candidate source snapshots, identities, references and declared semantics; it never repairs ambiguity through filename, path order, timestamp, nearest-name or UI layout heuristics."
+      },
+      {
+        "id": "NO_SILENT_FINALIZATION",
+        "rule": "A contract, closure set or repository remains unlocked/not-ready until all required reconciliation findings for its declared readiness profile are explicitly resolved or accepted through an explicit bounded exception."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "result pass with missing owner",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "authority findings omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "registry snapshot stale",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "pass auto-locks",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "semantic owner treated runtime administrator",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define immutable result over semantic owner uniqueness/completeness and authority-boundary audit for one reconciliation snapshot.",
+    "notes": [
+      "Unlocked pending application to the final merged review tree.",
+      "This contract defines reconciliation semantics; it does not claim that repository-wide reconciliation has already passed."
+    ]
+  }
+}

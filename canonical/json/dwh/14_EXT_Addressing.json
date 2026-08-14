@@ -1,0 +1,131 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_EXT_ADDRESSING_CONTRACT",
+    "name": "DWH EXT Addressing",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define `$EXT` registration and `>` remote addressing as explicit external identity/binding semantics, with uniqueness and read-only defaults.",
+  "scope": {
+    "owns": [
+      "DWH EXT Addressing semantics"
+    ],
+    "does_not_own": [
+      "domain payload semantics",
+      "transport implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_EXT_ADDRESSING",
+      "name": "DWH EXT Addressing",
+      "purpose": "Define `$EXT` registration and `>` remote addressing as explicit external identity/binding semantics, with uniqueness and read-only defaults.",
+      "parent_topic_refs": [
+        "TOPIC_DWH_LOCAL_REMOTE",
+        "TOPIC_CORE_ADDRESSING",
+        "TOPIC_ACCESSCORE_AUTHORIZATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_EXT_ADDRESSING_CONTRACT",
+        "DWH_POLICY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "registry": "$EXT",
+    "operations": [
+      "add",
+      "edit",
+      "remove",
+      "ping"
+    ],
+    "remote_marker": ">",
+    "example": "#DWH:>warehouse:lights",
+    "uniqueness_rule": "Active external identities/bindings are unique within their declared scope.",
+    "readonly_rule": "External references are read-only by default unless explicit mutator authority is declared.",
+    "identity_rule": "External identity is explicit and separate from mutable network endpoint.",
+    "ac_rule": "When AC is active, direct `$EXT` dereference is disallowed for governed access; remote access proceeds through DWH `>` semantics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_POLICY_EXPLICIT",
+        "rule": "DWH scope, release, remote access and policy decisions remain explicit, provenance-preserving and separate from transport reachability."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "duplicate active EXT identity accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "external ref writable by default",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "network endpoint used as semantic external identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "AC-active direct $EXT dereference bypasses DWH",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "remote marker target resolved fuzzily",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ADDR",
+      "target_ref": "AIGMOS_CORE_ADDRESSING_CONTRACT",
+      "purpose": "Remote addresses resolve explicitly."
+    }
+  ],
+  "prose": {
+    "summary": "Define `$EXT` registration and `>` remote addressing as explicit external identity/binding semantics, with uniqueness and read-only defaults.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH local/remote, AC/IAM and lineage contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

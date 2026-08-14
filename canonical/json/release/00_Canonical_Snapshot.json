@@ -1,0 +1,117 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT",
+    "name": "Canonical Snapshot",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define an immutable logical snapshot identity for an accepted canonical tree, binding repository manifest, semantic graph state and applicable evidence without using Git commit, archive filename or filesystem tree as the semantic snapshot identity.",
+  "scope": {
+    "owns": [
+      "Canonical Snapshot semantics"
+    ],
+    "does_not_own": [
+      "underlying canonical domain semantics",
+      "runtime implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RELEASE_SNAPSHOT",
+      "name": "Canonical Snapshot",
+      "purpose": "Define an immutable logical snapshot identity for an accepted canonical tree, binding repository manifest, semantic graph state and applicable evidence without using Git commit, archive filename or filesystem tree as the semantic snapshot identity.",
+      "parent_topic_refs": [
+        "TOPIC_VALIDATION_RELEASE_GATE",
+        "TOPIC_REPOSITORY_MANIFEST"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT",
+        "RELEASE_TRACEABILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "snapshot_rule": "Snapshot has an explicit stable identity and references the exact accepted canonical graph.",
+    "manifest_rule": "Snapshot references the repository manifest used to enumerate active artifacts.",
+    "evidence_rule": "Accepted/released snapshot references its validation evidence bundle.",
+    "vcs_rule": "Git commit/tag may be provenance/binding metadata but is not the canonical semantic snapshot identity.",
+    "archive_rule": "Archive filename/hash may identify physical distribution integrity but does not replace semantic snapshot identity.",
+    "immutability_rule": "Changing machine-significant semantics creates a new snapshot identity."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_TRACEABILITY",
+        "rule": "Release, replacement, rollback, deprecation and compatibility decisions remain explicit, snapshot-bound and traceable; no lifecycle label silently changes canonical semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "semantic change retained under same immutable snapshot identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Git commit/tag used as sole canonical snapshot identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "snapshot lacks manifest/evidence trace where accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "archive filename treated as semantic snapshot identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_GATE",
+      "target_ref": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT",
+      "purpose": "Approved release gate identifies exact candidate snapshot."
+    }
+  ],
+  "prose": {
+    "summary": "Define an immutable logical snapshot identity for an accepted canonical tree, binding repository manifest, semantic graph state and applicable evidence without using Git commit, archive filename or filesystem tree as the semantic snapshot identity.",
+    "notes": [
+      "Unlocked pending reconciliation against the assembled 1.4 release/migration tree and whole-tree validation."
+    ]
+  }
+}

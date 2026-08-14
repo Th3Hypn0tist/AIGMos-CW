@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_OPERATION_VALIDATION_CONTRACT",
+    "name": "Operation Validation Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic validation of operation existence, target compatibility, arguments, bounds, state preconditions and schema before authorization/dispatch.",
+  "scope": {
+    "owns": [
+      "Operation Validation Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_OPERATION_VALIDATION",
+      "name": "Operation Validation Boundary",
+      "purpose": "Define deterministic validation of operation existence, target compatibility, arguments, bounds, state preconditions and schema before authorization/dispatch.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME",
+        "TOPIC_VALIDATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_OPERATION_VALIDATION_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "flow": [
+      "resolve operation",
+      "resolve target",
+      "validate input schema",
+      "validate target compatibility",
+      "validate state preconditions",
+      "validate bounds/capabilities",
+      "produce validation evidence"
+    ],
+    "result_states": [
+      "valid",
+      "invalid",
+      "unknown",
+      "conflict"
+    ],
+    "evidence_rule": "Validation result references exact operation/request/target revisions.",
+    "state_rule": "State-dependent preconditions bind exact observed revision/state evidence.",
+    "unknown_rule": "Unknown required validation fails closed.",
+    "semantic_rule": "Validator cannot rewrite request semantics merely to make it valid.",
+    "authority_rule": "Validation success does not authorize execution."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "validator silently fixes target",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "unknown treated valid",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "validation result executes request",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "state revision omitted for stateful precondition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "validation success treated as authorization",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REQ",
+      "target_ref": "AIGMOS_OPERATION_REQUEST_CONTRACT",
+      "purpose": "Validation evaluates exact inert requests."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic validation of operation existence, target compatibility, arguments, bounds, state preconditions and schema before authorization/dispatch.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

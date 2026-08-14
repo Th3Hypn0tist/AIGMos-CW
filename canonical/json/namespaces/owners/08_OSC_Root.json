@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_OSC_ROOT_CONTRACT",
+    "name": "#OSC Root",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define `#OSC` as the reserved root for declared OSC service instances, address mappings and protocol configuration, without making OSC addresses canonical domain identities.",
+  "scope": {
+    "owns": [
+      "#OSC Root semantics"
+    ],
+    "does_not_own": [
+      "unrelated domain semantics",
+      "presentation semantics",
+      "implicit runtime authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NAMESPACE_OSC",
+      "name": "#OSC Root",
+      "purpose": "Define `#OSC` as the reserved root for declared OSC service instances, address mappings and protocol configuration, without making OSC addresses canonical domain identities.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NAMESPACES",
+        "TOPIC_PROTOCOL_OSC"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_OSC_ROOT_CONTRACT",
+        "RESERVED_ROOT_OWNER_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "root": "#OSC",
+    "role": "OSC protocol family/root",
+    "owner_rule": "#OSC resolves to explicit OSC adapter/service semantics.",
+    "instance_rule": "Named OSC service/listener instances have stable logical identity separate from port/transport.",
+    "address_rule": "OSC addresses bind explicitly to canonical targets; they are not target semantic identities.",
+    "payload_rule": "OSC arguments are validated inert input until canonical dispatch.",
+    "optional_rule": "OSC is an optional removable protocol capability.",
+    "authority_rule": "Receiving or exposing OSC traffic never grants target authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RESERVED_ROOT_OWNER_EXPLICIT",
+        "rule": "Each reserved runtime root resolves to one explicit semantic owner/family; the root itself never creates semantic ownership or runtime authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "OSC address becomes canonical domain identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "OSC payload executes before validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "port/transport becomes OSC instance identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "OSC traffic grants authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "optional OSC capability silently auto-enabled",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_OSC",
+      "target_ref": "AIGMOS_OSC_ADAPTER_CONTRACT",
+      "purpose": "#OSC exposes OSC adapter semantics."
+    },
+    {
+      "id": "REF_BIND",
+      "target_ref": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
+      "purpose": "OSC addresses bind explicitly to canonical targets."
+    }
+  ],
+  "prose": {
+    "summary": "Define `#OSC` as the reserved root for declared OSC service instances, address mappings and protocol configuration, without making OSC addresses canonical domain identities.",
+    "notes": [
+      "Unlocked pending reconciliation against existing namespace/runtime/domain contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

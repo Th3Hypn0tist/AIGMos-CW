@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_ERROR_PROPAGATION_CONTRACT",
+    "name": "Runtime Error Propagation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define how errors propagate through command, Runner step, nested Routine, protocol and DWH boundaries without losing original cause or masquerading as unrelated failures.",
+  "scope": {
+    "owns": [
+      "Runtime Error Propagation semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_ERROR_PROPAGATION",
+      "name": "Runtime Error Propagation",
+      "purpose": "Define how errors propagate through command, Runner step, nested Routine, protocol and DWH boundaries without losing original cause or masquerading as unrelated failures.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_ERRORS",
+        "TOPIC_CAUSALITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RUNTIME_ERROR_PROPAGATION_CONTRACT",
+        "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "cause_rule": "Propagated error retains exact originating error/cause refs.",
+    "boundary_rule": "Each boundary may wrap/classify an error but never erase original provenance.",
+    "runner_rule": "Step failure propagates according to explicit Runner failure policy.",
+    "protocol_rule": "Transport/protocol mapping preserves internal error identity while exposing policy-safe external representation.",
+    "nested_rule": "Nested Routine failure retains child execution/error refs.",
+    "redaction_rule": "Sensitive details may be redacted externally without deleting internal evidence.",
+    "success_rule": "Propagated failure never becomes success solely because a boundary handled formatting."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "rule": "Machine-significant definitions, executions, evidence and runtime state use explicit identities and boundaries; visibility, file order, timestamps, transport reachability or UI placement never silently create semantic authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "root cause erased",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "wrapped error loses child execution ref",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "protocol returns success for failed operation without explicit partial semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "redaction deletes internal provenance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "error inferred from timeout only",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REC",
+      "target_ref": "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT",
+      "purpose": "Runner propagation follows explicit recovery semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define how errors propagate through command, Runner step, nested Routine, protocol and DWH boundaries without losing original cause or masquerading as unrelated failures.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNNER_INSTANTIATION_CONTRACT",
+    "name": "Runner Instantiation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define creation of one concrete Runner execution from exact Routine/Trigger/schedule/command request with immutable execution snapshot and explicit step plan.",
+  "scope": {
+    "owns": [
+      "Runner Instantiation semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNNER_INSTANTIATION",
+      "name": "Runner Instantiation",
+      "purpose": "Define creation of one concrete Runner execution from exact Routine/Trigger/schedule/command request with immutable execution snapshot and explicit step plan.",
+      "parent_topic_refs": [
+        "TOPIC_ORCHESTRATION",
+        "TOPIC_RUNNERS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RUNNER_INSTANTIATION_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each Runner execution has a distinct execution identity.",
+    "source_rule": "Source invocation/trigger/schedule/command refs are explicit.",
+    "definition_rule": "Runner/Routine definition revision is exact.",
+    "plan_rule": "Ordered step plan is materialized explicitly for the execution.",
+    "context_rule": "Execution context snapshot is exact.",
+    "state_rule": "Execution state is separate from definition state.",
+    "authority_rule": "Instantiation does not bypass per-step operation authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "Runner definition reused as execution identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "plan changes silently mid-run",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "source invocation omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "context mutable globally",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "Runner skips auth",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RUN",
+      "target_ref": "AIGMOS_RUNNER_EXECUTION_IDENTITY_CONTRACT",
+      "purpose": "Instantiation creates exact execution identity."
+    }
+  ],
+  "prose": {
+    "summary": "Define creation of one concrete Runner execution from exact Routine/Trigger/schedule/command request with immutable execution snapshot and explicit step plan.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

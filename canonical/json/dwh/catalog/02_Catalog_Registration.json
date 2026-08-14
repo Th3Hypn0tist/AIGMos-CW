@@ -1,0 +1,168 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_CATALOG_REGISTRATION_CONTRACT",
+    "name": "DWH Catalog Registration",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit registration of datasets/resources into the DWH catalog using exact identities, schema/provenance refs and validation rather than automatic discovery becoming accepted catalog truth.",
+  "scope": {
+    "owns": [
+      "DWH Catalog Registration semantics"
+    ],
+    "does_not_own": [
+      "source domain semantics",
+      "AccessCore policy ownership",
+      "physical storage ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_CATALOG_REGISTRATION",
+      "name": "DWH Catalog Registration",
+      "purpose": "Define explicit registration of datasets/resources into the DWH catalog using exact identities, schema/provenance refs and validation rather than automatic discovery becoming accepted catalog truth.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_CATALOG_METADATA"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_CATALOG_REGISTRATION_CONTRACT",
+        "CATALOG_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_CATALOG_METADATA",
+      "name": "Catalog Metadata",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_CATALOG_METADATA already referenced by 6 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 6,
+        "distinct_child_topics": 6,
+        "host_contract_ref": "AIGMOS_DWH_CATALOG_REGISTRATION_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "flow": [
+      "discover/propose resource",
+      "resolve exact identity",
+      "validate schema/ownership/provenance refs",
+      "authorize registration",
+      "register catalog entry",
+      "index metadata for discovery"
+    ],
+    "registration_rule": "Catalog registration is an explicit operation.",
+    "discovery_rule": "Discovered resources remain candidate entries until registered/accepted.",
+    "identity_rule": "Catalog entry identity is distinct from underlying resource/dataset identity.",
+    "ownership_rule": "Registration records owner refs but never changes ownership.",
+    "source_rule": "Registration retains discovery/source provenance.",
+    "state_values": [
+      "candidate",
+      "registered",
+      "deprecated",
+      "retired",
+      "invalid"
+    ],
+    "duplicate_rule": "Same-resource duplicate entries reconcile explicitly.",
+    "authority_rule": "Registration does not grant data read/write authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "CATALOG_NONAUTHORITY",
+        "rule": "Catalog and metadata records describe exact DWH resources and evidence; discovery, labels, annotations, ranking or catalog visibility never replace canonical resource identity, semantic ownership, classification policy or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "discovery auto-registers resource as truth",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "catalog entry replaces resource identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "registration changes semantic owner",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "duplicate entry silently shadows",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "registered means authorized",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DATASET",
+      "target_ref": "AIGMOS_DWH_DATASET_IDENTITY_CONTRACT",
+      "purpose": "Catalog entries bind exact dataset/resource identities."
+    },
+    {
+      "id": "REF_SOURCE",
+      "target_ref": "AIGMOS_CANONICAL_SOURCE_REGISTRY_CONTRACT",
+      "purpose": "Registration preserves source provenance."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit registration of datasets/resources into the DWH catalog using exact identities, schema/provenance refs and validation rather than automatic discovery becoming accepted catalog truth.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH schema, lineage, classification and discovery contracts.",
+      "Pass 6 hosts grouping-only Topic TOPIC_CATALOG_METADATA solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

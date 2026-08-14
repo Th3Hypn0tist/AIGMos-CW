@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT",
+    "name": "Schedule to Event Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the exact boundary by which a due `#CAL` occurrence becomes an inert scheduling Event that can then participate in normal Event→Trigger→Runner causality.",
+  "scope": {
+    "owns": [
+      "Schedule to Event Boundary semantics"
+    ],
+    "does_not_own": [
+      "Runner execution semantics",
+      "AccessCore policy ownership",
+      "external calendar provider semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_SCHEDULE_EVENT_BOUNDARY",
+      "name": "Schedule to Event Boundary",
+      "purpose": "Define the exact boundary by which a due `#CAL` occurrence becomes an inert scheduling Event that can then participate in normal Event→Trigger→Runner causality.",
+      "parent_topic_refs": [
+        "TOPIC_CALENDAR",
+        "TOPIC_SCHEDULING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT",
+        "SCHEDULE_NONEXECUTION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "flow": [
+      "resolve due occurrence",
+      "create occurrence identity",
+      "emit scheduling Event",
+      "evaluate Trigger",
+      "request Runner/operation through normal dispatch"
+    ],
+    "event_rule": "Scheduling Event references exact schedule and occurrence identities.",
+    "payload_rule": "Event payload may carry bounded schedule/occurrence metadata and remains inert.",
+    "trigger_rule": "Schedule does not bypass Trigger semantics unless an explicitly declared direct operation binding contract exists in the future.",
+    "authority_rule": "Due time does not grant execution authorization.",
+    "dedupe_rule": "Each occurrence has deterministic identity/deduplication evidence preventing accidental duplicate emission.",
+    "failure_rule": "Failure to emit/handle Event is recorded explicitly and never represented as successful downstream execution.",
+    "causality_rule": "Downstream execution/results retain causality refs to originating schedule occurrence/Event."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SCHEDULE_NONEXECUTION",
+        "rule": "A schedule determines when a scheduling occurrence may be emitted; it never directly executes a Routine, command or operation. Execution requires the normal explicit Event→Trigger→Runner/operation causality chain."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "due time directly executes code",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "scheduling Event lacks schedule/occurrence refs",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "duplicate occurrence emitted without dedupe evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "time occurrence grants authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "failed event emission shown as executed",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CAUSE",
+      "target_ref": "AIGMOS_EVENT_CAUSALITY_EDGE_CONTRACT",
+      "purpose": "Scheduled execution uses explicit causality edges."
+    },
+    {
+      "id": "REF_TRIGGER",
+      "target_ref": "AIGMOS_TRIGGER_IDENTITY_CONTRACT",
+      "purpose": "Scheduling Events enter normal Trigger path."
+    }
+  ],
+  "prose": {
+    "summary": "Define the exact boundary by which a due `#CAL` occurrence becomes an inert scheduling Event that can then participate in normal Event→Trigger→Runner causality.",
+    "notes": [
+      "Unlocked pending reconciliation against #CAL, Event/Trigger causality, Runner and timezone/runtime contracts."
+    ]
+  }
+}

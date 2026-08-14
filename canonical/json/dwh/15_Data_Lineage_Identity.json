@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_DATA_LINEAGE_IDENTITY_CONTRACT",
+    "name": "DWH Data Lineage Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define lineage records as explicit provenance graphs connecting exact source data identities, transformations and derived outputs without turning lineage itself into the semantic owner of the data.",
+  "scope": {
+    "owns": [
+      "DWH Data Lineage Identity semantics"
+    ],
+    "does_not_own": [
+      "AccessCore authorization policy",
+      "source domain semantics",
+      "transport cryptography"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_DATA_LINEAGE_IDENTITY",
+      "name": "DWH Data Lineage Identity",
+      "purpose": "Define lineage records as explicit provenance graphs connecting exact source data identities, transformations and derived outputs without turning lineage itself into the semantic owner of the data.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_PROVENANCE_LINEAGE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_DATA_LINEAGE_IDENTITY_CONTRACT",
+        "LINEAGE_PROVENANCE_PRESERVED",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "lineage_rule": "Every machine-significant derived DWH datum may carry explicit lineage to one or more exact source identities.",
+    "identity_rule": "Lineage record/edge identity is distinct from source and derived data identity.",
+    "graph_rule": "Lineage forms an explicit directed provenance graph.",
+    "source_rule": "Source nodes retain original instance/schema/field/data identity where available.",
+    "derived_rule": "Derived outputs retain exact producing transformation/operation refs.",
+    "ownership_rule": "Lineage records provenance only and never transfer semantic ownership.",
+    "history_rule": "Lineage history is append/reconcile governed and not silently rewritten."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "LINEAGE_PROVENANCE_PRESERVED",
+        "rule": "Derived DWH data retains explicit source lineage, transformation provenance and applicable classification/taint state; transformations never silently erase origin or governance metadata."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "derived data has no traceable source where lineage is required",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "lineage node replaces data semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "lineage inferred from display names only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "transformation ref missing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "lineage silently rewrites semantic ownership",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROV",
+      "target_ref": "AIGMOS_CORE_PROVENANCE_EVIDENCE_CONTRACT",
+      "purpose": "DWH lineage specializes provenance semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define lineage records as explicit provenance graphs connecting exact source data identities, transformations and derived outputs without turning lineage itself into the semantic owner of the data.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH schema, provenance, AccessCore and remote-data contracts."
+    ]
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ACCESSCORE_RESOURCE_REAUTHENTICATION_CONTRACT",
+    "name": "Resource Reauthentication",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define per-resource reauthentication requirements with minimum assurance, allowed authentication methods, bounded validity and optional key rotation.",
+  "scope": {
+    "owns": [
+      "Resource Reauthentication semantics"
+    ],
+    "does_not_own": [
+      "IAM identity proofing",
+      "domain data semantics",
+      "presentation-only access hints"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ACCESSCORE_RESOURCE_REAUTHENTICATION",
+      "name": "Resource Reauthentication",
+      "purpose": "Define per-resource reauthentication requirements with minimum assurance, allowed authentication methods, bounded validity and optional key rotation.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE_AUTHORIZATION",
+        "TOPIC_STRUCTURE_AUTHORITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_ACCESSCORE_RESOURCE_REAUTHENTICATION_CONTRACT",
+        "ACCESSCORE_AUTHORITY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "resource_rule": "Resource/operation may declare required assurance independently from its authorization rule.",
+    "methods_rule": "Allowed reauthentication methods are explicit per resource/policy.",
+    "lifetime_rule": "Successful reauth produces a resource/session assurance elevation with explicit lifetime.",
+    "rotation_rule": "Successful reauth may rotate applicable keys/credentials when the owning policy declares it.",
+    "failure_rule": "Failed/expired reauth leaves the protected operation denied.",
+    "identity_rule": "Reauthentication preserves semantic identity.",
+    "scope_rule": "Reauth elevation applies only to its declared session/resource scope and cannot silently elevate unrelated resources."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ACCESSCORE_AUTHORITY_EXPLICIT",
+        "rule": "AccessCore decisions are explicit policy evaluations over identity, resource and operation context; authentication assurance, visibility and ownership never silently become authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "reauth grants unrelated rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "resource requirement inferred from UI",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "reauth validity unbounded",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "failed reauth still allows operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "reauth changes semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "resource-scoped elevation silently becomes global",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ASSURE",
+      "target_ref": "AIGMOS_IAM_ASSURANCE_LIFECYCLE_CONTRACT",
+      "purpose": "Reauth changes current assurance state."
+    },
+    {
+      "id": "REF_ROT",
+      "target_ref": "AIGMOS_IAM_CREDENTIAL_ROTATION_CONTRACT",
+      "purpose": "Policy may explicitly rotate credentials/keys."
+    }
+  ],
+  "prose": {
+    "summary": "Define per-resource reauthentication requirements with minimum assurance, allowed authentication methods, bounded validity and optional key rotation.",
+    "notes": [
+      "Unlocked pending reconciliation against existing AccessCore/IAM contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

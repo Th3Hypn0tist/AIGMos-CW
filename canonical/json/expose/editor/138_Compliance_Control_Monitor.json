@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_COMPLIANCE_CONTROL_MONITOR_CONTRACT",
+    "name": "Compliance Controls Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for controls, evidence sets, evaluations, profiles and attestations.",
+  "scope": {
+    "owns": [
+      "Compliance Controls Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "runtime execution authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_COMPLIANCE_CONTROL_MONITOR",
+      "name": "Compliance Controls Monitor",
+      "purpose": "Define a read-only Expose monitor for controls, evidence sets, evaluations, profiles and attestations.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_COMPLIANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_COMPLIANCE_CONTROL_MONITOR_CONTRACT",
+        "GOVERNANCE_EVIDENCE_SEPARATION",
+        "FAIL_CLOSED_PROTECTED_DATA",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "control registry",
+      "target scope",
+      "evaluation results",
+      "evidence sets",
+      "profile status",
+      "attestations",
+      "missing/stale findings"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Control, evaluation, evidence set, profile, attestation and target identities remain distinct.",
+    "action_rule": "run-evaluation/attach-evidence/attest operations use separate authorized workflows.",
+    "authority_rule": "Viewing compliance status grants no system authority.",
+    "failure_rule": "fail/partial/not-evaluated/stale/unknown remain distinct.",
+    "privacy_rule": "Protected evidence is redacted/minimized."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "GOVERNANCE_EVIDENCE_SEPARATION",
+        "rule": "Policy, decision, evidence, audit record, consent, incident and compliance result remain separate machine-significant identities; no evidence artifact silently becomes source data, authorization or runtime authority."
+      },
+      {
+        "id": "FAIL_CLOSED_PROTECTED_DATA",
+        "rule": "Ambiguous or unresolved governance for protected data fails closed; UI visibility, transport reachability, cache presence, role title, prior access or audit-log presence never substitute for an explicit valid policy decision."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor marks pass by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "attestation shown certification",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "not-evaluated hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "evidence secrets exposed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "viewing grants control-admin rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROFILE",
+      "target_ref": "AIGMOS_COMPLIANCE_PROFILE_CONTRACT",
+      "purpose": "Monitor projects exact compliance profile state."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for controls, evidence sets, evaluations, profiles and attestations.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

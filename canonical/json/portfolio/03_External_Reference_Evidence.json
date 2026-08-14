@@ -1,0 +1,135 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_PORTFOLIO_EXTERNAL_REFERENCE_CONTRACT",
+    "name": "Portfolio External Reference Evidence",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define external Portfolio evidence as an explicit reference with source identity, retrieval/provenance metadata and verification state rather than an automatically trusted claim.",
+  "scope": {
+    "owns": [
+      "Portfolio External Reference Evidence semantics"
+    ],
+    "does_not_own": [
+      "IdentityCore authentication",
+      "MeritCore scoring",
+      "Project execution semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_PORTFOLIO_EXTERNAL_REFERENCE",
+      "name": "Portfolio External Reference Evidence",
+      "purpose": "Define external Portfolio evidence as an explicit reference with source identity, retrieval/provenance metadata and verification state rather than an automatically trusted claim.",
+      "parent_topic_refs": [
+        "TOPIC_PORTFOLIOCORE",
+        "TOPIC_IDENTITYCORE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_PORTFOLIO_EXTERNAL_REFERENCE_CONTRACT",
+        "PORTFOLIO_EVIDENCE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "required": [
+      "reference_id",
+      "source_identity_or_locator",
+      "evidence_type",
+      "verification_state"
+    ],
+    "verification_states": [
+      "unverified",
+      "verified",
+      "expired",
+      "unavailable",
+      "revoked"
+    ],
+    "source_rule": "External source/issuer identity is explicit where resolvable.",
+    "locator_rule": "URL/file/hash/registry locator is evidence location, not semantic identity by itself.",
+    "verification_rule": "Verification result is explicit evidence and may expire/change.",
+    "trust_rule": "Verified external reference does not automatically create MeritCore trust/points/Tier.",
+    "snapshot_rule": "Where evidence must remain reproducible, snapshot/hash/provenance policy is explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PORTFOLIO_EVIDENCE_EXPLICIT",
+        "rule": "PortfolioCore represents explicit identity-linked references and evidence metadata; it never manufactures competence, merit, trust or authorization from presentation content."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "external URL treated as semantic identity automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "unverified evidence displayed as verified machine state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "verification grants MeritCore points automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "issuer/source identity omitted where required",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "verification history overwritten silently",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROV",
+      "target_ref": "AIGMOS_CORE_PROVENANCE_EVIDENCE_CONTRACT",
+      "purpose": "External references retain source evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define external Portfolio evidence as an explicit reference with source identity, retrieval/provenance metadata and verification state rather than an automatically trusted claim.",
+    "notes": [
+      "Unlocked pending reconciliation against existing PortfolioCore/IdentityCore/MeritCore contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

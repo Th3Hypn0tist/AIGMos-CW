@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_AI_Q_MONITOR_CONTRACT",
+    "name": "q, QC and Model Execution Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for q/qc/qt requests, backend/model bindings, explicit targets, context inputs, outputs, proposed operations/tools and local/external QC state.",
+  "scope": {
+    "owns": [
+      "q, QC and Model Execution Monitor semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_AI_Q_MONITOR",
+      "name": "q, QC and Model Execution Monitor",
+      "purpose": "Define a read-only Expose monitor for q/qc/qt requests, backend/model bindings, explicit targets, context inputs, outputs, proposed operations/tools and local/external QC state.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_AI",
+        "TOPIC_Q"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_AI_Q_MONITOR_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "q/qc/qt surface",
+      "backend/model",
+      "target binding",
+      "context/memory/tool refs",
+      "inference request/result",
+      "AI proposed operations",
+      "QC local/external mode",
+      "apply/dispatch result refs"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Command surface, backend, model, inference request, output, proposal, operation request and execution identities remain distinct.",
+    "action_rule": "run-q/run-qc/apply-proposal operations use separate authorized workflows.",
+    "authority_rule": "Viewing AI output grants no apply/operation authority.",
+    "failure_rule": "ambiguous-target/parse-failed/denied/partial states remain explicit.",
+    "privacy_rule": "Sensitive prompt/context/tool data obeys governance/redaction."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor applies model output by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "backend/model/request conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "QC local/external hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "target inferred visually",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "proposal shown executed before dispatcher",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROP",
+      "target_ref": "AIGMOS_AI_PROPOSED_OPERATION_CONTRACT",
+      "purpose": "Monitor shows model output→candidate request boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for q/qc/qt requests, backend/model bindings, explicit targets, context inputs, outputs, proposed operations/tools and local/external QC state.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

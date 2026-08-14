@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_DWH_ACCESS_MONITOR_CONTRACT",
+    "name": "DWH Access Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for origin input policy, output schema policy, EXT registration, governed `>` addressing, remote read-only boundaries and AccessCore decisions.",
+  "scope": {
+    "owns": [
+      "DWH Access Monitor semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "IAM identity semantics",
+      "transport cryptography semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_DWH_ACCESS_MONITOR",
+      "name": "DWH Access Monitor",
+      "purpose": "Define a read-only Expose monitor for origin input policy, output schema policy, EXT registration, governed `>` addressing, remote read-only boundaries and AccessCore decisions.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_ACCESSCORE_AUTHORIZATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_DWH_ACCESS_MONITOR_CONTRACT",
+        "DWH_ORIGIN_TARGET_GOVERNANCE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "origin input scope",
+      "output schema projection",
+      "EXT registry",
+      "remote > resolution",
+      "read-only/writable capability",
+      "origin identity/assurance",
+      "target AccessCore decision",
+      "remote trace"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "separation_rule": "EXT registration, DWH address resolution, DWH boundary policy and AccessCore authorization remain visibly distinct.",
+    "action_rule": "EXT edit, policy edit and remote mutation invoke separate authorized operations.",
+    "authority_rule": "Viewing remote resources grants no read/write authority beyond already authorized monitor data.",
+    "trace_rule": "Each remote access view retains origin, target, schema, policy and authorization refs.",
+    "failure_rule": "Denied/unresolved paths are displayed explicitly rather than hidden as successful empty results.",
+    "secret_rule": "Transport/session secrets are never displayed."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_ORIGIN_TARGET_GOVERNANCE",
+        "rule": "DWH applies data-boundary policy at the origin and target independently; remote addressing, transport reachability and external registration never substitute for AccessCore authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor conflates EXT registration with authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "monitor directly mutates remote data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "denied path displayed as successful",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "origin/target policy provenance lost",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "viewing grants remote write authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_IN",
+      "target_ref": "AIGMOS_DWH_ORIGIN_INPUT_GOVERNANCE_CONTRACT",
+      "purpose": "Monitor projects origin boundary."
+    },
+    {
+      "id": "REF_OUT",
+      "target_ref": "AIGMOS_DWH_OUTPUT_SCHEMA_GOVERNANCE_CONTRACT",
+      "purpose": "Monitor projects output boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for origin input policy, output schema policy, EXT registration, governed `>` addressing, remote read-only boundaries and AccessCore decisions.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH, EXT, AccessCore and transport contracts."
+    ]
+  }
+}

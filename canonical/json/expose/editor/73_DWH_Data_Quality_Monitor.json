@@ -1,0 +1,141 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_DWH_DATA_QUALITY_MONITOR_CONTRACT",
+    "name": "DWH Data Quality Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for quality rules/profiles, validation executions/results, quarantine state, remediation candidates and post-remediation verification.",
+  "scope": {
+    "owns": [
+      "DWH Data Quality Monitor semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "AccessCore policy ownership",
+      "source mutation authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_DWH_DATA_QUALITY_MONITOR",
+      "name": "DWH Data Quality Monitor",
+      "purpose": "Define a read-only Expose monitor for quality rules/profiles, validation executions/results, quarantine state, remediation candidates and post-remediation verification.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_DATA_QUALITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_DWH_DATA_QUALITY_MONITOR_CONTRACT",
+        "QUALITY_EVIDENCE_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "quality rule registry",
+      "validation profiles",
+      "target schema/field refs",
+      "pass/fail/unknown evidence",
+      "severity/thresholds",
+      "quarantined data refs",
+      "remediation candidates/diffs",
+      "revalidation results",
+      "history/trends"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Rule, profile, validation execution, quality result, source revision, quarantine record and remediation candidate identities remain distinct.",
+    "authority_rule": "Viewing failures or suggested fixes grants no mutation/release authority.",
+    "action_rule": "validate/quarantine/release/remediate/re-run operations invoke separate authorized canonical workflows.",
+    "derived_rule": "Quality score/status is displayed as derived evidence rather than canonical source truth.",
+    "redaction_rule": "Sensitive violating values are redacted according to source governance.",
+    "graph_rule": "Rule→target→result→remediation edges correspond only to explicit refs.",
+    "failure_rule": "Unknown/not-evaluated, failed remediation and still-quarantined states remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "QUALITY_EVIDENCE_NONAUTHORITY",
+        "rule": "Data-quality rules and results produce explicit evidence about exact data/schema identities; they never silently rewrite source data, change semantic ownership, declassify content or become authorization decisions."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor directly fixes data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "quality score shown as canonical truth",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "unknown state shown as pass",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "viewing quarantine grants release authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "visual adjacency invents rule-target binding",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RESULT",
+      "target_ref": "AIGMOS_DWH_QUALITY_RESULT_EVIDENCE_CONTRACT",
+      "purpose": "Monitor projects immutable quality evidence."
+    },
+    {
+      "id": "REF_REMED",
+      "target_ref": "AIGMOS_DWH_QUALITY_REMEDIATION_CONTRACT",
+      "purpose": "Monitor exposes remediation lifecycle."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for quality rules/profiles, validation executions/results, quarantine state, remediation candidates and post-remediation verification.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH schema, mutation, lineage and monitoring contracts."
+    ]
+  }
+}

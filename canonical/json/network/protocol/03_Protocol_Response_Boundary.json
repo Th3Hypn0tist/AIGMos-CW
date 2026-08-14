@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_PROTOCOL_RESPONSE_BOUNDARY_CONTRACT",
+    "name": "Operation Result to Protocol Response Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define conversion of operation result/error evidence into protocol-safe response payloads without exposing unauthorized internal state or creating follow-up effects.",
+  "scope": {
+    "owns": [
+      "Operation Result to Protocol Response Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "application operation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_PROTOCOL_RESPONSE_BOUNDARY",
+      "name": "Operation Result to Protocol Response Boundary",
+      "purpose": "Define conversion of operation result/error evidence into protocol-safe response payloads without exposing unauthorized internal state or creating follow-up effects.",
+      "parent_topic_refs": [
+        "TOPIC_NETWORK",
+        "TOPIC_PROTOCOLS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_PROTOCOL_RESPONSE_BOUNDARY_CONTRACT",
+        "TRANSPORT_NONAUTHORITY",
+        "INGRESS_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "result_rule": "Response derives from exact operation result/error identity.",
+    "mapping_rule": "Protocol status/code/payload mapping is explicit.",
+    "redaction_rule": "Sensitive internal error/data fields are omitted/redacted according to policy.",
+    "partial_rule": "Partial/ambiguous outcomes remain distinguishable.",
+    "stream_rule": "Streaming/chunked response semantics are explicit where supported.",
+    "effect_rule": "Response serialization has no hidden application effect.",
+    "authority_rule": "Response receipt grants no new authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TRANSPORT_NONAUTHORITY",
+        "rule": "Listener, route, endpoint, connection, channel, peer reachability and cryptographic transport evidence never by themselves grant application, data or operation authority."
+      },
+      {
+        "id": "INGRESS_EFFECT_BOUNDARY",
+        "rule": "Inbound network data remains inert until explicit protocol parsing, validation, identity/context resolution, authorization and dispatcher routing succeed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "internal exception leaked",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "partial shown success complete",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "response body triggers hidden secondary write",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "error mapping guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "ambiguous timeout shown no-effect",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RESULT",
+      "target_ref": "AIGMOS_OPERATION_RESULT_CONTRACT",
+      "purpose": "Protocol response projects exact operation results."
+    }
+  ],
+  "prose": {
+    "summary": "Define conversion of operation result/error evidence into protocol-safe response payloads without exposing unauthorized internal state or creating follow-up effects.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

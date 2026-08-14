@@ -1,0 +1,128 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_REAUTH_REQUIREMENT_CONTRACT",
+    "name": "Resource Reauthentication Requirement",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define optional per-resource/per-operation reauthentication requirements using exact required assurance level, allowed authentication methods and validity lifetime.",
+  "scope": {
+    "owns": [
+      "Resource Reauthentication Requirement semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime operation implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_REAUTH_REQUIREMENT",
+      "name": "Resource Reauthentication Requirement",
+      "purpose": "Define optional per-resource/per-operation reauthentication requirements using exact required assurance level, allowed authentication methods and validity lifetime.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE",
+        "TOPIC_REAUTH"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_REAUTH_REQUIREMENT_CONTRACT",
+        "IDENTITY_AUTHORITY_SEPARATION",
+        "FAIL_CLOSED_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each reusable reauth requirement/profile has an explicit identity.",
+    "resource_rule": "Requirement binds exact resource/operation/right scope.",
+    "assurance_rule": "Required IAM assurance level is explicit.",
+    "method_rule": "Allowed authentication methods/factors are explicit.",
+    "lifetime_rule": "Reauth validity lifetime is explicit and resource/profile-specific.",
+    "session_rule": "Existing session assurance may satisfy requirement only if valid under the exact profile.",
+    "authorization_rule": "Reauth satisfaction is an additional gate and does not replace AccessCore authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_AUTHORITY_SEPARATION",
+        "rule": "Identity, authentication assurance, authorization policy, authorization decision, delegation and runtime execution remain separate machine-significant identities/evidence; no one layer silently substitutes for another."
+      },
+      {
+        "id": "FAIL_CLOSED_AUTHORITY",
+        "rule": "Ambiguous, missing, stale or unverifiable authority for a protected effect fails closed rather than inheriting trust from locality, transport reachability, process ownership, UI visibility or previous success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "reauth success grants unrelated rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "resource scope inferred",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "required assurance omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "reauth lifetime indefinite",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "same reauth reused for incompatible resource profile",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ASSURANCE",
+      "target_ref": "AIGMOS_IAM_ASSURANCE_EVIDENCE_CONTRACT",
+      "purpose": "Reauth produces fresh assurance evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define optional per-resource/per-operation reauthentication requirements using exact required assurance level, allowed authentication methods and validity lifetime.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

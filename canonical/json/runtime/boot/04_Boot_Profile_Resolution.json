@@ -1,0 +1,138 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_BOOT_PROFILE_RESOLUTION_CONTRACT",
+    "name": "Boot Profile Resolution",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic resolution from profile definition through positive selection, pruning and dependency validation into an exact candidate runtime component closure.",
+  "scope": {
+    "owns": [
+      "Boot Profile Resolution semantics"
+    ],
+    "does_not_own": [
+      "component semantic identity",
+      "AccessCore policy ownership",
+      "component runtime implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_BOOT_PROFILE_RESOLUTION",
+      "name": "Boot Profile Resolution",
+      "purpose": "Define deterministic resolution from profile definition through positive selection, pruning and dependency validation into an exact candidate runtime component closure.",
+      "parent_topic_refs": [
+        "TOPIC_BOOT_PROFILE",
+        "TOPIC_RUNTIME_ACTIVATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_BOOT_PROFILE_RESOLUTION_CONTRACT",
+        "BOOT_PROFILE_EXPLICIT_SELECTION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "flow": [
+      "load exact profile",
+      "start Absolute Base Zero",
+      "resolve positive selections/groups",
+      "apply explicit pruning",
+      "resolve required dependency closure",
+      "validate compatibility/conflicts",
+      "produce exact resolved component set"
+    ],
+    "result_rule": "Resolved profile is a derived candidate set with provenance back to profile selectors and dependencies.",
+    "dependency_rule": "Required dependencies must be present/compatible but are never silently enabled outside declared closure semantics.",
+    "conflict_rule": "Unresolved conflict hard-fails boot profile resolution.",
+    "ordering_rule": "Filesystem/list iteration order never decides semantic resolution.",
+    "determinism_rule": "Equivalent canonical profile/dependency state yields semantically equivalent resolved set.",
+    "activation_rule": "Successful resolution does not itself activate runtime; activation is a separate step.",
+    "failure_rule": "Failed resolution leaves prior runtime state unchanged until explicit activation policy acts."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOT_PROFILE_EXPLICIT_SELECTION",
+        "rule": "Boot/runtime availability is derived only from explicit profile selection plus validated dependency closure; discovery, installation, dependency presence or historical activation never silently enables a component."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "profile resolution activates runtime directly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "conflict resolved by filesystem order",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "missing dependency silently added/enabled",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "failed resolution partially changes live runtime",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "resolved set lacks selector/dependency provenance",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROFILE",
+      "target_ref": "AIGMOS_BOOT_PROFILE_IDENTITY_CONTRACT",
+      "purpose": "Resolution consumes exact profile definition."
+    },
+    {
+      "id": "REF_ACT",
+      "target_ref": "AIGMOS_RUNTIME_ACTIVATION_CONTRACT",
+      "purpose": "Resolved profile is input to separate runtime activation."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic resolution from profile definition through positive selection, pruning and dependency validation into an exact candidate runtime component closure.",
+    "notes": [
+      "Unlocked pending reconciliation against runtime activation, install dependency and instance configuration contracts."
+    ]
+  }
+}

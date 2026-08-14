@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_IAM_SECOND_FACTOR_RECOVERY_CONTRACT",
+    "name": "IAM Second Factor and Recovery",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define 2FA and identity-recovery semantics separately from ordinary credentials, with explicit recovery authority and no silent downgrade of required assurance.",
+  "scope": {
+    "owns": [
+      "IAM Second Factor and Recovery semantics"
+    ],
+    "does_not_own": [
+      "AccessCore authorization",
+      "PortfolioCore evidence",
+      "MeritCore scoring"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_IAM_SECOND_FACTOR_RECOVERY",
+      "name": "IAM Second Factor and Recovery",
+      "purpose": "Define 2FA and identity-recovery semantics separately from ordinary credentials, with explicit recovery authority and no silent downgrade of required assurance.",
+      "parent_topic_refs": [
+        "TOPIC_IDENTITYCORE",
+        "TOPIC_IAM_ASSURANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_IAM_SECOND_FACTOR_RECOVERY_CONTRACT",
+        "IDENTITY_LIFECYCLE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "second_factor_rule": "2FA factor identity/type is explicit and bound to the identity according to IAM policy.",
+    "medium_rule": "Medium assurance may require successful second-factor verification in addition to base credentials.",
+    "recovery_rule": "Recovery is an explicit controlled operation with its own authority/verification policy.",
+    "downgrade_rule": "Recovery cannot silently bypass a resource's required assurance level.",
+    "reset_rule": "Resetting/replacing a second factor does not create a new semantic identity.",
+    "audit_rule": "Recovery/reset events are provenance/audit events without exposing secrets.",
+    "fallback_rule": "Fallback authentication methods are explicit and bounded."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_LIFECYCLE_EXPLICIT",
+        "rule": "Identity lifecycle, authentication assurance, credential state and session state remain explicit and cannot be inferred from authorization, transport or profile data."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "2FA reset creates new identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "recovery silently bypasses required assurance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "fallback method inferred ad hoc",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "recovery occurs without explicit verification/authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "secret factor values logged",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ASSURE",
+      "target_ref": "AIGMOS_IAM_ASSURANCE_LIFECYCLE_CONTRACT",
+      "purpose": "2FA contributes to explicit assurance transitions."
+    }
+  ],
+  "prose": {
+    "summary": "Define 2FA and identity-recovery semantics separately from ordinary credentials, with explicit recovery authority and no silent downgrade of required assurance.",
+    "notes": [
+      "Unlocked pending reconciliation against existing IAM/IdentityCore contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

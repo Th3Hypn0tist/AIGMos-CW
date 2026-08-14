@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NANOCMS_ROUTE_NAV_PROJECTION_CONTRACT",
+    "name": "nanoCMS Route, Navigation and Sitemap Projection",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic read-only projection of site/page structure into routes, navigation, breadcrumbs and sitemap output.",
+  "scope": {
+    "owns": [
+      "nanoCMS Route, Navigation and Sitemap Projection semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NANOCMS_ROUTE_NAV_PROJECTION",
+      "name": "nanoCMS Route, Navigation and Sitemap Projection",
+      "purpose": "Define deterministic read-only projection of site/page structure into routes, navigation, breadcrumbs and sitemap output.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_NANOCMS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_NANOCMS_ROUTE_NAV_PROJECTION_CONTRACT",
+        "UI_NONAUTHORITY",
+        "UI_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "source_rule": "Projection reads exact accepted site/page/navigation structure.",
+    "route_rule": "Route output preserves explicit route bindings.",
+    "nav_rule": "Navigation output uses exact visibility/order/label metadata.",
+    "sitemap_rule": "Sitemap is derived projection, not canonical site structure.",
+    "cache_rule": "Generated route/nav caches are non-authoritative.",
+    "failure_rule": "Duplicate/unresolved route causes explicit validation failure.",
+    "authority_rule": "Projection never mutates site/domain state."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "UI_NONAUTHORITY",
+        "rule": "UI visibility, navigation, placement, styling, selection, focus and visual adjacency never create semantic ownership, resource identity or execution authority."
+      },
+      {
+        "id": "UI_EFFECT_BOUNDARY",
+        "rule": "Effect-capable UI actions create explicit candidate/request data and must cross canonical validation, authorization and dispatcher boundaries before effects occur."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "generated sitemap becomes source of truth",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "duplicate routes resolved by last file",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "nav cache edits canonical tree",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "projection mutates pages",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "route inferred from page title",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PAGE",
+      "target_ref": "AIGMOS_NANOCMS_PAGE_TREE_CONTRACT",
+      "purpose": "Projection derives from exact page tree."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic read-only projection of site/page structure into routes, navigation, breadcrumbs and sitemap output.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

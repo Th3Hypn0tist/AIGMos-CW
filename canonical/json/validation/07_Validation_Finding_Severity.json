@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_VALIDATION_FINDING_CONTRACT",
+    "name": "Validation Finding and Severity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic machine-readable validation findings with explicit severity, rule identity, source location, semantic target and remediation context.",
+  "scope": {
+    "owns": [
+      "Validation Finding and Severity semantics"
+    ],
+    "does_not_own": [
+      "validated source semantics",
+      "runtime implementation",
+      "presentation-only reporting"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_VALIDATION_FINDINGS",
+      "name": "Validation Finding and Severity",
+      "purpose": "Define deterministic machine-readable validation findings with explicit severity, rule identity, source location, semantic target and remediation context.",
+      "parent_topic_refs": [
+        "TOPIC_VALIDATION_RESULTS",
+        "TOPIC_CORE_ERRORS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_VALIDATION_FINDING_CONTRACT",
+        "VALIDATION_EVIDENCE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "severities": [
+      "info",
+      "warning",
+      "error",
+      "fatal"
+    ],
+    "required": [
+      "finding_id",
+      "rule_ref",
+      "severity",
+      "target_ref",
+      "message",
+      "evidence_refs"
+    ],
+    "location_rule": "Where a physical artifact is involved, finding may include source artifact/path and machine-readable field/ref location without making that path semantic identity.",
+    "fatal_rule": "fatal prevents continued trustworthy validation of the affected scope.",
+    "error_rule": "error prevents pass/lock eligibility unless an explicit permitted exception applies.",
+    "warning_rule": "warning remains visible but does not fail by default unless an owning policy upgrades it.",
+    "info_rule": "info is non-failing diagnostic evidence.",
+    "dedupe_rule": "Equivalent repeated findings may be deduplicated by explicit key while preserving occurrence provenance."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "VALIDATION_EVIDENCE_EXPLICIT",
+        "rule": "Validation outcomes, findings, exceptions, evidence, baselines and release decisions are explicit machine-readable facts and never silently rewrite source semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "finding lacks rule identity or semantic target",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "fatal/error finding silently omitted from result",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "severity inferred only from free-form prose",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "filesystem path treated as semantic finding identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "warning/error upgraded/downgraded silently without policy",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RESULT",
+      "target_ref": "AIGMOS_VALIDATION_RESULT_MODEL_CONTRACT",
+      "purpose": "Findings populate validation results."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic machine-readable validation findings with explicit severity, rule identity, source location, semantic target and remediation context.",
+    "notes": [
+      "Unlocked until exercised against the complete clean Contract Format 1.4 candidate tree."
+    ]
+  }
+}

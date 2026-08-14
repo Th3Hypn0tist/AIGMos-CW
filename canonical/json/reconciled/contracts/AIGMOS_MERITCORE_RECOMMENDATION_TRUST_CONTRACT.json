@@ -1,0 +1,255 @@
+{
+  "behavior": {
+    "events": [],
+    "flows": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "errors": [
+          "identity invalid",
+          "context invalid"
+        ],
+        "id": "OP_RECOMMENDATION_RECORD",
+        "inputs": [
+          "recommender identity",
+          "subject identity",
+          "Project/context evidence",
+          "recommendation"
+        ],
+        "name": "Record recommendation",
+        "outputs": [
+          "recommendation record"
+        ],
+        "side_effects": [
+          "MeritCore updated"
+        ]
+      },
+      {
+        "errors": [
+          "policy unresolved"
+        ],
+        "id": "OP_TRUST_DERIVE",
+        "inputs": [
+          "eligible MeritCore evidence",
+          "explicit trust policy"
+        ],
+        "name": "Derive trust state",
+        "outputs": [
+          "trust state"
+        ],
+        "side_effects": []
+      }
+    ],
+    "states": []
+  },
+  "constraints": {
+    "hard_gates": [
+      {
+        "id": "GATE_B82829E128",
+        "condition": "recommendations stored as PortfolioCore-owned semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_A1B051A645",
+        "condition": "trust inferred from contact graph alone",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_118EE1CC36",
+        "condition": "recommendation lacks author/subject identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4CECF36F91",
+        "condition": "negative feedback silently deleted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_85689CD5E1",
+        "condition": "recommendation relationship grants mutation authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_CA3BF979D9",
+        "condition": "recommendation stored as PortfolioCore-owned semantic",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_E525930CA1",
+        "condition": "recommendation lacks recommender/subject identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_F607EB59C1",
+        "condition": "trust inferred without explicit policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_E5A9A0ABC2",
+        "condition": "trust/recommendation automatically grants authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_F0231EAF57",
+        "condition": "recommendation provenance lost",
+        "result": "hard_fail"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "MERIT_EVIDENCE_BOUND",
+        "rule": "MeritCore derives human competence/trust history from explicit identity-bound Project evidence; identities, evidence, recommendations, points, Tier and broker relevance remain separate semantic dimensions."
+      },
+      {
+        "id": "IDENTITY_BOUNDARY_EXPLICIT",
+        "rule": "Identity, portfolio evidence and merit semantics have explicit owners and cannot silently substitute for one another."
+      }
+    ]
+  },
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT",
+    "name": "MeritCore Recommendation and Trust",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "members": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending reconciliation against existing IAM/MeritCore/Project/FreeMarket contracts and whole-tree Contract Format 1.4 validation.",
+      "Unlocked until reconciled against existing IAM/PortfolioCore/MeritCore contracts and repository-wide Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: iam/meritcore/03_Recommendation_Trust.json, identity/04_MeritCore_Recommendations_Trust.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define recommendations and trust as MeritCore-owned human-interaction evidence with explicit author, subject, context and Project linkage where applicable. [2] Define recommendations and trust as MeritCore-owned identity-to-identity evidence semantics with explicit context and provenance, not generic social metadata."
+  },
+  "purpose": "Reconciled source purposes: [1] Define recommendations and trust as MeritCore-owned human-interaction evidence with explicit author, subject, context and Project linkage where applicable. [2] Define recommendations and trust as MeritCore-owned identity-to-identity evidence semantics with explicit context and provenance, not generic social metadata.",
+  "references": [
+    {
+      "id": "REF_TIMELINE",
+      "target_ref": "AIGMOS_MERITCORE_IDENTITY_TIMELINE_CONTRACT",
+      "purpose": "Recommendations contribute to identity-bound Merit history."
+    },
+    {
+      "id": "REF_MERIT",
+      "target_ref": "AIGMOS_MERITCORE_CONTRACT",
+      "purpose": "Recommendations and trust are MeritCore semantics."
+    },
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_AUTHORIZATION_CONTRACT",
+      "purpose": "Trust does not substitute for authorization."
+    }
+  ],
+  "scope": {
+    "does_not_own": [
+      "Project work identity",
+      "FreeMarket broker relevance policy",
+      "IdentityCore person/organization identity",
+      "presentation semantics",
+      "transport implementation"
+    ],
+    "owns": [
+      "MeritCore Recommendation and Trust semantics",
+      "MeritCore Recommendations and Trust semantics"
+    ]
+  },
+  "semantics": {
+    "authority_rule": "Reconciled source clauses: [1] Recommendation author identity/relationship does not automatically grant MeritCore mutation authority. [2] Recommendation or trust score does not itself grant AccessCore authorization.",
+    "history_rule": "Recommendations/trust changes preserve provenance/history.",
+    "negative_rule": "Negative feedback is retained as governed evidence and may initiate review.",
+    "owner": "MeritCore",
+    "ownership_rule": "Recommendations and trust semantics belong to MeritCore, not PortfolioCore.",
+    "portfolio_rule": "PortfolioCore may project/reference recommendations but does not own them.",
+    "project_rule": "Recommendation may reference exact Project evidence where applicable.",
+    "provenance_rule": "Recommendation provenance is retained.",
+    "recommendation_rule": "Reconciled source clauses: [1] Recommendation has explicit author identity, subject identity, context and evidence refs. [2] Recommendation identifies recommender, subject and relevant Project/context evidence.",
+    "trust_rule": "Reconciled source clauses: [1] Trust signals are explicit evidence/results rather than inferred from social proximity. [2] Trust is derived only by explicit MeritCore trust policy from eligible evidence."
+  },
+  "source_role": "definition",
+  "status": "locked",
+  "structure": {
+    "authority": [],
+    "containment": [],
+    "dependencies": [],
+    "ownership": [],
+    "relations": []
+  },
+  "topics": [
+    {
+      "child_topics": [],
+      "composed_topic_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+      "member_refs": [
+        "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT",
+        "MERIT_EVIDENCE_BOUND",
+        "IDENTITY_BOUNDARY_EXPLICIT",
+        "GATE_B82829E128",
+        "GATE_A1B051A645",
+        "GATE_118EE1CC36",
+        "GATE_4CECF36F91",
+        "GATE_85689CD5E1",
+        "GATE_CA3BF979D9",
+        "GATE_E525930CA1",
+        "GATE_F607EB59C1",
+        "GATE_E5A9A0ABC2",
+        "GATE_F0231EAF57"
+      ],
+      "metadata": {},
+      "name": "MeritCore Recommendation and Trust",
+      "operation_refs": [
+        "OP_RECOMMENDATION_RECORD",
+        "OP_TRUST_DERIVE"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_MERITCORE",
+        "TOPIC_IAM"
+      ],
+      "purpose": "Define recommendations and trust as MeritCore-owned human-interaction evidence with explicit author, subject, context and Project linkage where applicable.",
+      "relation_refs": []
+    },
+    {
+      "child_topics": [],
+      "composed_topic_refs": [
+        "TOPIC_MERITCORE",
+        "TOPIC_CORE_PROVENANCE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_MERIT_RECOMMENDATIONS",
+      "member_refs": [
+        "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT",
+        "MERIT_EVIDENCE_BOUND",
+        "IDENTITY_BOUNDARY_EXPLICIT",
+        "GATE_B82829E128",
+        "GATE_A1B051A645",
+        "GATE_118EE1CC36",
+        "GATE_4CECF36F91",
+        "GATE_85689CD5E1",
+        "GATE_CA3BF979D9",
+        "GATE_E525930CA1",
+        "GATE_F607EB59C1",
+        "GATE_E5A9A0ABC2",
+        "GATE_F0231EAF57"
+      ],
+      "metadata": {},
+      "name": "Recommendations and Trust",
+      "operation_refs": [
+        "OP_RECOMMENDATION_RECORD",
+        "OP_TRUST_DERIVE"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_CORE_IDENTITY"
+      ],
+      "purpose": "Define recommendations and trust as MeritCore-owned identity-to-identity evidence semantics with explicit context and provenance, not generic social metadata.",
+      "relation_refs": []
+    }
+  ]
+}

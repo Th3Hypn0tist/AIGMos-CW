@@ -1,0 +1,189 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_RENDEZVOUS_SIGNALING_CONTRACT",
+    "name": "Runtime Rendezvous and Signaling",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define rendezvous/signaling as bootstrap metadata exchange for peer discovery and WebRTC session establishment, explicitly separated from P2P application payload transport.",
+  "scope": {
+    "owns": [
+      "Runtime Rendezvous and Signaling semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "remote authorization policy",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_RENDEZVOUS",
+      "name": "Rendezvous",
+      "purpose": "Define rendezvous/signaling as bootstrap metadata exchange for peer discovery and WebRTC session establishment, explicitly separated from P2P application payload transport.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_WEBRTC",
+        "TOPIC_CORE_EXTERNAL_BOUNDARY"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_RENDEZVOUS_SIGNALING_CONTRACT",
+        "NETWORK_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_RENDEZVOUS_REGISTER",
+        "OP_RENDEZVOUS_DISCOVER",
+        "OP_RENDEZVOUS_CLEANUP"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_RENDEZVOUS_REGISTER",
+        "name": "Register rendezvous metadata",
+        "inputs": [
+          "local identity reference",
+          "bootstrap metadata"
+        ],
+        "outputs": [
+          "rendezvous registration"
+        ],
+        "errors": [
+          "registration denied",
+          "metadata invalid"
+        ],
+        "side_effects": [
+          "rendezvous state updated"
+        ]
+      },
+      {
+        "id": "OP_RENDEZVOUS_DISCOVER",
+        "name": "Discover peer bootstrap metadata",
+        "inputs": [
+          "peer identity/query"
+        ],
+        "outputs": [
+          "peer bootstrap metadata"
+        ],
+        "errors": [
+          "peer unavailable",
+          "lookup denied"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_RENDEZVOUS_CLEANUP",
+        "name": "Cleanup rendezvous metadata",
+        "inputs": [
+          "completed/expired rendezvous state"
+        ],
+        "outputs": [
+          "metadata removed"
+        ],
+        "errors": [],
+        "side_effects": [
+          "rendezvous state removed"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "role": "bootstrap/signaling only",
+    "official_service_rule": "Official rendezvous/signaling may be provided for licensed deployments; private compatible signaling is permitted.",
+    "payload_rule": "Application payloads remain peer-to-peer and are not canonical rendezvous content.",
+    "metadata_rule": "Rendezvous stores only metadata required for peer discovery/session bootstrap under explicit bounded retention.",
+    "cleanup_rule": "Rendezvous metadata is cleaned after peer establishment/expiry according to explicit lifecycle rules.",
+    "authority_rule": "Rendezvous discovery does not grant remote DWH/access rights.",
+    "identity_rule": "Rendezvous records refer to explicit peer identities; endpoint/transport metadata is not the identity itself."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "NETWORK_BOUNDARY_EXPLICIT",
+        "rule": "Network identity, transport, remote authority and payload semantics remain explicit and separate."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "rendezvous becomes application payload datastore by default",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "rendezvous lookup grants authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "endpoint address treated as peer semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "bootstrap metadata retained without lifecycle bound",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "private compatible rendezvous prohibited as semantic requirement",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "peer/session metadata selected by fuzzy identity heuristic",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_WEBRTC",
+      "target_ref": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT",
+      "purpose": "Rendezvous bootstraps WebRTC transport."
+    },
+    {
+      "id": "REF_EXTERNAL",
+      "target_ref": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT",
+      "purpose": "Rendezvous is an explicit external boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define rendezvous/signaling as bootstrap metadata exchange for peer discovery and WebRTC session establishment, explicitly separated from P2P application payload transport.",
+    "notes": [
+      "Unlocked until reconciled against DWH, messaging, transport and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

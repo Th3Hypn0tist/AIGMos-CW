@@ -1,0 +1,141 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_VALIDATION_RESULT_MODEL_CONTRACT",
+    "name": "Validation Result Model",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define one machine-readable result envelope for every Contract Format 1.4 validation run, preserving validator identity/version, target graph, dimensions, findings and evidence references.",
+  "scope": {
+    "owns": [
+      "Validation Result Model semantics"
+    ],
+    "does_not_own": [
+      "validated source semantics",
+      "runtime implementation",
+      "presentation-only reporting"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_VALIDATION_RESULTS",
+      "name": "Validation Result Model",
+      "purpose": "Define one machine-readable result envelope for every Contract Format 1.4 validation run, preserving validator identity/version, target graph, dimensions, findings and evidence references.",
+      "parent_topic_refs": [
+        "TOPIC_VALIDATION_REPOSITORY_ACCEPTANCE",
+        "TOPIC_CORE_PROVENANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_VALIDATION_RESULT_MODEL_CONTRACT",
+        "VALIDATION_EVIDENCE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "required": [
+      "result_id",
+      "validator_identity",
+      "validator_version",
+      "target_ref",
+      "target_snapshot",
+      "started_at",
+      "completed_at",
+      "dimensions",
+      "findings",
+      "overall_state",
+      "evidence_refs"
+    ],
+    "overall_states": [
+      "pass",
+      "fail",
+      "incomplete"
+    ],
+    "dimension_rule": "Each validation dimension retains its own state and findings.",
+    "aggregation_rule": "overall pass requires all mandatory dimensions to pass or be covered by an explicitly permitted exception contract.",
+    "target_rule": "Result identifies the exact validated target/snapshot and cannot be reused for a changed graph.",
+    "validator_rule": "Validator implementation/version is explicit for reproducibility.",
+    "nonauthority_rule": "Validation result reports source conformance; it does not mutate source semantics.",
+    "immutability_rule": "Completed result is immutable evidence; a rerun creates a new result identity."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "VALIDATION_EVIDENCE_EXPLICIT",
+        "rule": "Validation outcomes, findings, exceptions, evidence, baselines and release decisions are explicit machine-readable facts and never silently rewrite source semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "validation result lacks exact target snapshot",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "dimension failure hidden by overall pass",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "completed result mutated in place",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "validator identity/version missing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "result directly rewrites validated source",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ACCEPT",
+      "target_ref": "AIGMOS_REPOSITORY_ACCEPTANCE_CONTRACT",
+      "purpose": "Repository acceptance consumes dimensioned validation results."
+    }
+  ],
+  "prose": {
+    "summary": "Define one machine-readable result envelope for every Contract Format 1.4 validation run, preserving validator identity/version, target graph, dimensions, findings and evidence references.",
+    "notes": [
+      "Unlocked until exercised against the complete clean Contract Format 1.4 candidate tree."
+    ]
+  }
+}

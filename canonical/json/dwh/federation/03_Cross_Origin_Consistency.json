@@ -1,0 +1,159 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_CROSS_ORIGIN_CONSISTENCY_CONTRACT",
+    "name": "DWH Cross-Origin Consistency",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit consistency profiles and per-origin revision/watermark evidence for federated results so multi-origin reads never imply a nonexistent global transaction boundary.",
+  "scope": {
+    "owns": [
+      "DWH Cross-Origin Consistency semantics"
+    ],
+    "does_not_own": [
+      "remote source domain ownership",
+      "AccessCore policy ownership",
+      "transport implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_CROSS_ORIGIN_CONSISTENCY",
+      "name": "DWH Cross-Origin Consistency",
+      "purpose": "Define explicit consistency profiles and per-origin revision/watermark evidence for federated results so multi-origin reads never imply a nonexistent global transaction boundary.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_FEDERATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_CROSS_ORIGIN_CONSISTENCY_CONTRACT",
+        "FEDERATION_PRESERVES_ORIGIN",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_FEDERATION",
+      "name": "Federation",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_FEDERATION already referenced by 6 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 6,
+        "distinct_child_topics": 6,
+        "host_contract_ref": "AIGMOS_DWH_CROSS_ORIGIN_CONSISTENCY_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "profiles": [
+      "best_effort_current",
+      "per_origin_snapshot",
+      "coordinated_snapshot_explicit",
+      "other declared profile"
+    ],
+    "per_origin_rule": "Each source contribution records exact revision/snapshot/watermark evidence where available.",
+    "global_rule": "No global atomic snapshot is claimed unless an explicit coordinated mechanism proves it.",
+    "time_rule": "Wall-clock timestamps alone do not prove cross-origin consistency.",
+    "staleness_rule": "Known source staleness is explicit result metadata.",
+    "replica_rule": "Replica-derived sources retain authoritative-source and sync-watermark provenance.",
+    "query_rule": "Consistency profile is explicit in query/execution/result metadata.",
+    "failure_rule": "Unable-to-meet requested consistency hard-fails or downgrades only under explicit caller-approved policy."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "FEDERATION_PRESERVES_ORIGIN",
+        "rule": "Federated DWH access preserves each origin's exact identity, schema, governance, lineage and consistency evidence; combining results never centralizes semantic ownership or silently expands authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "multi-source result falsely claimed globally atomic",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "timestamps used as proof of global consistency",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "stale replica presented as current without watermark",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "consistency silently downgraded",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "source revision evidence omitted",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SNAP",
+      "target_ref": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT",
+      "purpose": "Per-origin snapshots provide consistency evidence."
+    },
+    {
+      "id": "REF_SYNC",
+      "target_ref": "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT",
+      "purpose": "Replica sources expose exact sync position."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit consistency profiles and per-origin revision/watermark evidence for federated results so multi-origin reads never imply a nonexistent global transaction boundary.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH remote addressing, query, lineage, synchronization and AccessCore contracts.",
+      "Pass 6 hosts grouping-only Topic TOPIC_FEDERATION solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT",
+    "name": "Messaging Message Delivery",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define P2P message delivery over established peer transport with explicit sender, conversation, payload and delivery state while keeping payload separate from rendezvous/signaling.",
+  "scope": {
+    "owns": [
+      "Messaging Message Delivery semantics"
+    ],
+    "does_not_own": [
+      "Hello rendezvous identity",
+      "IdentityCore identity ownership",
+      "transport cryptographic implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MSG_MESSAGE_DELIVERY",
+      "name": "Messaging Message Delivery",
+      "purpose": "Define P2P message delivery over established peer transport with explicit sender, conversation, payload and delivery state while keeping payload separate from rendezvous/signaling.",
+      "parent_topic_refs": [
+        "TOPIC_MESSAGING",
+        "TOPIC_HELLO"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT",
+        "MESSAGING_PEER_GOVERNED",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "payload_types": [
+      "text",
+      "binary_file"
+    ],
+    "message_rule": "Each message has an explicit message identity, sender identity and conversation ref.",
+    "transport_rule": "Payload is delivered over established WebRTC/other approved P2P transport.",
+    "hello_rule": "Hello/rendezvous carries bootstrap metadata only and does not store/deliver normal application message payload.",
+    "state_rule": "Queued/sent/delivered/failed states are explicit where supported.",
+    "file_rule": "Binary file payload retains file identity/metadata separately from message envelope.",
+    "inert_rule": "Received text/file payload is inert and does not directly execute commands.",
+    "failure_rule": "Transport failure is explicit and does not silently reroute payload through rendezvous."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MESSAGING_PEER_GOVERNED",
+        "rule": "Messaging is explicit peer/group communication over governed peer transport; rendezvous, transport, conversation policy and message payload remain separate semantic layers."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "message payload sent through Hello by default",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "received payload executes command",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "message lacks sender/conversation identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "transport failure silently centralizes payload",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "file/message identity conflated",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_WEBRTC",
+      "target_ref": "AIGMOS_WEBRTC_TRANSPORT_CONTRACT",
+      "purpose": "Messaging payload uses peer transport."
+    },
+    {
+      "id": "REF_HELLO",
+      "target_ref": "AIGMOS_HELLO_RENDEZVOUS_RECORD_CONTRACT",
+      "purpose": "Rendezvous remains bootstrap-only."
+    }
+  ],
+  "prose": {
+    "summary": "Define P2P message delivery over established peer transport with explicit sender, conversation, payload and delivery state while keeping payload separate from rendezvous/signaling.",
+    "notes": [
+      "Unlocked pending reconciliation against existing msg/WebRTC/Hello contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

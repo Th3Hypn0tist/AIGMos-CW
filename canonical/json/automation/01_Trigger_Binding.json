@@ -1,0 +1,131 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TRIGGER_BINDING_CONTRACT",
+    "name": "Trigger Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Triggers as explicit canonical predicates/bindings over Events, values, state changes or timing conditions, with no execution until the trigger condition resolves true.",
+  "scope": {
+    "owns": [
+      "Trigger Binding semantics"
+    ],
+    "does_not_own": [
+      "domain payload semantics",
+      "transport implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_AUTOMATION_TRIGGERS",
+      "name": "Trigger Binding",
+      "purpose": "Define Triggers as explicit canonical predicates/bindings over Events, values, state changes or timing conditions, with no execution until the trigger condition resolves true.",
+      "parent_topic_refs": [
+        "TOPIC_AUTOMATION_EVENTS",
+        "TOPIC_CORE_CAUSALITY",
+        "TOPIC_TOPIC_SYSTEM"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TRIGGER_BINDING_CONTRACT",
+        "AUTOMATION_CAUSALITY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "sigil": "!",
+    "binding_sources": [
+      "Event identity",
+      "canonical value/state ref",
+      "time predicate",
+      "explicit condition expression"
+    ],
+    "predicate_rule": "Trigger predicate is explicit and side-effect-free.",
+    "target_rule": "Trigger references an explicit downstream Runner, Routine, command or canonical operation.",
+    "payload_rule": "Trigger may pass validated occurrence/context data to its target but cannot let payload choose arbitrary target identity.",
+    "state_rule": "Trigger runtime state such as last-seen/onchange memory is separate from trigger definition.",
+    "authority_rule": "Satisfied predicate does not bypass target authorization.",
+    "multiplicity_rule": "One Event/source may feed multiple Triggers and one Trigger may belong to multiple Topics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "AUTOMATION_CAUSALITY_EXPLICIT",
+        "rule": "Automation semantics remain explicit across Event, Trigger, Runner and Routine identities, and execution order never derives from incidental structure or serialization order."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "trigger predicate has side effect",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "payload chooses arbitrary downstream target",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "trigger state stored as canonical definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "satisfied trigger bypasses authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "trigger target inferred from tree adjacency",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EVENT",
+      "target_ref": "AIGMOS_EVENT_REGISTRY_CONTRACT",
+      "purpose": "Triggers may bind to explicit Events."
+    }
+  ],
+  "prose": {
+    "summary": "Define Triggers as explicit canonical predicates/bindings over Events, values, state changes or timing conditions, with no execution until the trigger condition resolves true.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Trigger/Event/Runner/Routine contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

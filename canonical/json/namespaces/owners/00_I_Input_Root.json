@@ -1,0 +1,135 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_I_INPUT_ROOT_CONTRACT",
+    "name": "#I Input Root",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define `#I` as the reserved root for canonical input-source semantics, distinct from dynamic `#INPUT:*` instance addresses and from Adapter semantics.",
+  "scope": {
+    "owns": [
+      "#I Input Root semantics"
+    ],
+    "does_not_own": [
+      "unrelated domain semantics",
+      "presentation semantics",
+      "implicit runtime authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NAMESPACE_I",
+      "name": "#I Input Root",
+      "purpose": "Define `#I` as the reserved root for canonical input-source semantics, distinct from dynamic `#INPUT:*` instance addresses and from Adapter semantics.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NAMESPACES",
+        "TOPIC_RUNTIME_INPUT_ADAPTERS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_I_INPUT_ROOT_CONTRACT",
+        "RESERVED_ROOT_OWNER_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "root": "#I",
+    "role": "input semantic family/root",
+    "owner_rule": "#I resolves to the canonical Input family/registry.",
+    "dynamic_rule": "Dynamic input-source instances may be surfaced through #INPUT:* according to the dynamic input namespace contract.",
+    "adapter_rule": "Input ownership remains separate from Adapter translation/mount semantics.",
+    "payload_rule": "Input values remain inert until explicit operations consume them.",
+    "identity_rule": "Input source identity is explicit and independent from transport/file path.",
+    "authority_rule": "Input presence or writeability does not grant operation authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RESERVED_ROOT_OWNER_EXPLICIT",
+        "rule": "Each reserved runtime root resolves to one explicit semantic owner/family; the root itself does not create new authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "#I conflated with #A adapter semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "input payload executes arbitrary operation directly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "input identity inferred only from transport/path",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "#I root presence grants runtime authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "dynamic #INPUT child used without explicit Input owner",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_NS",
+      "target_ref": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
+      "purpose": "#I is a reserved registered root."
+    },
+    {
+      "id": "REF_INPUT",
+      "target_ref": "AIGMOS_RUNTIME_INPUT_ADAPTER_BOUNDARY_CONTRACT",
+      "purpose": "Input semantics remain inert and explicit."
+    },
+    {
+      "id": "REF_DYN",
+      "target_ref": "AIGMOS_INPUT_DYNAMIC_NAMESPACE_FAMILY_CONTRACT",
+      "purpose": "Dynamic input instances use #INPUT:*."
+    }
+  ],
+  "prose": {
+    "summary": "Define `#I` as the reserved root for canonical input-source semantics, distinct from dynamic `#INPUT:*` instance addresses and from Adapter semantics.",
+    "notes": [
+      "Unlocked pending reconciliation against existing namespace/module contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

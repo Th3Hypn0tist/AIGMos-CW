@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_WHOLE_TREE_READINESS_RESULT_CONTRACT",
+    "name": "Whole-Tree Readiness Result",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define immutable final reconciliation readiness evaluation for an exact repository source snapshot without claiming lock/deployment unless transitions subsequently occur.",
+  "scope": {
+    "owns": [
+      "Whole-Tree Readiness Result semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_WHOLE_TREE_READINESS_RESULT",
+      "name": "Whole-Tree Readiness Result",
+      "purpose": "Define immutable final reconciliation readiness evaluation for an exact repository source snapshot without claiming lock/deployment unless transitions subsequently occur.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_RECONCILIATION",
+        "TOPIC_READINESS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_WHOLE_TREE_READINESS_RESULT_CONTRACT",
+        "RECONCILIATION_IS_EVIDENCE_DRIVEN",
+        "NO_SILENT_FINALIZATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "snapshot_rule": "Exact reconciliation source snapshot is referenced.",
+    "profile_rule": "Exact reconciliation readiness profile is referenced.",
+    "result_rule": "All required reconciliation/validation/conformance result refs are exact.",
+    "blocker_rule": "Remaining blockers/exceptions are enumerated.",
+    "result_states": [
+      "ready_for_locking",
+      "not_ready",
+      "conditionally_ready",
+      "unknown"
+    ],
+    "lock_rule": "Ready_for_locking means eligible to create/accept lock batch plan only.",
+    "runtime_rule": "Result never implies runtime/deployment readiness."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RECONCILIATION_IS_EVIDENCE_DRIVEN",
+        "rule": "Whole-tree reconciliation operates only on exact accepted/candidate source snapshots, identities, references and declared semantics; it never repairs ambiguity through filename, path order, timestamp, nearest-name or UI layout heuristics."
+      },
+      {
+        "id": "NO_SILENT_FINALIZATION",
+        "rule": "A contract, closure set or repository remains unlocked/not-ready until all required reconciliation findings for its declared readiness profile are explicitly resolved or accepted through an explicit bounded exception."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "ready result changes statuses directly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "conditional shown ready",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "blockers omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "runtime considered validated by docs only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "snapshot omitted",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define immutable final reconciliation readiness evaluation for an exact repository source snapshot without claiming lock/deployment unless transitions subsequently occur.",
+    "notes": [
+      "Unlocked pending application to the final merged review tree.",
+      "This contract defines reconciliation semantics; it does not claim that repository-wide reconciliation has already passed."
+    ]
+  }
+}

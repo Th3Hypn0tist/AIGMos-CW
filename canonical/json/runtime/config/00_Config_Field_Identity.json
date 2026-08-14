@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CONFIG_FIELD_IDENTITY_CONTRACT",
+    "name": "Configuration Field Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define machine-significant runtime/instance configuration fields as explicit schema identities with declared ownership, type and reload/apply semantics.",
+  "scope": {
+    "owns": [
+      "Configuration Field Identity semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CONFIG_FIELD_IDENTITY",
+      "name": "Configuration Field Identity",
+      "purpose": "Define machine-significant runtime/instance configuration fields as explicit schema identities with declared ownership, type and reload/apply semantics.",
+      "parent_topic_refs": [
+        "TOPIC_CONFIGURATION",
+        "TOPIC_RUNTIME"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CONFIG_FIELD_IDENTITY_CONTRACT",
+        "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each config field has an explicit stable identity within its owning config schema.",
+    "owner_rule": "Owning component/subsystem is explicit.",
+    "type_rule": "Field type/schema/default/required semantics are explicit.",
+    "path_rule": "JSON path/key spelling is a serialization binding and not the sole semantic identity.",
+    "secret_rule": "Secret values use secret refs rather than inline plaintext.",
+    "reload_rule": "Whether a field is hot-reloadable/restart-required/immutable is explicit.",
+    "authority_rule": "Config visibility does not grant edit authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "rule": "Machine-significant definitions, executions, evidence and runtime state use explicit identities and boundaries; visibility, file order, timestamps, transport reachability or UI placement never silently create semantic authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "json key alone used as semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "config field owner ambiguous",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "secret inline in normal config",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "reload behavior guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "visible config grants write authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SECRET",
+      "target_ref": "AIGMOS_SECRET_REFERENCE_CONTRACT",
+      "purpose": "Secret config fields use opaque refs."
+    }
+  ],
+  "prose": {
+    "summary": "Define machine-significant runtime/instance configuration fields as explicit schema identities with declared ownership, type and reload/apply semantics.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_INSTANCE_ACCESSCORE_PARENT_BINDING_CONTRACT",
+    "name": "Instance AccessCore Parent Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the explicit AccessCore policy-parent relationship of an AIGMos instance, orthogonal to IAM parent identity.",
+  "scope": {
+    "owns": [
+      "Instance AccessCore Parent Binding semantics"
+    ],
+    "does_not_own": [
+      "IdentityCore identity semantics",
+      "AccessCore policy semantics",
+      "runtime business-domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_INSTANCE_ACCESSCORE_PARENT_BINDING",
+      "name": "Instance AccessCore Parent Binding",
+      "purpose": "Define the explicit AccessCore policy-parent relationship of an AIGMos instance, orthogonal to IAM parent identity.",
+      "parent_topic_refs": [
+        "TOPIC_INSTANCE_CONFIG",
+        "TOPIC_RUNTIME_ACTIVATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_INSTANCE_ACCESSCORE_PARENT_BINDING_CONTRACT",
+        "INSTANCE_CONFIG_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "binding_rule": "Instance may reference an explicit AccessCore parent/policy authority according to deployment policy.",
+    "separation_rule": "AC parent is not inferred from IAM parent.",
+    "policy_rule": "Parent relationship determines only declared AccessCore policy inheritance/delegation semantics.",
+    "nonexpansion_rule": "Delegated remote/nonlocal rights cannot silently expand beyond explicit delegation rules.",
+    "local_rule": "Local owner may grant broader local rights where the active AccessCore policy explicitly permits that model.",
+    "change_rule": "Changing AC parent is an explicit policy/configuration operation with validation/audit.",
+    "failure_rule": "Unresolved/invalid parent fails closed for governed authorization paths."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "INSTANCE_CONFIG_SEPARATION",
+        "rule": "AIGMos instance identity, configuration, IAM parent, AccessCore parent and runtime state remain explicit separate dimensions; configuration never silently changes semantic ownership or authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "AC parent inferred from IAM parent",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "parent relation grants universal bypass",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "delegated remote rights expand silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "invalid parent accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "parent change lacks audit/provenance",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_POLICY_IDENTITY_CONTRACT",
+      "purpose": "AC parent binds to explicit AccessCore policy identity."
+    }
+  ],
+  "prose": {
+    "summary": "Define the explicit AccessCore policy-parent relationship of an AIGMos instance, orthogonal to IAM parent identity.",
+    "notes": [
+      "Unlocked pending reconciliation against existing instance-config/IAM/AccessCore/runtime contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

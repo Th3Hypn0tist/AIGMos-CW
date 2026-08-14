@@ -1,0 +1,210 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT",
+    "name": "Runtime Named Service Instances",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define stable logical service-instance identity separately from protocol, port/listen binding and runtime state so multiple named instances can coexist deterministically.",
+  "scope": {
+    "owns": [
+      "Runtime Named Service Instances semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "presentation layout unless explicitly stated"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_SERVICE_INSTANCES",
+      "name": "Service Instances",
+      "purpose": "Define stable logical service-instance identity separately from protocol, port/listen binding and runtime state so multiple named instances can coexist deterministically.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+        "TOPIC_RUNTIME_DEFINITION_STATE",
+        "TOPIC_CORE_CAPABILITY_AUTHORITY"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT",
+        "SERVICE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_SERVICE_INSTANCE_REGISTER",
+        "OP_SERVICE_INSTANCE_RESOLVE",
+        "OP_SERVICE_INSTANCE_START",
+        "OP_SERVICE_INSTANCE_STOP"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_SERVICE_INSTANCE_REGISTER",
+        "name": "Register named service instance",
+        "inputs": [
+          "service type",
+          "logical name",
+          "declared config"
+        ],
+        "outputs": [
+          "registered instance identity"
+        ],
+        "errors": [
+          "name collision",
+          "invalid service type"
+        ],
+        "side_effects": [
+          "service instance registry updated"
+        ]
+      },
+      {
+        "id": "OP_SERVICE_INSTANCE_RESOLVE",
+        "name": "Resolve named service instance",
+        "inputs": [
+          "logical instance name"
+        ],
+        "outputs": [
+          "exact instance definition"
+        ],
+        "errors": [
+          "instance unresolved",
+          "instance ambiguous"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_SERVICE_INSTANCE_START",
+        "name": "Start named service instance",
+        "inputs": [
+          "instance definition",
+          "validated binding"
+        ],
+        "outputs": [
+          "running instance"
+        ],
+        "errors": [
+          "binding unavailable",
+          "start failure"
+        ],
+        "side_effects": [
+          "runtime service state created"
+        ]
+      },
+      {
+        "id": "OP_SERVICE_INSTANCE_STOP",
+        "name": "Stop named service instance",
+        "inputs": [
+          "running instance"
+        ],
+        "outputs": [
+          "stopped instance"
+        ],
+        "errors": [
+          "stop failure"
+        ],
+        "side_effects": [
+          "runtime service state removed"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Logical service instance name is stable identity separate from port/bind address.",
+    "multiple_instances_rule": "Multiple instances of the same service type may coexist when the owning service contract permits it.",
+    "binding_rule": "Changing port/listen binding does not redefine logical instance identity.",
+    "state_rule": "definition/configuration and runtime running/stopped state remain separate.",
+    "lifecycle": [
+      "registered",
+      "stopped",
+      "running",
+      "error"
+    ],
+    "authority_rule": "Starting a service instance requires explicit capability and applicable authority.",
+    "collision_rule": "Logical instance names are unique within their owning service namespace."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SERVICE_BOUNDARY_EXPLICIT",
+        "rule": "Network/service identity, binding, lifecycle and authority remain explicit and separate."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "port number used as semantic service identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "runtime running state overwrites service definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "duplicate logical instance identity accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "service starts without explicit capability/authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "binding change silently creates a new semantic identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EXTERNAL",
+      "target_ref": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT",
+      "purpose": "Named instances expose external/network service surfaces."
+    },
+    {
+      "id": "REF_STATE",
+      "target_ref": "AIGMOS_RUNTIME_DEFINITION_STATE_SEPARATION_CONTRACT",
+      "purpose": "Definition/config and runtime state remain separate."
+    }
+  ],
+  "prose": {
+    "summary": "Define stable logical service-instance identity separately from protocol, port/listen binding and runtime state so multiple named instances can coexist deterministically.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose/REST/web contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

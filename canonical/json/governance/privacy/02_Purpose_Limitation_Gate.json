@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_PURPOSE_LIMITATION_GATE_CONTRACT",
+    "name": "Purpose Limitation Gate",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit evaluation that requested processing/use is compatible with declared data purpose before protected data leaves its current governance scope.",
+  "scope": {
+    "owns": [
+      "Purpose Limitation Gate semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "runtime execution authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_PURPOSE_LIMITATION_GATE",
+      "name": "Purpose Limitation Gate",
+      "purpose": "Define explicit evaluation that requested processing/use is compatible with declared data purpose before protected data leaves its current governance scope.",
+      "parent_topic_refs": [
+        "TOPIC_GOVERNANCE",
+        "TOPIC_PRIVACY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_PURPOSE_LIMITATION_GATE_CONTRACT",
+        "GOVERNANCE_EVIDENCE_SEPARATION",
+        "FAIL_CLOSED_PROTECTED_DATA",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "request_rule": "Gate evaluates exact requester/operation/resource/purpose combination.",
+    "purpose_rule": "Requested purpose identity is explicit.",
+    "source_rule": "Source data allowed-purpose metadata/policy is explicit.",
+    "compatibility_rule": "Compatibility decision uses exact policy/profile.",
+    "unknown_rule": "Unknown purpose or compatibility fails closed.",
+    "authorization_rule": "Purpose gate complements, never replaces, AccessCore authorization.",
+    "derived_rule": "Derived/result use is evaluated for its own purpose when materially different."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "GOVERNANCE_EVIDENCE_SEPARATION",
+        "rule": "Policy, decision, evidence, audit record, consent, incident and compliance result remain separate machine-significant identities; no evidence artifact silently becomes source data, authorization or runtime authority."
+      },
+      {
+        "id": "FAIL_CLOSED_PROTECTED_DATA",
+        "rule": "Ambiguous or unresolved governance for protected data fails closed; UI visibility, transport reachability, cache presence, role title, prior access or audit-log presence never substitute for an explicit valid policy decision."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "missing purpose allowed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "purpose gate replaces AccessCore",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "same user means compatible purpose",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "derived export skips purpose check",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "purpose inferred from route name",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PURPOSE",
+      "target_ref": "AIGMOS_DATA_PURPOSE_IDENTITY_CONTRACT",
+      "purpose": "Gate evaluates exact purpose identity."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit evaluation that requested processing/use is compatible with declared data purpose before protected data leaves its current governance scope.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

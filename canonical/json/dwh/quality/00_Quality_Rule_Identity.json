@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_QUALITY_RULE_IDENTITY_CONTRACT",
+    "name": "DWH Data Quality Rule Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each machine-significant DWH quality rule as an explicit canonical identity bound to exact schema/field/resource targets and deterministic evaluation semantics.",
+  "scope": {
+    "owns": [
+      "DWH Data Quality Rule Identity semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "AccessCore policy ownership",
+      "source mutation authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_QUALITY_RULE_IDENTITY",
+      "name": "DWH Data Quality Rule Identity",
+      "purpose": "Define each machine-significant DWH quality rule as an explicit canonical identity bound to exact schema/field/resource targets and deterministic evaluation semantics.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_DATA_QUALITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_QUALITY_RULE_IDENTITY_CONTRACT",
+        "QUALITY_EVIDENCE_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Every quality rule has an explicit stable canonical identity.",
+    "target_rule": "Rule targets exact schema, field, relation, record type or declared resource identities.",
+    "rule_types": [
+      "required",
+      "type",
+      "range",
+      "pattern",
+      "referential",
+      "uniqueness",
+      "completeness",
+      "consistency",
+      "freshness",
+      "custom declared rule"
+    ],
+    "semantics_rule": "Evaluation predicate/profile and pass/fail/unknown semantics are explicit.",
+    "version_rule": "Rule version/profile is explicit where changes affect interpretation.",
+    "ownership_rule": "Quality rule does not take ownership of the data it evaluates.",
+    "authority_rule": "Rule pass/fail is not an AccessCore authorization decision.",
+    "mutation_rule": "Rule evaluation is read-only unless a separate remediation operation is invoked."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "QUALITY_EVIDENCE_NONAUTHORITY",
+        "rule": "Data-quality rules and results produce explicit evidence about exact data/schema identities; they never silently rewrite source data, change semantic ownership, declassify content or become authorization decisions."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "quality rule target inferred by display label",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "rule mutates source while evaluating",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "rule result grants/denies AccessCore directly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "rule identity inferred from filename",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "rule semantics change without version/profile evidence",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_SCHEMA_FIELD_IDENTITY_CONTRACT",
+      "purpose": "Quality rules bind exact schema/field identities."
+    }
+  ],
+  "prose": {
+    "summary": "Define each machine-significant DWH quality rule as an explicit canonical identity bound to exact schema/field/resource targets and deterministic evaluation semantics.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH schema, mutation, lineage and monitoring contracts."
+    ]
+  }
+}

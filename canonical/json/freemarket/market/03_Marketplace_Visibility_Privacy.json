@@ -1,0 +1,171 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_FREEMARKET_VISIBILITY_PRIVACY_CONTRACT",
+    "name": "FreeMarket Visibility and Privacy",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define marketplace public/private visibility as a projection and data-release boundary over identity, Project, PortfolioCore and MeritCore semantics without changing source ownership or AccessCore authorization.",
+  "scope": {
+    "owns": [
+      "FreeMarket Visibility and Privacy semantics"
+    ],
+    "does_not_own": [
+      "presentation semantics",
+      "transport implementation",
+      "unrelated IAM/AC policy"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_FREEMARKET_VISIBILITY",
+      "name": "Marketplace Visibility",
+      "purpose": "Define marketplace public/private visibility as a projection and data-release boundary over identity, Project, PortfolioCore and MeritCore semantics without changing source ownership or AccessCore authorization.",
+      "parent_topic_refs": [
+        "TOPIC_PROJECT"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_COMPETENCE_HISTORY",
+        "TOPIC_PROJECT_RANKING",
+        "TOPIC_CORE_PROJECTION"
+      ],
+      "member_refs": [
+        "AIGMOS_FREEMARKET_VISIBILITY_PRIVACY_CONTRACT",
+        "MARKET_SEMANTICS_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_MARKET_VISIBILITY_RESOLVE",
+        "OP_MARKET_PROJECT_PUBLIC"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_MARKET_VISIBILITY_RESOLVE",
+        "name": "Resolve marketplace visibility",
+        "inputs": [
+          "resource",
+          "visibility policy",
+          "requesting context"
+        ],
+        "outputs": [
+          "visible field/resource set"
+        ],
+        "errors": [
+          "policy unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_MARKET_PROJECT_PUBLIC",
+        "name": "Project public marketplace view",
+        "inputs": [
+          "eligible source semantics",
+          "visibility result"
+        ],
+        "outputs": [
+          "public projection"
+        ],
+        "errors": [
+          "private field leakage"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "visibility_states": [
+      "public",
+      "restricted",
+      "private"
+    ],
+    "projection_rule": "Public marketplace representation is a derived projection of explicitly eligible source fields.",
+    "privacy_rule": "Private/restricted source data is not exposed solely because related public data exists.",
+    "authorization_rule": "Visibility is not equivalent to write/operation authorization.",
+    "identity_rule": "Public identity representation may be narrower than canonical IdentityCore data.",
+    "merit_rule": "Only explicitly public/eligible MeritCore evidence/outcomes appear in public projections.",
+    "provenance_rule": "Projected fields retain source/visibility policy provenance."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MARKET_SEMANTICS_EXPLICIT",
+        "rule": "Marketplace discovery, matching, participation, feedback and visibility semantics remain explicit and do not override Project/Merit/IAM ownership."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "private field leaks into public projection",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "public visibility grants write/operation authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "projection duplicates source semantics as new authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "public profile exposes broader identity data than explicit visibility policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "projected merit data lacks visibility/source provenance",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_COMPETENCE",
+      "target_ref": "AIGMOS_LIVING_COMPETENCE_HISTORY_PROJECTION_CONTRACT",
+      "purpose": "Competence history may have marketplace projection."
+    },
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_AUTHORIZATION_CONTRACT",
+      "purpose": "Visibility does not substitute for authorization."
+    }
+  ],
+  "prose": {
+    "summary": "Define marketplace public/private visibility as a projection and data-release boundary over identity, Project, PortfolioCore and MeritCore semantics without changing source ownership or AccessCore authorization.",
+    "notes": [
+      "Unlocked until reconciled against existing FreeMarket contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_REQUESTER_AUTH_CONTEXT_CONTRACT",
+    "name": "Requester and Authentication Context",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define exact requester identity, IAM assurance evidence and AccessCore authorization inputs bound to an operation request/execution.",
+  "scope": {
+    "owns": [
+      "Requester and Authentication Context semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_REQUESTER_AUTH_CONTEXT",
+      "name": "Requester and Authentication Context",
+      "purpose": "Define exact requester identity, IAM assurance evidence and AccessCore authorization inputs bound to an operation request/execution.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME",
+        "TOPIC_CONTEXT",
+        "TOPIC_ACCESS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_REQUESTER_AUTH_CONTEXT_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "requester_rule": "Requester/actor identity ref is explicit.",
+    "assurance_rule": "IAM assurance level/evidence is explicit and separate from authorization.",
+    "authorization_rule": "AccessCore decision/evidence is exact and scoped to operation/target.",
+    "service_rule": "Service/system actors use explicit identities rather than implicit local-process trust.",
+    "delegation_rule": "Delegated remote authority includes exact delegation chain/scope refs.",
+    "expiry_rule": "Auth/session evidence lifetime is explicit.",
+    "recheck_rule": "Expired/stale evidence is re-evaluated where required."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "local process implicitly trusted as admin",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "IAM assurance treated as authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "service actor has no identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "delegation scope omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "expired auth reused",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CTX",
+      "target_ref": "AIGMOS_EXECUTION_CONTEXT_CONTRACT",
+      "purpose": "Requester/auth refs are explicit context inputs."
+    }
+  ],
+  "prose": {
+    "summary": "Define exact requester identity, IAM assurance evidence and AccessCore authorization inputs bound to an operation request/execution.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

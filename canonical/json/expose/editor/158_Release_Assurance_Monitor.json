@@ -1,0 +1,162 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_RELEASE_ASSURANCE_MONITOR_CONTRACT",
+    "name": "Release Assurance Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for release candidates, acceptance requirements, test/conformance/security/performance evidence, coverage, deviations and release-gate state.",
+  "scope": {
+    "owns": [
+      "Release Assurance Monitor semantics"
+    ],
+    "does_not_own": [
+      "production runtime authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_RELEASE_ASSURANCE_MONITOR",
+      "name": "Release Assurance Monitor",
+      "purpose": "Define a read-only Expose monitor for release candidates, acceptance requirements, test/conformance/security/performance evidence, coverage, deviations and release-gate state.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_RELEASE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_RELEASE_ASSURANCE_MONITOR_CONTRACT",
+        "TEST_NONAUTHORITY",
+        "EVIDENCE_REPRODUCIBILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_RELEASE",
+      "name": "Release",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_RELEASE already referenced by 6 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 6,
+        "distinct_child_topics": 6,
+        "host_contract_ref": "AIGMOS_EXPOSE_RELEASE_ASSURANCE_MONITOR_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "release candidate composition",
+      "semantic diff",
+      "required evidence checklist",
+      "test/conformance results",
+      "coverage",
+      "security verification",
+      "performance budgets",
+      "known deviations",
+      "acceptance gate result"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Release candidate, test result, conformance run, certification, deviation, accepted release and deployment identities remain distinct.",
+    "action_rule": "evaluate-release/approve-deviation/accept-release operations use separate authorized workflows.",
+    "authority_rule": "Viewing/passing evidence grants no release/deployment authority.",
+    "failure_rule": "blocked/rejected/conditional/missing-evidence states remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TEST_NONAUTHORITY",
+        "rule": "Test definitions, fixtures, results, coverage, simulations and release evidence never become production semantic authority or grant production execution rights merely by existing or passing."
+      },
+      {
+        "id": "EVIDENCE_REPRODUCIBILITY",
+        "rule": "Verification evidence binds exact test/profile/source/runtime revisions and declared environment inputs so a pass/fail result cannot silently float across unrelated versions or targets."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor deploys release by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "RC and deployment identity conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "known deviation hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "missing test shown pass",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "viewing grants release approval",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_GATE",
+      "target_ref": "AIGMOS_RELEASE_GATE_CONTRACT",
+      "purpose": "Monitor projects exact release acceptance state."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for release candidates, acceptance requirements, test/conformance/security/performance evidence, coverage, deviations and release-gate state.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_RELEASE solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

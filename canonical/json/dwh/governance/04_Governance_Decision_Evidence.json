@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_GOVERNANCE_DECISION_EVIDENCE_CONTRACT",
+    "name": "DWH Governance Decision Evidence",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define machine-readable evidence for allow/deny/filter/mask/redact decisions, tied to exact policy, caller/context, source identity and data revision without exposing prohibited values.",
+  "scope": {
+    "owns": [
+      "DWH Governance Decision Evidence semantics"
+    ],
+    "does_not_own": [
+      "AccessCore authorization policy ownership",
+      "source domain ownership",
+      "transport security semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_GOVERNANCE_DECISION_EVIDENCE",
+      "name": "DWH Governance Decision Evidence",
+      "purpose": "Define machine-readable evidence for allow/deny/filter/mask/redact decisions, tied to exact policy, caller/context, source identity and data revision without exposing prohibited values.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_GOVERNANCE_POLICY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_GOVERNANCE_DECISION_EVIDENCE_CONTRACT",
+        "DWH_GOVERNANCE_NONEXPANSION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "decision_states": [
+      "allow",
+      "deny",
+      "filtered",
+      "masked",
+      "redacted",
+      "unknown",
+      "error"
+    ],
+    "identity_rule": "Each machine-significant governance decision/evaluation has an explicit execution/evidence identity.",
+    "policy_rule": "Decision references exact governance policy/binding version.",
+    "subject_rule": "Caller/session/peer/context refs are explicit where applicable.",
+    "target_rule": "Decision references exact resource/field/query/projection scope.",
+    "revision_rule": "Decision may bind to exact source revision/snapshot/watermark where relevant.",
+    "redaction_rule": "Decision evidence must not leak values that the decision itself denied.",
+    "accesscore_rule": "DWH governance evidence is distinct from AccessCore authorization-decision evidence.",
+    "immutability_rule": "Past decision evidence is append/history governed."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_GOVERNANCE_NONEXPANSION",
+        "rule": "DWH governance may restrict or project data according to exact schema/classification/scope policy but never creates AccessCore rights, semantic ownership or broader visibility than the underlying authorized source set."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "denial log leaks denied field value",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "decision lacks policy version",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "DWH decision conflated with AccessCore result",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "past denial rewritten",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "target scope ambiguous",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_POLICY",
+      "target_ref": "AIGMOS_DWH_GOVERNANCE_POLICY_BINDING_CONTRACT",
+      "purpose": "Evidence records exact policy/binding."
+    },
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_POLICY_CHANGE_AUDIT_CONTRACT",
+      "purpose": "Governance evidence remains separate from AC audit evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define machine-readable evidence for allow/deny/filter/mask/redact decisions, tied to exact policy, caller/context, source identity and data revision without exposing prohibited values.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH access governance, schema resolution, classification and AccessCore contracts."
+    ]
+  }
+}

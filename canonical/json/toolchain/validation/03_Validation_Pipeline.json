@@ -1,0 +1,140 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TOOLCHAIN_VALIDATION_PIPELINE_CONTRACT",
+    "name": "Validation Pipeline",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define fixed stage order parse→format→structural→registry→reference→semantic→readiness/conformance.",
+  "scope": {
+    "owns": [
+      "Validation Pipeline semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime application authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TOOLCHAIN_VALIDATION_PIPELINE",
+      "name": "Validation Pipeline",
+      "purpose": "Define fixed stage order parse→format→structural→registry→reference→semantic→readiness/conformance.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_TOOLCHAIN",
+        "TOPIC_RECONCILIATION_EXECUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TOOLCHAIN_VALIDATION_PIPELINE_CONTRACT",
+        "TOOLING_NONAUTHORITY",
+        "DETERMINISTIC_EXACT_INPUTS",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "stages": [
+      "parse",
+      "format_check",
+      "structural_validation",
+      "identity_registry",
+      "reference_resolution",
+      "ownership_registry",
+      "semantic_validation",
+      "cross_kernel_invariants",
+      "readiness",
+      "repository_conformance"
+    ],
+    "short_circuit_rule": "Fatal prerequisite failures stop dependent stages.",
+    "evidence_rule": "Every stage emits explicit result/finding evidence.",
+    "order_rule": "Stage order is declarative.",
+    "retry_rule": "Re-run uses new execution identity when inputs/profile change.",
+    "mutation_rule": "Pipeline is read-only."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TOOLING_NONAUTHORITY",
+        "rule": "Toolchain code, scans, indexes, reports and generated artifacts remain implementation/evidence surfaces; they never become canonical semantic authority unless an explicit accepted canonical definition says so."
+      },
+      {
+        "id": "DETERMINISTIC_EXACT_INPUTS",
+        "rule": "Every toolchain execution binds exact bootstrap/source/profile/input revisions and must not resolve ambiguity through filesystem order, newest-wins, mtime, fuzzy names or UI layout."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "semantic stage runs on malformed input",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "failed registry still used",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "stage order inferred from filenames",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "pipeline edits contracts",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "missing stage silently skipped",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REPORT",
+      "target_ref": "AIGMOS_CONTRACT_VALIDATION_REPORT_CONTRACT",
+      "purpose": "Pipeline emits exact validation reports."
+    }
+  ],
+  "prose": {
+    "summary": "Define fixed stage order parse→format→structural→registry→reference→semantic→readiness/conformance.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Implementation contracts operationalize canonical semantics but do not replace canonical source authority."
+    ]
+  }
+}

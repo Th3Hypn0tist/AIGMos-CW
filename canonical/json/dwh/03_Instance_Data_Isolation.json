@@ -1,0 +1,127 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_INSTANCE_DATA_ISOLATION_CONTRACT",
+    "name": "DWH Instance Data Isolation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define local DWH data isolation at the full `#UM` instance boundary and explicit instance binding (`local` or `relation`) so data cannot leak across module instances by shared schema/name alone.",
+  "scope": {
+    "owns": [
+      "DWH Instance Data Isolation semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy semantics",
+      "remote domain semantics",
+      "transport identity"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_INSTANCE_DATA_ISOLATION",
+      "name": "DWH Instance Data Isolation",
+      "purpose": "Define local DWH data isolation at the full `#UM` instance boundary and explicit instance binding (`local` or `relation`) so data cannot leak across module instances by shared schema/name alone.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_REMOTE_DATA"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_INSTANCE_DATA_ISOLATION_CONTRACT",
+        "DWH_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "isolation_rule": "Local data is scoped to the full UserModule instance identity.",
+    "binding_modes": [
+      "local",
+      "relation"
+    ],
+    "local_rule": "Local binding belongs to the current explicit module instance.",
+    "relation_rule": "Relation binding requires a predeclared canonical relation/foreign-key binding.",
+    "schema_rule": "Sharing a schema does not imply sharing instance data.",
+    "name_rule": "Same field/entity/display names across instances do not merge data.",
+    "remote_rule": "Remote data remains origin-scoped and is not silently absorbed into local instance storage."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_BOUNDARY_EXPLICIT",
+        "rule": "DWH data movement preserves explicit origin identity, schema, scope and remote authority boundaries; transport connectivity never becomes data authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "data shared across UM instances merely because schema matches",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "relation binding created without predeclared relation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "instance identity omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "remote data silently persisted as local identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "display-name equality merges data",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_UM",
+      "target_ref": "AIGMOS_UM_USERMODULE_ROOT_CONTRACT",
+      "purpose": "DWH local data is scoped to full UM instance."
+    }
+  ],
+  "prose": {
+    "summary": "Define local DWH data isolation at the full `#UM` instance boundary and explicit instance binding (`local` or `relation`) so data cannot leak across module instances by shared schema/name alone.",
+    "notes": [
+      "Unlocked pending reconciliation against existing DWH/EXT/WebRTC/AccessCore contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

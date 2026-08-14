@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MESSAGE_IDENTITY_CONTRACT",
+    "name": "P2P Message Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each P2P message as an explicit identity with sender/recipient/conversation refs, content envelope and delivery state separate from transport packet identity.",
+  "scope": {
+    "owns": [
+      "P2P Message Identity semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "application operation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MESSAGE_IDENTITY",
+      "name": "P2P Message Identity",
+      "purpose": "Define each P2P message as an explicit identity with sender/recipient/conversation refs, content envelope and delivery state separate from transport packet identity.",
+      "parent_topic_refs": [
+        "TOPIC_MESSAGING",
+        "TOPIC_P2P"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MESSAGE_IDENTITY_CONTRACT",
+        "TRANSPORT_NONAUTHORITY",
+        "INGRESS_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each application message has an explicit message identity.",
+    "sender_rule": "Sender identity ref is explicit.",
+    "recipient_rule": "Recipient/conversation/group ref is explicit.",
+    "content_rule": "Content type/envelope is explicit.",
+    "transport_rule": "WebRTC/WebSocket packet/frame identity does not replace message identity.",
+    "delivery_rule": "Created/sent/delivered/read states are separate evidence.",
+    "authority_rule": "Receiving a message never grants operation authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TRANSPORT_NONAUTHORITY",
+        "rule": "Listener, route, endpoint, connection, channel, peer reachability and cryptographic transport evidence never by themselves grant application, data or operation authority."
+      },
+      {
+        "id": "INGRESS_EFFECT_BOUNDARY",
+        "rule": "Inbound network data remains inert until explicit protocol parsing, validation, identity/context resolution, authorization and dispatcher routing succeed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "packet id used as message identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "sender inferred from IP",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "message delivery means read",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "message content directly executes command",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "transport frame becomes conversation identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define each P2P message as an explicit identity with sender/recipient/conversation refs, content envelope and delivery state separate from transport packet identity.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

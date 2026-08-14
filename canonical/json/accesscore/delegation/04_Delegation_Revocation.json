@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_AUTHORITY_DELEGATION_REVOCATION_CONTRACT",
+    "name": "Delegation Revocation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define exact revocation and invalidation of delegated authority including dependent onward grants and cached decisions.",
+  "scope": {
+    "owns": [
+      "Delegation Revocation semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime operation implementation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_AUTHORITY_DELEGATION_REVOCATION",
+      "name": "Delegation Revocation",
+      "purpose": "Define exact revocation and invalidation of delegated authority including dependent onward grants and cached decisions.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE",
+        "TOPIC_DELEGATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_AUTHORITY_DELEGATION_REVOCATION_CONTRACT",
+        "IDENTITY_AUTHORITY_SEPARATION",
+        "FAIL_CLOSED_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "target_rule": "Revocation targets exact delegation identity or declared grant set.",
+    "authority_rule": "Revocation requires exact applicable authority.",
+    "dependent_rule": "Dependent child delegations invalidate according to chain semantics.",
+    "cache_rule": "Relevant authorization caches/leases are invalidated or bounded explicitly.",
+    "session_rule": "Revocation does not necessarily revoke authentication sessions unless declared separately.",
+    "history_rule": "Past accepted decisions/executions remain audit-visible.",
+    "propagation_rule": "Distributed revocation propagation state is explicit.",
+    "failure_rule": "Partially propagated revocation cannot be reported globally complete."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IDENTITY_AUTHORITY_SEPARATION",
+        "rule": "Identity, authentication assurance, authorization policy, authorization decision, delegation and runtime execution remain separate machine-significant identities/evidence; no one layer silently substitutes for another."
+      },
+      {
+        "id": "FAIL_CLOSED_AUTHORITY",
+        "rule": "Ambiguous, missing, stale or unverifiable authority for a protected effect fails closed rather than inheriting trust from locality, transport reachability, process ownership, UI visibility or previous success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "revocation deletes audit history",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "revoking delegation logs user out implicitly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "child grant survives without policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "cache keeps revoked authority indefinitely",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "partial propagation hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CHAIN",
+      "target_ref": "AIGMOS_AUTHORITY_DELEGATION_CHAIN_CONTRACT",
+      "purpose": "Revocation invalidates dependent chain segments."
+    }
+  ],
+  "prose": {
+    "summary": "Define exact revocation and invalidation of delegated authority including dependent onward grants and cached decisions.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

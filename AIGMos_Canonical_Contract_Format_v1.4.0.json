@@ -1,0 +1,676 @@
+{
+  "name": "AIGMos Canonical Contract Format",
+  "type": "canonical_contract_format",
+  "version": "1.4.0",
+  "status": "locked",
+  "position": 0,
+  "purpose": "Define the representation-independent canonical semantic contract model and the deterministic reading rules required to reconstruct AIGMos structure, topics, authority, behavior and explicit causality without semantic guessing.",
+  "bootstrap": {
+    "order": [
+      "AIGMos_Canonical_Contract_Format_v1.4.0.json",
+      "canonical/json/master/00_Canonical_Master_1_4.json",
+      "canonical/json/** recursively as candidate sources",
+      "exact Master active_contract_refs membership resolution",
+      "Master active_root_refs semantic entry resolution"
+    ],
+    "rule": "Load this root Contract Format first, then load the exact Canonical Master. Recursively scan canonical/json/** only to discover candidate documents. The active canonical source set is the exact set declared by Master.active_contract_refs plus the already-loaded Master, subject to allowed source_role and one-id/one-active-definition validation. Filesystem presence alone never creates authority. Master.active_root_refs define semantic entry surfaces inside that active set.",
+    "candidate_discovery_nonauthority": true
+  },
+  "representation": {
+    "semantic_standard": "AIGMos Canonical Contract semantic model",
+    "current_serialization": "JSON",
+    "rule": "JSON is a serialization format only. JSON is not the semantic standard.",
+    "representation_independence": true,
+    "round_trip_goal": "representation A -> canonical semantic model -> representation B MUST preserve semantic identity and all required meaning."
+  },
+  "fundamental_rules": [
+    {
+      "id": "CF_NO_SEMANTIC_GUESSING",
+      "rule": "Active semantics MUST NOT be inferred from prose, filenames, directory placement, naming convention, array position, visual placement, implementation behavior or software-specific heuristics."
+    },
+    {
+      "id": "CF_STRUCTURE_IS_DATA",
+      "rule": "Every fact required to reconstruct active canonical structure MUST be explicit structured data."
+    },
+    {
+      "id": "CF_CAUSALITY_IS_DATA",
+      "rule": "Execution order, branching, continuation and causality that matter to behavior MUST be explicit structured flow data."
+    },
+    {
+      "id": "CF_TOPIC_IS_GROUPING",
+      "rule": "A Topic is a recursive grouping construct. Topic membership MUST NOT imply containment, ownership, authority, dependency or causality."
+    },
+    {
+      "id": "CF_TOPIC_LOCAL_TO_PARENT",
+      "rule": "A Topic MUST be declared under the semantic parent node to which its subject naturally belongs. Topics MUST NOT require a separate global topics directory."
+    },
+    {
+      "id": "CF_TOPIC_CROSS_TREE_REFERENCES_ALLOWED",
+      "rule": "A Topic MAY reference canonical identities anywhere in the tree when the subject crosses architectural boundaries."
+    },
+    {
+      "id": "CF_TOPIC_COUNT_NOT_MINIMIZED",
+      "rule": "Topics are created according to semantic usefulness, not scarcity. A new Topic SHOULD be created when an existing Topic would require semantic stretching."
+    },
+    {
+      "id": "CF_UNKNOWN_NOT_INVENTED",
+      "rule": "Unknown or missing semantics MUST be reported as gaps and MUST NOT be invented."
+    },
+    {
+      "id": "CF_ONE_IDENTITY_ONE_ACTIVE_DEFINITION",
+      "rule": "One active semantic identity MUST resolve to exactly one active semantic definition."
+    },
+    {
+      "id": "CF_ROUND_TRIP",
+      "rule": "A valid contract MUST survive representation -> normalized canonical semantic model -> representation without semantic invention or loss."
+    },
+    {
+      "id": "CF_TOPIC_MEMBERSHIP_MANY_TO_MANY",
+      "rule": "A canonical semantic identity MAY belong to multiple Topics simultaneously. Multiple Topic memberships are valid and expected when the identity participates in multiple subject groupings."
+    },
+    {
+      "id": "CF_TOPIC_INHERITANCE",
+      "rule": "Topics MAY inherit parent Topics recursively. Membership in a child Topic implies grouping membership in every inherited ancestor Topic, but Topic inheritance MUST NOT transfer ownership, authority, dependency, containment or causality."
+    },
+    {
+      "id": "CF_OUTSIDER_EXPLICIT",
+      "rule": "An active canonical semantic identity with no direct or inherited Topic membership MUST be explicitly marked as an Outsider with a machine-readable reason. Zero Topic membership without explicit Outsider status is invalid."
+    },
+    {
+      "id": "CF_TOPIC_COMPOSITION",
+      "rule": "A Topic MAY be composed from existing Topics. Topic composition reuses existing grouping and trace surfaces by reference; it MUST NOT duplicate or transfer their semantics. A mechanism specification SHOULD describe only additional mechanism-specific semantics and explicit causality."
+    }
+  ],
+  "lifecycle": {
+    "unlocked": "Active canonical semantics exist but have not passed the current Contract Format validation or contain an unresolved semantic, topic, reference or traceability gap.",
+    "locked": "The current Contract Format, deterministic reference resolution, topic reachability, semantic closure, traceability and all applicable hard gates have passed.",
+    "superseded": "Historical/reference record; not an active semantic definition.",
+    "deprecated": "Compatibility/history record; not active for new canonical work.",
+    "transition": "unlocked -> validate -> locked",
+    "format_migration": "A breaking Contract Format change MUST unlock every affected active contract until individually revalidated."
+  },
+  "contract_shape": {
+    "required": [
+      "format",
+      "identity",
+      "status",
+      "source_role",
+      "purpose",
+      "scope",
+      "members",
+      "structure",
+      "topics",
+      "behavior",
+      "semantics",
+      "constraints",
+      "references",
+      "prose"
+    ],
+    "format": {
+      "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+      "format_version": "1.4"
+    },
+    "identity": {
+      "required": [
+        "id",
+        "name",
+        "type",
+        "version"
+      ],
+      "rule": "id is the stable semantic identity and MUST originate from explicit structured canonical identity data."
+    },
+    "status": {
+      "values": [
+        "unlocked",
+        "locked",
+        "superseded",
+        "deprecated"
+      ]
+    },
+    "source_role": {
+      "values": [
+        "definition",
+        "membership_registry",
+        "boundary_master",
+        "reconciliation",
+        "historical_or_migration",
+        "derived_projection"
+      ]
+    },
+    "scope": {
+      "required": [
+        "owns",
+        "does_not_own"
+      ]
+    },
+    "members": {
+      "item_required": [
+        "id",
+        "name",
+        "type",
+        "status",
+        "semantics"
+      ],
+      "rule": "members defines semantic identities owned inside this contract. External identities belong in references, topics or structure edges."
+    },
+    "structure": {
+      "required": [
+        "containment",
+        "relations",
+        "ownership",
+        "authority",
+        "dependencies"
+      ],
+      "containment_edge": [
+        "id",
+        "parent_ref",
+        "child_ref",
+        "relation_type"
+      ],
+      "relation_edge": [
+        "id",
+        "source_ref",
+        "relation_type",
+        "target_ref",
+        "direction"
+      ],
+      "ownership_edge": [
+        "id",
+        "owner_ref",
+        "target_ref",
+        "ownership_type"
+      ],
+      "authority_edge": [
+        "id",
+        "authority_ref",
+        "target_ref",
+        "authority_type",
+        "scope"
+      ],
+      "dependency_edge": [
+        "id",
+        "source_ref",
+        "target_ref",
+        "dependency_type",
+        "required"
+      ],
+      "rule": "Containment, relation, ownership, authority and dependency are separate semantic dimensions."
+    },
+    "topics": {
+      "type": "array",
+      "placement_rule": "Topics are declared inside the semantic parent contract/node whose subject area naturally contains the Topic.",
+      "directory_rule": "A separate global /topics directory is neither required nor semantically authoritative.",
+      "topic_required": [
+        "id",
+        "name",
+        "purpose",
+        "parent_topic_refs",
+        "composed_topic_refs",
+        "member_refs",
+        "relation_refs",
+        "operation_refs",
+        "event_refs",
+        "flow_refs",
+        "child_topics",
+        "metadata"
+      ],
+      "topic_semantics": {
+        "id": "Stable Topic identity.",
+        "name": "Human-readable Topic name.",
+        "purpose": "What end-to-end subject or grouping this Topic represents.",
+        "member_refs": "Canonical semantic identities participating in this Topic.",
+        "relation_refs": "Relevant explicit relation identities.",
+        "operation_refs": "Relevant operation identities.",
+        "event_refs": "Relevant event identities.",
+        "flow_refs": "Relevant flow identities.",
+        "child_topics": "Nested Topics recursively belonging under this Topic.",
+        "metadata": "Non-authoritative descriptive Topic metadata.",
+        "parent_topic_refs": "Zero or more parent Topic identities inherited recursively. Parent Topics provide grouping context only.",
+        "composed_topic_refs": "Zero or more existing Topic identities whose already-defined grouping/trace surfaces are reused as components of this Topic. Composition reuses definitions; it does not copy or transfer their semantics."
+      },
+      "rules": [
+        "Topic is a grouping and trace construct, not a semantic owner.",
+        "Topic membership is many-to-many.",
+        "The same canonical identity MAY participate in multiple Topics simultaneously.",
+        "A Topic MAY inherit zero or more parent Topics through explicit parent_topic_refs.",
+        "Topic inheritance is recursive.",
+        "Membership in a child Topic implies grouping membership in all inherited ancestor Topics.",
+        "A Topic MAY compose zero or more existing Topics through explicit composed_topic_refs.",
+        "Topic composition and Topic inheritance are different relations and MUST NOT be conflated.",
+        "Inheritance means the Topic belongs under and inherits grouping context from its parent Topic or Topics.",
+        "Composition means the Topic reuses existing Topic grouping/trace surfaces as components of a new mechanism or subject.",
+        "A composed Topic MUST reference existing Topics rather than duplicate their already-defined semantics.",
+        "A composed Topic SHOULD add only mechanism-specific members, relations, operations, events, flows, conditions or causality not already represented by its component Topics.",
+        "Topic composition MAY cross canonical branches.",
+        "Topic composition MAY be recursive but MUST resolve deterministically and MUST NOT contain unresolved composition cycles.",
+        "Topic inheritance and composition do not transfer semantic ownership.",
+        "Topic inheritance and composition do not grant runtime or policy authority.",
+        "Topic inheritance and composition do not create dependency.",
+        "Topic inheritance and composition do not create semantic containment.",
+        "Topic inheritance and composition do not define execution order or causality.",
+        "Execution order and causality that are specific to a composed mechanism MUST remain explicit behavior.flows data.",
+        "Topic membership does not replace explicit structure edges or explicit flows.",
+        "A broad Topic such as Runtime MAY parent more specific Topics such as Automation, Symbols, Queues, UserModules, Tools, I/O and AI runtime.",
+        "A specific Topic such as Trigger MAY inherit Runtime -> Automation while the same canonical identities MAY simultaneously participate in other Topic branches such as Core.",
+        "A mechanism Topic such as Order Creation MAY compose existing Topics from multiple branches and add only the end-to-end causality specific to creating an order.",
+        "A Topic SHOULD be located at the nearest semantically correct parent from which the subject is naturally discoverable by recursion.",
+        "Topics are not scarce. Create a new Topic when an existing Topic would require semantic stretching.",
+        "When adding a new subject, ask first: does this belong under an existing Topic, or should a new Topic be created?",
+        "When describing a mechanism, ask next: can this mechanism be composed from existing Topics, with only its new causality specified locally?",
+        "An identity is not an Outsider when it has either direct Topic membership or inherited Topic membership through a child Topic."
+      ],
+      "coverage_rule": "Every active non-bootstrap canonical semantic identity MUST have at least one direct or inherited Topic membership, OR it MUST be explicitly marked outsider=true with an outsider_reason. Zero Topic membership without explicit Outsider status is a hard failure.",
+      "example": {
+        "id": "TOPIC_ORDER_CREATION",
+        "name": "Order Creation",
+        "purpose": "Describe the end-to-end order creation mechanism by composing existing canonical Topic surfaces and adding only order-creation-specific causality.",
+        "parent_topic_refs": [
+          "TOPIC_ORDER"
+        ],
+        "composed_topic_refs": [
+          "TOPIC_IDENTITY",
+          "TOPIC_AUTHORIZATION",
+          "TOPIC_ORDER",
+          "TOPIC_DWH",
+          "TOPIC_EVENTS",
+          "TOPIC_INTEGRATION"
+        ],
+        "member_refs": [],
+        "relation_refs": [],
+        "operation_refs": [
+          "order.create"
+        ],
+        "event_refs": [],
+        "flow_refs": [
+          "FLOW_ORDER_CREATION"
+        ],
+        "child_topics": [],
+        "metadata": {
+          "note": "Existing Topic semantics are reused by reference. FLOW_ORDER_CREATION carries only the causality specific to the end-to-end creation mechanism."
+        }
+      },
+      "outsider_contract": {
+        "purpose": "Represent unresolved Topic classification visibly without forcing an incorrect Topic assignment.",
+        "fields": {
+          "outsider": "boolean; true only when no direct or inherited Topic membership is currently resolved",
+          "outsider_reason": "machine-readable explanation of why Topic classification is unresolved"
+        },
+        "rules": [
+          "Outsider is a classification status, not a Topic.",
+          "Outsider MUST NOT be implemented as a separate global directory.",
+          "Outsider MUST remain visible to generic readers and validators.",
+          "Once a valid direct or inherited Topic membership exists, outsider MUST be false or absent."
+        ]
+      },
+      "composition_contract": {
+        "purpose": "Allow mechanism and subject specifications to reuse already-defined Topic surfaces without duplicating documentation or semantics.",
+        "principle": "Define once -> inherit Topics -> compose Topics -> describe only the new causality.",
+        "rules": [
+          "composed_topic_refs MUST resolve to existing Topic identities.",
+          "Composition MUST NOT copy canonical semantics merely to make the composed Topic self-contained.",
+          "Composition MUST NOT reinterpret the semantics of a referenced Topic.",
+          "Composition MUST NOT imply runtime execution order.",
+          "Mechanism-specific ordering, branching, conditions, continuation and causality MUST be explicit in referenced or local flows.",
+          "A composed Topic MAY add direct member_refs and trace refs when the mechanism contains genuinely additional participants.",
+          "If required semantics cannot be expressed by existing Topics plus explicit mechanism-specific causality, the missing semantics are a canonical gap and MUST NOT be guessed."
+        ],
+        "documentation_effect": "A mechanism specification can be expressed by composing existing Topics and declaring only the mechanism-specific causality or additional semantics. Existing semantic documentation is referenced, not duplicated."
+      }
+    },
+    "behavior": {
+      "required": [
+        "states",
+        "interfaces",
+        "operations",
+        "events",
+        "flows"
+      ],
+      "state_required": [
+        "id",
+        "name"
+      ],
+      "interface_required": [
+        "id",
+        "name",
+        "direction",
+        "input",
+        "output",
+        "errors"
+      ],
+      "operation_required": [
+        "id",
+        "name",
+        "inputs",
+        "outputs",
+        "errors",
+        "side_effects"
+      ],
+      "event_required": [
+        "id",
+        "name",
+        "payload"
+      ],
+      "flow_required": [
+        "id",
+        "owner_ref",
+        "name",
+        "flow_type",
+        "entry_refs",
+        "exit_refs",
+        "steps",
+        "metadata"
+      ],
+      "flow_step_required": [
+        "id",
+        "actor_ref",
+        "action_ref",
+        "data_ref",
+        "target_ref",
+        "cause_ref",
+        "condition_ref",
+        "payload_ref",
+        "result_refs",
+        "error_refs",
+        "next_step_refs",
+        "subflow_refs",
+        "resume_ref"
+      ],
+      "flow_rules": [
+        "Execution causality MUST come from explicit flow data.",
+        "Dependency MUST NOT define execution order.",
+        "Containment MUST NOT define execution order.",
+        "Ownership MUST NOT define execution order.",
+        "Authority MUST NOT define execution order.",
+        "Topic membership MUST NOT define execution order.",
+        "Branches MUST carry explicit conditions and continuations.",
+        "A flow MUST NOT itself grant runtime authority."
+      ]
+    },
+    "semantics": {
+      "type": "object",
+      "rule": "Contract-specific structured semantics that are not identity, graph structure, Topic grouping, behavior, constraints, references or prose live here.",
+      "reference_rule": "A value whose meaning is a reference to another canonical identity MUST use references, topics, structure or behavior records instead of an unresolved name/path."
+    },
+    "constraints": {
+      "required": [
+        "invariants",
+        "hard_gates"
+      ],
+      "invariant_required": [
+        "id",
+        "rule"
+      ],
+      "hard_gate_required": [
+        "id",
+        "condition",
+        "result"
+      ],
+      "hard_gate_result": "hard_fail"
+    },
+    "references": {
+      "item_required": [
+        "id",
+        "target_ref",
+        "purpose"
+      ],
+      "rule": "Every active target_ref MUST resolve to exactly one active semantic identity."
+    },
+    "prose": {
+      "required": [
+        "summary",
+        "notes"
+      ],
+      "rule": "Prose may explain semantics but MUST NOT be the only carrier of a machine-significant structural, Topic, authority, behavioral or causal fact."
+    }
+  },
+  "reader_algorithm": {
+    "purpose": "Define how a generic consumer reads the canonical tree without AIGMos-specific guessing.",
+    "steps": [
+      {
+        "step": 1,
+        "action": "load_format",
+        "rule": "Load this Contract Format first."
+      },
+      {
+        "step": 2,
+        "action": "load_master",
+        "rule": "Load the canonical Master and use only explicit identities and references to discover active roots."
+      },
+      {
+        "step": 3,
+        "action": "resolve_identity",
+        "rule": "Resolve each active id to exactly one active definition."
+      },
+      {
+        "step": 4,
+        "action": "materialize_node",
+        "rule": "Read scope, members, structure and contract-specific semantics as separate dimensions."
+      },
+      {
+        "step": 5,
+        "action": "read_topics_recursively",
+        "rule": "Read Topics directly under the current semantic node, recursively read child_topics, resolve parent_topic_refs and inherited ancestor Topic memberships, resolve composed_topic_refs as reusable Topic trace components, and resolve every referenced canonical identity without changing semantic ownership or structural parent."
+      },
+      {
+        "step": 6,
+        "action": "resolve_topic_composition",
+        "rule": "Resolve composed_topic_refs recursively. Reuse their resolved grouping/trace surfaces by reference. Do not copy semantics and do not infer execution order from composition."
+      },
+      {
+        "step": 7,
+        "action": "materialize_behavior",
+        "rule": "Read states, interfaces, operations, events and flows."
+      },
+      {
+        "step": 8,
+        "action": "materialize_causality",
+        "rule": "Use only explicit flow steps for execution order, branching, continuation and causality."
+      },
+      {
+        "step": 9,
+        "action": "validate_topic_coverage",
+        "rule": "Confirm that every active non-bootstrap semantic identity has at least one direct or inherited Topic membership, or is explicitly marked outsider=true with outsider_reason."
+      },
+      {
+        "step": 10,
+        "action": "validate_constraints",
+        "rule": "Apply invariants and hard gates."
+      },
+      {
+        "step": 11,
+        "action": "validate_round_trip",
+        "rule": "Verify that normalization and reverse serialization preserve active semantic meaning."
+      }
+    ],
+    "forbidden_reader_behaviors": [
+      "infer identity from filename",
+      "infer semantic parent from directory path",
+      "infer Topic membership from directory path",
+      "infer ownership from Topic membership",
+      "infer authority from Topic membership",
+      "infer dependency from Topic membership",
+      "infer causality from Topic membership",
+      "infer execution order from array position",
+      "invent missing references",
+      "invent missing Topics",
+      "treat Topic inheritance as ownership inheritance",
+      "treat Topic inheritance as authority inheritance",
+      "treat Topic inheritance as dependency inheritance",
+      "treat Topic inheritance as causal inheritance",
+      "hide zero-membership identities instead of exposing Outsider status",
+      "infer execution order from composed_topic_refs",
+      "copy semantics from composed Topics into the composing Topic",
+      "treat Topic composition as ownership transfer",
+      "treat Topic composition as authority transfer",
+      "treat Topic composition as dependency"
+    ]
+  },
+  "traceability": {
+    "reverse_trace": "Higher-level action or Topic -> explicit lower-level canonical semantic, platform and runtime mechanisms.",
+    "forward_trace": "Foundational mechanism -> Topics, operations, flows and higher-level semantics that explicitly reference it.",
+    "topic_trace": "Topic -> parent_topic_refs + composed_topic_refs + child_topics + direct trace refs -> inherited grouping context + composed reusable trace surfaces + resolved canonical identities.",
+    "projector_test": "A generic Structure Projector MUST be able to recursively reconstruct nodes and Topics, then traverse a Topic end-to-end without embedded AIGMos-specific semantic guessing.",
+    "mechanism_trace": "Mechanism Topic -> composed existing Topics -> mechanism-specific operations/events/flows -> explicit end-to-end causality. Existing semantics are not duplicated."
+  },
+  "reference_resolution": {
+    "zero_active_matches": "hard_fail",
+    "one_active_match": "valid",
+    "multiple_active_matches": "hard_fail",
+    "forbidden_inputs": [
+      "filename similarity",
+      "directory placement",
+      "display aliases",
+      "prose interpretation",
+      "renderer position",
+      "implementation imports",
+      "context guessing",
+      "software-specific heuristics"
+    ]
+  },
+  "canonicalization": {
+    "encoding": "UTF-8",
+    "duplicate_json_keys": "hard_fail",
+    "array_order_default": "non_semantic",
+    "ordered_array_rule": "If array order carries semantics, its owning field MUST explicitly declare ordered=true.",
+    "required_empty_dimensions": "Required dimensions remain present as empty arrays or objects when applicable but empty."
+  },
+  "round_trip": {
+    "forward": "representation -> normalized canonical semantic model MUST preserve identities, structure, Topics, behavior, flows, semantics, constraints and references.",
+    "reverse": "normalized canonical semantic model -> representation MUST invent nothing and drop nothing.",
+    "equivalence": "Whitespace, JSON key order and non-semantic serialization details may differ; semantic meaning may not."
+  },
+  "validator": {
+    "required_operations": [
+      "validate_shape",
+      "resolve_identities",
+      "resolve_references",
+      "materialize_structure",
+      "materialize_topics",
+      "validate_topic_placement",
+      "resolve_topic_parents",
+      "compute_inherited_topic_membership",
+      "validate_outsiders",
+      "resolve_topic_composition",
+      "validate_topic_composition",
+      "validate_topic_coverage",
+      "materialize_behavior",
+      "materialize_flows",
+      "validate_no_semantic_guessing",
+      "validate_traceability",
+      "validate_round_trip",
+      "validate_hard_gates",
+      "lock_eligible"
+    ],
+    "lock_rule": "lock_eligible=true permits unlocked -> locked. Otherwise the contract MUST remain unlocked."
+  },
+  "hard_gates": [
+    {
+      "id": "CF_MISSING_REQUIRED_FIELD",
+      "condition": "A required format field or semantic dimension is absent.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_AMBIGUOUS_IDENTITY",
+      "condition": "One identity has multiple active definitions.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_UNRESOLVED_REFERENCE",
+      "condition": "An active reference resolves to zero active identities.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_AMBIGUOUS_REFERENCE",
+      "condition": "An active reference resolves to multiple active identities.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_TOPIC_MEMBERSHIP_MISSING",
+      "condition": "An active non-bootstrap canonical semantic identity has no direct or inherited Topic membership and is not explicitly marked outsider=true with outsider_reason.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_TOPIC_CLASSIFICATION_UNRESOLVED",
+      "condition": "A new subject has no resolved placement under an existing Topic and no explicit new Topic has been defined.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_TOPIC_PATH_INFERENCE",
+      "condition": "Topic identity, membership or semantic parent must be inferred from a filesystem directory or filename.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_TOPIC_IMPLICIT_SEMANTICS",
+      "condition": "Containment, ownership, authority, dependency or causality is inferred from Topic membership.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_IMPLICIT_CAUSALITY",
+      "condition": "Execution order, branching, continuation or causality must be inferred from dependency, containment, ownership, authority, Topic membership, visual position or prose.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_SEMANTIC_GUESS_REQUIRED",
+      "condition": "A generic canonical consumer requires AIGMos-specific heuristic interpretation to reconstruct significant active semantics.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_ROUND_TRIP_LOSS",
+      "condition": "Representation -> canonical semantic model -> representation changes active semantic meaning.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_OUTSIDER_REASON_MISSING",
+      "condition": "An active identity has outsider=true but outsider_reason is absent or empty.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_OUTSIDER_WITH_TOPIC_MEMBERSHIP",
+      "condition": "An active identity is marked outsider=true while a direct or inherited Topic membership resolves.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_TOPIC_INHERITANCE_CYCLE",
+      "condition": "Topic parent inheritance contains an unresolved cycle that prevents deterministic ancestor membership resolution.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_TOPIC_INHERITANCE_SEMANTIC_LEAK",
+      "condition": "Ownership, authority, dependency, containment or causality is inherited solely because of Topic parent inheritance.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_TOPIC_COMPOSITION_UNRESOLVED",
+      "condition": "A composed_topic_ref resolves to zero or multiple active Topic identities.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_TOPIC_COMPOSITION_CYCLE",
+      "condition": "Topic composition contains an unresolved recursive cycle that prevents deterministic resolution.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_TOPIC_COMPOSITION_SEMANTIC_DUPLICATION",
+      "condition": "A composing Topic duplicates already-defined canonical semantics solely to restate a referenced component Topic.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_TOPIC_COMPOSITION_CAUSALITY_INFERENCE",
+      "condition": "Execution order or causality is inferred solely from composed_topic_refs instead of explicit flow data.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_TOPIC_COMPOSITION_SEMANTIC_LEAK",
+      "condition": "Ownership, authority, dependency or containment is transferred solely because one Topic composes another.",
+      "result": "hard_fail"
+    }
+  ],
+  "migration": {
+    "from": "1.2",
+    "to": "1.4",
+    "breaking": true,
+    "rule": "All affected active contracts MUST be unlocked until the required topics dimension, Topic coverage and 1.4 reader/traceability rules pass.",
+    "topic_migration_rule": "Do not create a global Topic directory. Place Topics under their semantically correct parent nodes. Permit multiple simultaneous Topic memberships, recursive parent inheritance and explicit Topic composition. Reuse existing Topics through composed_topic_refs instead of duplicating their semantics. Mechanism Topics add only genuinely new semantics and explicit mechanism-specific causality. If an active identity has no direct or inherited Topic membership, expose it as outsider=true with outsider_reason instead of guessing."
+  },
+  "final_lock": "A generic consumer can start from Master, recursively reconstruct canonical nodes and locally declared Topics, resolve multiple memberships, parent inheritance and Topic composition, expose unresolved zero-membership identities as Outsiders, reuse existing Topic trace surfaces without semantic duplication, reconstruct mechanism-specific behavior and explicit causality, and validate the complete semantic model without path-based or AIGMos-specific guessing."
+}

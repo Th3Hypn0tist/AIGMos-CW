@@ -1,0 +1,178 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT",
+    "name": "Runtime View Non-Authority",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define UserModule view modules as derived human/UI projections that never become semantic or runtime authority and perform writes only by invoking explicit canonical operations owned elsewhere.",
+  "scope": {
+    "owns": [
+      "Runtime View Non-Authority semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_USERMODULE_VIEWS",
+      "name": "UserModule Views",
+      "purpose": "Define UserModule view modules as derived human/UI projections that never become semantic or runtime authority and perform writes only by invoking explicit canonical operations owned elsewhere.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_USER_MODULES"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_PROJECTION",
+        "TOPIC_CORE_CHANGE_CONTROL",
+        "TOPIC_CORE_OPERATIONS"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT",
+        "USERMODULE_SEMANTICS_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_VIEW_PROJECT",
+        "OP_VIEW_INVOKE_OPERATION"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_VIEW_PROJECT",
+        "name": "Project module view",
+        "inputs": [
+          "canonical/runtime source refs",
+          "view definition"
+        ],
+        "outputs": [
+          "read-only view model"
+        ],
+        "errors": [
+          "source unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_VIEW_INVOKE_OPERATION",
+        "name": "Invoke canonical operation from view",
+        "inputs": [
+          "operation_ref",
+          "validated user input"
+        ],
+        "outputs": [
+          "operation result"
+        ],
+        "errors": [
+          "operation unresolved",
+          "authority denied"
+        ],
+        "side_effects": [
+          "only side effects owned by invoked canonical operation"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "view_rule": "View is UI-only/read projection by default.",
+    "backend_rule": "View owns no private semantic backend.",
+    "write_rule": "Any user-initiated mutation resolves to an explicit canonical operation and authoritative write target.",
+    "authority_rule": "UI visibility or control presence does not grant runtime authority.",
+    "state_rule": "Ephemeral presentation state is view state and does not silently become canonical/runtime semantic state.",
+    "projection_rule": "View layout, ordering and nesting are projection semantics only."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "USERMODULE_SEMANTICS_EXPLICIT",
+        "rule": "UserModule identity, type, lifecycle, bindings and visibility are explicit canonical/runtime semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "view module becomes semantic authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "view implements private backend mutation instead of canonical operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "visible UI control grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "presentation state silently becomes canonical definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "view ordering/nesting treated as canonical structure",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "write target inferred from UI placement instead of explicit operation/ref",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROJECTION",
+      "target_ref": "AIGMOS_CORE_PROJECTION_BOUNDARY_CONTRACT",
+      "purpose": "Views are derived projections."
+    },
+    {
+      "id": "REF_CHANGE",
+      "target_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+      "purpose": "Writes resolve to authoritative semantic targets."
+    },
+    {
+      "id": "REF_OPERATION",
+      "target_ref": "AIGMOS_CORE_CANONICAL_OPERATION_CONTRACT",
+      "purpose": "Views invoke canonical operations."
+    }
+  ],
+  "prose": {
+    "summary": "Define UserModule view modules as derived human/UI projections that never become semantic or runtime authority and perform writes only by invoking explicit canonical operations owned elsewhere.",
+    "notes": [
+      "Unlocked until reconciled against existing UserModule contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

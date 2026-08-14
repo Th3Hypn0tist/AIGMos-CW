@@ -1,0 +1,193 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_EXP_EXPOSURE_CONTRACT",
+    "name": "Runtime EXP Exposure",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define EXP as the runtime exposure surface for UserModule semantics, mapping explicit #UM module/instance capabilities to externally consumable interfaces without changing ownership or authority.",
+  "scope": {
+    "owns": [
+      "Runtime EXP Exposure semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "presentation layout unless explicitly stated"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_EXP",
+      "name": "EXP",
+      "purpose": "Define EXP as the runtime exposure surface for UserModule semantics, mapping explicit #UM module/instance capabilities to externally consumable interfaces without changing ownership or authority.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+        "TOPIC_RUNTIME_USERMODULE_VIEWS",
+        "TOPIC_CORE_PROJECTION",
+        "TOPIC_CORE_OPERATIONS"
+      ],
+      "member_refs": [
+        "AIGMOS_RUNTIME_EXP_EXPOSURE_CONTRACT",
+        "SERVICE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_EXP_RESOLVE",
+        "OP_EXP_PROJECT",
+        "OP_EXP_INVOKE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_EXP_RESOLVE",
+        "name": "Resolve exposed UserModule surface",
+        "inputs": [
+          "#UM identity",
+          "exposure declaration"
+        ],
+        "outputs": [
+          "exposed semantic surface"
+        ],
+        "errors": [
+          "module unresolved",
+          "surface not exposed"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_EXP_PROJECT",
+        "name": "Project exposed surface",
+        "inputs": [
+          "resolved exposure",
+          "request context"
+        ],
+        "outputs": [
+          "transport-facing representation"
+        ],
+        "errors": [
+          "projection failure"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_EXP_INVOKE",
+        "name": "Invoke exposed canonical operation",
+        "inputs": [
+          "exposed operation ref",
+          "validated request"
+        ],
+        "outputs": [
+          "canonical operation result"
+        ],
+        "errors": [
+          "operation denied",
+          "authority denied"
+        ],
+        "side_effects": [
+          "only invoked operation effects"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "namespace": "EXP",
+    "user_module_surface": "/um/",
+    "rule": "EXP exposes existing UserModule/canonical semantics; it does not duplicate or own them.",
+    "read_rule": "Read surfaces are projections over canonical/runtime state.",
+    "write_rule": "Mutating exposures invoke explicit canonical operations.",
+    "authority_rule": "Exposure never grants authority by visibility.",
+    "module_rule": "Only explicitly exposed UserModule surfaces are reachable through EXP.",
+    "transport_independence_rule": "EXP semantic exposure is distinct from any one transport binding."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SERVICE_BOUNDARY_EXPLICIT",
+        "rule": "Network/service identity, binding, lifecycle and authority remain explicit and separate."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "EXP duplicates UserModule semantics as separate backend",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "EXP visibility grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "EXP mutates state without canonical operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "unexposed UserModule surface reachable",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "EXP semantics hardwired to one transport binding",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "UserModule identity inferred from URL/path only",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_UM",
+      "target_ref": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT",
+      "purpose": "EXP exposes registered UserModule semantics."
+    },
+    {
+      "id": "REF_VIEW",
+      "target_ref": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT",
+      "purpose": "Read exposure remains projection/non-authority."
+    }
+  ],
+  "prose": {
+    "summary": "Define EXP as the runtime exposure surface for UserModule semantics, mapping explicit #UM module/instance capabilities to externally consumable interfaces without changing ownership or authority.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose/REST/web contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

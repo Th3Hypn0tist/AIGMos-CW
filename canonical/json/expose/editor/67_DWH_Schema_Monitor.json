@@ -1,0 +1,140 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_DWH_SCHEMA_MONITOR_CONTRACT",
+    "name": "DWH Schema and Binding Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for the master schema graph, local/relation instance bindings, schema resolution, ownership, projection and materialization lineage.",
+  "scope": {
+    "owns": [
+      "DWH Schema and Binding Monitor semantics"
+    ],
+    "does_not_own": [
+      "module domain model ownership",
+      "AccessCore policy ownership",
+      "transport implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_DWH_SCHEMA_MONITOR",
+      "name": "DWH Schema and Binding Monitor",
+      "purpose": "Define a read-only Expose monitor for the master schema graph, local/relation instance bindings, schema resolution, ownership, projection and materialization lineage.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_SCHEMA_BINDING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_DWH_SCHEMA_MONITOR_CONTRACT",
+        "DWH_SCHEMA_OWNERSHIP_PRESERVED",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "master schema root",
+      "module-owned schema refs",
+      "relation graph",
+      "local instance bindings",
+      "relation/FK bindings",
+      "field resolution",
+      "ownership refs",
+      "projection/materialization state",
+      "lineage/classification refs"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Master root, schema, instance, relation, field, projection and materialized-data identities remain distinct.",
+    "ownership_rule": "UI explicitly shows original module/schema owners rather than attributing ownership to DWH.",
+    "graph_rule": "Visual relation/binding edges correspond only to explicit declared relations/bindings.",
+    "action_rule": "edit schema/relation/materialize/refresh operations invoke separate authorized canonical workflows.",
+    "authority_rule": "Viewing schema topology grants no data access or mutation authority.",
+    "failure_rule": "Ambiguous/unresolved relations, invalid FK bindings and stale materializations are displayed explicitly."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_SCHEMA_OWNERSHIP_PRESERVED",
+        "rule": "DWH resolves and projects schemas/relations but never becomes the semantic owner of module domain models; local/relation bindings require exact declared identities and cannot be inferred from names or proximity."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor makes DWH owner of all schemas",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "visual adjacency invents relation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "same-schema instances conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "monitor materializes data directly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "viewing schema grants data access",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MASTER",
+      "target_ref": "AIGMOS_DWH_MASTER_SCHEMA_ROOT_CONTRACT",
+      "purpose": "Monitor projects common schema graph."
+    },
+    {
+      "id": "REF_BIND",
+      "target_ref": "AIGMOS_DWH_RELATION_INSTANCE_BINDING_CONTRACT",
+      "purpose": "Monitor projects exact relation bindings."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for the master schema graph, local/relation instance bindings, schema resolution, ownership, projection and materialization lineage.",
+    "notes": [
+      "Unlocked pending reconciliation against Schema/Relation, UserModule isolation and DWH access/lineage contracts."
+    ]
+  }
+}

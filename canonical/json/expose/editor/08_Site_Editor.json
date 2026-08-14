@@ -1,0 +1,192 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_SITE_EDITOR_CONTRACT",
+    "name": "Expose Site Editor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Site Editor as the authorized editor for nanoCMS #WEB hierarchy, pages, routes, navigation and MetaModule placement without editing MetaModule semantics themselves.",
+  "scope": {
+    "owns": [
+      "Expose Site Editor semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "unrelated domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_SITE_EDITOR",
+      "name": "Site Editor",
+      "purpose": "Define Site Editor as the authorized editor for nanoCMS #WEB hierarchy, pages, routes, navigation and MetaModule placement without editing MetaModule semantics themselves.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_NANOCMS",
+        "TOPIC_EXPOSE_EDITOR"
+      ],
+      "member_refs": [
+        "AIGMOS_EXPOSE_SITE_EDITOR_CONTRACT",
+        "EXPOSE_COMPONENT_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_SITE_READ",
+        "OP_SITE_UPDATE",
+        "OP_SITE_BIND_MODULE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_SITE_READ",
+        "name": "Read canonical site structure",
+        "inputs": [
+          "#WEB site ref"
+        ],
+        "outputs": [
+          "site/page/route/nav model"
+        ],
+        "errors": [
+          "site unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_SITE_UPDATE",
+        "name": "Update canonical site structure",
+        "inputs": [
+          "site ref",
+          "validated structure delta"
+        ],
+        "outputs": [
+          "updated #WEB structure"
+        ],
+        "errors": [
+          "authority denied",
+          "route collision",
+          "invalid tree"
+        ],
+        "side_effects": [
+          "#WEB structure updated"
+        ]
+      },
+      {
+        "id": "OP_SITE_BIND_MODULE",
+        "name": "Bind MetaModule to site",
+        "inputs": [
+          "site/page ref",
+          "MetaModule ref"
+        ],
+        "outputs": [
+          "placement binding"
+        ],
+        "errors": [
+          "module unresolved",
+          "page unresolved"
+        ],
+        "side_effects": [
+          "#WEB placement updated"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "owns_edit_surface": [
+      "site hierarchy",
+      "pages",
+      "routes",
+      "navigation metadata",
+      "MetaModule placement"
+    ],
+    "semantic_boundary": "Site Editor edits nanoCMS structure only.",
+    "metamodule_rule": "MetaModule meaning is edited through its owning semantic/editor surface, not Site Editor placement controls.",
+    "route_rule": "Route changes are collision-validated.",
+    "authority_rule": "Site Editor is separately AC-addressable and receives no bypass.",
+    "projection_rule": "Sitemap/breadcrumb/nav previews are derived from #WEB.",
+    "self_hosting_rule": "Editor site/layout may be edited through the same Site Editor semantics subject to copy/validate/recovery rules."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPOSE_COMPONENT_EXPLICIT",
+        "rule": "Expose components reuse canonical semantics and remain non-privileged projection/composition surfaces."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "Site Editor edits MetaModule-owned semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "route collision accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "Site Editor bypasses AccessCore",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "placement/nesting interpreted as MetaModule semantic ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "Editor self-layout changed irreversibly without self-hosting safeguards",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_NANOCMS",
+      "target_ref": "AIGMOS_NANOCMS_STRUCTURE_CONTRACT",
+      "purpose": "Site Editor edits #WEB structure."
+    },
+    {
+      "id": "REF_EDITOR",
+      "target_ref": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT",
+      "purpose": "Editor self-layout follows safe self-hosting rules."
+    }
+  ],
+  "prose": {
+    "summary": "Define Site Editor as the authorized editor for nanoCMS #WEB hierarchy, pages, routes, navigation and MetaModule placement without editing MetaModule semantics themselves.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

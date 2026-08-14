@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CERTIFICATION_PACKAGE_HASH_ANCHOR_CONTRACT",
+    "name": "Certification Package Hash Anchor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define certification anchoring to exact package/member hash evidence so certification validity applies only to the byte/semantic package snapshot that was actually certified.",
+  "scope": {
+    "owns": [
+      "Certification Package Hash Anchor semantics"
+    ],
+    "does_not_own": [
+      "commercial license entitlement",
+      "runtime authorization",
+      "module semantic identity"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CERTIFICATION_PACKAGE_HASH_ANCHOR",
+      "name": "Certification Package Hash Anchor",
+      "purpose": "Define certification anchoring to exact package/member hash evidence so certification validity applies only to the byte/semantic package snapshot that was actually certified.",
+      "parent_topic_refs": [
+        "TOPIC_CERTIFICATION",
+        "TOPIC_DISTRIBUTION_PACKAGE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CERTIFICATION_PACKAGE_HASH_ANCHOR_CONTRACT",
+        "CERTIFICATION_EVIDENCE_BOUND",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "anchor_rule": "Certification references exact package hash/manifest evidence.",
+    "hash_rule": "Hash algorithm/profile is explicit.",
+    "member_rule": "Where package-member integrity matters, member hashes/manifest refs are included.",
+    "identity_rule": "Hash anchors physical package integrity and does not replace canonical semantic identity.",
+    "change_rule": "Any certified package byte/member change invalidates the old physical hash anchor.",
+    "semantic_rule": "Re-serialization that changes bytes requires new physical hash evidence even when semantic equivalence is separately proven.",
+    "trace_rule": "Certified package can trace certification -> package manifest -> hash evidence."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "CERTIFICATION_EVIDENCE_BOUND",
+        "rule": "Certification is explicit technical evidence bound to an exact package/artifact snapshot; commercial payment, license status or runtime authorization never substitute for certification evidence."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "package changed but old hash certification reused",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "hash used as semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "hash algorithm unspecified",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "member integrity omitted where profile requires it",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "semantic equivalence treated as byte-identical certification",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_HASH",
+      "target_ref": "AIGMOS_DISTRIBUTION_HASH_MANIFEST_CONTRACT",
+      "purpose": "Certification anchors distribution hash evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define certification anchoring to exact package/member hash evidence so certification validity applies only to the byte/semantic package snapshot that was actually certified.",
+    "notes": [
+      "Unlocked pending reconciliation against existing certification/distribution/licensing contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ACCESSCORE_ACTIVATION_CONFIG_CONTRACT",
+    "name": "AccessCore Activation and Configuration",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define AccessCore activation from explicit instance configuration, reload/login behavior and the rule that active AC cannot be disabled through ordinary runtime mutation.",
+  "scope": {
+    "owns": [
+      "AccessCore Activation and Configuration semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "transport implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ACCESSCORE_ACTIVATION",
+      "name": "AccessCore Activation",
+      "purpose": "Define AccessCore activation from explicit instance configuration, reload/login behavior and the rule that active AC cannot be disabled through ordinary runtime mutation.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE_AUTHORIZATION"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_RUNTIME_BOOT_PROFILE",
+        "TOPIC_RUNTIME_DEFINITION_STATE",
+        "TOPIC_CORE_CHANGE_CONTROL"
+      ],
+      "member_refs": [
+        "AIGMOS_ACCESSCORE_ACTIVATION_CONFIG_CONTRACT",
+        "GOVERNANCE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_AC_CONFIG_READ",
+        "OP_AC_RELOAD",
+        "OP_AC_DISABLE_VALIDATE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_AC_CONFIG_READ",
+        "name": "Read AccessCore activation/config",
+        "inputs": [
+          "instance-config"
+        ],
+        "outputs": [
+          "AC enabled flag + policy refs"
+        ],
+        "errors": [
+          "config invalid"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_AC_RELOAD",
+        "name": "Reload AccessCore configuration",
+        "inputs": [
+          "validated AC config"
+        ],
+        "outputs": [
+          "active AC runtime policy state"
+        ],
+        "errors": [
+          "reload failed",
+          "authentication required"
+        ],
+        "side_effects": [
+          "AC runtime policy state updated"
+        ]
+      },
+      {
+        "id": "OP_AC_DISABLE_VALIDATE",
+        "name": "Validate AC disable request",
+        "inputs": [
+          "current AC state",
+          "requested config change"
+        ],
+        "outputs": [
+          "allowed | denied"
+        ],
+        "errors": [
+          "runtime disable forbidden"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "config_field": "AC",
+    "config_source": "instance-config.json",
+    "symbol_mount": "#AC",
+    "reload_command": "reload ac",
+    "activation_rule": "AC activation is explicit configuration, not inferred from presence of policy files.",
+    "login_rule": "Reload/activation enters the configured authentication flow before governed runtime access.",
+    "disable_rule": "When AC is active, ordinary runtime operations cannot disable it; disabling requires an explicit permitted configuration/restart path owned by the configuration authority.",
+    "state_rule": "Configured AC enablement and current authenticated session state are separate.",
+    "projection_rule": "Editors may edit canonical config only through authorized configuration operations."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "GOVERNANCE_BOUNDARY_EXPLICIT",
+        "rule": "Identity assurance, authorization, remote delegation and activation state remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "AC activation inferred from policy-file presence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "active AC disabled through ordinary runtime command without permitted config authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "authenticated session state conflated with configured enablement",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "Editor bypasses authorization to change AC config",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "#AC mount treated as separate authority source",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "reload activates invalid configuration",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_AUTHORIZATION_CONTRACT",
+      "purpose": "Activation enables AccessCore authorization semantics."
+    },
+    {
+      "id": "REF_BOOT",
+      "target_ref": "AIGMOS_RUNTIME_BOOT_PROFILE_CONTRACT",
+      "purpose": "AC activation participates in explicit runtime configuration."
+    }
+  ],
+  "prose": {
+    "summary": "Define AccessCore activation from explicit instance configuration, reload/login behavior and the rule that active AC cannot be disabled through ordinary runtime mutation.",
+    "notes": [
+      "Unlocked until reconciled against existing IAM/AC/DWH contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

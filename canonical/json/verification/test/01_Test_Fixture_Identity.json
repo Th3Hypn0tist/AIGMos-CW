@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TEST_FIXTURE_IDENTITY_CONTRACT",
+    "name": "Test Fixture Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define reusable test data, state snapshots, identities, mocked endpoints and environment setup as explicit fixture identities separate from production data/state.",
+  "scope": {
+    "owns": [
+      "Test Fixture Identity semantics"
+    ],
+    "does_not_own": [
+      "production runtime authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TEST_FIXTURE_IDENTITY",
+      "name": "Test Fixture Identity",
+      "purpose": "Define reusable test data, state snapshots, identities, mocked endpoints and environment setup as explicit fixture identities separate from production data/state.",
+      "parent_topic_refs": [
+        "TOPIC_VERIFICATION",
+        "TOPIC_TESTING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TEST_FIXTURE_IDENTITY_CONTRACT",
+        "TEST_NONAUTHORITY",
+        "EVIDENCE_REPRODUCIBILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each fixture has an explicit identity/revision.",
+    "scope_rule": "Fixture applicability/test scope is explicit.",
+    "data_rule": "Fixture data is explicitly classified as test data unless sourced from governed production evidence.",
+    "state_rule": "Required initial runtime/config/data state is explicit.",
+    "secret_rule": "Real production secrets are excluded unless a separately governed test requires them.",
+    "cleanup_rule": "Fixture teardown/cleanup semantics are explicit.",
+    "authority_rule": "Fixture possession grants no production resource access."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TEST_NONAUTHORITY",
+        "rule": "Test definitions, fixtures, results, coverage, simulations and release evidence never become production semantic authority or grant production execution rights merely by existing or passing."
+      },
+      {
+        "id": "EVIDENCE_REPRODUCIBILITY",
+        "rule": "Verification evidence binds exact test/profile/source/runtime revisions and declared environment inputs so a pass/fail result cannot silently float across unrelated versions or targets."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "test fixture mistaken for production source",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "production secret copied into fixture by default",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "fixture selected by newest file",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "fixture creates persistent prod state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "fixture identity equals tested resource identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TEST",
+      "target_ref": "AIGMOS_TEST_CASE_IDENTITY_CONTRACT",
+      "purpose": "Tests reference exact reusable fixtures."
+    }
+  ],
+  "prose": {
+    "summary": "Define reusable test data, state snapshots, identities, mocked endpoints and environment setup as explicit fixture identities separate from production data/state.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

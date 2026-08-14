@@ -1,0 +1,180 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ACCESSCORE_AUTHORIZATION_CONTRACT",
+    "name": "AccessCore Authorization",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define AccessCore authorization as explicit resource/operation rights evaluated independently from IAM assurance and semantic ownership.",
+  "scope": {
+    "owns": [
+      "AccessCore Authorization semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "transport implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ACCESSCORE_AUTHORIZATION",
+      "name": "AccessCore Authorization",
+      "purpose": "Define AccessCore authorization as explicit resource/operation rights evaluated independently from IAM assurance and semantic ownership.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_IAM_ASSURANCE",
+        "TOPIC_CORE_STRUCTURE_AUTHORITY",
+        "TOPIC_RUNTIME_COMMAND_REGISTRY"
+      ],
+      "member_refs": [
+        "AIGMOS_ACCESSCORE_AUTHORIZATION_CONTRACT",
+        "GOVERNANCE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_AC_RESOLVE_POLICY",
+        "OP_AC_AUTHORIZE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_AC_RESOLVE_POLICY",
+        "name": "Resolve AccessCore policy",
+        "inputs": [
+          "resource/operation ref",
+          "identity/groups"
+        ],
+        "outputs": [
+          "applicable authorization policy"
+        ],
+        "errors": [
+          "policy unresolved",
+          "policy ambiguous"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_AC_AUTHORIZE",
+        "name": "Authorize operation",
+        "inputs": [
+          "identity",
+          "groups",
+          "operation/resource",
+          "assurance context",
+          "policy"
+        ],
+        "outputs": [
+          "allow | deny"
+        ],
+        "errors": [
+          "assurance insufficient"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "activation_modes": [
+      "off",
+      "on"
+    ],
+    "off_rule": "When AC is off, AC restrictions do not apply.",
+    "on_rule": "When AC is on, governed resources/operations require explicit authorization.",
+    "group_rule": "system-group has rw by explicit policy; other groups require explicit r/w or operation rights.",
+    "command_rule": "Command rights are explicit and separate from data/resource rights.",
+    "assurance_rule": "AC policy may additionally require minimum IAM assurance.",
+    "ownership_rule": "Semantic ownership does not automatically grant AC authorization.",
+    "ui_rule": "Terminal and web/editor surfaces are governed by the same canonical authorization semantics; UI visibility does not bypass AC."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "GOVERNANCE_BOUNDARY_EXPLICIT",
+        "rule": "Identity assurance, authorization, remote delegation and activation state remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "AC authorization inferred from semantic ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "IAM assurance treated as authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "UI/editor visibility bypasses AC",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "command right inferred from unrelated resource right",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "AC-on governed resource accessed without explicit allow",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "AC-off state treated as implicit permanent authorization record",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_IAM",
+      "target_ref": "AIGMOS_IAM_ASSURANCE_CONTRACT",
+      "purpose": "Assurance may constrain authorization but does not replace it."
+    },
+    {
+      "id": "REF_COMMAND",
+      "target_ref": "AIGMOS_RUNTIME_COMMAND_REGISTRY_CONTRACT",
+      "purpose": "Command rights apply to canonical command identities."
+    }
+  ],
+  "prose": {
+    "summary": "Define AccessCore authorization as explicit resource/operation rights evaluated independently from IAM assurance and semantic ownership.",
+    "notes": [
+      "Unlocked until reconciled against existing IAM/AC/DWH contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_UPGRADE_MIGRATION_MONITOR_CONTRACT",
+    "name": "Upgrade and Migration Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for source/target versions, migration sequence, compatibility windows, point-of-no-return and resume/recovery state.",
+  "scope": {
+    "owns": [
+      "Upgrade and Migration Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "canonical documentation ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_UPGRADE_MIGRATION_MONITOR",
+      "name": "Upgrade and Migration Monitor",
+      "purpose": "Define a read-only Expose monitor for source/target versions, migration sequence, compatibility windows, point-of-no-return and resume/recovery state.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_UPGRADE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_UPGRADE_MIGRATION_MONITOR_CONTRACT",
+        "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "OPERATIONS_FAIL_SAFE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_UPGRADE",
+      "name": "Upgrade",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_UPGRADE already referenced by 6 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 6,
+        "distinct_child_topics": 6,
+        "host_contract_ref": "AIGMOS_EXPOSE_UPGRADE_MIGRATION_MONITOR_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "current/target release",
+      "migration graph",
+      "step states",
+      "mixed-version compatibility",
+      "backup/preconditions",
+      "point-of-no-return",
+      "rollback eligibility",
+      "resume/recovery options"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Upgrade plan, deployment execution, migration step, version/schema and backup identities remain distinct.",
+    "action_rule": "upgrade/pause/resume/rollback/restore operations use separate authorized workflows.",
+    "authority_rule": "Viewing upgrade readiness grants no execution authority.",
+    "failure_rule": "partial/ambiguous/incompatible/irreversible states remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "rule": "Release candidate, accepted release, deployment plan, deployment execution, installed artifact, active runtime instance and observed health remain separate identities/states."
+      },
+      {
+        "id": "OPERATIONS_FAIL_SAFE",
+        "rule": "Operational convenience, availability pressure, maintenance state, automation, recovery or rollback never silently bypass validation, authorization, integrity, governance or dispatcher boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor resumes by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "migration order inferred visually",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "rollback offered after irreversible point",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "current state guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "viewing grants prod rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RESUME",
+      "target_ref": "AIGMOS_UPGRADE_RESUME_RECOVERY_CONTRACT",
+      "purpose": "Monitor projects exact interrupted-upgrade recovery."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for source/target versions, migration sequence, compatibility windows, point-of-no-return and resume/recovery state.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_UPGRADE solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

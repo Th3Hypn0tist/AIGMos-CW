@@ -1,0 +1,163 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DISTRIBUTION_ROUNDTRIP_CONFORMANCE_CONTRACT",
+    "name": "Distribution Roundtrip Conformance",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define conformance checks for export→import and package→install→export cycles with explicit byte/semantic equivalence expectations.",
+  "scope": {
+    "owns": [
+      "Distribution Roundtrip Conformance semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DISTRIBUTION_ROUNDTRIP_CONFORMANCE",
+      "name": "Distribution Roundtrip Conformance",
+      "purpose": "Define conformance checks for export→import and package→install→export cycles with explicit byte/semantic equivalence expectations.",
+      "parent_topic_refs": [
+        "TOPIC_DISTRIBUTION",
+        "TOPIC_CONFORMANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DISTRIBUTION_ROUNDTRIP_CONFORMANCE_CONTRACT",
+        "PACKAGE_IDENTITY_INTEGRITY",
+        "ENTITLEMENT_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_CONFORMANCE",
+      "name": "Conformance",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_CONFORMANCE already referenced by 74 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 74,
+        "distinct_child_topics": 74,
+        "host_contract_ref": "AIGMOS_DISTRIBUTION_ROUNDTRIP_CONFORMANCE_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "profiles": [
+      "byte_identical",
+      "semantic_lossless",
+      "declared_lossy"
+    ],
+    "source_rule": "Roundtrip starts from exact source identity/revision.",
+    "export_rule": "Exact export profile is recorded.",
+    "import_rule": "Exact import/normalization profile is recorded.",
+    "comparison_rule": "Comparison method/equivalence criteria are explicit.",
+    "install_rule": "Installed state does not alter preserved artifact bytes in byte-identical profile.",
+    "finding_rule": "Mismatch produces explicit conformance finding.",
+    "authority_rule": "Roundtrip success grants no certification/runtime authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PACKAGE_IDENTITY_INTEGRITY",
+        "rule": "Package, artifact, module, certification, license and installed-instance identities remain distinct; hashes prove content integrity only within their declared profile and never grant runtime authority."
+      },
+      {
+        "id": "ENTITLEMENT_NONAUTHORITY",
+        "rule": "License or certification entitlement permits declared product/service use only; it never substitutes for IAM identity, AccessCore authorization, runtime validation or dispatcher gating."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "semantic-equivalent output claimed byte-identical",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "install rewrites preserved package silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "comparison profile omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "roundtrip success means certified",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "mismatch ignored",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_BYTE",
+      "target_ref": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT",
+      "purpose": "Byte-identical profiles preserve exact source bytes."
+    },
+    {
+      "id": "REF_SEM",
+      "target_ref": "AIGMOS_CANONICAL_SEMANTIC_EXPORT_CONTRACT",
+      "purpose": "Semantic profiles use declared equivalence."
+    }
+  ],
+  "prose": {
+    "summary": "Define conformance checks for export→import and package→install→export cycles with explicit byte/semantic equivalence expectations.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_CONFORMANCE solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

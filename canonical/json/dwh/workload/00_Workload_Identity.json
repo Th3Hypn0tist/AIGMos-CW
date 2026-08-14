@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_WORKLOAD_IDENTITY_CONTRACT",
+    "name": "DWH Workload Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each query, ingest, mutation, federation, migration, replication or maintenance execution as belonging to an explicit workload identity/profile separate from the operation and execution identities themselves.",
+  "scope": {
+    "owns": [
+      "DWH Workload Identity semantics"
+    ],
+    "does_not_own": [
+      "query semantic ownership",
+      "AccessCore policy ownership",
+      "runtime scheduler implementation details"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_WORKLOAD_IDENTITY",
+      "name": "DWH Workload Identity",
+      "purpose": "Define each query, ingest, mutation, federation, migration, replication or maintenance execution as belonging to an explicit workload identity/profile separate from the operation and execution identities themselves.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_WORKLOAD_CONTROL"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_WORKLOAD_IDENTITY_CONTRACT",
+        "WORKLOAD_CONTROL_NONSEMANTIC",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "workload_types": [
+      "query",
+      "ingest",
+      "write",
+      "federation",
+      "migration",
+      "replication",
+      "maintenance",
+      "other declared workload"
+    ],
+    "identity_rule": "Every managed workload/profile has an explicit identity.",
+    "execution_rule": "Concrete executions reference workload identity but keep their own execution identities.",
+    "scope_rule": "Workload may bind exact instance/project/user/service/profile scopes.",
+    "resource_rule": "Workload resource constraints are explicit and separate from semantic operation definitions.",
+    "priority_rule": "Priority is scheduling metadata and never semantic business priority unless separately modeled.",
+    "authority_rule": "Workload classification does not grant operation/data authority.",
+    "path_rule": "Queue name/process id/thread id is not canonical workload identity."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "WORKLOAD_CONTROL_NONSEMANTIC",
+        "rule": "Admission, quotas, concurrency, priority, cancellation and resource budgets may control when/how work executes but never change canonical query/write semantics, data ownership, classification or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "queue name used as semantic workload identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "workload identity replaces query/write execution identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "priority treated as domain priority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "workload class grants authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "process id becomes canonical identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_QUERY",
+      "target_ref": "AIGMOS_DWH_QUERY_IDENTITY_CONTRACT",
+      "purpose": "Query executions may participate in managed workloads."
+    },
+    {
+      "id": "REF_WRITE",
+      "target_ref": "AIGMOS_DWH_WRITE_OPERATION_IDENTITY_CONTRACT",
+      "purpose": "Mutation executions retain exact operation identity."
+    }
+  ],
+  "prose": {
+    "summary": "Define each query, ingest, mutation, federation, migration, replication or maintenance execution as belonging to an explicit workload identity/profile separate from the operation and execution identities themselves.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH query, mutation, service-level and runtime execution contracts."
+    ]
+  }
+}

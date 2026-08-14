@@ -1,0 +1,212 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ACCESS_AUDIT_EVIDENCE_CONTRACT",
+    "name": "Access Audit Evidence",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define privacy-safe evidence for read, query, export, disclosure, denial and remote-access decisions without recording protected payload values unnecessarily.",
+  "scope": {
+    "owns": [
+      "Access Audit Evidence semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "runtime execution authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ACCESS_AUDIT_EVIDENCE",
+      "name": "Access Audit Evidence",
+      "purpose": "Define privacy-safe evidence for read, query, export, disclosure, denial and remote-access decisions without recording protected payload values unnecessarily.",
+      "parent_topic_refs": [
+        "TOPIC_GOVERNANCE",
+        "TOPIC_AUDIT",
+        "TOPIC_ACCESS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_ACCESS_AUDIT_EVIDENCE_CONTRACT",
+        "GOVERNANCE_EVIDENCE_SEPARATION",
+        "FAIL_CLOSED_PROTECTED_DATA",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_ACCESS",
+      "name": "Access",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_ACCESS already referenced by 2 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 2,
+        "distinct_child_topics": 2,
+        "host_contract_ref": "AIGMOS_ACCESS_AUDIT_EVIDENCE_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    },
+    {
+      "id": "TOPIC_AUDIT",
+      "name": "Audit",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_AUDIT already referenced by 9 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 9,
+        "distinct_child_topics": 9,
+        "host_contract_ref": "AIGMOS_ACCESS_AUDIT_EVIDENCE_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    },
+    {
+      "id": "TOPIC_GOVERNANCE",
+      "name": "Governance",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_GOVERNANCE already referenced by 31 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 31,
+        "distinct_child_topics": 31,
+        "host_contract_ref": "AIGMOS_ACCESS_AUDIT_EVIDENCE_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "event_types": [
+      "read",
+      "query",
+      "export",
+      "disclosure",
+      "remote_access",
+      "denied_access",
+      "reauth_challenge",
+      "other declared access event"
+    ],
+    "subject_rule": "Requester/subject identity and exact resource scope are explicit.",
+    "decision_rule": "AccessCore/governance decision refs are exact.",
+    "data_rule": "Audit records identify data/resource scope without copying denied/protected content by default.",
+    "denial_rule": "Denied access remains auditable without leaking denied values.",
+    "query_rule": "Queries may record exact query identity/hash/profile rather than full sensitive result payload.",
+    "remote_rule": "Remote peer/delegation refs are explicit.",
+    "authority_rule": "Audit visibility does not grant access to source data."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "GOVERNANCE_EVIDENCE_SEPARATION",
+        "rule": "Policy, decision, evidence, audit record, consent, incident and compliance result remain separate machine-significant identities; no evidence artifact silently becomes source data, authorization or runtime authority."
+      },
+      {
+        "id": "FAIL_CLOSED_PROTECTED_DATA",
+        "rule": "Ambiguous or unresolved governance for protected data fails closed; UI visibility, transport reachability, cache presence, role title, prior access or audit-log presence never substitute for an explicit valid policy decision."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "denied field value copied into audit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "audit access grants source access",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "remote access actor unresolved",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "query result stored fully by default",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "denied event omitted",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_GOV",
+      "target_ref": "AIGMOS_DWH_GOVERNANCE_DECISION_EVIDENCE_CONTRACT",
+      "purpose": "Data access audit references exact governance decisions."
+    }
+  ],
+  "prose": {
+    "summary": "Define privacy-safe evidence for read, query, export, disclosure, denial and remote-access decisions without recording protected payload values unnecessarily.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_ACCESS solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership.",
+      "Pass 6 hosts grouping-only Topic TOPIC_AUDIT solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership.",
+      "Pass 6 hosts grouping-only Topic TOPIC_GOVERNANCE solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

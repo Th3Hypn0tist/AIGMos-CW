@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_TAINT_CLASSIFICATION_CONTRACT",
+    "name": "DWH Taint Classification",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit taint/classification labels attached to DWH data according to origin, trust, sensitivity, externality or other owning policy dimensions without encoding policy in ad hoc field names.",
+  "scope": {
+    "owns": [
+      "DWH Taint Classification semantics"
+    ],
+    "does_not_own": [
+      "domain value semantics",
+      "transport implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_TAINT",
+      "name": "DWH Taint Classification",
+      "purpose": "Define explicit taint/classification labels attached to DWH data according to origin, trust, sensitivity, externality or other owning policy dimensions without encoding policy in ad hoc field names.",
+      "parent_topic_refs": [
+        "TOPIC_DWH_LINEAGE",
+        "TOPIC_CORE_CAPABILITY_AUTHORITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_TAINT_CLASSIFICATION_CONTRACT",
+        "DWH_LINEAGE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "role": "data-governance metadata",
+    "classification_rule": "Taint labels are explicit typed metadata attached to lineage-tracked data.",
+    "dimensions_example": [
+      "external",
+      "untrusted",
+      "identity_scoped",
+      "restricted",
+      "derived_from_restricted"
+    ],
+    "policy_rule": "Exact labels and meanings are owned by explicit policy contracts; this contract defines the propagation mechanism, not business-specific label taxonomy.",
+    "origin_rule": "Input may receive taint from origin classification before downstream transformation.",
+    "identity_rule": "Taint metadata does not alter the canonical identity of the underlying value.",
+    "authority_rule": "Taint classification does not itself grant read/write authority; policy may use it as an authorization/filtering input.",
+    "visibility_rule": "Taint state is machine-readable for validation and monitoring."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_LINEAGE_EXPLICIT",
+        "rule": "DWH lineage and taint state remain explicit, monotonic unless an authorized transformation says otherwise, and traceable to source evidence."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "taint inferred only from field name/path heuristic",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "taint metadata changes value identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "taint label grants authority by itself",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "untrusted/external input enters governed DWH without applicable classification evaluation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "taint state hidden from machine validation",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LINEAGE",
+      "target_ref": "AIGMOS_DWH_DATA_LINEAGE_CONTRACT",
+      "purpose": "Taint attaches to lineage-tracked data."
+    },
+    {
+      "id": "REF_AUTH",
+      "target_ref": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT",
+      "purpose": "Classification and authority remain separate."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit taint/classification labels attached to DWH data according to origin, trust, sensitivity, externality or other owning policy dimensions without encoding policy in ad hoc field names.",
+    "notes": [
+      "Unlocked pending reconciliation against existing DWH/provenance/security semantics and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

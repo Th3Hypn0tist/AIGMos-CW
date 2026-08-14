@@ -1,0 +1,146 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_DWH_WRITE_MONITOR_CONTRACT",
+    "name": "DWH Write and Transaction Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for mutation definitions/executions, semantic diffs, transactions, conflicts, revisions, deletes and resulting provenance.",
+  "scope": {
+    "owns": [
+      "DWH Write and Transaction Monitor semantics"
+    ],
+    "does_not_own": [
+      "source domain model ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_DWH_WRITE_MONITOR",
+      "name": "DWH Write and Transaction Monitor",
+      "purpose": "Define a read-only Expose monitor for mutation definitions/executions, semantic diffs, transactions, conflicts, revisions, deletes and resulting provenance.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_MUTATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_DWH_WRITE_MONITOR_CONTRACT",
+        "DWH_MUTATION_EXACT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "write operation/execution",
+      "exact target refs",
+      "semantic patch/diff",
+      "authorization result",
+      "transaction membership/state",
+      "record revision/version",
+      "conflicts/reconciliation",
+      "delete/tombstone state",
+      "emitted Events",
+      "lineage/audit refs"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Operation, write execution, transaction, target record, revision and Event identities remain distinct.",
+    "diff_rule": "UI distinguishes before/candidate/accepted values without treating candidate as committed.",
+    "action_rule": "apply/retry/reconcile/rollback/delete operations invoke separate authorized canonical workflows.",
+    "authority_rule": "Viewing a mutation/conflict grants no write/reconciliation authority.",
+    "graph_rule": "Transaction/dependency/relation edges correspond only to explicit refs.",
+    "failure_rule": "Partial commit, stale revision, denied write and failed delete are shown explicitly."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_MUTATION_EXACT",
+        "rule": "Every DWH mutation resolves an exact destination instance/schema/record/field identity, validates intended change, evaluates authorization and conflict state, and records provenance; no write is inferred from query/display context or silently overwrites conflicting accepted state."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor displays candidate patch as committed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "monitor silently retries stale write",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "transaction and write identities conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "viewing grants mutation authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "partial commit hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PATCH",
+      "target_ref": "AIGMOS_DWH_PATCH_MUTATION_CONTRACT",
+      "purpose": "Monitor projects semantic mutation delta."
+    },
+    {
+      "id": "REF_TX",
+      "target_ref": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT",
+      "purpose": "Monitor exposes transaction state."
+    },
+    {
+      "id": "REF_CONFLICT",
+      "target_ref": "AIGMOS_DWH_CONCURRENCY_CONFLICT_CONTRACT",
+      "purpose": "Monitor surfaces exact conflicts."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for mutation definitions/executions, semantic diffs, transactions, conflicts, revisions, deletes and resulting provenance.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH schema binding, lineage, AccessCore and canonical change-boundary contracts."
+    ]
+  }
+}

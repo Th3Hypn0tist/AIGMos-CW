@@ -1,0 +1,237 @@
+{
+  "behavior": {
+    "events": [],
+    "flows": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "errors": [
+          "duplicate command",
+          "invalid command shape"
+        ],
+        "id": "OP_COMMAND_REGISTER",
+        "inputs": [
+          "command definition"
+        ],
+        "name": "Register canonical command",
+        "outputs": [
+          "registered command"
+        ],
+        "side_effects": [
+          "command registry updated"
+        ]
+      },
+      {
+        "errors": [
+          "command unresolved",
+          "command ambiguous"
+        ],
+        "id": "OP_COMMAND_RESOLVE",
+        "inputs": [
+          "literal command identity"
+        ],
+        "name": "Resolve command",
+        "outputs": [
+          "exact command definition"
+        ],
+        "side_effects": []
+      },
+      {
+        "errors": [
+          "argument invalid",
+          "authority denied",
+          "effect invalid"
+        ],
+        "id": "OP_COMMAND_VALIDATE",
+        "inputs": [
+          "command definition",
+          "arguments",
+          "authority context"
+        ],
+        "name": "Validate command invocation",
+        "outputs": [
+          "validated invocation"
+        ],
+        "side_effects": []
+      }
+    ],
+    "states": []
+  },
+  "constraints": {
+    "hard_gates": [
+      {
+        "id": "GATE_6BD6A0B035",
+        "condition": "command executes without registry identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_F3A869312F",
+        "condition": "namespace root executes without explicit executable flag",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_BF854ADD61",
+        "condition": "command lacks owner/argument schema",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_CC7A966AA4",
+        "condition": "registration grants invocation authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_818ABAA417",
+        "condition": "availability conflated with command identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_33DFCDDF56",
+        "condition": "dynamic arbitrary command name selected from payload",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_D5CD8F4E20",
+        "condition": "command resolved by fuzzy/display-name heuristic",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_7F9E7B6246",
+        "condition": "command invocation bypasses argument validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_C10D3EFC1F",
+        "condition": "command invocation bypasses applicable authority/effect validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_AF2B35F068",
+        "condition": "help projection treated as separate command authority",
+        "result": "hard_fail"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "COMMAND_EXECUTION_EXPLICIT",
+        "rule": "Executable commands resolve by exact canonical identity and schema, cross one governed dispatcher boundary, and never infer authority from capability presence or parser success."
+      },
+      {
+        "id": "RUNTIME_SEMANTICS_EXPLICIT",
+        "rule": "Runtime-significant semantics are explicit and do not arise from payload, path, projection or implementation heuristics."
+      }
+    ]
+  },
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_COMMAND_REGISTRY_CONTRACT",
+    "name": "Runtime Command Registry",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "members": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending reconciliation against existing command/runtime contracts and whole-tree Contract Format 1.4 validation.",
+      "Unlocked until reconciled against the existing runtime contracts and repository-wide 1.4 traceability validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: commands/07_Command_Registry.json, runtime/commands/00_Runtime_Command_Registry.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define the authoritative registry of executable command identities, recursive namespace placement, argument schemas, effect classes and owning operations. [2] Define canonical command registration and invocation semantics so commands are exact runtime capabilities with explicit arguments, effects and authority checks."
+  },
+  "purpose": "Reconciled source purposes: [1] Define the authoritative registry of executable command identities, recursive namespace placement, argument schemas, effect classes and owning operations. [2] Define canonical command registration and invocation semantics so commands are exact runtime capabilities with explicit arguments, effects and authority checks.",
+  "references": [
+    {
+      "id": "REF_NS",
+      "target_ref": "AIGMOS_RECURSIVE_COMMAND_NAMESPACE_CONTRACT",
+      "purpose": "Registry preserves recursive namespace identity."
+    },
+    {
+      "id": "REF_OPERATION",
+      "target_ref": "AIGMOS_CORE_CANONICAL_OPERATION_CONTRACT",
+      "purpose": "Commands follow explicit operation semantics."
+    },
+    {
+      "id": "REF_AUTH",
+      "target_ref": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT",
+      "purpose": "Command existence and permission remain separate."
+    }
+  ],
+  "scope": {
+    "does_not_own": [
+      "domain semantics",
+      "transport presentation",
+      "implicit authorization",
+      "projection semantics"
+    ],
+    "owns": [
+      "Runtime Command Registry semantics"
+    ]
+  },
+  "semantics": {
+    "authority_rule": "Registry membership does not grant invocation authority.",
+    "availability_rule": "Registered definition and runtime availability are separate states.",
+    "command_identity_rule": "Command identity is explicit and literal; fuzzy/display-name resolution is forbidden.",
+    "dynamic_command_rule": "Payload-selected arbitrary command names are forbidden.",
+    "effect_rule": "Reconciled source clauses: [1] Command effect class/side effects are explicit. [2] Command effects are explicit and validated before dispatch.",
+    "executable_rule": "Only entries explicitly marked executable may dispatch.",
+    "help_rule": "Command help/metadata belongs to the command registry and may be projected read-only; help is not a separate authority datastore.",
+    "namespace_rule": "Command identity includes its full recursive namespace path.",
+    "owner_rule": "Each command maps to one owning canonical operation/implementation binding.",
+    "registry_rule": "Every executable command has an exact canonical command identity.",
+    "routine_rule": "Routines invoke commands through this registry; routines do not create private command semantics.",
+    "schema_rule": "Input arguments/options and output/error shapes are explicit."
+  },
+  "source_role": "definition",
+  "status": "locked",
+  "structure": {
+    "authority": [],
+    "containment": [],
+    "dependencies": [],
+    "ownership": [],
+    "relations": []
+  },
+  "topics": [
+    {
+      "child_topics": [],
+      "composed_topic_refs": [
+        "TOPIC_CORE_OPERATIONS",
+        "TOPIC_CORE_CAPABILITY_AUTHORITY"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_RUNTIME_COMMAND_REGISTRY",
+      "member_refs": [
+        "AIGMOS_RUNTIME_COMMAND_REGISTRY_CONTRACT",
+        "COMMAND_EXECUTION_EXPLICIT",
+        "RUNTIME_SEMANTICS_EXPLICIT",
+        "GATE_6BD6A0B035",
+        "GATE_F3A869312F",
+        "GATE_BF854ADD61",
+        "GATE_CC7A966AA4",
+        "GATE_818ABAA417",
+        "GATE_33DFCDDF56",
+        "GATE_D5CD8F4E20",
+        "GATE_7F9E7B6246",
+        "GATE_C10D3EFC1F",
+        "GATE_AF2B35F068"
+      ],
+      "metadata": {},
+      "name": "Command Registry",
+      "operation_refs": [
+        "OP_COMMAND_REGISTER",
+        "OP_COMMAND_RESOLVE",
+        "OP_COMMAND_VALIDATE"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME"
+      ],
+      "purpose": "Reconciled source clauses: [1] Define the authoritative registry of executable command identities, recursive namespace placement, argument schemas, effect classes and owning operations. [2] Define canonical command registration and invocation semantics so commands are exact runtime capabilities with explicit arguments, effects and authority checks.",
+      "relation_refs": []
+    }
+  ]
+}

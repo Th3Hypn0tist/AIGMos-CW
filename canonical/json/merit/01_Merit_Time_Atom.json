@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MERIT_TIME_ATOM_CONTRACT",
+    "name": "Merit Time Atom",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define MeritCore temporal accounting using recurring one-week reporting intervals anchored to each identity's registration date, with hour-level atoms for sub-week work and no evidence multiplication by splitting.",
+  "scope": {
+    "owns": [
+      "Merit Time Atom semantics"
+    ],
+    "does_not_own": [
+      "IdentityCore authentication",
+      "PortfolioCore source evidence",
+      "Project execution semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MERIT_TIME_ATOM",
+      "name": "Merit Time Atom",
+      "purpose": "Define MeritCore temporal accounting using recurring one-week reporting intervals anchored to each identity's registration date, with hour-level atoms for sub-week work and no evidence multiplication by splitting.",
+      "parent_topic_refs": [
+        "TOPIC_MERITCORE",
+        "TOPIC_FREEMARKET"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MERIT_TIME_ATOM_CONTRACT",
+        "MERIT_EVIDENCE_BOUND",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "week_rule": "Primary reporting bucket is one week.",
+    "anchor_rule": "Weekly cadence is anchored to the identity's registration date.",
+    "hour_rule": "Sub-week work may be represented at hour-atom granularity inside the weekly bucket.",
+    "split_rule": "Splitting a Project/work interval cannot multiply Tier evidence beyond the actual hour-level work represented.",
+    "distribution_rule": "Evidence remains temporally distributed rather than collapsed into one lifetime aggregate.",
+    "time_rule": "Each merit atom/bucket has explicit machine-readable interval semantics.",
+    "timezone_rule": "Timezone/calendar interpretation is explicit where needed for deterministic boundaries."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MERIT_EVIDENCE_BOUND",
+        "rule": "MeritCore-derived points, Tier, recommendations and trust remain bound to one identity and explicit Project/evidence history; they cannot be manufactured by presentation, identity merging or time-splitting."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "weekly cadence anchored to Project start instead of identity registration",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "splitting work multiplies evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "sub-week work has no bounded atom semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "all merit time collapsed into one undated total",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "deterministic bucket boundary cannot be reconstructed",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REG",
+      "target_ref": "AIGMOS_IDENTITY_REGISTRATION_CONTRACT",
+      "purpose": "Registration date anchors weekly cadence."
+    }
+  ],
+  "prose": {
+    "summary": "Define MeritCore temporal accounting using recurring one-week reporting intervals anchored to each identity's registration date, with hour-level atoms for sub-week work and no evidence multiplication by splitting.",
+    "notes": [
+      "Unlocked pending reconciliation against existing MeritCore/FreeMarket contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

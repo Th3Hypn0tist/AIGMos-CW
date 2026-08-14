@@ -1,0 +1,131 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_LOCALIZATION_LANGUAGE_PROFILE_CONTRACT",
+    "name": "Localization Language Profile",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define supported UI language profiles and deterministic fallback behavior while keeping commands and internal identifiers language-invariant.",
+  "scope": {
+    "owns": [
+      "Localization Language Profile semantics"
+    ],
+    "does_not_own": [
+      "canonical command identifiers",
+      "domain semantic identities",
+      "runtime authorization"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_LOCALIZATION_LANGUAGE_PROFILE",
+      "name": "Localization Language Profile",
+      "purpose": "Define supported UI language profiles and deterministic fallback behavior while keeping commands and internal identifiers language-invariant.",
+      "parent_topic_refs": [
+        "TOPIC_LOCALIZATION",
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_LOCALIZATION_LANGUAGE_PROFILE_CONTRACT",
+        "LABELS_PRESENTATION_ONLY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "initial_languages": [
+      "fi",
+      "en",
+      "ja",
+      "vi",
+      "ko",
+      "fr"
+    ],
+    "language_rule": "UI language is explicit per applicable user/session/site context.",
+    "fallback_rule": "Fallback chain is explicit and deterministic.",
+    "identifier_rule": "Canonical/internal identifiers and command names remain language-invariant English/ASCII according to their owning contracts.",
+    "coverage_rule": "Translation coverage can be measured per language/profile.",
+    "missing_rule": "Missing translation uses fallback rather than inventing localized semantics.",
+    "format_rule": "Locale-sensitive display formatting is presentation only unless a data schema explicitly defines locale semantics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "LABELS_PRESENTATION_ONLY",
+        "rule": "Localized labels are context-bearing presentation resources mapped to stable canonical identities; translation never changes command names, internal identifiers or semantic identity."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "command names translated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "missing label invents semantic value",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "fallback chain nondeterministic",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "locale display formatting mutates canonical stored value",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "unsupported language silently treated as fully translated",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REG",
+      "target_ref": "AIGMOS_LOCALIZATION_LABEL_REGISTRY_CONTRACT",
+      "purpose": "Language profiles resolve registry values."
+    }
+  ],
+  "prose": {
+    "summary": "Define supported UI language profiles and deterministic fallback behavior while keeping commands and internal identifiers language-invariant.",
+    "notes": [
+      "Unlocked pending reconciliation against existing localization/Expose contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

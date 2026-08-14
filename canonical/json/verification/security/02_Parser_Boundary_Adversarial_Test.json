@@ -1,0 +1,149 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_PARSER_BOUNDARY_ADVERSARIAL_TEST_CONTRACT",
+    "name": "Parser and Ingress Adversarial Verification",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define malformed, oversized, ambiguous, nested, replayed and crafted ingress tests proving parsers/routes/importers cannot bypass request validation or dispatcher boundaries.",
+  "scope": {
+    "owns": [
+      "Parser and Ingress Adversarial Verification semantics"
+    ],
+    "does_not_own": [
+      "production runtime authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_PARSER_BOUNDARY_ADVERSARIAL_TEST",
+      "name": "Parser and Ingress Adversarial Verification",
+      "purpose": "Define malformed, oversized, ambiguous, nested, replayed and crafted ingress tests proving parsers/routes/importers cannot bypass request validation or dispatcher boundaries.",
+      "parent_topic_refs": [
+        "TOPIC_VERIFICATION",
+        "TOPIC_SECURITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_PARSER_BOUNDARY_ADVERSARIAL_TEST_CONTRACT",
+        "TEST_NONAUTHORITY",
+        "EVIDENCE_REPRODUCIBILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "surfaces": [
+      "command",
+      "REST",
+      "OSC",
+      "WebSocket",
+      "WebRTC",
+      "MCP",
+      "import",
+      "canonical_json",
+      "other declared parser"
+    ],
+    "cases": [
+      "malformed",
+      "oversized",
+      "unknown_method",
+      "duplicate_field",
+      "ambiguous_route",
+      "replay",
+      "nested_payload",
+      "encoding_edge",
+      "other declared case"
+    ],
+    "expected_rule": "Invalid input fails before protected effect.",
+    "route_rule": "No fuzzy/nearest-route/nearest-command fallback is allowed.",
+    "error_rule": "Failure response does not leak sensitive internals.",
+    "resource_rule": "Resource exhaustion limits are verified.",
+    "authority_rule": "Adversarial input never grants authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TEST_NONAUTHORITY",
+        "rule": "Test definitions, fixtures, results, coverage, simulations and release evidence never become production semantic authority or grant production execution rights merely by existing or passing."
+      },
+      {
+        "id": "EVIDENCE_REPRODUCIBILITY",
+        "rule": "Verification evidence binds exact test/profile/source/runtime revisions and declared environment inputs so a pass/fail result cannot silently float across unrelated versions or targets."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "malformed payload reaches dispatcher",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "unknown route executes closest command",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "oversize input allocates unbounded memory",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "parser error leaks secrets",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "replay duplicates destructive effect",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PARSE",
+      "target_ref": "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT",
+      "purpose": "Adversarial tests verify ingress parse boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define malformed, oversized, ambiguous, nested, replayed and crafted ingress tests proving parsers/routes/importers cannot bypass request validation or dispatcher boundaries.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

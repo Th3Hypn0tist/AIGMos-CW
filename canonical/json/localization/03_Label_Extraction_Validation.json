@@ -1,0 +1,131 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_LOCALIZATION_EXTRACTION_VALIDATION_CONTRACT",
+    "name": "Localization Extraction Validation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define validation that Expose human-facing UI strings are either registered labels or explicitly exempt non-translatable data, preventing hidden hard-coded interface text.",
+  "scope": {
+    "owns": [
+      "Localization Extraction Validation semantics"
+    ],
+    "does_not_own": [
+      "canonical command identifiers",
+      "domain semantic identities",
+      "runtime authorization"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_LOCALIZATION_EXTRACTION_VALIDATION",
+      "name": "Localization Extraction Validation",
+      "purpose": "Define validation that Expose human-facing UI strings are either registered labels or explicitly exempt non-translatable data, preventing hidden hard-coded interface text.",
+      "parent_topic_refs": [
+        "TOPIC_LOCALIZATION",
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_LOCALIZATION_EXTRACTION_VALIDATION_CONTRACT",
+        "LABELS_PRESENTATION_ONLY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "checks": [
+      "unregistered UI literals",
+      "missing label target/context",
+      "missing source-language value",
+      "translation coverage",
+      "translated internal identifiers",
+      "orphaned label keys"
+    ],
+    "literal_rule": "Machine-generated data/user content is not automatically a translatable label.",
+    "ui_rule": "Static human-facing Expose labels/help/navigation text must resolve through the label registry unless explicitly exempt.",
+    "identifier_rule": "Internal IDs/commands are validated against accidental localization.",
+    "coverage_rule": "Missing translation is a coverage finding, not permission to duplicate hard-coded text.",
+    "release_rule": "Required-surface extraction violations block localization-ready lock according to profile.",
+    "report_rule": "Finding identifies exact UI/source file/MetaModule and label/context target."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "LABELS_PRESENTATION_ONLY",
+        "rule": "Localized labels are context-bearing presentation resources mapped to stable canonical identities; translation never changes command names, internal identifiers or semantic identity."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "hard-coded required UI label accepted silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "user data mistaken for translation key",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "translated internal ID accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "finding lacks source/target ref",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "missing translation fixed by duplicate literal",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CTX",
+      "target_ref": "AIGMOS_LOCALIZATION_LABEL_CONTEXT_CONTRACT",
+      "purpose": "Extracted labels require context."
+    }
+  ],
+  "prose": {
+    "summary": "Define validation that Expose human-facing UI strings are either registered labels or explicitly exempt non-translatable data, preventing hidden hard-coded interface text.",
+    "notes": [
+      "Unlocked pending reconciliation against existing localization/Expose contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NANOCMS_PAGE_TREE_CONTRACT",
+    "name": "nanoCMS Page Tree",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define recursive page hierarchy using exact parent/child refs, stable page identities and explicit ordering metadata.",
+  "scope": {
+    "owns": [
+      "nanoCMS Page Tree semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NANOCMS_PAGE_TREE",
+      "name": "nanoCMS Page Tree",
+      "purpose": "Define recursive page hierarchy using exact parent/child refs, stable page identities and explicit ordering metadata.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_NANOCMS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_NANOCMS_PAGE_TREE_CONTRACT",
+        "UI_NONAUTHORITY",
+        "UI_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each page has an explicit identity.",
+    "parent_rule": "Parent/child relationships are explicit refs.",
+    "root_rule": "Each page belongs to exact site tree/root.",
+    "order_rule": "Sibling presentation order is explicit metadata, not semantic priority.",
+    "cycle_rule": "Page containment cycles are invalid.",
+    "route_rule": "Page identity is separate from route/path binding.",
+    "visibility_rule": "Hidden/nav-excluded state does not change authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "UI_NONAUTHORITY",
+        "rule": "UI visibility, navigation, placement, styling, selection, focus and visual adjacency never create semantic ownership, resource identity or execution authority."
+      },
+      {
+        "id": "UI_EFFECT_BOUNDARY",
+        "rule": "Effect-capable UI actions create explicit candidate/request data and must cross canonical validation, authorization and dispatcher boundaries before effects occur."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "filesystem nesting defines page semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "visual order becomes authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "cycle accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "page path reused as page identity only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "hidden page bypasses AccessCore",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SITE",
+      "target_ref": "AIGMOS_NANOCMS_SITE_IDENTITY_CONTRACT",
+      "purpose": "Pages belong to exact site structure."
+    }
+  ],
+  "prose": {
+    "summary": "Define recursive page hierarchy using exact parent/child refs, stable page identities and explicit ordering metadata.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

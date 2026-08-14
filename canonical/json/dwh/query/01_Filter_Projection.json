@@ -1,0 +1,154 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_FILTER_PROJECTION_CONTRACT",
+    "name": "DWH Filter and Projection",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit row/record filtering and field projection over resolved DWH data using typed predicates and exact field identities.",
+  "scope": {
+    "owns": [
+      "DWH Filter and Projection semantics"
+    ],
+    "does_not_own": [
+      "source schema ownership",
+      "AccessCore policy ownership",
+      "materialized destination ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_FILTER_PROJECTION",
+      "name": "DWH Filter and Projection",
+      "purpose": "Define explicit row/record filtering and field projection over resolved DWH data using typed predicates and exact field identities.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_QUERY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_FILTER_PROJECTION_CONTRACT",
+        "QUERY_EXPLICIT_AND_NONOWNING",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_QUERY",
+      "name": "Query",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_QUERY already referenced by 6 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 6,
+        "distinct_child_topics": 6,
+        "host_contract_ref": "AIGMOS_DWH_FILTER_PROJECTION_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "filter_rule": "Filter predicates reference exact field/value/parameter identities.",
+    "predicate_rule": "Operators and null/unknown semantics are explicit.",
+    "projection_rule": "Projected fields/expressions are explicitly selected.",
+    "field_rule": "Display names/column positions never replace canonical field identities.",
+    "expression_rule": "Derived expressions are machine-readable and version/profile bound where needed.",
+    "classification_rule": "Projection/filtering never implicitly lowers source classification.",
+    "missing_rule": "missing, null and unknown values follow explicit semantics.",
+    "authority_rule": "Filtering out restricted values does not itself authorize access to restricted source fields."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "QUERY_EXPLICIT_AND_NONOWNING",
+        "rule": "A DWH query is an explicit read/projection definition over exact resolved schema/instance/relation identities; querying, filtering, joining, aggregating, ordering or paginating never silently changes source ownership, identity or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "filter field resolved by display label only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "null/unknown semantics guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "projection silently declassifies",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "hidden restricted field read merely to filter without policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "column position treated as identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_DWH_SCHEMA_RESOLUTION_CONTRACT",
+      "purpose": "Filters/projections bind exact fields."
+    },
+    {
+      "id": "REF_TAINT",
+      "target_ref": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT",
+      "purpose": "Derived projections preserve classification."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit row/record filtering and field projection over resolved DWH data using typed predicates and exact field identities.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH schema binding, lineage/classification and output-governance contracts.",
+      "Pass 6 hosts grouping-only Topic TOPIC_QUERY solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

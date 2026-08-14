@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ACCESSCORE_CONFIG_FLAG_CONTRACT",
+    "name": "AccessCore Configuration Flag",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the instance configuration flag controlling whether AccessCore is enabled for the instance, while keeping configuration state separate from current runtime login/session state.",
+  "scope": {
+    "owns": [
+      "AccessCore Configuration Flag semantics"
+    ],
+    "does_not_own": [
+      "IdentityCore identity semantics",
+      "commercial licensing",
+      "domain business semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ACCESSCORE_CONFIG_FLAG",
+      "name": "AccessCore Configuration Flag",
+      "purpose": "Define the instance configuration flag controlling whether AccessCore is enabled for the instance, while keeping configuration state separate from current runtime login/session state.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE_AUTHORIZATION",
+        "TOPIC_RUNTIME_ACTIVATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_ACCESSCORE_CONFIG_FLAG_CONTRACT",
+        "ACCESSCORE_ACTIVATION_GOVERNED",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "config_key": "AC",
+    "config_rule": "Instance configuration explicitly declares whether AccessCore is enabled.",
+    "definition_rule": "AC-enabled configuration is canonical/config state, not itself an authenticated runtime session.",
+    "activation_rule": "A runtime using AC-enabled config activates AccessCore through explicit reload/start semantics.",
+    "disable_rule": "Changing AC-enabled configuration is a governed configuration change.",
+    "runtime_rule": "When AccessCore is already active, an ungoverned runtime command cannot disable it.",
+    "identity_rule": "AC configuration does not define caller identity.",
+    "authority_rule": "Config visibility does not grant policy-admin authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ACCESSCORE_ACTIVATION_GOVERNED",
+        "rule": "AccessCore activation, login, assurance and runtime protection are explicit lifecycle semantics; once active, AccessCore cannot be silently bypassed or disabled by an ungoverned runtime/config mutation."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "AC enabled state inferred from login session only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "active AC disabled by ungoverned runtime mutation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "config visibility grants admin authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "AC flag treated as caller identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "AC enabled configuration silently bypassed",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_INST",
+      "target_ref": "AIGMOS_INSTANCE_CONFIG_OWNERSHIP_CONTRACT",
+      "purpose": "AC enablement is an explicit instance configuration binding."
+    }
+  ],
+  "prose": {
+    "summary": "Define the instance configuration flag controlling whether AccessCore is enabled for the instance, while keeping configuration state separate from current runtime login/session state.",
+    "notes": [
+      "Unlocked pending reconciliation against existing AccessCore/IAM/runtime activation contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

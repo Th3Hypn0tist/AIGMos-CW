@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TOOL_SCHEMA_CAPABILITY_VALIDATION_CONTRACT",
+    "name": "Tool Schema and Capability Validation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define validation of tool input/output schema, capability claims, execution bounds and endpoint compatibility before registration or invocation.",
+  "scope": {
+    "owns": [
+      "Tool Schema and Capability Validation semantics"
+    ],
+    "does_not_own": [
+      "external MCP implementation semantics",
+      "AccessCore policy ownership",
+      "domain business semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TOOL_SCHEMA_CAPABILITY_VALIDATION",
+      "name": "Tool Schema and Capability Validation",
+      "purpose": "Define validation of tool input/output schema, capability claims, execution bounds and endpoint compatibility before registration or invocation.",
+      "parent_topic_refs": [
+        "TOPIC_MCP",
+        "TOPIC_TOOLS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TOOL_SCHEMA_CAPABILITY_VALIDATION_CONTRACT",
+        "MCP_TOOL_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "input_rule": "Tool input schema is explicit and machine-validated.",
+    "output_rule": "Output schema/profile is explicit where machine-significant.",
+    "capability_rule": "Required endpoint/runtime capabilities are explicit.",
+    "bound_rule": "Timeout, size, rate, concurrency or other execution bounds are explicit where needed.",
+    "compatibility_rule": "Registered binding must remain compatible with exact validated endpoint capability version/profile.",
+    "unknown_rule": "Unknown arguments/capabilities fail according to explicit extension policy.",
+    "validation_rule": "Invocation rechecks applicable schema/capability constraints before dispatch.",
+    "authority_rule": "Schema compatibility does not imply authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MCP_TOOL_SEPARATION",
+        "rule": "MCP endpoint identity, advertised capability, validated #T tool identity, concrete invocation and returned result are separate identities; advertisement or availability never grants execution authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "tool input schema missing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "endpoint capability mismatch ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "execution unbounded where bound required",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "unknown arguments silently accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "schema compatibility treated as authorization",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REG",
+      "target_ref": "AIGMOS_MCP_TOOL_REGISTRATION_BOUNDARY_CONTRACT",
+      "purpose": "Registration requires validated tool contract."
+    }
+  ],
+  "prose": {
+    "summary": "Define validation of tool input/output schema, capability claims, execution bounds and endpoint compatibility before registration or invocation.",
+    "notes": [
+      "Unlocked pending reconciliation against #MCP, #T, q-family and command-dispatch contracts."
+    ]
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RECURSIVE_COMMAND_NAMESPACE_CONTRACT",
+    "name": "Recursive Command Namespaces",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define command families as recursive namespaces where intermediate family nodes group commands and may carry metadata/help without being executable commands themselves.",
+  "scope": {
+    "owns": [
+      "Recursive Command Namespaces semantics"
+    ],
+    "does_not_own": [
+      "backend provider implementation",
+      "UI presentation",
+      "unrelated runtime authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_COMMAND_NAMESPACES",
+      "name": "Recursive Command Namespaces",
+      "purpose": "Define command families as recursive namespaces where intermediate family nodes group commands and may carry metadata/help without being executable commands themselves.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_COMMAND_REGISTRY",
+        "TOPIC_CORE_ADDRESSING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RECURSIVE_COMMAND_NAMESPACE_CONTRACT",
+        "COMMAND_AI_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "recursive_rule": "Command namespaces may contain nested command namespaces and executable leaf/subcommands.",
+    "family_rule": "A family root is non-executable unless it separately declares executable command semantics.",
+    "examples": [
+      "export.files.json",
+      "export.files.csv",
+      "import.files.json"
+    ],
+    "separator": ".",
+    "directory_rule": "A directory may mirror command namespace structure for implementation/storage, but directory presence does not itself create command semantics.",
+    "extensibility_rule": "Recursive families allow new modality branches such as files, images, audio, video or code without flattening the namespace.",
+    "identity_rule": "Concrete command identity is the explicit canonical command path, not an arbitrary filesystem path."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "COMMAND_AI_BOUNDARY_EXPLICIT",
+        "rule": "q-family roles, backend aliases, targets, command namespaces and help metadata remain explicit and do not derive authority from model/backend output."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "namespace family root executed without declared command semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "directory automatically creates command",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "recursive namespaces flattened into unrelated peer commands where hierarchy is canonical",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "command identity inferred from filesystem path only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "namespace separator semantics inconsistent within same command tree",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_COMMAND",
+      "target_ref": "AIGMOS_RUNTIME_COMMAND_REGISTRY_CONTRACT",
+      "purpose": "Concrete leaf commands register canonically."
+    },
+    {
+      "id": "REF_ADDRESS",
+      "target_ref": "AIGMOS_CORE_ADDRESSING_CONTRACT",
+      "purpose": "Command paths are semantic namespace addresses."
+    }
+  ],
+  "prose": {
+    "summary": "Define command families as recursive namespaces where intermediate family nodes group commands and may carry metadata/help without being executable commands themselves.",
+    "notes": [
+      "Unlocked pending reconciliation against existing q/qc/qt and command-tree contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

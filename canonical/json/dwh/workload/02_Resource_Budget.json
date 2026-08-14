@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_RESOURCE_BUDGET_CONTRACT",
+    "name": "DWH Resource Budget",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit per-workload resource budgets for time, memory, result size, scanned data, network, CPU/concurrency or other declared limits.",
+  "scope": {
+    "owns": [
+      "DWH Resource Budget semantics"
+    ],
+    "does_not_own": [
+      "query semantic ownership",
+      "AccessCore policy ownership",
+      "runtime scheduler implementation details"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_RESOURCE_BUDGET",
+      "name": "DWH Resource Budget",
+      "purpose": "Define explicit per-workload resource budgets for time, memory, result size, scanned data, network, CPU/concurrency or other declared limits.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_WORKLOAD_CONTROL"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_RESOURCE_BUDGET_CONTRACT",
+        "WORKLOAD_CONTROL_NONSEMANTIC",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "budget_dimensions": [
+      "wall_time",
+      "cpu_time",
+      "memory",
+      "rows",
+      "result_bytes",
+      "scan_bytes",
+      "network_bytes",
+      "concurrency",
+      "other declared resource"
+    ],
+    "scope_rule": "Budget binds exact workload/profile/request scope.",
+    "limit_rule": "Hard/soft limit semantics are explicit per dimension.",
+    "measurement_rule": "Measurement boundary/unit/profile is explicit.",
+    "hard_rule": "Hard limit exceed stops/fails or enters explicit bounded recovery policy.",
+    "soft_rule": "Soft limit exceed may warn/throttle/deprioritize according to explicit profile.",
+    "semantic_rule": "Budget enforcement never returns semantically different data as complete unless partial-result semantics are explicitly requested.",
+    "authority_rule": "Budget availability does not grant data or operation access.",
+    "evidence_rule": "Consumed resource metrics are derived execution evidence."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "WORKLOAD_CONTROL_NONSEMANTIC",
+        "rule": "Admission, quotas, concurrency, priority, cancellation and resource budgets may control when/how work executes but never change canonical query/write semantics, data ownership, classification or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "result truncated silently and shown complete",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "resource unit unspecified",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "hard limit ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "budget availability grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "measurement scope guessed",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SLO",
+      "target_ref": "AIGMOS_DWH_LATENCY_BUDGET_CONTRACT",
+      "purpose": "Latency budget is one service-level dimension; workload budgets govern execution resources."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit per-workload resource budgets for time, memory, result size, scanned data, network, CPU/concurrency or other declared limits.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH query, mutation, service-level and runtime execution contracts."
+    ]
+  }
+}

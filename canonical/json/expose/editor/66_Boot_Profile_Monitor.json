@@ -1,0 +1,140 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_BOOT_PROFILE_MONITOR_CONTRACT",
+    "name": "Boot Profile Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor/editor projection for boot profiles, positive selections, pruning, dependency closure, resolved candidate sets and active runtime comparison.",
+  "scope": {
+    "owns": [
+      "Boot Profile Monitor semantics"
+    ],
+    "does_not_own": [
+      "component semantic identity",
+      "AccessCore policy ownership",
+      "component runtime implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_BOOT_PROFILE_MONITOR",
+      "name": "Boot Profile Monitor",
+      "purpose": "Define a read-only Expose monitor/editor projection for boot profiles, positive selections, pruning, dependency closure, resolved candidate sets and active runtime comparison.",
+      "parent_topic_refs": [
+        "TOPIC_BOOT_PROFILE",
+        "TOPIC_RUNTIME_ACTIVATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_BOOT_PROFILE_MONITOR_CONTRACT",
+        "BOOT_PROFILE_EXPLICIT_SELECTION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "profile identity/version",
+      "positive USE/user selections",
+      "negative pruning",
+      "group expansion",
+      "required dependencies",
+      "conflicts/missing deps",
+      "resolved candidate component set",
+      "currently active runtime set",
+      "semantic diff"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Profile, component, installed artifact, resolved candidate and active runtime identities/states remain distinct.",
+    "derived_rule": "Resolved closure is visibly marked as derived from exact profile/dependency inputs.",
+    "action_rule": "edit/validate/resolve/apply/rollback operations invoke separate authorized canonical workflows.",
+    "authority_rule": "Viewing/selecting profile components grants no runtime-use authorization.",
+    "graph_rule": "Dependency edges correspond only to explicit dependency refs.",
+    "failure_rule": "No-auto-enable, prune conflicts and missing dependencies are surfaced as explicit validation findings."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOT_PROFILE_EXPLICIT_SELECTION",
+        "rule": "Boot/runtime availability is derived only from explicit profile selection plus validated dependency closure; discovery, installation, dependency presence or historical activation never silently enables a component."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor conflates installed and enabled",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "resolved candidate shown as already active",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "visual adjacency invents dependency",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "monitor silently applies profile edit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "viewing grants runtime authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RES",
+      "target_ref": "AIGMOS_BOOT_PROFILE_RESOLUTION_CONTRACT",
+      "purpose": "Monitor projects exact profile resolution."
+    },
+    {
+      "id": "REF_ACT",
+      "target_ref": "AIGMOS_RUNTIME_ACTIVATION_CONTRACT",
+      "purpose": "Monitor compares resolved candidate with active snapshot."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor/editor projection for boot profiles, positive selections, pruning, dependency closure, resolved candidate sets and active runtime comparison.",
+    "notes": [
+      "Unlocked pending reconciliation against runtime activation, install dependency and instance configuration contracts."
+    ]
+  }
+}

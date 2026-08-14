@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_USERMODULE_INPUT_INGESTION_CONTRACT",
+    "name": "UserModule Input Ingestion",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Input-type UserModule behavior as acquisition/validation of external or local source data followed by explicit write into the module instance's declared inert data surface.",
+  "scope": {
+    "owns": [
+      "UserModule Input Ingestion semantics"
+    ],
+    "does_not_own": [
+      "unrelated module types",
+      "AccessCore policy",
+      "presentation semantics outside declared view scope"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_USERMODULE_INPUT_INGESTION",
+      "name": "UserModule Input Ingestion",
+      "purpose": "Define Input-type UserModule behavior as acquisition/validation of external or local source data followed by explicit write into the module instance's declared inert data surface.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+        "TOPIC_USERMODULE_TYPES"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_USERMODULE_INPUT_INGESTION_CONTRACT",
+        "TYPE_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "type": "input",
+    "source_rule": "Input source identity/binding is explicit.",
+    "validation_rule": "Incoming value/payload validates against the declared input/schema contract before write.",
+    "write_rule": "Validated input writes to the full `#UM` instance data surface or declared `#INPUT:*` child surface.",
+    "inert_rule": "Written input is inert data and never directly executes commands/operations.",
+    "origin_rule": "Source/origin provenance is retained where machine-significant.",
+    "lifecycle_rule": "Input listener/poller state is runtime state separate from input definition.",
+    "authority_rule": "Ability to ingest/write input data does not grant arbitrary module mutation or command authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TYPE_BOUNDARY_EXPLICIT",
+        "rule": "UserModule type behavior is explicit and narrow: input acquires/writes inert data, adapter translates/mounts, view projects, and no type silently acquires another type's authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "input payload directly executes command",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "payload writes outside declared instance/input surface",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "input validation skipped",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "source/origin identity unavailable",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "input runtime listener state treated as definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "input write grants unrelated authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_INPUT",
+      "target_ref": "AIGMOS_I_INPUT_ROOT_CONTRACT",
+      "purpose": "Input type follows #I semantics."
+    },
+    {
+      "id": "REF_DYN",
+      "target_ref": "AIGMOS_INPUT_DYNAMIC_NAMESPACE_FAMILY_CONTRACT",
+      "purpose": "Dynamic input instances use validated #INPUT:* children."
+    }
+  ],
+  "prose": {
+    "summary": "Define Input-type UserModule behavior as acquisition/validation of external or local source data followed by explicit write into the module instance's declared inert data surface.",
+    "notes": [
+      "Unlocked pending reconciliation against existing UserModule/Input/Adapter/View contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

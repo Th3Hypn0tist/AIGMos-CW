@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_TEST_RUN_MONITOR_CONTRACT",
+    "name": "Test Suite and Run Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for test cases, fixtures, suites, runs, assertions and result evidence.",
+  "scope": {
+    "owns": [
+      "Test Suite and Run Monitor semantics"
+    ],
+    "does_not_own": [
+      "production runtime authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_TEST_RUN_MONITOR",
+      "name": "Test Suite and Run Monitor",
+      "purpose": "Define a read-only Expose monitor for test cases, fixtures, suites, runs, assertions and result evidence.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_VERIFICATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_TEST_RUN_MONITOR_CONTRACT",
+        "TEST_NONAUTHORITY",
+        "EVIDENCE_REPRODUCIBILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "test registry",
+      "fixtures",
+      "suite membership",
+      "target/environment refs",
+      "run state",
+      "assertions",
+      "pass/fail/skip/error results",
+      "history"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Test, fixture, suite, run, result and production target identities remain distinct.",
+    "action_rule": "run/rerun/cancel operations use separate authorized workflows.",
+    "authority_rule": "Viewing/passing tests grants no release/runtime authority.",
+    "failure_rule": "fail/error/skip/partial/unknown remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TEST_NONAUTHORITY",
+        "rule": "Test definitions, fixtures, results, coverage, simulations and release evidence never become production semantic authority or grant production execution rights merely by existing or passing."
+      },
+      {
+        "id": "EVIDENCE_REPRODUCIBILITY",
+        "rule": "Verification evidence binds exact test/profile/source/runtime revisions and declared environment inputs so a pass/fail result cannot silently float across unrelated versions or targets."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor executes tests by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "pass shown production healthy universally",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "test/target identities conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "skipped hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "viewing grants test-admin rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RESULT",
+      "target_ref": "AIGMOS_TEST_RESULT_EVIDENCE_CONTRACT",
+      "purpose": "Monitor projects exact result evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for test cases, fixtures, suites, runs, assertions and result evidence.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

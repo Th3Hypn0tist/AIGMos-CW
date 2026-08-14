@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT",
+    "name": "DWH Remote Output Projection",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define remote output as a governed read-only projection over exact resolved schema/fields unless an explicit delegated write operation is separately authorized.",
+  "scope": {
+    "owns": [
+      "DWH Remote Output Projection semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "AccessCore policy ownership",
+      "transport cryptography"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_REMOTE_OUTPUT_PROJECTION",
+      "name": "DWH Remote Output Projection",
+      "purpose": "Define remote output as a governed read-only projection over exact resolved schema/fields unless an explicit delegated write operation is separately authorized.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_REMOTE_SHARING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT",
+        "REMOTE_SHARING_NONEXPANSION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "resolve_rule": "Output resolves exact instance/schema/resource/field identities before projection.",
+    "schema_rule": "Field-level output follows resolved schema/classification governance.",
+    "projection_rule": "Remote output is a projection and does not create new source ownership.",
+    "readonly_rule": "Remote projection is read-only by default.",
+    "redaction_rule": "Fields/values may be redacted/omitted according to source policy without changing internal canonical identity.",
+    "lineage_rule": "Where exposed, derived/remote results retain appropriate source lineage/provenance.",
+    "materialize_rule": "Remote consumer materialization/copy creates separate destination identity under its own explicit write boundary.",
+    "authority_rule": "Successful remote read never implies remote write authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "REMOTE_SHARING_NONEXPANSION",
+        "rule": "Remote DWH sharing exposes only explicitly scoped and schema-governed data; transport reachability, endpoint registration, local authorization or broader local ownership never silently expands delegated remote rights."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "remote read silently enables write",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "output projection changes source ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "restricted field exposed because transport can carry it",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "consumer cache treated as source identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "redaction deletes internal provenance",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_DWH_SCHEMA_RESOLUTION_CONTRACT",
+      "purpose": "Remote projection resolves exact schema/field identities."
+    },
+    {
+      "id": "REF_MAT",
+      "target_ref": "AIGMOS_DWH_PROJECTION_MATERIALIZATION_BOUNDARY_CONTRACT",
+      "purpose": "Consumer materialization remains explicit."
+    }
+  ],
+  "prose": {
+    "summary": "Define remote output as a governed read-only projection over exact resolved schema/fields unless an explicit delegated write operation is separately authorized.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH access governance, EXT addressing, AccessCore and remote transport contracts."
+    ]
+  }
+}

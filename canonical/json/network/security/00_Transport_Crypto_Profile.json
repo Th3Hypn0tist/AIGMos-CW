@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TRANSPORT_CRYPTO_PROFILE_CONTRACT",
+    "name": "Transport Cryptography Profile",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit cryptographic transport/profile identities and parameters for PGP/session-key, WebRTC and other protected network channels without making crypto proof equivalent to application authorization.",
+  "scope": {
+    "owns": [
+      "Transport Cryptography Profile semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "application operation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TRANSPORT_CRYPTO_PROFILE",
+      "name": "Transport Cryptography Profile",
+      "purpose": "Define explicit cryptographic transport/profile identities and parameters for PGP/session-key, WebRTC and other protected network channels without making crypto proof equivalent to application authorization.",
+      "parent_topic_refs": [
+        "TOPIC_NETWORK",
+        "TOPIC_SECURITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TRANSPORT_CRYPTO_PROFILE_CONTRACT",
+        "TRANSPORT_NONAUTHORITY",
+        "INGRESS_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each crypto/security profile has an explicit identity/version.",
+    "algorithm_rule": "Allowed algorithms/key sizes/modes are explicit.",
+    "key_rule": "Key identities/refs are explicit and secret material remains protected.",
+    "session_rule": "Session-key establishment/profile is explicit.",
+    "transport_rule": "Applicable transport/protocol bindings are explicit.",
+    "compatibility_rule": "Deprecated/incompatible profile fails according to policy.",
+    "authority_rule": "Cryptographic channel authenticity/confidentiality does not grant application rights."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "TRANSPORT_NONAUTHORITY",
+        "rule": "Listener, route, endpoint, connection, channel, peer reachability and cryptographic transport evidence never by themselves grant application, data or operation authority."
+      },
+      {
+        "id": "INGRESS_EFFECT_BOUNDARY",
+        "rule": "Inbound network data remains inert until explicit protocol parsing, validation, identity/context resolution, authorization and dispatcher routing succeed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "crypto success means authorized",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "algorithm inferred from filename",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "private key stored in ordinary canonical JSON",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "deprecated algorithm silently accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "key value used as identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SECRET",
+      "target_ref": "AIGMOS_SECRET_IDENTITY_CONTRACT",
+      "purpose": "Private key material uses secret handling semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit cryptographic transport/profile identities and parameters for PGP/session-key, WebRTC and other protected network channels without making crypto proof equivalent to application authorization.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

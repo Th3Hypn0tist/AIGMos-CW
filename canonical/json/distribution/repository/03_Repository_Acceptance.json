@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MODULE_REPOSITORY_ACCEPTANCE_CONTRACT",
+    "name": "Module Repository Acceptance",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define repository publication acceptance as explicit validation of publisher, package integrity, module identity/version, license/distribution policy and optional certification metadata.",
+  "scope": {
+    "owns": [
+      "Module Repository Acceptance semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MODULE_REPOSITORY_ACCEPTANCE",
+      "name": "Module Repository Acceptance",
+      "purpose": "Define repository publication acceptance as explicit validation of publisher, package integrity, module identity/version, license/distribution policy and optional certification metadata.",
+      "parent_topic_refs": [
+        "TOPIC_DISTRIBUTION",
+        "TOPIC_MODULE_REPOSITORY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MODULE_REPOSITORY_ACCEPTANCE_CONTRACT",
+        "PACKAGE_IDENTITY_INTEGRITY",
+        "ENTITLEMENT_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "flow": [
+      "resolve publisher",
+      "verify package integrity",
+      "validate module contract surface",
+      "validate identity/version",
+      "validate distribution/license policy",
+      "validate certification refs if claimed",
+      "accept repository entry"
+    ],
+    "candidate_rule": "Upload/submission is candidate-only until accepted.",
+    "publisher_rule": "Publisher eligibility is explicit.",
+    "identity_rule": "Module identity/version compatibility is validated.",
+    "certification_rule": "Certification claim must target exact hash/package.",
+    "execution_rule": "Repository acceptance never executes module code.",
+    "authority_rule": "Accepted entry does not auto-install/enable."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PACKAGE_IDENTITY_INTEGRITY",
+        "rule": "Package, artifact, module, certification, license and installed-instance identities remain distinct; hashes prove content integrity only within their declared profile and never grant runtime authority."
+      },
+      {
+        "id": "ENTITLEMENT_NONAUTHORITY",
+        "rule": "License or certification entitlement permits declared product/service use only; it never substitutes for IAM identity, AccessCore authorization, runtime validation or dispatcher gating."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "upload instantly published",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "repository scanner executes package",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "certification claim accepted by filename",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "accepted entry auto-installs",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "publisher eligibility guessed",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ENTRY",
+      "target_ref": "AIGMOS_MODULE_REPOSITORY_ENTRY_CONTRACT",
+      "purpose": "Acceptance creates exact repository entries."
+    }
+  ],
+  "prose": {
+    "summary": "Define repository publication acceptance as explicit validation of publisher, package integrity, module identity/version, license/distribution policy and optional certification metadata.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

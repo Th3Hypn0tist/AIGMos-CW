@@ -1,0 +1,116 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NEGATIVE_PRUNING_CONTRACT",
+    "name": "Negative Pruning",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit negative pruning as removal of selected/default capabilities without silently repairing the resulting dependency graph.",
+  "scope": {
+    "owns": [
+      "Negative Pruning semantics"
+    ],
+    "does_not_own": [
+      "module internal semantics",
+      "runtime authorization policy",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_BOOT_PRUNING",
+      "name": "Negative Pruning",
+      "purpose": "Define explicit negative pruning as removal of selected/default capabilities without silently repairing the resulting dependency graph.",
+      "parent_topic_refs": [
+        "TOPIC_BOOT_USE",
+        "TOPIC_CORE_DEPENDENCY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_NEGATIVE_PRUNING_CONTRACT",
+        "BOOT_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "rule": "A prune directive removes an explicitly identified capability from the candidate boot set.",
+    "order_rule": "Pruning occurs before final dependency validation/activation.",
+    "dependency_rule": "If pruning breaks a required dependency, validation hard-fails unless the dependent capability is also explicitly pruned/changed.",
+    "no_repair_rule": "Runtime never re-adds a pruned dependency automatically.",
+    "trace_rule": "Final resolution records which capabilities were removed and why."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOT_EXPLICIT",
+        "rule": "Boot selection, pruning, dependency validation and activation are explicit; the runtime never silently enables missing dependencies."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "pruned capability silently re-added",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "broken dependency silently repaired",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "prune target resolved heuristically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "pruning provenance omitted",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_USE",
+      "target_ref": "AIGMOS_USE_SELECTION_CONTRACT",
+      "purpose": "Pruning modifies the explicit candidate set."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit negative pruning as removal of selected/default capabilities without silently repairing the resulting dependency graph.",
+    "notes": [
+      "Unlocked pending reconciliation against boot/USE/library/install contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

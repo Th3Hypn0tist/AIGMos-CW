@@ -1,0 +1,146 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT",
+    "name": "DWH Ingest Validation and Acceptance Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define ingest as parse→map→transform→schema validate→quality validate→authorize→write, with candidate data inert until all required acceptance gates succeed.",
+  "scope": {
+    "owns": [
+      "DWH Ingest Validation and Acceptance Boundary semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "destination schema ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE",
+      "name": "DWH Ingest Validation and Acceptance Boundary",
+      "purpose": "Define ingest as parse→map→transform→schema validate→quality validate→authorize→write, with candidate data inert until all required acceptance gates succeed.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_INGEST_MAPPING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT",
+        "INGEST_MAPPING_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "flow": [
+      "parse source profile",
+      "resolve field mappings",
+      "apply declared transformations",
+      "validate destination schema",
+      "evaluate quality profile",
+      "evaluate origin/input scope",
+      "authorize destination mutation",
+      "commit write/transaction",
+      "record lineage/result"
+    ],
+    "candidate_rule": "Parsed/mapped/transformed data remains candidate/inert until accepted.",
+    "schema_rule": "Destination schema validation precedes accepted write.",
+    "quality_rule": "Applicable quality validation/gates are explicit.",
+    "scope_rule": "Remote/local input scope is evaluated at origin/receiving boundary.",
+    "authorization_rule": "Destination write authorization is evaluated independently from source reachability.",
+    "atomic_rule": "Failed ingest does not partially mutate accepted state unless an explicit partial-batch profile says so.",
+    "lineage_rule": "Accepted data retains source, mapping, transformation and write provenance.",
+    "failure_rule": "Rejected input remains rejected/quarantined/evidenced according to profile and never masquerades as accepted."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "INGEST_MAPPING_EXPLICIT",
+        "rule": "External/input data enters DWH only through explicit source profiles, exact field/schema mappings and validated transformations; mapping never transfers ownership, fabricates missing semantics or bypasses origin governance."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "mapped data writes before schema validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "source reachability substitutes for authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "failed ingest leaves ambiguous partial state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "rejected input shown as accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "lineage loses source/mapping/transform refs",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_QUALITY",
+      "target_ref": "AIGMOS_DWH_QUALITY_VALIDATION_PROFILE_CONTRACT",
+      "purpose": "Quality gates participate in ingest acceptance."
+    },
+    {
+      "id": "REF_WRITE",
+      "target_ref": "AIGMOS_DWH_WRITE_OPERATION_IDENTITY_CONTRACT",
+      "purpose": "Accepted ingest uses normal DWH mutation semantics."
+    },
+    {
+      "id": "REF_SCOPE",
+      "target_ref": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT",
+      "purpose": "Remote ingest observes all/ext/id input scope where applicable."
+    }
+  ],
+  "prose": {
+    "summary": "Define ingest as parse→map→transform→schema validate→quality validate→authorize→write, with candidate data inert until all required acceptance gates succeed.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH origin governance, schema binding, transformation provenance and adapter contracts."
+    ]
+  }
+}

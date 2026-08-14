@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT",
+    "name": "DWH Retention Hold and Policy Conflict",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit holds and conflict resolution when retention, purge, archival or preservation policies disagree, defaulting to fail-closed preservation rather than silent destruction.",
+  "scope": {
+    "owns": [
+      "DWH Retention Hold and Policy Conflict semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_RETENTION_HOLD_CONFLICT",
+      "name": "DWH Retention Hold and Policy Conflict",
+      "purpose": "Define explicit holds and conflict resolution when retention, purge, archival or preservation policies disagree, defaulting to fail-closed preservation rather than silent destruction.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_DATA_LIFECYCLE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT",
+        "RETENTION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "hold_rule": "A hold is an explicit policy identity bound to exact data/scope and lifecycle actions it blocks.",
+    "effect_rule": "Active hold can block purge/destructive transitions according to its declared scope.",
+    "conflict_rule": "Conflicting retention/hold policies are resolved by explicit policy precedence/combination semantics.",
+    "default_rule": "If destructive eligibility is ambiguous, destructive transition hard-fails/preserves data until policy is resolved.",
+    "history_rule": "Hold creation/removal and conflict decisions retain provenance.",
+    "authority_rule": "Removing/bypassing a hold requires explicit authority according to policy.",
+    "classification_rule": "Hold semantics do not change data classification.",
+    "expiry_rule": "A hold may outlive ordinary retention expiry without changing underlying semantic ownership."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RETENTION_EXPLICIT",
+        "rule": "Retention, archival, expiry, purge and hold state are explicit lifecycle semantics over exact data identities; time passage, storage movement or archive location never silently deletes, declassifies, transfers ownership or restores data."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "policy conflict resolved by newest file",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "ambiguous purge proceeds",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "hold removed implicitly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "hold changes classification",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "hold bypassed by storage migration",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RET",
+      "target_ref": "AIGMOS_DWH_RETENTION_POLICY_CONTRACT",
+      "purpose": "Holds participate in retention decision closure."
+    },
+    {
+      "id": "REF_PURGE",
+      "target_ref": "AIGMOS_DWH_EXPIRY_PURGE_BOUNDARY_CONTRACT",
+      "purpose": "Active holds can block destructive purge."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit holds and conflict resolution when retention, purge, archival or preservation policies disagree, defaulting to fail-closed preservation rather than silent destruction.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH persistence, deletion, classification and governance contracts."
+    ]
+  }
+}

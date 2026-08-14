@@ -1,0 +1,154 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MESSAGING_THROTTLING_BLOCKING_CONTRACT",
+    "name": "Messaging Throttling and Blocking",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define pre-conversation request throttling and explicit blocking so unsolicited peer-contact attempts are bounded without constraining established conversations by the same default request throttle.",
+  "scope": {
+    "owns": [
+      "Messaging Throttling and Blocking semantics"
+    ],
+    "does_not_own": [
+      "transport identity",
+      "AccessCore authorization",
+      "unrelated MeritCore semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MESSAGING_THROTTLE",
+      "name": "Messaging Throttling and Blocking",
+      "purpose": "Define pre-conversation request throttling and explicit blocking so unsolicited peer-contact attempts are bounded without constraining established conversations by the same default request throttle.",
+      "parent_topic_refs": [
+        "TOPIC_MESSAGING",
+        "TOPIC_RUNTIME_BOUNDED_OPERATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MESSAGING_THROTTLING_BLOCKING_CONTRACT",
+        "MESSAGING_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_RUNTIME_BOUNDED_OPERATION",
+      "name": "Runtime Bounded Operation",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_RUNTIME_BOUNDED_OPERATION already referenced by 1 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 1,
+        "distinct_child_topics": 1,
+        "host_contract_ref": "AIGMOS_MESSAGING_THROTTLING_BLOCKING_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "scope": "pre-conversation contact requests",
+    "default_example": "one request per week per requester/target pair before conversation establishment",
+    "config_rule": "Exact throttle values are policy/configuration, not hardcoded universal semantics unless a deployment locks them.",
+    "established_rule": "Once a conversation is explicitly established, pre-conversation request throttle no longer models ordinary message cadence.",
+    "block_rule": "Target may block requester explicitly.",
+    "block_precedence": "Block overrides further contact-request allowance.",
+    "identity_rule": "Throttle/block keys use semantic requester/target identities, not transient network addresses.",
+    "authority_rule": "Throttle allowance is not authorization to access unrelated resources."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MESSAGING_BOUNDARY_EXPLICIT",
+        "rule": "Messaging identity, conversation state, throttling, group governance and transport semantics remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "throttle keyed only by IP/session endpoint",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "pre-conversation throttle applied as hidden permanent chat rate limit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "blocked requester allowed new requests without explicit unblock",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "request allowance treated as runtime authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "throttling state unbounded or invisible",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MSG",
+      "target_ref": "AIGMOS_P2P_MESSAGING_CONTRACT",
+      "purpose": "Throttling governs messaging contact requests."
+    },
+    {
+      "id": "REF_BOUNDS",
+      "target_ref": "AIGMOS_CORE_BOUNDED_OPERATION_CONTRACT",
+      "purpose": "Contact attempts are bounded."
+    }
+  ],
+  "prose": {
+    "summary": "Define pre-conversation request throttling and explicit blocking so unsolicited peer-contact attempts are bounded without constraining established conversations by the same default request throttle.",
+    "notes": [
+      "Unlocked pending reconciliation against existing msg/WebRTC/rendezvous contracts and whole-tree Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_RUNTIME_BOUNDED_OPERATION solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

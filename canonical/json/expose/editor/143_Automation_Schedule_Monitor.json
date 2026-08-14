@@ -1,0 +1,138 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_AUTOMATION_SCHEDULE_MONITOR_CONTRACT",
+    "name": "Automation and Schedule Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for automations, schedules, occurrences, condition watches, missed-run policies and lifecycle state.",
+  "scope": {
+    "owns": [
+      "Automation and Schedule Monitor semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_AUTOMATION_SCHEDULE_MONITOR",
+      "name": "Automation and Schedule Monitor",
+      "purpose": "Define a read-only Expose monitor for automations, schedules, occurrences, condition watches, missed-run policies and lifecycle state.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_AUTOMATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_AUTOMATION_SCHEDULE_MONITOR_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "automation registry",
+      "schedule/timezone/recurrence",
+      "condition-watch state",
+      "occurrence history",
+      "missed/catch-up policy",
+      "next due evidence",
+      "enabled/paused/failed state",
+      "execution refs"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Automation, schedule, occurrence, condition evaluation and Runner execution identities remain distinct.",
+    "action_rule": "enable/disable/pause/run-now/edit-schedule operations use separate authorized workflows.",
+    "authority_rule": "Viewing automation grants no execution authority.",
+    "failure_rule": "missed/suppressed/degraded/unknown states remain explicit.",
+    "graph_rule": "Occurrence→execution edges correspond only to explicit refs."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor executes run-now by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "schedule and automation identity conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "next due time treated guaranteed execution",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "missed state hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "enabled shown as authorized",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LIFE",
+      "target_ref": "AIGMOS_AUTOMATION_LIFECYCLE_CONTRACT",
+      "purpose": "Monitor projects exact automation lifecycle."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for automations, schedules, occurrences, condition watches, missed-run policies and lifecycle state.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_DATA_LIFECYCLE_STATE_CONTRACT",
+    "name": "DWH Data Lifecycle State",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit lifecycle states for persisted DWH data while preserving stable semantic identity and separating lifecycle state from storage location and authorization.",
+  "scope": {
+    "owns": [
+      "DWH Data Lifecycle State semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_DATA_LIFECYCLE_STATE",
+      "name": "DWH Data Lifecycle State",
+      "purpose": "Define explicit lifecycle states for persisted DWH data while preserving stable semantic identity and separating lifecycle state from storage location and authorization.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_DATA_LIFECYCLE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_DATA_LIFECYCLE_STATE_CONTRACT",
+        "RETENTION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "states": [
+      "active",
+      "inactive",
+      "archived",
+      "expired",
+      "quarantined",
+      "deleted_tombstone",
+      "purged"
+    ],
+    "identity_rule": "Lifecycle transition does not replace the underlying record/resource semantic identity unless a new copy/materialization is explicitly created.",
+    "state_rule": "Lifecycle state is explicit machine-readable metadata.",
+    "storage_rule": "Storage tier/location is separate from lifecycle state.",
+    "availability_rule": "Inactive/archived/expired availability behavior is explicit per profile.",
+    "classification_rule": "Lifecycle transition does not implicitly lower classification.",
+    "ownership_rule": "Lifecycle transition does not transfer semantic ownership.",
+    "authority_rule": "Lifecycle visibility does not grant transition/read/delete authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RETENTION_EXPLICIT",
+        "rule": "Retention, archival, expiry, purge and hold state are explicit lifecycle semantics over exact data identities; time passage, storage movement or archive location never silently deletes, declassifies, transfers ownership or restores data."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "archive path used as lifecycle identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "moving storage silently changes ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "archived data implicitly declassified",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "time passage silently purges without policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "lifecycle visibility grants delete authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DEL",
+      "target_ref": "AIGMOS_DWH_DELETE_TOMBSTONE_CONTRACT",
+      "purpose": "Deletion/tombstone are explicit lifecycle outcomes."
+    },
+    {
+      "id": "REF_STORE",
+      "target_ref": "AIGMOS_DWH_STORAGE_BINDING_CONTRACT",
+      "purpose": "Storage binding remains separate from lifecycle state."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit lifecycle states for persisted DWH data while preserving stable semantic identity and separating lifecycle state from storage location and authorization.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH persistence, deletion, classification and governance contracts."
+    ]
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT",
+    "name": "Canonical Ownership",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define ownership as the explicit structural dimension that identifies which canonical identity owns a semantic fact or surface, separate from containment, authority and visibility.",
+  "scope": {
+    "owns": [
+      "Canonical Ownership semantics"
+    ],
+    "does_not_own": [
+      "runtime implementation details",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_STRUCTURE_OWNERSHIP",
+      "name": "Ownership",
+      "purpose": "Define ownership as the explicit structural dimension that identifies which canonical identity owns a semantic fact or surface, separate from containment, authority and visibility.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_STRUCTURE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_SOURCE_ROLES",
+        "TOPIC_CORE_PROVENANCE"
+      ],
+      "member_refs": [
+        "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT",
+        "STRUCTURAL_DIMENSION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_OWNERSHIP_DEFINE",
+        "OP_OWNERSHIP_RESOLVE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_OWNERSHIP_DEFINE",
+        "name": "Define semantic ownership",
+        "inputs": [
+          "owner_ref",
+          "owned_ref",
+          "owned semantic surface"
+        ],
+        "outputs": [
+          "ownership edge"
+        ],
+        "errors": [
+          "owner unresolved",
+          "surface ambiguous"
+        ],
+        "side_effects": [
+          "ownership graph updated"
+        ]
+      },
+      {
+        "id": "OP_OWNERSHIP_RESOLVE",
+        "name": "Resolve semantic owner",
+        "inputs": [
+          "semantic fact/surface"
+        ],
+        "outputs": [
+          "authoritative owner"
+        ],
+        "errors": [
+          "owner missing",
+          "conflicting owners"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "dimension": "ownership",
+    "single_owner_rule": "A machine-significant semantic fact has one authoritative owner unless explicit reconciliation defines otherwise.",
+    "containment_rule": "Containing an identity does not make the container semantic owner.",
+    "authority_rule": "Semantic ownership does not automatically grant runtime/AccessCore authority.",
+    "projection_rule": "Projection/view does not become owner of projected facts.",
+    "composition_rule": "Consumer composition references owner semantics rather than copying them.",
+    "trace_rule": "Ownership is preserved in provenance and reverse traces."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "STRUCTURAL_DIMENSION_EXPLICIT",
+        "rule": "Structural dimensions and registries remain explicit and are never collapsed into generic hierarchy."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "containment silently creates ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "projection becomes owner of source semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "semantic ownership grants runtime authority automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "same active semantic fact has conflicting owners without reconciliation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "consumer duplicates owned semantics instead of referencing owner",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SOURCE",
+      "target_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+      "purpose": "Source authority and semantic ownership remain explicit."
+    },
+    {
+      "id": "REF_PROVENANCE",
+      "target_ref": "AIGMOS_CORE_PROVENANCE_EVIDENCE_CONTRACT",
+      "purpose": "Ownership provenance is retained."
+    }
+  ],
+  "prose": {
+    "summary": "Define ownership as the explicit structural dimension that identifies which canonical identity owns a semantic fact or surface, separate from containment, authority and visibility.",
+    "notes": [
+      "Unlocked until reconciled against the assembled 1.4 architecture tree and reference/trace closure."
+    ]
+  }
+}

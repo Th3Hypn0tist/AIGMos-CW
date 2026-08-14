@@ -1,0 +1,140 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_EDITOR_SUBAREA_AUTHORITY_CONTRACT",
+    "name": "Editor Subarea Access Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each Editor subsystem as separately addressable by AccessCore instead of treating the entire Editor as one undifferentiated authority.",
+  "scope": {
+    "owns": [
+      "Editor Subarea Access Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_EDITOR_SUBAREA_AUTHORITY",
+      "name": "Editor Subarea Access Boundary",
+      "purpose": "Define each Editor subsystem as separately addressable by AccessCore instead of treating the entire Editor as one undifferentiated authority.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_EDITOR"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_EDITOR_SUBAREA_AUTHORITY_CONTRACT",
+        "UI_NONAUTHORITY",
+        "UI_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "subareas": [
+      "Editor_MetaModule",
+      "Site_WEB",
+      "Instance",
+      "q",
+      "GUI",
+      "Form",
+      "Style",
+      "Monitors",
+      "Port",
+      "Routine",
+      "other declared editor area"
+    ],
+    "identity_rule": "Each protected editor area/resource has an exact resource identity.",
+    "access_rule": "Read/write/admin rights are independently evaluable.",
+    "ui_rule": "Visible tab/menu does not grant access.",
+    "composition_rule": "Access to parent Editor does not automatically imply all child-resource rights unless explicit policy grants them.",
+    "authority_rule": "Editor application access and edited-resource authority remain separate."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "UI_NONAUTHORITY",
+        "rule": "UI visibility, navigation, placement, styling, selection, focus and visual adjacency never create semantic ownership, resource identity or execution authority."
+      },
+      {
+        "id": "UI_EFFECT_BOUNDARY",
+        "rule": "Effect-capable UI actions create explicit candidate/request data and must cross canonical validation, authorization and dispatcher boundaries before effects occur."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "Editor login grants all subareas",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "visible tab grants write rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "hidden subarea bypasses AC",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "parent path automatically grants all children",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "resource selected by label",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SCOPE",
+      "target_ref": "AIGMOS_ACCESS_RESOURCE_SCOPE_CONTRACT",
+      "purpose": "Editor subareas are exact AccessCore resources."
+    }
+  ],
+  "prose": {
+    "summary": "Define each Editor subsystem as separately addressable by AccessCore instead of treating the entire Editor as one undifferentiated authority.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

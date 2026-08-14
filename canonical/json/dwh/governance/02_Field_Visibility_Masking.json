@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_FIELD_VISIBILITY_MASKING_CONTRACT",
+    "name": "DWH Field Visibility, Masking and Redaction",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define field-level output visibility and masking/redaction profiles over exact schema fields while preserving internal canonical values, identity and classification.",
+  "scope": {
+    "owns": [
+      "DWH Field Visibility, Masking and Redaction semantics"
+    ],
+    "does_not_own": [
+      "AccessCore authorization policy ownership",
+      "source domain ownership",
+      "transport security semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_FIELD_VISIBILITY_MASKING",
+      "name": "DWH Field Visibility, Masking and Redaction",
+      "purpose": "Define field-level output visibility and masking/redaction profiles over exact schema fields while preserving internal canonical values, identity and classification.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_GOVERNANCE_POLICY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_FIELD_VISIBILITY_MASKING_CONTRACT",
+        "DWH_GOVERNANCE_NONEXPANSION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "field_rule": "Visibility policy targets exact schema/field identities.",
+    "actions": [
+      "allow",
+      "deny",
+      "omit",
+      "mask",
+      "redact",
+      "transform_governed"
+    ],
+    "mask_rule": "Masking/redaction affects the exposed projection, not the canonical stored value.",
+    "profile_rule": "Masking/transformation profile is explicit and versioned where semantics matter.",
+    "classification_rule": "Masked output retains applicable classification/provenance semantics unless explicit declassification applies.",
+    "derived_rule": "Derived fields inherit governance from contributing source fields according to explicit policy.",
+    "write_rule": "Masked/display value is never written back as canonical source implicitly.",
+    "authority_rule": "Seeing a masked field does not grant access to its unmasked value."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_GOVERNANCE_NONEXPANSION",
+        "rule": "DWH governance may restrict or project data according to exact schema/classification/scope policy but never creates AccessCore rights, semantic ownership or broader visibility than the underlying authorized source set."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "mask overwrites stored canonical value",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "field selected by UI label only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "masking silently declassifies",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "masked value grants unmasked access",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "redacted display written back to source",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TAINT",
+      "target_ref": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT",
+      "purpose": "Masked/derived values preserve classification semantics."
+    },
+    {
+      "id": "REF_DECL",
+      "target_ref": "AIGMOS_DWH_DECLASSIFICATION_BOUNDARY_CONTRACT",
+      "purpose": "Masking alone is not declassification."
+    }
+  ],
+  "prose": {
+    "summary": "Define field-level output visibility and masking/redaction profiles over exact schema fields while preserving internal canonical values, identity and classification.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH access governance, schema resolution, classification and AccessCore contracts."
+    ]
+  }
+}

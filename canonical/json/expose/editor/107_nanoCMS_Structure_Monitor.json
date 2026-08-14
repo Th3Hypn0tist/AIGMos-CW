@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_NANOCMS_STRUCTURE_MONITOR_CONTRACT",
+    "name": "nanoCMS Structure Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor/editor projection for site/page trees, routes, navigation metadata and MetaModule placements.",
+  "scope": {
+    "owns": [
+      "nanoCMS Structure Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_NANOCMS_STRUCTURE_MONITOR",
+      "name": "nanoCMS Structure Monitor",
+      "purpose": "Define a read-only Expose monitor/editor projection for site/page trees, routes, navigation metadata and MetaModule placements.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_NANOCMS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_NANOCMS_STRUCTURE_MONITOR_CONTRACT",
+        "UI_NONAUTHORITY",
+        "UI_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "site registry",
+      "page tree",
+      "route bindings",
+      "navigation/breadcrumb metadata",
+      "MetaModule placements",
+      "sitemap projection",
+      "validation conflicts"
+    ],
+    "readonly_rule": "Monitor is read-only by default; edit mode creates candidate structure only.",
+    "identity_rule": "Site, page, route, placement and MetaModule identities remain distinct.",
+    "action_rule": "edit/move/place/unplace/apply operations use separate authorized workflows.",
+    "authority_rule": "Viewing/rearranging candidate structure grants no domain authority.",
+    "graph_rule": "Containment/placement edges correspond only to explicit refs.",
+    "failure_rule": "cycle/duplicate-route/missing-placement target remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "UI_NONAUTHORITY",
+        "rule": "UI visibility, navigation, placement, styling, selection, focus and visual adjacency never create semantic ownership, resource identity or execution authority."
+      },
+      {
+        "id": "UI_EFFECT_BOUNDARY",
+        "rule": "Effect-capable UI actions create explicit candidate/request data and must cross canonical validation, authorization and dispatcher boundaries before effects occur."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "dragging node mutates live site instantly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "page and MetaModule conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "visual nesting invents semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "viewing grants edit authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "duplicate route hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PLACE",
+      "target_ref": "AIGMOS_NANOCMS_METAMODULE_PLACEMENT_CONTRACT",
+      "purpose": "Monitor projects explicit placements."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor/editor projection for site/page trees, routes, navigation metadata and MetaModule placements.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

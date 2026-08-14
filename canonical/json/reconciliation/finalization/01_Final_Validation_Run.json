@@ -1,0 +1,135 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_FINAL_CANONICAL_VALIDATION_RUN_CONTRACT",
+    "name": "Final Canonical Validation Run",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define exact post-reconciliation full repository validation over the finalized candidate source snapshot before locking.",
+  "scope": {
+    "owns": [
+      "Final Canonical Validation Run semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_FINAL_CANONICAL_VALIDATION_RUN",
+      "name": "Final Canonical Validation Run",
+      "purpose": "Define exact post-reconciliation full repository validation over the finalized candidate source snapshot before locking.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_RECONCILIATION",
+        "TOPIC_FINALIZATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_FINAL_CANONICAL_VALIDATION_RUN_CONTRACT",
+        "RECONCILIATION_IS_EVIDENCE_DRIVEN",
+        "NO_SILENT_FINALIZATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "snapshot_rule": "Exact finalized candidate source snapshot is referenced.",
+    "bootstrap_rule": "Root Contract Format bootstrap is revalidated.",
+    "validation_rule": "Structural/semantic/reference/ownership/cross-kernel checks rerun.",
+    "conformance_rule": "Repository conformance profile is rerun.",
+    "result_states": [
+      "pass",
+      "fail",
+      "partial",
+      "error"
+    ],
+    "stale_rule": "Any source change invalidates the result.",
+    "authority_rule": "Pass remains evidence only until accepted finalization/locks."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RECONCILIATION_IS_EVIDENCE_DRIVEN",
+        "rule": "Whole-tree reconciliation operates only on exact accepted/candidate source snapshots, identities, references and declared semantics; it never repairs ambiguity through filename, path order, timestamp, nearest-name or UI layout heuristics."
+      },
+      {
+        "id": "NO_SILENT_FINALIZATION",
+        "rule": "A contract, closure set or repository remains unlocked/not-ready until all required reconciliation findings for its declared readiness profile are explicitly resolved or accepted through an explicit bounded exception."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "uses pre-reconciliation validation result",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "bootstrap not rerun",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "source changed after pass",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "partial treated pass",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "pass deploys runtime",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RUN",
+      "target_ref": "AIGMOS_REPOSITORY_CONFORMANCE_RUN_CONTRACT",
+      "purpose": "Final validation includes exact repository conformance."
+    }
+  ],
+  "prose": {
+    "summary": "Define exact post-reconciliation full repository validation over the finalized candidate source snapshot before locking.",
+    "notes": [
+      "Unlocked pending application to the final merged review tree.",
+      "This contract defines reconciliation semantics; it does not claim that repository-wide reconciliation has already passed."
+    ]
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MCP_CAPABILITY_ADVERTISEMENT_CONTRACT",
+    "name": "MCP Capability Advertisement",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define MCP capability/tool/resource/prompt advertisements as untrusted descriptive observations that must be normalized and validated before AIGMos runtime use.",
+  "scope": {
+    "owns": [
+      "MCP Capability Advertisement semantics"
+    ],
+    "does_not_own": [
+      "external MCP implementation semantics",
+      "AccessCore policy ownership",
+      "domain business semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MCP_CAPABILITY_ADVERTISEMENT",
+      "name": "MCP Capability Advertisement",
+      "purpose": "Define MCP capability/tool/resource/prompt advertisements as untrusted descriptive observations that must be normalized and validated before AIGMos runtime use.",
+      "parent_topic_refs": [
+        "TOPIC_MCP",
+        "TOPIC_TOOLS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MCP_CAPABILITY_ADVERTISEMENT_CONTRACT",
+        "MCP_TOOL_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "advertisement_types": [
+      "tool",
+      "resource",
+      "prompt",
+      "other declared MCP capability"
+    ],
+    "source_rule": "Advertisement records exact originating MCP endpoint identity.",
+    "schema_rule": "Advertised names/descriptions/input schemas/output metadata are captured as source claims.",
+    "trust_rule": "Advertisement is descriptive input and not canonical truth or execution authority.",
+    "change_rule": "Capability changes across reconnects are explicit observations and never silently rewrite validated tool semantics.",
+    "identity_rule": "External advertised name is not automatically canonical #T identity.",
+    "normalization_rule": "Advertisement is normalized before compatibility/registration evaluation.",
+    "failure_rule": "Malformed/unsupported advertisements remain rejected/unavailable rather than guessed."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MCP_TOOL_SEPARATION",
+        "rule": "MCP endpoint identity, advertised capability, validated #T tool identity, concrete invocation and returned result are separate identities; advertisement or availability never grants execution authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "advertisement treated as trusted canonical definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "external name becomes #T identity automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "malformed schema accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "reconnect silently rewrites validated tool contract",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "advertisement grants authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EP",
+      "target_ref": "AIGMOS_MCP_ENDPOINT_IDENTITY_CONTRACT",
+      "purpose": "Advertisement provenance binds to exact MCP endpoint."
+    }
+  ],
+  "prose": {
+    "summary": "Define MCP capability/tool/resource/prompt advertisements as untrusted descriptive observations that must be normalized and validated before AIGMos runtime use.",
+    "notes": [
+      "Unlocked pending reconciliation against #MCP, #T, q-family and command-dispatch contracts."
+    ]
+  }
+}

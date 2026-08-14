@@ -1,0 +1,140 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_DWH_WORKLOAD_MONITOR_CONTRACT",
+    "name": "DWH Workload and Resource Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for workload classes, admission decisions, queues, resource budgets, concurrency, priority, cancellations and resource-consumption evidence.",
+  "scope": {
+    "owns": [
+      "DWH Workload and Resource Monitor semantics"
+    ],
+    "does_not_own": [
+      "query semantic ownership",
+      "AccessCore policy ownership",
+      "runtime scheduler implementation details"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_DWH_WORKLOAD_MONITOR",
+      "name": "DWH Workload and Resource Monitor",
+      "purpose": "Define a read-only Expose monitor for workload classes, admission decisions, queues, resource budgets, concurrency, priority, cancellations and resource-consumption evidence.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_WORKLOAD_CONTROL"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_DWH_WORKLOAD_MONITOR_CONTRACT",
+        "WORKLOAD_CONTROL_NONSEMANTIC",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "workload registry",
+      "operation/execution refs",
+      "admission result/reason",
+      "queue state",
+      "resource budgets/usage",
+      "concurrency slots",
+      "priority/fairness",
+      "timeouts/cancellations/preemption",
+      "completion/failure evidence"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Workload, operation, execution, queue/admission decision and resource-evidence identities remain distinct.",
+    "semantic_rule": "UI distinguishes scheduling/performance controls from canonical operation semantics.",
+    "action_rule": "cancel/change-budget/change-priority/pause-queue operations invoke separate authorized workflows.",
+    "authority_rule": "Viewing workload state grants no operation/data/cancel authority.",
+    "graph_rule": "Queue/dependency/execution edges correspond only to explicit refs.",
+    "failure_rule": "Rejected, queued, throttled, timed-out, cancelled and preempted states are surfaced distinctly."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "WORKLOAD_CONTROL_NONSEMANTIC",
+        "rule": "Admission, quotas, concurrency, priority, cancellation and resource budgets may control when/how work executes but never change canonical query/write semantics, data ownership, classification or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor conflates workload and operation identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "monitor cancels by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "high priority displayed as authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "partial cancelled result shown complete",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "visual queue order shown as semantic priority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ADMIT",
+      "target_ref": "AIGMOS_DWH_ADMISSION_CONTROL_CONTRACT",
+      "purpose": "Monitor exposes exact admission state."
+    },
+    {
+      "id": "REF_CANCEL",
+      "target_ref": "AIGMOS_DWH_CANCELLATION_PREEMPTION_CONTRACT",
+      "purpose": "Monitor exposes termination/preemption semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for workload classes, admission decisions, queues, resource budgets, concurrency, priority, cancellations and resource-consumption evidence.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH query, mutation, service-level and runtime execution contracts."
+    ]
+  }
+}

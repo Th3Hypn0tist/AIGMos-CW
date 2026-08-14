@@ -1,0 +1,134 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_COMMAND_ARGUMENT_SCHEMA_CONTRACT",
+    "name": "Command Argument Schema",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define exact positional/named argument, option, target and value semantics for executable commands so parsing and validation never depend on undocumented string heuristics.",
+  "scope": {
+    "owns": [
+      "Command Argument Schema semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "transport presentation",
+      "implicit authorization"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_COMMAND_ARGUMENT_SCHEMA",
+      "name": "Command Argument Schema",
+      "purpose": "Define exact positional/named argument, option, target and value semantics for executable commands so parsing and validation never depend on undocumented string heuristics.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_COMMAND_REGISTRY",
+        "TOPIC_COMMAND_PARSING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_COMMAND_ARGUMENT_SCHEMA_CONTRACT",
+        "COMMAND_EXECUTION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "argument_kinds": [
+      "positional",
+      "named",
+      "flag",
+      "target_ref",
+      "value",
+      "enum",
+      "bounded_numeric",
+      "file_or_external_ref"
+    ],
+    "required_rule": "Required/optional/default semantics are explicit.",
+    "type_rule": "Each argument declares type/schema and validation constraints.",
+    "target_rule": "Command targets resolve by explicit canonical identity/address where available.",
+    "value_rule": "Argument values remain inert until the resolved command operation consumes them.",
+    "unknown_rule": "Unknown arguments/options fail or follow explicit extension policy.",
+    "help_rule": "Argument schema may generate short/long help usage metadata.",
+    "authority_rule": "Valid argument syntax does not grant target authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "COMMAND_EXECUTION_EXPLICIT",
+        "rule": "Executable commands resolve by exact canonical identity and schema, cross one governed dispatcher boundary, and never infer authority from capability presence or parser success."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "undocumented argument heuristic required",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "unknown argument silently changes semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "target inferred solely from cwd/context",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "valid syntax grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "argument value executes during parsing",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PARSE",
+      "target_ref": "AIGMOS_COMMAND_PARSING_CONTRACT",
+      "purpose": "Parser validates against command argument schema."
+    }
+  ],
+  "prose": {
+    "summary": "Define exact positional/named argument, option, target and value semantics for executable commands so parsing and validation never depend on undocumented string heuristics.",
+    "notes": [
+      "Unlocked pending reconciliation against existing command/runtime contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT",
+    "name": "Core External Reference Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the boundary between canonical internal references and explicitly declared external references so external linkage never masquerades as unresolved internal canonical identity.",
+  "scope": {
+    "owns": [
+      "Core External Reference Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain-specific semantics",
+      "runtime implementation details"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CORE_EXTERNAL_BOUNDARY",
+      "name": "External Boundary",
+      "purpose": "Define the boundary between canonical internal references and explicitly declared external references so external linkage never masquerades as unresolved internal canonical identity.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_REFERENCE_CLOSURE"
+      ],
+      "member_refs": [
+        "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT",
+        "EXPLICIT_MACHINE_SEMANTICS",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_EXTERNAL_CLASSIFY_REF",
+        "OP_EXTERNAL_VALIDATE_BOUNDARY"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_EXTERNAL_CLASSIFY_REF",
+        "name": "Classify external reference",
+        "inputs": [
+          "reference occurrence",
+          "owning contract rules"
+        ],
+        "outputs": [
+          "internal | external | unresolved"
+        ],
+        "errors": [
+          "reference kind ambiguous"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_EXTERNAL_VALIDATE_BOUNDARY",
+        "name": "Validate external boundary",
+        "inputs": [
+          "external reference",
+          "declared external resolution semantics"
+        ],
+        "outputs": [
+          "valid external boundary"
+        ],
+        "errors": [
+          "undeclared external reference form"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "reference_classes": [
+      "internal",
+      "external",
+      "unresolved"
+    ],
+    "internal_rule": "Required internal references resolve exactly once inside the active canonical graph.",
+    "external_rule": "External references are valid only when their owning contract explicitly declares the external reference form, resolution semantics and authority boundary.",
+    "unresolved_rule": "A reference that is neither a valid internal ref nor a declared external ref is unresolved and becomes a gap.",
+    "authority_rule": "External existence does not grant canonical or runtime authority.",
+    "trace_rule": "External boundaries preserve provenance and remain visibly external in traces and projections."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_MACHINE_SEMANTICS",
+        "rule": "Machine-significant meaning is explicit structured canonical data and is not reconstructed by hidden heuristics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "undeclared external reference form is accepted as valid",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "external reference is treated as resolved internal canonical identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "unresolved internal reference is silently reclassified as external",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "external reference grants authority solely because it resolves",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CLOSURE",
+      "target_ref": "AIGMOS_CORE_REFERENCE_CLOSURE_CONTRACT",
+      "purpose": "Separates external references from required internal closure."
+    },
+    {
+      "id": "REF_GAPS",
+      "target_ref": "AIGMOS_CORE_SEMANTIC_GAP_CONTRACT",
+      "purpose": "Undeclared or unresolved references become explicit gaps."
+    }
+  ],
+  "prose": {
+    "summary": "Define the boundary between canonical internal references and explicitly declared external references so external linkage never masquerades as unresolved internal canonical identity.",
+    "notes": [
+      "Unlocked until repository-wide 1.4 migration validates this boundary against the assembled active canonical graph."
+    ]
+  }
+}

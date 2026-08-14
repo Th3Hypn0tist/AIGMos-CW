@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MCP_PERMISSION_BOUNDARY_CONTRACT",
+    "name": "MCP Permission Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define local authority and data-release checks around MCP calls so external tool/server connectivity never becomes implicit authorization to read local data or perform effects.",
+  "scope": {
+    "owns": [
+      "MCP Permission Boundary semantics"
+    ],
+    "does_not_own": [
+      "remote server internal semantics",
+      "unrelated runtime authority",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MCP_PERMISSION",
+      "name": "MCP Permission Boundary",
+      "purpose": "Define local authority and data-release checks around MCP calls so external tool/server connectivity never becomes implicit authorization to read local data or perform effects.",
+      "parent_topic_refs": [
+        "TOPIC_MCP_TOOL_SCHEMA",
+        "TOPIC_CORE_CAPABILITY_AUTHORITY",
+        "TOPIC_IAM_IDENTITY_PROPAGATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MCP_PERMISSION_BOUNDARY_CONTRACT",
+        "MCP_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "local_authority_rule": "Every MCP-exposed local call/result source is governed by local capability/authority policy.",
+    "remote_authority_rule": "Remote server claims do not override local authorization.",
+    "data_release_rule": "Arguments/data sent to MCP are explicitly selected and authorized for release.",
+    "effect_rule": "Remote tool invocation effects are represented through the bound local tool semantics.",
+    "visibility_rule": "MCP tool visibility in a model/tool list is not permission to invoke it.",
+    "identity_rule": "Calling model/user/agent identity remains explicit through the tool invocation context.",
+    "least_scope_rule": "Only data required for the explicit invocation is released."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MCP_BOUNDARY_EXPLICIT",
+        "rule": "MCP server identity, transport, tool schema, lifecycle and authority remain explicit and do not inherit trust from connectivity or advertised metadata."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "MCP connectivity grants local data access",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "tool visibility grants invocation authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "remote server metadata overrides local authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "unscoped local context sent to MCP by default",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "caller identity lost at MCP boundary",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "remote effect bypasses bound local tool semantics",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AUTH",
+      "target_ref": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT",
+      "purpose": "Tool existence and permission remain separate."
+    },
+    {
+      "id": "REF_ID",
+      "target_ref": "AIGMOS_IAM_IDENTITY_PROPAGATION_CONTRACT",
+      "purpose": "Caller identity context remains traceable."
+    }
+  ],
+  "prose": {
+    "summary": "Define local authority and data-release checks around MCP calls so external tool/server connectivity never becomes implicit authorization to read local data or perform effects.",
+    "notes": [
+      "Unlocked pending reconciliation against existing MCP/tool/runtime contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

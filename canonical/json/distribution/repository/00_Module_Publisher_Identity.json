@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MODULE_PUBLISHER_IDENTITY_CONTRACT",
+    "name": "Module Publisher Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define licensed/registered module publishers as explicit identities separate from package signer, repository, module identity and certification issuer.",
+  "scope": {
+    "owns": [
+      "Module Publisher Identity semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MODULE_PUBLISHER_IDENTITY",
+      "name": "Module Publisher Identity",
+      "purpose": "Define licensed/registered module publishers as explicit identities separate from package signer, repository, module identity and certification issuer.",
+      "parent_topic_refs": [
+        "TOPIC_DISTRIBUTION",
+        "TOPIC_MODULE_REPOSITORY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MODULE_PUBLISHER_IDENTITY_CONTRACT",
+        "PACKAGE_IDENTITY_INTEGRITY",
+        "ENTITLEMENT_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each publisher has an explicit identity.",
+    "organization_rule": "Publisher may map to exact organization IdentityCore identity.",
+    "repository_rule": "Repository account/path is a binding only.",
+    "module_rule": "Publishing a module does not transfer the module's semantic ownership unless the module contract says so.",
+    "license_rule": "Publisher eligibility may depend on commercial/license policy.",
+    "certification_rule": "Publisher status does not imply certification.",
+    "authority_rule": "Publisher identity grants no runtime authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PACKAGE_IDENTITY_INTEGRITY",
+        "rule": "Package, artifact, module, certification, license and installed-instance identities remain distinct; hashes prove content integrity only within their declared profile and never grant runtime authority."
+      },
+      {
+        "id": "ENTITLEMENT_NONAUTHORITY",
+        "rule": "License or certification entitlement permits declared product/service use only; it never substitutes for IAM identity, AccessCore authorization, runtime validation or dispatcher gating."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "repo username used as canonical publisher identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "publisher means certified",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "publisher automatically owns every uploaded dependency",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "publisher grants runtime rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "repository path proves organization identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define licensed/registered module publishers as explicit identities separate from package signer, repository, module identity and certification issuer.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

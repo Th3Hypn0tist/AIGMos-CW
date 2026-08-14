@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_DECLASSIFICATION_BOUNDARY_CONTRACT",
+    "name": "DWH Declassification Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit authorized declassification/sanitization operations as the only mechanism allowed to lower governed classification/taint on derived data.",
+  "scope": {
+    "owns": [
+      "DWH Declassification Boundary semantics"
+    ],
+    "does_not_own": [
+      "AccessCore authorization policy",
+      "source domain semantics",
+      "transport cryptography"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_DECLASSIFICATION_BOUNDARY",
+      "name": "DWH Declassification Boundary",
+      "purpose": "Define explicit authorized declassification/sanitization operations as the only mechanism allowed to lower governed classification/taint on derived data.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_PROVENANCE_LINEAGE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_DECLASSIFICATION_BOUNDARY_CONTRACT",
+        "LINEAGE_PROVENANCE_PRESERVED",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "operation_rule": "Declassification is an explicit canonical operation/policy decision.",
+    "authority_rule": "Lowering classification requires explicit authority independent from ordinary read/transform rights.",
+    "evidence_rule": "Operation records source classification, target classification, method/rule, actor, reason/policy and output refs.",
+    "sanitization_rule": "Sanitization/anonymization claims are tied to an explicit method/profile/version.",
+    "nonimplicit_rule": "Aggregation, formatting, serialization or transport never implicitly declassifies data.",
+    "failure_rule": "Failed/unsupported declassification leaves original classification in force.",
+    "trace_rule": "Declassified output retains provenance to original restricted sources and declassification evidence."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "LINEAGE_PROVENANCE_PRESERVED",
+        "rule": "Derived DWH data retains explicit source lineage, transformation provenance and applicable classification/taint state; transformations never silently erase origin or governance metadata."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "aggregation silently lowers classification",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "ordinary write permission allows declassification",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "declassification lacks actor/rule/evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "failed sanitization emits lower-classified output",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "original restricted lineage erased",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_TAINT",
+      "target_ref": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT",
+      "purpose": "Only explicit declassification may lower propagated classification."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit authorized declassification/sanitization operations as the only mechanism allowed to lower governed classification/taint on derived data.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH schema, provenance, AccessCore and remote-data contracts."
+    ]
+  }
+}

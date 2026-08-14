@@ -1,0 +1,183 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT",
+    "name": "DWH Governed Remote Access",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define governed remote DWH access as an explicit semantic/authorization path, including the rule that direct raw external dereference is not an alternate bypass path when AccessCore governance is active.",
+  "scope": {
+    "owns": [
+      "DWH Governed Remote Access semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "transport implementation details",
+      "remote policy owned elsewhere"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_GOVERNED_REMOTE",
+      "name": "DWH Governed Remote",
+      "purpose": "Define governed remote DWH access as an explicit semantic/authorization path, including the rule that direct raw external dereference is not an alternate bypass path when AccessCore governance is active.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_RUNTIME_IO"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_DWH_EXT",
+        "TOPIC_RUNTIME_REMOTE_DEREFERENCE",
+        "TOPIC_CORE_CAPABILITY_AUTHORITY"
+      ],
+      "member_refs": [
+        "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT",
+        "DWH_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_DWH_REMOTE_AUTHORIZE",
+        "OP_DWH_REMOTE_ACCESS"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_DWH_REMOTE_AUTHORIZE",
+        "name": "Authorize governed remote DWH access",
+        "inputs": [
+          "origin identity",
+          "remote target",
+          "requested operation",
+          "authority context"
+        ],
+        "outputs": [
+          "allowed/denied"
+        ],
+        "errors": [
+          "authority unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_DWH_REMOTE_ACCESS",
+        "name": "Perform governed remote DWH access",
+        "inputs": [
+          "authorized remote request",
+          "resolved remote ref"
+        ],
+        "outputs": [
+          "remote result"
+        ],
+        "errors": [
+          "remote denied",
+          "transport failure"
+        ],
+        "side_effects": [
+          "declared remote interaction"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "remote_marker": ">",
+    "governed_path": "DWH remote semantic dereference",
+    "ac_on_rule": "When AccessCore governance is active, direct raw $EXT dereference is disallowed as an authorization bypass; governed remote access uses the declared DWH remote path.",
+    "authority_rule": "Remote authority is evaluated at the remote target according to remote policy and assurance/authorization rules.",
+    "local_owner_rule": "Local ownership does not expand delegated remote rights.",
+    "read_only_rule": "Remote surfaces remain read-only by default unless explicit remote write authority exists.",
+    "identity_rule": "Origin identity remains the identity established at the origin; remote transport does not invent a new identity.",
+    "non_expansion_rule": "Delegated remote access cannot silently expand rights beyond the explicitly delegated remote path."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_BOUNDARY_EXPLICIT",
+        "rule": "DWH local/remote, origin, schema, external identity, access path and transport-security semantics remain explicit and non-interchangeable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "direct raw $EXT dereference bypasses governed remote path while AccessCore is active",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "local ownership grants broader remote rights automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "remote write allowed without explicit remote write authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "transport session creates new trusted identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "delegated remote path expands rights beyond explicit delegation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "remote authorization inferred from Topic membership or network reachability",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EXT",
+      "target_ref": "AIGMOS_DWH_EXTERNAL_REGISTRY_CONTRACT",
+      "purpose": "$EXT provides external identity registry metadata."
+    },
+    {
+      "id": "REF_REMOTE",
+      "target_ref": "AIGMOS_RUNTIME_REMOTE_DEREFERENCE_CONTRACT",
+      "purpose": "Remote semantic addressing is explicit."
+    },
+    {
+      "id": "REF_AUTH",
+      "target_ref": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT",
+      "purpose": "Remote capability and remote authority remain separate."
+    }
+  ],
+  "prose": {
+    "summary": "Define governed remote DWH access as an explicit semantic/authorization path, including the rule that direct raw external dereference is not an alternate bypass path when AccessCore governance is active.",
+    "notes": [
+      "Unlocked until reconciled against existing DWH/IAM/AC contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

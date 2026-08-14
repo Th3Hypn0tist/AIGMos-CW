@@ -1,0 +1,135 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_IAM_IDENTITY_RESOLUTION_CONTRACT",
+    "name": "IAM Identity Resolution",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic resolution from authentication/session/external identity context to one exact IdentityCore identity without using profile names, transport endpoints or similarity as identity authority.",
+  "scope": {
+    "owns": [
+      "IAM Identity Resolution semantics"
+    ],
+    "does_not_own": [
+      "component-core semantics owned elsewhere",
+      "AccessCore authorization policy",
+      "runtime business-domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_IAM_IDENTITY_RESOLUTION",
+      "name": "IAM Identity Resolution",
+      "purpose": "Define deterministic resolution from authentication/session/external identity context to one exact IdentityCore identity without using profile names, transport endpoints or similarity as identity authority.",
+      "parent_topic_refs": [
+        "TOPIC_IAM",
+        "TOPIC_IDENTITYCORE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_IAM_IDENTITY_RESOLUTION_CONTRACT",
+        "IAM_COMPOSITION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "inputs": [
+      "credential binding",
+      "authenticated session binding",
+      "explicit external identity mapping",
+      "exact IdentityCore ref"
+    ],
+    "resolution_rule": "Successful resolution returns one exact IdentityCore identity.",
+    "ambiguity_rule": "Multiple possible identities hard-fail unless an explicit disambiguation mapping exists.",
+    "profile_rule": "Display name/email/title similarity may assist discovery but never acts as canonical identity proof by itself.",
+    "session_rule": "Session identity binds to but never replaces IdentityCore identity.",
+    "external_rule": "External identity mappings are explicit and provenance-bearing.",
+    "failure_rule": "Unresolved identity remains unresolved; runtime does not synthesize a new identity implicitly.",
+    "authority_rule": "Successful identity resolution does not itself authorize an operation."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "IAM_COMPOSITION_BOUNDARY",
+        "rule": "IAM composes identity, authentication/assurance, PortfolioCore and MeritCore references while preserving each component's ownership; AccessCore authorization remains orthogonal."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "identity resolved solely by display-name similarity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "multiple candidate identities accepted ambiguously",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "session id used as semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "unresolved caller silently gets new identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "resolved identity treated as authorized",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SESSION",
+      "target_ref": "AIGMOS_SESSION_IDENTITY_PROPAGATION_CONTRACT",
+      "purpose": "Sessions carry exact identity context."
+    },
+    {
+      "id": "REF_ID",
+      "target_ref": "AIGMOS_IDENTITYCORE_IDENTITY_CONTRACT",
+      "purpose": "Resolution targets stable IdentityCore identity."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic resolution from authentication/session/external identity context to one exact IdentityCore identity without using profile names, transport endpoints or similarity as identity authority.",
+    "notes": [
+      "Unlocked pending reconciliation against existing IAM/IdentityCore/PortfolioCore/MeritCore/AccessCore contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

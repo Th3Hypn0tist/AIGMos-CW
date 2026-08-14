@@ -1,0 +1,140 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_INCIDENT_CONTAINMENT_ACTION_CONTRACT",
+    "name": "Incident Containment Action Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define containment as explicit authorized operations such as revoke, block, isolate, stop, rotate, disable, quarantine or restrict, never as hidden side effects of incident classification.",
+  "scope": {
+    "owns": [
+      "Incident Containment Action Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "runtime execution authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_INCIDENT_CONTAINMENT_ACTION",
+      "name": "Incident Containment Action Boundary",
+      "purpose": "Define containment as explicit authorized operations such as revoke, block, isolate, stop, rotate, disable, quarantine or restrict, never as hidden side effects of incident classification.",
+      "parent_topic_refs": [
+        "TOPIC_GOVERNANCE",
+        "TOPIC_INCIDENT"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_INCIDENT_CONTAINMENT_ACTION_CONTRACT",
+        "GOVERNANCE_EVIDENCE_SEPARATION",
+        "FAIL_CLOSED_PROTECTED_DATA",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "action_types": [
+      "revoke",
+      "block",
+      "isolate",
+      "stop",
+      "rotate_secret",
+      "disable_listener",
+      "quarantine_data",
+      "restrict_access",
+      "other declared containment action"
+    ],
+    "request_rule": "Containment action creates exact Operation Request.",
+    "target_rule": "Target/scope is exact.",
+    "authorization_rule": "Sensitive/destructive/AccessCore gates still apply.",
+    "incident_rule": "Operation references incident identity/provenance.",
+    "result_rule": "Containment result/failure is explicit.",
+    "rollback_rule": "Reversible containment has explicit rollback/recovery semantics.",
+    "authority_rule": "Incident severity does not bypass authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "GOVERNANCE_EVIDENCE_SEPARATION",
+        "rule": "Policy, decision, evidence, audit record, consent, incident and compliance result remain separate machine-significant identities; no evidence artifact silently becomes source data, authorization or runtime authority."
+      },
+      {
+        "id": "FAIL_CLOSED_PROTECTED_DATA",
+        "rule": "Ambiguous or unresolved governance for protected data fails closed; UI visibility, transport reachability, cache presence, role title, prior access or audit-log presence never substitute for an explicit valid policy decision."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "critical incident auto-disables everything",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "containment bypasses dispatcher",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "target inferred broadly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "failed containment shown successful",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "incident responder gets universal rights",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REQ",
+      "target_ref": "AIGMOS_OPERATION_REQUEST_CONTRACT",
+      "purpose": "Containment effects use canonical operation boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define containment as explicit authorized operations such as revoke, block, isolate, stop, rotate, disable, quarantine or restrict, never as hidden side effects of incident classification.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

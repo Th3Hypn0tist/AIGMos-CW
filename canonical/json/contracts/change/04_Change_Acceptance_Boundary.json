@@ -1,0 +1,163 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CANONICAL_CHANGE_ACCEPTANCE_CONTRACT",
+    "name": "Canonical Change Acceptance Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the explicit transition from validated/reconciled candidate canonical graph to accepted repository definition state.",
+  "scope": {
+    "owns": [
+      "Canonical Change Acceptance Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CANONICAL_CHANGE_ACCEPTANCE",
+      "name": "Canonical Change Acceptance Boundary",
+      "purpose": "Define the explicit transition from validated/reconciled candidate canonical graph to accepted repository definition state.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_CONTRACTS",
+        "TOPIC_CHANGE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CANONICAL_CHANGE_ACCEPTANCE_CONTRACT",
+        "BOOTSTRAP_AUTHORITY_EXPLICIT",
+        "VALIDATE_BEFORE_ACCEPT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_CHANGE",
+      "name": "Change",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_CHANGE already referenced by 10 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 10,
+        "distinct_child_topics": 10,
+        "host_contract_ref": "AIGMOS_CANONICAL_CHANGE_ACCEPTANCE_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "flow": [
+      "resolve base",
+      "apply candidate patch in memory",
+      "format/structural validation",
+      "identity/ref registry rebuild",
+      "semantic validation",
+      "semantic diff review",
+      "applicable administration authorization",
+      "commit accepted source revision",
+      "rebuild derived projections"
+    ],
+    "candidate_rule": "Candidate remains inert until final commit.",
+    "atomic_rule": "Accepted canonical change set is atomic under repository transaction profile.",
+    "failure_rule": "Any hard gate failure leaves prior accepted graph intact.",
+    "projection_rule": "Derived indexes/UML/docs rebuild only after accepted source commit.",
+    "runtime_rule": "Accepted docs do not automatically activate runtime configuration/code.",
+    "history_rule": "Prior accepted source revision remains traceable."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOTSTRAP_AUTHORITY_EXPLICIT",
+        "rule": "Contract Format bootstrap authority, canonical contract sources, generated projections, historical artifacts and runtime state remain separate identities/roles; no file becomes authoritative merely by name, path order, timestamp or discovery order."
+      },
+      {
+        "id": "VALIDATE_BEFORE_ACCEPT",
+        "rule": "Candidate canonical changes remain inert until exact format validation, identity/reference resolution, semantic diff, applicable governance/authorization and repository acceptance succeed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "validation success auto-activates runtime",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "partial patch committed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "generated UML committed as authority first",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "failure leaves half-applied graph",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "candidate marked accepted before commit",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PATCH",
+      "target_ref": "AIGMOS_CANONICAL_PATCH_CONTRACT",
+      "purpose": "Acceptance applies exact validated patch set."
+    }
+  ],
+  "prose": {
+    "summary": "Define the explicit transition from validated/reconciled candidate canonical graph to accepted repository definition state.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_CHANGE solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

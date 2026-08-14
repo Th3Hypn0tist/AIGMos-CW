@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RECONCILIATION_MERGE_CONTRACT",
+    "name": "Reconciliation Merge",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "reconciliation",
+  "purpose": "Define explicit merge/reconciliation of competing or migrated canonical artifacts without guessing semantic precedence or silently combining conflicting ownership.",
+  "scope": {
+    "owns": [
+      "Reconciliation Merge semantics"
+    ],
+    "does_not_own": [
+      "referenced source semantics",
+      "filesystem authority",
+      "presentation-only formatting"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_INTEROP_RECONCILIATION",
+      "name": "Reconciliation Merge",
+      "purpose": "Define explicit merge/reconciliation of competing or migrated canonical artifacts without guessing semantic precedence or silently combining conflicting ownership.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_MIGRATION",
+        "TOPIC_CORE_SOURCE_ROLES"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RECONCILIATION_MERGE_CONTRACT",
+        "INTEROPERABILITY_SEMANTIC_PRESERVATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "source_role": "reconciliation",
+    "merge_rule": "Merge is identity- and ownership-aware rather than text/line-based only.",
+    "same_identity_rule": "Artifacts claiming the same canonical identity are compared semantically before reconciliation.",
+    "conflict_rule": "Conflicting semantic ownership or machine-significant values remain explicit conflicts until resolved by an authorized reconciliation decision.",
+    "topic_rule": "Non-conflicting Topic memberships may be unioned where the Topic model allows multi-membership.",
+    "reference_rule": "References are resolved/rewritten only to exact canonical identities.",
+    "history_rule": "Superseded source artifacts remain traceable through reconciliation provenance.",
+    "no_guess_rule": "No newest-file/newest-version/path-preference heuristic decides semantic truth."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "INTEROPERABILITY_SEMANTIC_PRESERVATION",
+        "rule": "Reading, writing, normalization, diffing, reconciliation and patching preserve canonical identity, ownership, Topic context and machine-significant semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "merge resolves semantic conflict by file timestamp/path heuristic",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "conflicting owners silently combined",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "same identity conflict disappears without reconciliation evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "Topic memberships unnecessarily collapsed to one",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "reconciliation loses superseded-source provenance",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SOURCE",
+      "target_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+      "purpose": "Reconciliation respects source-role semantics."
+    },
+    {
+      "id": "REF_DIFF",
+      "target_ref": "AIGMOS_SEMANTIC_DIFF_CONTRACT",
+      "purpose": "Reconciliation uses semantic differences rather than raw file differences."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit merge/reconciliation of competing or migrated canonical artifacts without guessing semantic precedence or silently combining conflicting ownership.",
+    "notes": [
+      "Unlocked pending implementation against golden fixtures and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_FEDERATED_PARTIAL_FAILURE_CONTRACT",
+    "name": "DWH Federated Partial Failure",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit handling of unavailable, denied, timed-out, stale or schema-incompatible sources so partial federated results cannot masquerade as complete answers.",
+  "scope": {
+    "owns": [
+      "DWH Federated Partial Failure semantics"
+    ],
+    "does_not_own": [
+      "remote source domain ownership",
+      "AccessCore policy ownership",
+      "transport implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_FEDERATED_PARTIAL_FAILURE",
+      "name": "DWH Federated Partial Failure",
+      "purpose": "Define explicit handling of unavailable, denied, timed-out, stale or schema-incompatible sources so partial federated results cannot masquerade as complete answers.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_FEDERATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_FEDERATED_PARTIAL_FAILURE_CONTRACT",
+        "FEDERATION_PRESERVES_ORIGIN",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "failure_states": [
+      "unavailable",
+      "denied",
+      "timeout",
+      "schema_incompatible",
+      "stale_beyond_policy",
+      "query_failed"
+    ],
+    "completeness_rule": "Result explicitly declares complete or partial status.",
+    "source_rule": "Each omitted/failed source is identified exactly with reason.",
+    "partial_rule": "Partial results are allowed only under explicit query/profile policy.",
+    "aggregation_rule": "Aggregates over incomplete source sets are marked partial/invalid according to aggregate policy.",
+    "join_rule": "Cross-source joins with missing source partitions never masquerade as complete joins.",
+    "retry_rule": "Retry/fallback is explicit and bounded.",
+    "authority_rule": "Denied source is never treated as merely unavailable to bypass governance.",
+    "failure_rule": "Required-source failure hard-fails the federated query."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "FEDERATION_PRESERVES_ORIGIN",
+        "rule": "Federated DWH access preserves each origin's exact identity, schema, governance, lineage and consistency evidence; combining results never centralizes semantic ownership or silently expands authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "partial result shown as complete",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "denied source retried through alternate path to bypass policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "aggregate ignores missing source silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "missing join side treated as empty authoritative set",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "retry unbounded",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PLAN",
+      "target_ref": "AIGMOS_DWH_FEDERATED_QUERY_PLAN_CONTRACT",
+      "purpose": "Failure state attaches to exact plan/source fragment."
+    },
+    {
+      "id": "REF_ORDER",
+      "target_ref": "AIGMOS_DWH_QUERY_ORDER_PAGINATION_CONTRACT",
+      "purpose": "Partial result semantics remain explicit through pagination."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit handling of unavailable, denied, timed-out, stale or schema-incompatible sources so partial federated results cannot masquerade as complete answers.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH remote addressing, query, lineage, synchronization and AccessCore contracts."
+    ]
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_SCHEMA_FIELD_IDENTITY_CONTRACT",
+    "name": "Schema Field Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each machine-significant field/property as an explicit stable semantic identity with type, cardinality/nullability/default and constraint semantics independent from display label and physical column name.",
+  "scope": {
+    "owns": [
+      "Schema Field Identity semantics"
+    ],
+    "does_not_own": [
+      "instance data values",
+      "presentation labels",
+      "AccessCore policy"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_SCHEMA_FIELD_IDENTITY",
+      "name": "Schema Field Identity",
+      "purpose": "Define each machine-significant field/property as an explicit stable semantic identity with type, cardinality/nullability/default and constraint semantics independent from display label and physical column name.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_SCHEMA",
+        "TOPIC_CORE_RELATIONS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_SCHEMA_FIELD_IDENTITY_CONTRACT",
+        "SCHEMA_RELATION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Every machine-significant field has an explicit stable identity within its schema scope.",
+    "name_rule": "Canonical field name is distinct from localized/display labels.",
+    "type_rule": "Field type/schema semantics are explicit.",
+    "null_rule": "Required, optional, nullable, empty and missing semantics are explicitly distinguishable where applicable.",
+    "default_rule": "Default value semantics are explicit and inert until applied by the owning operation.",
+    "storage_rule": "Physical column/key name may bind to the field but is not its semantic identity.",
+    "ordering_rule": "Field declaration order is non-semantic unless explicitly declared."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SCHEMA_RELATION_EXPLICIT",
+        "rule": "Schema, field and relation identities are explicit and stable; instance data, presentation labels and physical storage never define canonical schema semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "field identity inferred from display label",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "null/empty/missing collapsed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "column name used as sole semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "field order treated as precedence without rule",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "default executes hidden behavior",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SCHEMA",
+      "target_ref": "AIGMOS_SCHEMA_IDENTITY_CONTRACT",
+      "purpose": "Fields belong to explicit schemas."
+    },
+    {
+      "id": "REF_VALUES",
+      "target_ref": "AIGMOS_CORE_VALUE_SEMANTICS_CONTRACT",
+      "purpose": "Field values preserve semantic distinctions."
+    }
+  ],
+  "prose": {
+    "summary": "Define each machine-significant field/property as an explicit stable semantic identity with type, cardinality/nullability/default and constraint semantics independent from display label and physical column name.",
+    "notes": [
+      "Unlocked pending reconciliation against existing schema/relation contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

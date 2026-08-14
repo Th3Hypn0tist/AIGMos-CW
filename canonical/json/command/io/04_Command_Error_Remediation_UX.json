@@ -1,0 +1,177 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_COMMAND_ERROR_REMEDIATION_UX_CONTRACT",
+    "name": "Command Error and Remediation UX",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define concise deterministic command failure output with exact error code/context and at most one safe remediation line when a known correction exists.",
+  "scope": {
+    "owns": [
+      "Command Error and Remediation UX semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_COMMAND_ERROR_REMEDIATION_UX",
+      "name": "Command Error and Remediation UX",
+      "purpose": "Define concise deterministic command failure output with exact error code/context and at most one safe remediation line when a known correction exists.",
+      "parent_topic_refs": [
+        "TOPIC_COMMANDS",
+        "TOPIC_ERRORS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_COMMAND_ERROR_REMEDIATION_UX_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_COMMANDS",
+      "name": "Commands",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_COMMANDS already referenced by 13 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 13,
+        "distinct_child_topics": 13,
+        "host_contract_ref": "AIGMOS_COMMAND_ERROR_REMEDIATION_UX_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    },
+    {
+      "id": "TOPIC_ERRORS",
+      "name": "Errors",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_ERRORS already referenced by 1 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 1,
+        "distinct_child_topics": 1,
+        "host_contract_ref": "AIGMOS_COMMAND_ERROR_REMEDIATION_UX_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "error_rule": "Command failure references exact error occurrence/type.",
+    "context_rule": "Command/argument/target context is shown without leaking sensitive data.",
+    "remediation_rule": "One concise remediation line is emitted when a deterministic safe action exists.",
+    "unknown_rule": "Unknown remedy is not guessed.",
+    "help_rule": "Family/help suggestions point to exact command paths.",
+    "effect_rule": "Displaying remediation never executes it.",
+    "authority_rule": "Suggested command still requires normal authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "error suggests fuzzy destructive command",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "remediation auto-runs",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "secret argument printed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "multiple ambiguous fixes spammed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "suggested command bypasses auth",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ERR",
+      "target_ref": "AIGMOS_RUNTIME_ERROR_REMEDIATION_CONTRACT",
+      "purpose": "Command UX projects safe remediation evidence."
+    }
+  ],
+  "prose": {
+    "summary": "Define concise deterministic command failure output with exact error code/context and at most one safe remediation line when a known correction exists.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_COMMANDS solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership.",
+      "Pass 6 hosts grouping-only Topic TOPIC_ERRORS solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_LANGUAGE_PACK_CONTRACT",
+    "name": "Language Pack",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define language packs as keyed translations over canonical label identities, supporting the target UI languages without duplicating UI/domain structures.",
+  "scope": {
+    "owns": [
+      "Language Pack semantics"
+    ],
+    "does_not_own": [
+      "command identities",
+      "internal canonical identifiers",
+      "domain semantics outside label presentation"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_LANGUAGE_PACK",
+      "name": "Language Pack",
+      "purpose": "Define language packs as keyed translations over canonical label identities, supporting the target UI languages without duplicating UI/domain structures.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_DOCUMENTATION_HUMAN"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_LANGUAGE_PACK_CONTRACT",
+        "LOCALIZATION_PRESENTATION_ONLY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "target_languages": [
+      "fi",
+      "en",
+      "ja",
+      "vi",
+      "ko",
+      "fr"
+    ],
+    "pack_rule": "Language pack maps label identity to localized presentation value.",
+    "identity_rule": "Language pack never remaps canonical machine identities.",
+    "partial_rule": "A pack may be incomplete while unlocked; missing entries remain explicit.",
+    "version_rule": "Pack version/compatibility with label-set snapshot is explicit.",
+    "reuse_rule": "Language packs are shared across Expose surfaces using the same label identities.",
+    "format_rule": "Serialization format of the language pack is implementation detail/data representation."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "LOCALIZATION_PRESENTATION_ONLY",
+        "rule": "Localization changes human-facing labels and explanatory text only; canonical identities, commands and machine semantics remain language-independent."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "language pack duplicates semantic UI/domain structure",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "translated keys replace canonical IDs",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "missing translation silently treated as complete",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "pack compatibility with label set unknown",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "language file path used as semantic identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LABEL",
+      "target_ref": "AIGMOS_CANONICAL_UI_LABEL_CONTRACT",
+      "purpose": "Language packs translate canonical label IDs."
+    }
+  ],
+  "prose": {
+    "summary": "Define language packs as keyed translations over canonical label identities, supporting the target UI languages without duplicating UI/domain structures.",
+    "notes": [
+      "Unlocked pending reconciliation against Expose/UI label contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

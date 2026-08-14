@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_TRANSITION_EVIDENCE_CONTRACT",
+    "name": "State Transition Evidence",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define append/history evidence for one attempted/accepted/rejected state transition with exact old/new state, trigger, guards, authorization and execution refs.",
+  "scope": {
+    "owns": [
+      "State Transition Evidence semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "domain-specific semantic ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_TRANSITION_EVIDENCE",
+      "name": "State Transition Evidence",
+      "purpose": "Define append/history evidence for one attempted/accepted/rejected state transition with exact old/new state, trigger, guards, authorization and execution refs.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_SEMANTICS",
+        "TOPIC_STATE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_TRANSITION_EVIDENCE_CONTRACT",
+        "EXPLICIT_IDENTITY_AND_MEANING",
+        "DERIVED_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each material transition attempt/evidence has explicit identity.",
+    "entity_rule": "Stateful entity identity is exact.",
+    "before_rule": "Prior state/revision is exact.",
+    "after_rule": "New state is exact only if accepted.",
+    "trigger_rule": "Trigger/request/execution ref is exact.",
+    "guard_rule": "Material guard results are explicit.",
+    "result_states": [
+      "accepted",
+      "rejected",
+      "failed",
+      "conflict",
+      "unknown"
+    ],
+    "history_rule": "Prior state history is preserved."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_IDENTITY_AND_MEANING",
+        "rule": "Machine-significant identity, type, relation, state and meaning are explicit and never inferred solely from display text, path, layout, file order, timestamp or implementation accident."
+      },
+      {
+        "id": "DERIVED_NONAUTHORITY",
+        "rule": "Resolved, projected, indexed, cached, formatted or derived representations never become source-of-truth or authority merely because they are convenient or available."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "state overwritten without transition evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "rejected transition shown new state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "actor/request omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "history inferred from timestamps",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "failed transition silently accepted",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define append/history evidence for one attempted/accepted/rejected state transition with exact old/new state, trigger, guards, authorization and execution refs.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_INSTALL_ORDER_CONTRACT",
+    "name": "Install Order",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define installation ordering as explicit deterministic sequencing for installation stages, including cs root and numeric ordering, without confusing install order with semantic authority or runtime execution order.",
+  "scope": {
+    "owns": [
+      "Install Order semantics"
+    ],
+    "does_not_own": [
+      "module internal semantics",
+      "runtime authorization policy",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_INSTALL_ORDER",
+      "name": "Install Order",
+      "purpose": "Define installation ordering as explicit deterministic sequencing for installation stages, including cs root and numeric ordering, without confusing install order with semantic authority or runtime execution order.",
+      "parent_topic_refs": [
+        "TOPIC_BOOT_DEPENDENCY",
+        "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+        "TOPIC_CORE_ORDERING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_INSTALL_ORDER_CONTRACT",
+        "BOOT_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "root": "cs",
+    "ordering": "explicit numeric install order",
+    "baseline_sequence": [
+      "user modules",
+      "schema",
+      "EXP/REST surfaces where applicable"
+    ],
+    "order_rule": "Install stages use declared numeric/order metadata.",
+    "semantic_rule": "Install order is lifecycle sequencing, not ownership/authority precedence.",
+    "validation_rule": "Each stage validates prerequisites before applying.",
+    "failure_rule": "Failure stops or rolls back according to explicit installer transaction policy; later stages do not silently proceed.",
+    "activation_rule": "Installed does not automatically mean enabled/running unless lifecycle contract explicitly says so."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOT_EXPLICIT",
+        "rule": "Boot selection, pruning, dependency validation and activation are explicit; the runtime never silently enables missing dependencies."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "filesystem enumeration order used as install order",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "install order treated as semantic authority precedence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "later stage proceeds after failed required prerequisite",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "installed state conflated with enabled/running",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "numeric order omitted where deterministic order is required",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ORDER",
+      "target_ref": "AIGMOS_CORE_DETERMINISTIC_ORDERING_CONTRACT",
+      "purpose": "Install sequencing is explicitly ordered."
+    },
+    {
+      "id": "REF_LIFE",
+      "target_ref": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT",
+      "purpose": "Installed and enabled/running states remain distinct."
+    }
+  ],
+  "prose": {
+    "summary": "Define installation ordering as explicit deterministic sequencing for installation stages, including cs root and numeric ordering, without confusing install order with semantic authority or runtime execution order.",
+    "notes": [
+      "Unlocked pending reconciliation against boot/USE/library/install contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

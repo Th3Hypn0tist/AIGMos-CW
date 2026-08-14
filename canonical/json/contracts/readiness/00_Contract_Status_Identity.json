@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CONTRACT_STATUS_CONTRACT",
+    "name": "Canonical Contract Status",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define contract readiness status as explicit metadata with `unlocked` meaning not yet accepted as closure-complete and `locked` meaning validated against declared readiness criteria.",
+  "scope": {
+    "owns": [
+      "Canonical Contract Status semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CONTRACT_STATUS",
+      "name": "Canonical Contract Status",
+      "purpose": "Define contract readiness status as explicit metadata with `unlocked` meaning not yet accepted as closure-complete and `locked` meaning validated against declared readiness criteria.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_CONTRACTS",
+        "TOPIC_READINESS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CONTRACT_STATUS_CONTRACT",
+        "BOOTSTRAP_AUTHORITY_EXPLICIT",
+        "VALIDATE_BEFORE_ACCEPT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "allowed_status": [
+      "unlocked",
+      "locked",
+      "superseded",
+      "deprecated"
+    ],
+    "unlocked_rule": "Unlocked means the contract may be semantically valid but is not yet declared closure-complete under current review criteria.",
+    "locked_rule": "Locked means exact readiness criteria/profile were satisfied and the status transition was explicitly accepted.",
+    "semantic_rule": "Status does not change the underlying contract identity/ownership semantics.",
+    "runtime_rule": "Locked status does not mean runtime enabled/active.",
+    "authority_rule": "Status grants no AccessCore rights.",
+    "history_rule": "Status transitions are auditable.",
+    "superseded_rule": "Superseded means a newer explicit canonical definition replaces this definition while this identity/revision remains historically traceable.",
+    "deprecated_rule": "Deprecated means the definition remains interpretable but new use is discouraged or disallowed according to explicit replacement/migration semantics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOTSTRAP_AUTHORITY_EXPLICIT",
+        "rule": "Contract Format bootstrap authority, canonical contract sources, generated projections, historical artifacts and runtime state remain separate identities/roles; no file becomes authoritative merely by name, path order, timestamp or discovery order."
+      },
+      {
+        "id": "VALIDATE_BEFORE_ACCEPT",
+        "rule": "Candidate canonical changes remain inert until exact format validation, identity/reference resolution, semantic diff, applicable governance/authorization and repository acceptance succeed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "locked means running",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "unlocked means invalid automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "status inferred from filename",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "lock grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "status change rewrites identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define contract readiness status as explicit metadata with `unlocked` meaning not yet accepted as closure-complete and `locked` meaning validated against declared readiness criteria.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

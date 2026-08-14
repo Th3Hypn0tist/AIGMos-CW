@@ -1,0 +1,176 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT",
+    "name": "Canonical Authority",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define authority as its own structural/governance dimension for permission over resources and operations, independent from ownership, containment, Topic membership, capability existence and identity assurance.",
+  "scope": {
+    "owns": [
+      "Canonical Authority semantics"
+    ],
+    "does_not_own": [
+      "runtime implementation details",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_STRUCTURE_AUTHORITY",
+      "name": "Authority",
+      "purpose": "Define authority as its own structural/governance dimension for permission over resources and operations, independent from ownership, containment, Topic membership, capability existence and identity assurance.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_STRUCTURE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_CORE_CAPABILITY_AUTHORITY",
+        "TOPIC_ACCESSCORE_AUTHORIZATION"
+      ],
+      "member_refs": [
+        "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT",
+        "STRUCTURAL_DIMENSION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_AUTHORITY_DEFINE",
+        "OP_AUTHORITY_EVALUATE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_AUTHORITY_DEFINE",
+        "name": "Define authority edge",
+        "inputs": [
+          "authority_subject",
+          "resource/operation",
+          "rights/policy"
+        ],
+        "outputs": [
+          "authority edge"
+        ],
+        "errors": [
+          "subject unresolved",
+          "target unresolved"
+        ],
+        "side_effects": [
+          "authority graph updated"
+        ]
+      },
+      {
+        "id": "OP_AUTHORITY_EVALUATE",
+        "name": "Evaluate authority edge",
+        "inputs": [
+          "subject",
+          "target",
+          "operation",
+          "policy context"
+        ],
+        "outputs": [
+          "allow | deny"
+        ],
+        "errors": [
+          "policy unresolved"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "dimension": "authority",
+    "capability_rule": "Capability existence and authority are separate.",
+    "ownership_rule": "Ownership does not imply authority unless an explicit policy grants it.",
+    "topic_rule": "Topic membership does not imply authority.",
+    "assurance_rule": "Identity assurance can be a requirement but is not authorization.",
+    "projection_rule": "Visibility/control presence does not grant authority.",
+    "remote_rule": "Delegated remote authority follows explicit non-expansion semantics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "STRUCTURAL_DIMENSION_EXPLICIT",
+        "rule": "Structural dimensions and registries remain explicit and are never collapsed into generic hierarchy."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "ownership automatically grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Topic membership grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "capability existence treated as permission",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "IAM assurance treated as authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "UI visibility grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "remote rights expand without explicit policy",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CAPAUTH",
+      "target_ref": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT",
+      "purpose": "Capability and authority are orthogonal."
+    },
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_AUTHORIZATION_CONTRACT",
+      "purpose": "AccessCore evaluates runtime authorization."
+    }
+  ],
+  "prose": {
+    "summary": "Define authority as its own structural/governance dimension for permission over resources and operations, independent from ownership, containment, Topic membership, capability existence and identity assurance.",
+    "notes": [
+      "Unlocked until reconciled against the assembled 1.4 architecture tree and reference/trace closure."
+    ]
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXECUTION_ATTEMPT_IDENTITY_CONTRACT",
+    "name": "Execution Attempt Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define each concrete attempt of a request as a distinct identity linked to request, prior attempts and retry policy.",
+  "scope": {
+    "owns": [
+      "Execution Attempt Identity semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXECUTION_ATTEMPT_IDENTITY",
+      "name": "Execution Attempt Identity",
+      "purpose": "Define each concrete attempt of a request as a distinct identity linked to request, prior attempts and retry policy.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME",
+        "TOPIC_EXECUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXECUTION_ATTEMPT_IDENTITY_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each execution attempt has a distinct attempt identity.",
+    "request_rule": "Attempt references exact request identity.",
+    "sequence_rule": "Attempt ordinal is explicit evidence, not identity by itself.",
+    "prior_rule": "Retry attempts reference prior failure/attempt where applicable.",
+    "result_rule": "Each attempt has its own status/result/error evidence.",
+    "accepted_rule": "At most the explicitly allowed effect acceptance semantics determine which attempt produced accepted effect.",
+    "history_rule": "Failed attempts remain auditable."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "attempt ordinal alone used globally as identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "failed attempt erased after success",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "same execution identity reused ambiguously",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "accepted effect source attempt unknown",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "attempt inferred from log order",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RETRY",
+      "target_ref": "AIGMOS_RETRY_POLICY_CONTRACT",
+      "purpose": "Retries create distinct attempts."
+    }
+  ],
+  "prose": {
+    "summary": "Define each concrete attempt of a request as a distinct identity linked to request, prior attempts and retry policy.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

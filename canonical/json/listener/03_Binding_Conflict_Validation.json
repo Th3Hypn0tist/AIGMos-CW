@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_LISTENER_BINDING_CONFLICT_VALIDATION_CONTRACT",
+    "name": "Listener Binding Conflict Validation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic conflict detection across all active/candidate listener bindings before activation, including address/port/transport collisions and reserved-binding rules.",
+  "scope": {
+    "owns": [
+      "Listener Binding Conflict Validation semantics"
+    ],
+    "does_not_own": [
+      "protocol business semantics",
+      "domain data semantics",
+      "presentation-only state"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_LISTENER_BINDING_CONFLICT_VALIDATION",
+      "name": "Listener Binding Conflict Validation",
+      "purpose": "Define deterministic conflict detection across all active/candidate listener bindings before activation, including address/port/transport collisions and reserved-binding rules.",
+      "parent_topic_refs": [
+        "TOPIC_INSTANCE_CONFIG",
+        "TOPIC_RUNTIME_NETWORK"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_LISTENER_BINDING_CONFLICT_VALIDATION_CONTRACT",
+        "LISTENER_IDENTITY_BINDING_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "checks": [
+      "same address+port+transport collision",
+      "wildcard/interface overlap",
+      "protocol transport compatibility",
+      "reserved/default binding conflicts",
+      "duplicate active binding claims"
+    ],
+    "candidate_rule": "Conflicts are checked against running, enabled and candidate bindings according to the owning activation policy.",
+    "wildcard_rule": "Wildcard/any-interface binding conflicts are evaluated against specific-interface bindings according to platform semantics.",
+    "reserved_rule": "Reserved/default bindings are protected by explicit ownership/configuration rules.",
+    "failure_rule": "Conflicting candidate hard-fails before affected activation.",
+    "no_repair_rule": "Validator never silently increments/substitutes ports to make a config work.",
+    "report_rule": "Conflict report identifies both listener identities and exact binding tuples."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "LISTENER_IDENTITY_BINDING_SEPARATION",
+        "rule": "Listener/service identity is stable and separate from mutable listen binding, protocol configuration and runtime process/session state."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "conflicting listeners activated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "validator silently picks another port",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "wildcard overlap ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "conflict report lacks both identities",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "reserved binding overridden implicitly",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_BIND",
+      "target_ref": "AIGMOS_LISTEN_BINDING_CONTRACT",
+      "purpose": "Conflict validation compares explicit bindings."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic conflict detection across all active/candidate listener bindings before activation, including address/port/transport collisions and reserved-binding rules.",
+    "notes": [
+      "Unlocked pending reconciliation against existing Port Editor/listener/protocol contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

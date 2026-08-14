@@ -1,0 +1,160 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CORE_INVARIANT_HIERARCHY_CONTRACT",
+    "name": "Core Invariant Hierarchy",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define invariant propagation and narrowing so lower-level contracts may specialize stricter rules but may not weaken higher-level Core or parent invariants.",
+  "scope": {
+    "owns": [
+      "Core Invariant Hierarchy semantics"
+    ],
+    "does_not_own": [
+      "domain-specific semantics",
+      "runtime implementation details"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CORE_INVARIANTS",
+      "name": "Invariants",
+      "purpose": "Define invariant propagation and narrowing so lower-level contracts may specialize stricter rules but may not weaken higher-level Core or parent invariants.",
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CORE_INVARIANT_HIERARCHY_CONTRACT",
+        "EXPLICIT_MACHINE_SEMANTICS",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "AIGMOS_CORE_INVARIANTS_CONTRACT"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_INVARIANT_COLLECT",
+        "OP_INVARIANT_VALIDATE_NARROWING"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_INVARIANT_COLLECT",
+        "name": "Collect applicable invariants",
+        "inputs": [
+          "Core invariants",
+          "parent contracts",
+          "local contract"
+        ],
+        "outputs": [
+          "applicable invariant set"
+        ],
+        "errors": [
+          "invariant conflict"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_INVARIANT_VALIDATE_NARROWING",
+        "name": "Validate invariant narrowing",
+        "inputs": [
+          "parent invariant",
+          "child invariant"
+        ],
+        "outputs": [
+          "valid narrowing | weakening"
+        ],
+        "errors": [
+          "child weakens parent invariant"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "hierarchy_rule": "Applicable invariants propagate from Contract Format/Core/parent semantic boundaries to narrower child contracts.",
+    "narrowing_rule": "A child may add constraints or narrow allowed behavior.",
+    "weakening_rule": "A child may not permit behavior forbidden by an applicable parent/Core invariant.",
+    "conflict_rule": "If two applicable authoritative invariants conflict and neither is a valid narrowing, emit an explicit source/semantic conflict gap.",
+    "hard_gate_rule": "Hard gates are not overridden by lower-level convenience behavior."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_MACHINE_SEMANTICS",
+        "rule": "Machine-significant meaning is explicit structured canonical data and is not reconstructed by hidden heuristics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "child contract weakens an applicable Core invariant",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "child hard gate overrides parent hard gate to permit forbidden behavior",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "conflicting invariants are silently resolved by file/path/version order",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "applicable invariant is ignored because a lower-level contract omits restating it",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CORE_INVARIANTS",
+      "target_ref": "AIGMOS_CORE_INVARIANTS_CONTRACT",
+      "purpose": "Root non-overridable Core invariants."
+    },
+    {
+      "id": "REF_SOURCE_ROLES",
+      "target_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+      "purpose": "Conflicting authoritative invariant sources use explicit reconciliation semantics."
+    },
+    {
+      "id": "REF_GAPS",
+      "target_ref": "AIGMOS_CORE_SEMANTIC_GAP_CONTRACT",
+      "purpose": "Irreconcilable invariant conflicts become explicit gaps."
+    }
+  ],
+  "prose": {
+    "summary": "Define invariant propagation and narrowing so lower-level contracts may specialize stricter rules but may not weaken higher-level Core or parent invariants.",
+    "notes": [
+      "Unlocked until repository-wide 1.4 migration validates this boundary against the assembled active canonical graph."
+    ]
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NAMESPACE_INTROSPECTION_HELP_CONTRACT",
+    "name": "Namespace Introspection and Help",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define machine-readable recursive introspection/help for runtime symbol roots and namespace families so users and tools can enumerate what a namespace means without a duplicated hand-maintained help tree.",
+  "scope": {
+    "owns": [
+      "Namespace Introspection and Help semantics"
+    ],
+    "does_not_own": [
+      "mounted module internal semantics",
+      "runtime authorization policy",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_NAMESPACE_HELP",
+      "name": "Namespace Introspection and Help",
+      "purpose": "Define machine-readable recursive introspection/help for runtime symbol roots and namespace families so users and tools can enumerate what a namespace means without a duplicated hand-maintained help tree.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NAMESPACES",
+        "TOPIC_COMMAND_HELP",
+        "TOPIC_CORE_PROJECTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_NAMESPACE_INTROSPECTION_HELP_CONTRACT",
+        "NAMESPACE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "introspection_rule": "Each namespace root/family exposes identity, owner, type, short help and long help or refs to canonical help metadata.",
+    "enumeration_rule": "A reader may recursively enumerate registered child namespaces/mounts according to visibility/authorization.",
+    "dynamic_rule": "Dynamic families report declared family semantics separately from current runtime child instances.",
+    "help_rule": "Help describes namespace semantics but never creates namespace membership or capability.",
+    "visibility_rule": "Introspection obeys applicable access/metadata visibility policy.",
+    "source_rule": "Help/introspection derives from the canonical namespace registry and owning contracts.",
+    "presentation_rule": "CLI/web/tree representations are projections over the same registry."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "NAMESPACE_EXPLICIT",
+        "rule": "Runtime symbol namespaces, roots, mounts and dynamic families are explicit, collision-free and never inferred solely from filesystem layout or display labels."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "help tree diverges from namespace registry without reconciliation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "help text creates namespace semantics absent from registry",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "dynamic runtime child mistaken for family definition",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "introspection bypasses visibility/metadata policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "namespace enumeration requires filesystem heuristics",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_HELP",
+      "target_ref": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT",
+      "purpose": "Namespace and command help follow common canonical metadata principles."
+    },
+    {
+      "id": "REF_REG",
+      "target_ref": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
+      "purpose": "Introspection is derived from registry state."
+    }
+  ],
+  "prose": {
+    "summary": "Define machine-readable recursive introspection/help for runtime symbol roots and namespace families so users and tools can enumerate what a namespace means without a duplicated hand-maintained help tree.",
+    "notes": [
+      "Unlocked pending reconciliation against existing runtime symbol/module contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

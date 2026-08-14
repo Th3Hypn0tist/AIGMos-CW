@@ -1,0 +1,300 @@
+{
+  "behavior": {
+    "events": [],
+    "flows": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "errors": [
+          "time invalid"
+        ],
+        "id": "OP_PROJECT_TIME_BUCKET",
+        "inputs": [
+          "Project",
+          "work timestamps/duration"
+        ],
+        "name": "Represent Project work period",
+        "outputs": [
+          "week/hour Project time atoms"
+        ],
+        "side_effects": []
+      },
+      {
+        "errors": [
+          "evidence multiplication",
+          "overlap invalid"
+        ],
+        "id": "OP_PROJECT_TIME_VALIDATE",
+        "inputs": [
+          "time atoms",
+          "underlying work evidence"
+        ],
+        "name": "Validate Project time atom evidence",
+        "outputs": [
+          "validated time distribution"
+        ],
+        "side_effects": []
+      }
+    ],
+    "states": []
+  },
+  "constraints": {
+    "hard_gates": [
+      {
+        "id": "GATE_427C8618EF",
+        "condition": "sub-hour atom treated as canonical minimum Project merit atom",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_FDC2ABBCCD",
+        "condition": "splitting time multiplies Tier evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_B677B20462",
+        "condition": "overlapping atoms double-count same work without explicit evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2AFF5DAEBE",
+        "condition": "time atom loses Project/evidence provenance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_B2E9B2119E",
+        "condition": "splitting one hour into many records multiplies merit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4D9127894F",
+        "condition": "week duration guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_E87D85195D",
+        "condition": "hours duplicated across parents",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_8A1CA4FE14",
+        "condition": "time atom becomes Project identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_A2813C2519",
+        "condition": "aggregation loses provenance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_C15C706303",
+        "condition": "project splitting multiplies evidence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_FCCD499D35",
+        "condition": "same hour counted into multiple exclusive evidence totals",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5406BF57CB",
+        "condition": "time atom used as Project identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_CC733EB6A2",
+        "condition": "Project hardcodes MeritCore user registration cadence as its own ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_E9A17B88CE",
+        "condition": "subdivision silently invents additional work",
+        "result": "hard_fail"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "PROJECT_MODEL_EXPLICIT",
+        "rule": "Project/task, execution, evidence and merit semantics are explicit and non-duplicated."
+      },
+      {
+        "id": "COMPOSITION_NONOWNERSHIP",
+        "rule": "Composition never silently transfers semantic ownership: universal modules own their primitives, domains own their composition semantics, and composed members retain their own identities and contracts."
+      },
+      {
+        "id": "EXPLICIT_STRUCTURE",
+        "rule": "Containment, relation, dependency, composition and projection edges exist only through explicit typed references; naming, file hierarchy, UI adjacency or shared values never create semantic structure."
+      },
+      {
+        "id": "PROJECT_UNIVERSAL_RECURSIVE",
+        "rule": "Project is the universal recursive work primitive: task, subtask, phase, milestone and work package semantics are represented through explicit Project identities/relations rather than parallel work primitives."
+      }
+    ]
+  },
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT",
+    "name": "Project Time Atoms",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "members": [],
+  "prose": {
+    "notes": [
+      "Unlocked until reconciled against existing FreeMarket/Project/Merit contracts and repository-wide Contract Format 1.4 validation.",
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against existing Project/FreeMarket/MeritCore contracts and whole-tree Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: freemarket/project/03_Project_Time_Atoms.json, project/02_Project_Time_Atom.json, universal_module/project/03_Project_Time_Atoms.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define Project work evidence using a one-week base atom with subdivision to hour atoms while preventing time splitting from multiplying merit/Tier evidence. [2] Define Project evidence time granularity using week as the base reporting atom with subdivision down to hour atoms without multiplying merit evidence. [3] Define Project work evidence time distribution using a base week period with subdivision to hour atoms, preventing decomposition from multiplying the same evidence."
+  },
+  "purpose": "Reconciled source purposes: [1] Define Project work evidence using a one-week base atom with subdivision to hour atoms while preventing time splitting from multiplying merit/Tier evidence. [2] Define Project evidence time granularity using week as the base reporting atom with subdivision down to hour atoms without multiplying merit evidence. [3] Define Project work evidence time distribution using a base week period with subdivision to hour atoms, preventing decomposition from multiplying the same evidence.",
+  "references": [
+    {
+      "id": "REF_MERIT_TIME",
+      "target_ref": "AIGMOS_MERITCORE_TIME_ATOM_CONTRACT",
+      "purpose": "Project time distribution feeds MeritCore reporting intervals."
+    },
+    {
+      "id": "REF_MERIT",
+      "target_ref": "AIGMOS_MERITCORE_TIME_ATOM_CONTRACT",
+      "purpose": "MeritCore consumes Project-linked temporal evidence under its own cadence."
+    }
+  ],
+  "scope": {
+    "does_not_own": [
+      "presentation semantics",
+      "transport implementation",
+      "unrelated identity semantics",
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "presentation/layout semantics",
+      "MeritCore scoring semantics",
+      "FreeMarket broker policy",
+      "presentation-only hierarchy"
+    ],
+    "owns": [
+      "Project Time Atoms semantics",
+      "Project Time Atom semantics"
+    ]
+  },
+  "semantics": {
+    "aggregation_rule": "Reconciled source clauses: [1] Hour atoms aggregate back into their containing reporting periods deterministically. [2] Hour atoms aggregate into their owning weekly/work evidence periods without duplication.",
+    "anchor_rule": "Project time evidence uses explicit temporal boundaries/context.",
+    "anti_multiplication_rule": "Splitting one underlying work period into multiple atoms cannot create more qualifying evidence than the actual work.",
+    "authority_rule": "Time evidence has no operation authority.",
+    "base_atom": "Reconciled source clauses: [1] one week [2] one_week [3] week",
+    "conservation_rule": "Splitting time cannot multiply Tier/merit evidence beyond represented actual hour atoms.",
+    "distribution_rule": "Project work evidence may be distributed across weekly periods and subdivided to hour atoms.",
+    "identity_rule": "Time atom identity/reference is distinct from Project identity.",
+    "merit_alignment_rule": "Project time atoms provide temporal evidence consumed by MeritCore timing semantics.",
+    "minimum_atom": "one_hour",
+    "minimum_subdivision": "Reconciled source clauses: [1] hour atom [2] hour",
+    "nonmultiplication_rule": "Splitting a Project/time period cannot multiply the same underlying work evidence or Tier evidence.",
+    "overlap_rule": "Overlapping atoms must not double-count the same underlying work unless an explicit independent evidence rule justifies it.",
+    "precision_rule": "Sub-hour evidence is not required by this canonical Project atom model unless a future compatible contract explicitly extends it.",
+    "provenance_rule": "Atoms retain Project and underlying evidence refs.",
+    "reporting_rule": "MeritCore may consume Project-linked time atoms according to its own user-anchored reporting cadence.",
+    "representation_rule": "Project work can be distributed across weekly and hour-level atoms.",
+    "split_rule": "A week may be subdivided into explicit hour atoms."
+  },
+  "source_role": "definition",
+  "status": "locked",
+  "structure": {
+    "authority": [],
+    "containment": [],
+    "dependencies": [],
+    "ownership": [],
+    "relations": []
+  },
+  "topics": [
+    {
+      "child_topics": [],
+      "composed_topic_refs": [
+        "TOPIC_PROJECT",
+        "TOPIC_MERIT_TIME"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_PROJECT_TIME",
+      "member_refs": [
+        "AIGMOS_PROJECT_TIME_ATOM_CONTRACT",
+        "PROJECT_MODEL_EXPLICIT",
+        "COMPOSITION_NONOWNERSHIP",
+        "EXPLICIT_STRUCTURE",
+        "PROJECT_UNIVERSAL_RECURSIVE",
+        "GATE_427C8618EF",
+        "GATE_FDC2ABBCCD",
+        "GATE_B677B20462",
+        "GATE_2AFF5DAEBE",
+        "GATE_B2E9B2119E",
+        "GATE_4D9127894F",
+        "GATE_E87D85195D",
+        "GATE_8A1CA4FE14",
+        "GATE_A2813C2519",
+        "GATE_C15C706303",
+        "GATE_FCCD499D35",
+        "GATE_5406BF57CB",
+        "GATE_CC733EB6A2",
+        "GATE_E9A17B88CE"
+      ],
+      "metadata": {},
+      "name": "Project Time",
+      "operation_refs": [
+        "OP_PROJECT_TIME_BUCKET",
+        "OP_PROJECT_TIME_VALIDATE"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_CORE"
+      ],
+      "purpose": "Define Project work evidence using a one-week base atom with subdivision to hour atoms while preventing time splitting from multiplying merit/Tier evidence.",
+      "relation_refs": []
+    },
+    {
+      "child_topics": [],
+      "composed_topic_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_PROJECT_TIME_ATOM",
+      "member_refs": [
+        "AIGMOS_PROJECT_TIME_ATOM_CONTRACT",
+        "PROJECT_MODEL_EXPLICIT",
+        "COMPOSITION_NONOWNERSHIP",
+        "EXPLICIT_STRUCTURE",
+        "PROJECT_UNIVERSAL_RECURSIVE",
+        "GATE_427C8618EF",
+        "GATE_FDC2ABBCCD",
+        "GATE_B677B20462",
+        "GATE_2AFF5DAEBE",
+        "GATE_B2E9B2119E",
+        "GATE_4D9127894F",
+        "GATE_E87D85195D",
+        "GATE_8A1CA4FE14",
+        "GATE_A2813C2519",
+        "GATE_C15C706303",
+        "GATE_FCCD499D35",
+        "GATE_5406BF57CB",
+        "GATE_CC733EB6A2",
+        "GATE_E9A17B88CE"
+      ],
+      "metadata": {},
+      "name": "Project Time Atom",
+      "operation_refs": [
+        "OP_PROJECT_TIME_BUCKET",
+        "OP_PROJECT_TIME_VALIDATE"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_PROJECT",
+        "TOPIC_TIME",
+        "TOPIC_UNIVERSAL_MODULE"
+      ],
+      "purpose": "Reconciled source clauses: [1] Define Project evidence time granularity using week as the base reporting atom with subdivision down to hour atoms without multiplying merit evidence. [2] Define Project work evidence time distribution using a base week period with subdivision to hour atoms, preventing decomposition from multiplying the same evidence.",
+      "relation_refs": []
+    }
+  ]
+}

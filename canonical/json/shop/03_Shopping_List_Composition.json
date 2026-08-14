@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_SHOPPING_LIST_COMPOSITION_CONTRACT",
+    "name": "Shopping List Composition",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define composition, grouping and reusable list/template semantics while preserving item identities and avoiding UI/order-based semantic inference.",
+  "scope": {
+    "owns": [
+      "Shopping List Composition semantics"
+    ],
+    "does_not_own": [
+      "payment execution",
+      "merchant catalog truth",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_SHOPPING_LIST_COMPOSITION",
+      "name": "Shopping List Composition",
+      "purpose": "Define composition, grouping and reusable list/template semantics while preserving item identities and avoiding UI/order-based semantic inference.",
+      "parent_topic_refs": [
+        "TOPIC_SHOP",
+        "TOPIC_STUDIO_EVERYDAY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_SHOPPING_LIST_COMPOSITION_CONTRACT",
+        "SHOPPING_NONPURCHASE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "group_rule": "Shopping items may be grouped by explicit category/store/project/section refs or labels.",
+    "order_rule": "Display order is non-semantic unless an explicit priority/sequence field says otherwise.",
+    "template_rule": "Reusable templates are definitions that instantiate/copy explicit new list/item identities according to profile.",
+    "merge_rule": "Merging lists requires explicit reconciliation of same-item semantics and never silently deduplicates by display name alone.",
+    "project_rule": "Project/task linkage is explicit reference and does not transfer Project ownership to #SHOP.",
+    "studio_rule": "Everyday/Studio grouping is a projection/composition surface, not semantic ownership.",
+    "identity_rule": "List composition never erases constituent list/item identities."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SHOPPING_NONPURCHASE",
+        "rule": "Shopping-list data expresses planning intent only; list/item existence, ranking, recommendation or selection never authorizes purchase, payment or external order execution."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "UI order becomes purchase priority implicitly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "items deduplicated only by name",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "template instances reuse mutable item identity incorrectly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "Project link transfers ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "Studio grouping changes #SHOP owner",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LIST",
+      "target_ref": "AIGMOS_SHOPPING_LIST_IDENTITY_CONTRACT",
+      "purpose": "Composition operates on exact list identities."
+    },
+    {
+      "id": "REF_PROJ",
+      "target_ref": "AIGMOS_STUDIO_LENS_CONTRACT",
+      "purpose": "Studio projection remains non-authoritative."
+    }
+  ],
+  "prose": {
+    "summary": "Define composition, grouping and reusable list/template semantics while preserving item identities and avoiding UI/order-based semantic inference.",
+    "notes": [
+      "Unlocked pending reconciliation against #SHOP owner, Studio Everyday, units and external procurement/payment contracts."
+    ]
+  }
+}

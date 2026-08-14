@@ -1,0 +1,130 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT",
+    "name": "Remote Authorization Propagation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define propagation of origin identity/assurance context to remote governed resources while requiring the remote instance to evaluate its own AccessCore policy and preventing delegated rights expansion.",
+  "scope": {
+    "owns": [
+      "Remote Authorization Propagation semantics"
+    ],
+    "does_not_own": [
+      "IdentityCore identity semantics",
+      "commercial licensing",
+      "domain business semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION",
+      "name": "Remote Authorization Propagation",
+      "purpose": "Define propagation of origin identity/assurance context to remote governed resources while requiring the remote instance to evaluate its own AccessCore policy and preventing delegated rights expansion.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE_AUTHORIZATION",
+        "TOPIC_RUNTIME_ACTIVATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT",
+        "ACCESSCORE_ACTIVATION_GOVERNED",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "origin_rule": "Remote request carries exact origin identity/session/assurance provenance according to protocol policy.",
+    "remote_rule": "Remote target evaluates its own AccessCore authorization policy.",
+    "nonexpansion_rule": "Delegated remote path cannot expand rights beyond explicit delegation.",
+    "local_rule": "A local owner may hold broader local rights where local policy permits; this does not imply those rights remotely.",
+    "dwh_rule": "With AccessCore active, governed DWH remote access uses the DWH remote path rather than direct `$EXT` dereference.",
+    "assurance_rule": "Remote target may impose its own minimum assurance requirement.",
+    "transport_rule": "Secure transport/peer reachability does not grant remote authorization.",
+    "trace_rule": "Remote decision retains origin identity plus remote policy/rule evidence."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ACCESSCORE_ACTIVATION_GOVERNED",
+        "rule": "AccessCore activation, login, assurance and runtime protection are explicit lifecycle semantics; once active, AccessCore cannot be silently bypassed or disabled by an ungoverned runtime/config mutation."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "origin local rights copied wholesale to remote target",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "secure transport treated as remote authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "direct $EXT bypasses governed DWH path under AC",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "remote target skips its own policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "delegated remote rights expand silently",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DWH",
+      "target_ref": "AIGMOS_DWH_REMOTE_DEREFERENCE_CONTRACT",
+      "purpose": "AC-active remote DWH uses governed > addressing."
+    },
+    {
+      "id": "REF_SESSION",
+      "target_ref": "AIGMOS_SESSION_IDENTITY_PROPAGATION_CONTRACT",
+      "purpose": "Origin identity context propagates explicitly."
+    }
+  ],
+  "prose": {
+    "summary": "Define propagation of origin identity/assurance context to remote governed resources while requiring the remote instance to evaluate its own AccessCore policy and preventing delegated rights expansion.",
+    "notes": [
+      "Unlocked pending reconciliation against existing AccessCore/IAM/runtime activation contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

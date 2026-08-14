@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_AUTOMATION_LIFECYCLE_CONTRACT",
+    "name": "Automation Enable, Disable and Pause",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define automation lifecycle state independently from installed/defined schedule/action semantics.",
+  "scope": {
+    "owns": [
+      "Automation Enable, Disable and Pause semantics"
+    ],
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_AUTOMATION_LIFECYCLE",
+      "name": "Automation Enable, Disable and Pause",
+      "purpose": "Define automation lifecycle state independently from installed/defined schedule/action semantics.",
+      "parent_topic_refs": [
+        "TOPIC_AUTOMATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_AUTOMATION_LIFECYCLE_CONTRACT",
+        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "AUTOMATION_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "states": [
+      "defined",
+      "disabled",
+      "enabled",
+      "paused",
+      "degraded",
+      "failed",
+      "retired"
+    ],
+    "enable_rule": "Enable targets exact automation definition and validates dependencies/bindings.",
+    "disable_rule": "Disable prevents future dispatch but does not rewrite prior occurrence/execution history.",
+    "pause_rule": "Pause semantics for due occurrences are explicit.",
+    "retire_rule": "Retired automation remains historical definition evidence.",
+    "schedule_rule": "Defined schedule existence never implies enabled automation.",
+    "authority_rule": "Lifecycle changes require explicit automation-admin authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+        "rule": "Command, Routine, Trigger, Schedule, Tool and model definitions remain separate from invocations, requests, executions and results; definitions never create effects merely by existing."
+      },
+      {
+        "id": "AUTOMATION_EFFECT_BOUNDARY",
+        "rule": "Automated work still resolves exact operation/target/context and must cross validation, authorization and dispatcher boundaries before any effect occurs."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "schedule file presence enables automation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "disable deletes history",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "pause catch-up semantics guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "enable grants operation rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "retired automation silently reactivated",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AUTO",
+      "target_ref": "AIGMOS_AUTOMATION_DEFINITION_CONTRACT",
+      "purpose": "Lifecycle governs exact automation definitions."
+    }
+  ],
+  "prose": {
+    "summary": "Define automation lifecycle state independently from installed/defined schedule/action semantics.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

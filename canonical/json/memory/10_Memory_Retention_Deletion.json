@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MEMORY_RETENTION_DELETION_CONTRACT",
+    "name": "Memory Retention and Deletion",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit retention, expiry and deletion semantics for memory records without conflating deletion of a memory projection with deletion of its source data.",
+  "scope": {
+    "owns": [
+      "Memory Retention and Deletion semantics"
+    ],
+    "does_not_own": [
+      "source-domain semantics",
+      "AccessCore policy ownership",
+      "model execution authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MEMORY_RETENTION_DELETION",
+      "name": "Memory Retention and Deletion",
+      "purpose": "Define explicit retention, expiry and deletion semantics for memory records without conflating deletion of a memory projection with deletion of its source data.",
+      "parent_topic_refs": [
+        "TOPIC_MEMORY",
+        "TOPIC_AI_EXECUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MEMORY_RETENTION_DELETION_CONTRACT",
+        "MEMORY_CONTEXT_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "retention_rule": "Retention/expiry policy is explicit per memory scope/profile where applicable.",
+    "expiry_rule": "Expired records become unavailable according to policy and lifecycle state.",
+    "delete_rule": "Deletion targets exact memory-record identity.",
+    "source_rule": "Deleting memory does not delete referenced source objects unless a separate authorized source deletion operation exists.",
+    "lineage_rule": "Required audit/tombstone evidence may remain according to policy without retaining deleted content.",
+    "authority_rule": "Deletion requires explicit memory-delete authority.",
+    "failure_rule": "Partial deletion state is explicit and never represented as complete success."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MEMORY_CONTEXT_NONAUTHORITY",
+        "rule": "Memory and retrieved context are provenance-bearing inert data projections; remembered or retrieved content never becomes authority, canonical truth or executable instruction merely by inclusion in context."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "memory delete cascades to source silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "record deleted by fuzzy content match",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "expiry undefined but assumed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "deletion bypasses authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "failed deletion shown as complete",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ID",
+      "target_ref": "AIGMOS_MEMORY_RECORD_IDENTITY_CONTRACT",
+      "purpose": "Retention/deletion targets exact memory identities."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit retention, expiry and deletion semantics for memory records without conflating deletion of a memory projection with deletion of its source data.",
+    "notes": [
+      "Unlocked pending reconciliation against #MEM, q target/context, DWH lineage and AccessCore contracts."
+    ]
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_PROTOCOL_MONITOR_CONTRACT",
+    "name": "Protocol Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for protocol instances, listener bindings, REST routes, OSC addresses, WebSocket channels and protocol runtime/session state.",
+  "scope": {
+    "owns": [
+      "Protocol Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain business semantics",
+      "AccessCore policy ownership",
+      "listener binding ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_PROTOCOL_MONITOR",
+      "name": "Protocol Monitor",
+      "purpose": "Define a read-only Expose monitor for protocol instances, listener bindings, REST routes, OSC addresses, WebSocket channels and protocol runtime/session state.",
+      "parent_topic_refs": [
+        "TOPIC_PROTOCOL_BINDINGS",
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_PROTOCOL_MONITOR_CONTRACT",
+        "PROTOCOL_BINDING_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_PROTOCOL_BINDINGS",
+      "name": "Protocol Bindings",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_PROTOCOL_BINDINGS already referenced by 6 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 6,
+        "distinct_child_topics": 6,
+        "host_contract_ref": "AIGMOS_EXPOSE_PROTOCOL_MONITOR_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "protocol instance registry",
+      "listener bindings",
+      "REST routes/methods",
+      "OSC mappings",
+      "WebSocket connections/subscriptions",
+      "payload schema refs",
+      "authorization failures",
+      "lifecycle state"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "Protocol instance, listener, route/address/channel, connection/session and canonical target identities remain distinct.",
+    "action_rule": "Start/stop/reload/edit route/binding operations invoke separate authorized canonical operations.",
+    "authority_rule": "Viewing protocol state grants no route/data/lifecycle authority.",
+    "redaction_rule": "Sensitive payload/session metadata is redacted according to policy.",
+    "trace_rule": "Displayed routing retains exact selector→target→operation/resource refs.",
+    "layout_rule": "Visual grouping/order does not create routing precedence."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "PROTOCOL_BINDING_SEPARATION",
+        "rule": "Protocol identity, named listener instance, route/address/channel binding and domain operation identity remain separate; protocol exposure never creates semantic ownership or authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor conflates route and target identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "monitor directly mutates protocol without explicit operation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "viewing grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "payload secrets exposed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "UI order creates selector precedence",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PROTO",
+      "target_ref": "AIGMOS_PROTOCOL_INSTANCE_CONTRACT",
+      "purpose": "Monitor projects protocol instances."
+    },
+    {
+      "id": "REF_ROUTE",
+      "target_ref": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
+      "purpose": "Monitor projects exact protocol bindings."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for protocol instances, listener bindings, REST routes, OSC addresses, WebSocket channels and protocol runtime/session state.",
+    "notes": [
+      "Unlocked pending reconciliation against listener, REST/OSC/WebSocket and Expose contracts.",
+      "Pass 6 hosts grouping-only Topic TOPIC_PROTOCOL_BINDINGS solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

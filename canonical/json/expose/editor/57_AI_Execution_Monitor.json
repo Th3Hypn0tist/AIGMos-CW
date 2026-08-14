@@ -1,0 +1,164 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_AI_EXECUTION_MONITOR_CONTRACT",
+    "name": "AI Execution Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a read-only Expose monitor for q/qc/qt invocations, backend/model bindings, target/context provenance, model outputs and requested operation dispatch outcomes.",
+  "scope": {
+    "owns": [
+      "AI Execution Monitor semantics"
+    ],
+    "does_not_own": [
+      "model-provider semantics",
+      "AccessCore policy ownership",
+      "domain source semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_AI_EXECUTION_MONITOR",
+      "name": "AI Execution Monitor",
+      "purpose": "Define a read-only Expose monitor for q/qc/qt invocations, backend/model bindings, target/context provenance, model outputs and requested operation dispatch outcomes.",
+      "parent_topic_refs": [
+        "TOPIC_Q_FAMILY",
+        "TOPIC_AI_EXECUTION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_AI_EXECUTION_MONITOR_CONTRACT",
+        "MODEL_OUTPUT_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_AI_EXECUTION",
+      "name": "AI Execution",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_AI_EXECUTION already referenced by 12 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 12,
+        "distinct_child_topics": 12,
+        "host_contract_ref": "AIGMOS_EXPOSE_AI_EXECUTION_MONITOR_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "q-family member",
+      "backend/model",
+      "target refs",
+      "memory/context refs",
+      "local/external QC mode",
+      "model output",
+      "candidate operation requests",
+      "validation/authorization/dispatch result",
+      "duration/errors"
+    ],
+    "readonly_rule": "Monitor is read-only by default.",
+    "identity_rule": "q command, backend/model, target, model-output record and dispatched operation identities remain distinct.",
+    "output_rule": "Model output is visibly distinguished from accepted canonical/runtime effects.",
+    "action_rule": "rerun/change-backend/approve-or-dispatch operations invoke separate authorized canonical operations where supported.",
+    "authority_rule": "Viewing model output grants no execution authority.",
+    "redaction_rule": "Sensitive prompts/context/results are redacted according to policy.",
+    "trace_rule": "Every dispatched effect links exact originating model-output/request and runtime dispatch refs."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MODEL_OUTPUT_NONAUTHORITY",
+        "rule": "q/qc/qt model execution produces inert candidate data; models may request or propose operations but only AIGMos canonical validation, authorization and dispatch can create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor presents model output as executed truth",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "backend/model and q identity conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "monitor directly executes output text",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "viewing grants dispatch authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "effect trace loses originating request ref",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_BOUND",
+      "target_ref": "AIGMOS_MODEL_OUTPUT_OPERATION_BOUNDARY_CONTRACT",
+      "purpose": "Monitor exposes inert-output to governed-dispatch boundary."
+    },
+    {
+      "id": "REF_QC",
+      "target_ref": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT",
+      "purpose": "Monitor shows QC execution locality."
+    }
+  ],
+  "prose": {
+    "summary": "Define a read-only Expose monitor for q/qc/qt invocations, backend/model bindings, target/context provenance, model outputs and requested operation dispatch outcomes.",
+    "notes": [
+      "Unlocked pending reconciliation against q-family, command runtime, memory and Studio/QC contracts.",
+      "Pass 6 hosts grouping-only Topic TOPIC_AI_EXECUTION solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

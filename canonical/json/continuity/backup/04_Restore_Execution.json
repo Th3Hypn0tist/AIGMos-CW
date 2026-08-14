@@ -1,0 +1,160 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RESTORE_EXECUTION_CONTRACT",
+    "name": "Restore Execution",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define effectful restore as a separate authorized execution with exact plan, destructive gates, target-state snapshot, result and post-restore verification.",
+  "scope": {
+    "owns": [
+      "Restore Execution semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "canonical documentation ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RESTORE_EXECUTION",
+      "name": "Restore Execution",
+      "purpose": "Define effectful restore as a separate authorized execution with exact plan, destructive gates, target-state snapshot, result and post-restore verification.",
+      "parent_topic_refs": [
+        "TOPIC_CONTINUITY",
+        "TOPIC_RESTORE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RESTORE_EXECUTION_CONTRACT",
+        "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "OPERATIONS_FAIL_SAFE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_RESTORE",
+      "name": "Restore",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_RESTORE already referenced by 2 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 2,
+        "distinct_child_topics": 2,
+        "host_contract_ref": "AIGMOS_RESTORE_EXECUTION_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each restore execution has distinct identity.",
+    "plan_rule": "Exact restore plan revision is referenced.",
+    "pre_rule": "Target state and backup validity are rechecked as required.",
+    "destructive_rule": "Overwrite/delete effects use exact destructive scope/gates.",
+    "result_states": [
+      "completed",
+      "failed",
+      "partial",
+      "cancelled",
+      "rolled_back"
+    ],
+    "verification_rule": "Post-restore integrity/application checks are explicit.",
+    "history_rule": "Prior target/source state evidence remains traceable.",
+    "authority_rule": "Backup ownership does not authorize restore."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "rule": "Release candidate, accepted release, deployment plan, deployment execution, installed artifact, active runtime instance and observed health remain separate identities/states."
+      },
+      {
+        "id": "OPERATIONS_FAIL_SAFE",
+        "rule": "Operational convenience, availability pressure, maintenance state, automation, recovery or rollback never silently bypass validation, authorization, integrity, governance or dispatcher boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "restore plan and execution identity conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "overwrite bypasses destructive gate",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "partial shown complete",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "backup owner restores prod automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "post-restore check skipped",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_PLAN",
+      "target_ref": "AIGMOS_RESTORE_PLAN_CONTRACT",
+      "purpose": "Restore execution instantiates exact plan."
+    }
+  ],
+  "prose": {
+    "summary": "Define effectful restore as a separate authorized execution with exact plan, destructive gates, target-state snapshot, result and post-restore verification.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_RESTORE solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

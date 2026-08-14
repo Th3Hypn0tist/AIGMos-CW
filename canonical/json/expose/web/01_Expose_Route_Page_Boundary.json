@@ -1,0 +1,153 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_ROUTE_PAGE_BOUNDARY_CONTRACT",
+    "name": "Expose Route and Page Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the mapping between HTTP route identity and nanoCMS page/site structure while keeping route, page, MetaModule and underlying resource identities distinct.",
+  "scope": {
+    "owns": [
+      "Expose Route and Page Boundary semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_ROUTE_PAGE_BOUNDARY",
+      "name": "Expose Route and Page Boundary",
+      "purpose": "Define the mapping between HTTP route identity and nanoCMS page/site structure while keeping route, page, MetaModule and underlying resource identities distinct.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_WEB"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_ROUTE_PAGE_BOUNDARY_CONTRACT",
+        "UI_NONAUTHORITY",
+        "UI_EFFECT_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_WEB",
+      "name": "WEB",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_WEB already referenced by 4 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 4,
+        "distinct_child_topics": 4,
+        "host_contract_ref": "AIGMOS_EXPOSE_ROUTE_PAGE_BOUNDARY_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "route_rule": "Each routable path binds an explicit route identity.",
+    "page_rule": "Route resolves to one exact page/view composition according to nanoCMS structure.",
+    "metamodule_rule": "Placed MetaModule identity is separate from page identity.",
+    "resource_rule": "Underlying domain/resource identity is never inferred from URL path alone.",
+    "navigation_rule": "Navigating to a page causes no mutation by default.",
+    "history_rule": "Browser history navigation cannot replay hidden mutations.",
+    "authority_rule": "Route/page visibility does not grant resource authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "UI_NONAUTHORITY",
+        "rule": "UI visibility, navigation, placement, styling, selection, focus and visual adjacency never create semantic ownership, resource identity or execution authority."
+      },
+      {
+        "id": "UI_EFFECT_BOUNDARY",
+        "rule": "Effect-capable UI actions create explicit candidate/request data and must cross canonical validation, authorization and dispatcher boundaries before effects occur."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "URL path becomes resource identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "page load mutates resource",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "browser back replays write",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "MetaModule and page identity conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "route visibility grants authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_ROUTE",
+      "target_ref": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
+      "purpose": "HTTP route remains an explicit protocol route binding."
+    }
+  ],
+  "prose": {
+    "summary": "Define the mapping between HTTP route identity and nanoCMS page/site structure while keeping route, page, MetaModule and underlying resource identities distinct.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_WEB solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

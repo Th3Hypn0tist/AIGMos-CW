@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_HEALTH_PROBE_CONTRACT",
+    "name": "Runtime Health Probe",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit health probes/checks with exact targets, intervals/timeouts and result semantics.",
+  "scope": {
+    "owns": [
+      "Runtime Health Probe semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_HEALTH_PROBE",
+      "name": "Runtime Health Probe",
+      "purpose": "Define explicit health probes/checks with exact targets, intervals/timeouts and result semantics.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_HEALTH",
+        "TOPIC_OBSERVABILITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RUNTIME_HEALTH_PROBE_CONTRACT",
+        "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "probe_types": [
+      "liveness",
+      "readiness",
+      "dependency",
+      "functional",
+      "other declared probe"
+    ],
+    "identity_rule": "Each probe definition has an explicit identity.",
+    "target_rule": "Probe targets exact component/instance/resource identity.",
+    "timeout_rule": "Probe timeout and evaluation interval are explicit.",
+    "result_states": [
+      "healthy",
+      "unhealthy",
+      "degraded",
+      "unknown",
+      "timeout"
+    ],
+    "side_effect_rule": "Health probe is read-only/non-destructive unless explicitly declared otherwise.",
+    "authority_rule": "Probe success does not grant runtime authority.",
+    "evidence_rule": "Probe result is derived health evidence."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "rule": "Machine-significant definitions, executions, evidence and runtime state use explicit identities and boundaries; visibility, file order, timestamps, transport reachability or UI placement never silently create semantic authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "probe mutates target",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "timeout treated healthy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "probe target guessed",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "health result grants authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "probe identity inferred from URL",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_STATE",
+      "target_ref": "AIGMOS_RUNTIME_COMPONENT_STATE_CONTRACT",
+      "purpose": "Probe evidence informs runtime health state."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit health probes/checks with exact targets, intervals/timeouts and result semantics.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

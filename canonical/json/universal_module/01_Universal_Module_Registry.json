@@ -1,0 +1,168 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_UNIVERSAL_MODULE_REGISTRY_CONTRACT",
+    "name": "Universal Module Registry",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "membership_registry",
+  "purpose": "Define the Universal Module Registry as the explicit index of reusable substrate identities and authoritative contracts, supporting deterministic Domain composition without making directory layout authoritative.",
+  "scope": {
+    "owns": [
+      "Universal Module Registry semantics"
+    ],
+    "does_not_own": [
+      "runtime implementation details",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_UNIVERSAL_MODULE_REGISTRY",
+      "name": "Universal Module Registry",
+      "purpose": "Define the Universal Module Registry as the explicit index of reusable substrate identities and authoritative contracts, supporting deterministic Domain composition without making directory layout authoritative.",
+      "parent_topic_refs": [
+        "TOPIC_CORE_STRUCTURE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_UNIVERSAL_MODULE",
+        "TOPIC_CORE_SOURCE_ROLES"
+      ],
+      "member_refs": [
+        "AIGMOS_UNIVERSAL_MODULE_REGISTRY_CONTRACT",
+        "STRUCTURAL_DIMENSION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_UMOD_REGISTER",
+        "OP_UMOD_RESOLVE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_UMOD_REGISTER",
+        "name": "Register Universal Module",
+        "inputs": [
+          "Universal Module identity",
+          "authoritative contract ref"
+        ],
+        "outputs": [
+          "Universal Module registry entry"
+        ],
+        "errors": [
+          "identity collision",
+          "contract unresolved"
+        ],
+        "side_effects": [
+          "Universal Module registry updated"
+        ]
+      },
+      {
+        "id": "OP_UMOD_RESOLVE",
+        "name": "Resolve Universal Module",
+        "inputs": [
+          "Universal Module identity"
+        ],
+        "outputs": [
+          "authoritative substrate contract"
+        ],
+        "errors": [
+          "module unresolved",
+          "module ambiguous"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "role": "membership registry/index",
+    "source_role": "membership_registry",
+    "identity_rule": "Universal Module identity resolves exactly to one active authoritative substrate contract.",
+    "ownership_rule": "Registry lists substrates but does not own their semantics.",
+    "composition_rule": "Domains reference Universal Module identities through this explicit registry/identity graph.",
+    "directory_rule": "universal_module is storage organization only; registry identity is canonical.",
+    "history_rule": "Superseded/historical module contracts may remain physically present but do not compete with active registry targets.",
+    "projection_rule": "Module catalogs/maps are derived projections."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "STRUCTURAL_DIMENSION_EXPLICIT",
+        "rule": "Structural dimensions and registries remain explicit and are never collapsed into generic hierarchy."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "registry absorbs Universal Module semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "filesystem directory presence creates active registry membership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "same active Universal Module identity resolves ambiguously",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "historical contract competes with active target",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "Domain composition depends on path heuristic instead of explicit module identity",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_UMOD",
+      "target_ref": "AIGMOS_UNIVERSAL_MODULE_SUBSTRATE_CONTRACT",
+      "purpose": "Registry indexes authoritative substrate contracts."
+    },
+    {
+      "id": "REF_SOURCE",
+      "target_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+      "purpose": "Registry is source-role-bounded."
+    }
+  ],
+  "prose": {
+    "summary": "Define the Universal Module Registry as the explicit index of reusable substrate identities and authoritative contracts, supporting deterministic Domain composition without making directory layout authoritative.",
+    "notes": [
+      "Unlocked until reconciled against the assembled 1.4 architecture tree and reference/trace closure."
+    ]
+  }
+}

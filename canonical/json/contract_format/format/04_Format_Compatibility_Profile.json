@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CF_FORMAT_COMPATIBILITY_PROFILE_CONTRACT",
+    "name": "Contract Format Compatibility Profile",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit read/write/migrate compatibility between Contract Format versions and required feature sets.",
+  "scope": {
+    "owns": [
+      "Contract Format Compatibility Profile semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_CF_FORMAT_COMPATIBILITY_PROFILE",
+      "name": "Contract Format Compatibility Profile",
+      "purpose": "Define explicit read/write/migrate compatibility between Contract Format versions and required feature sets.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_CONTRACTS",
+        "TOPIC_CONTRACT_FORMAT"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CF_FORMAT_COMPATIBILITY_PROFILE_CONTRACT",
+        "FORMAT_SECTION_MEANING_EXPLICIT",
+        "BOOTSTRAP_NONRECURSIVE_AUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each compatibility profile has explicit identity/version.",
+    "source_rule": "Source format version is exact.",
+    "target_rule": "Target reader/writer format version is exact.",
+    "feature_rule": "Required/optional Contract Format features are explicit.",
+    "result_states": [
+      "compatible",
+      "migration_required",
+      "incompatible",
+      "unknown"
+    ],
+    "numeric_rule": "Version number ordering alone does not establish compatibility.",
+    "unknown_rule": "Unknown compatibility blocks accepted interpretation."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "FORMAT_SECTION_MEANING_EXPLICIT",
+        "rule": "Every Contract Format section and field has explicit machine-readable meaning; consumers never infer semantics from JSON ordering, filenames, indentation, prose style or neighboring fields."
+      },
+      {
+        "id": "BOOTSTRAP_NONRECURSIVE_AUTHORITY",
+        "rule": "These contracts document and constrain Contract Format semantics but do not replace the repository-root AIGMos_Canonical_Contract_Format_v1.4.0.json bootstrap authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "1.5 assumed readable by 1.4",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "old reader drops unknown required fields silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "feature compatibility omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "unknown treated compatible",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "migration not recorded",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define explicit read/write/migrate compatibility between Contract Format versions and required feature sets.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "This contract constrains the semantic interpretation of Contract Format fields; root bootstrap authority remains external to canonical/json."
+    ]
+  }
+}

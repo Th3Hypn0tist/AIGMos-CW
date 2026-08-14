@@ -1,0 +1,124 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_ACCESSCORE_GROUP_RIGHTS_CONTRACT",
+    "name": "AccessCore Group Rights",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define AccessCore groups and explicit rights inheritance/composition so `system-group` and other groups can grant scoped rights without implicit transitive expansion.",
+  "scope": {
+    "owns": [
+      "AccessCore Group Rights semantics"
+    ],
+    "does_not_own": [
+      "IAM identity proofing",
+      "domain data semantics",
+      "presentation-only access hints"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_ACCESSCORE_GROUP_RIGHTS",
+      "name": "AccessCore Group Rights",
+      "purpose": "Define AccessCore groups and explicit rights inheritance/composition so `system-group` and other groups can grant scoped rights without implicit transitive expansion.",
+      "parent_topic_refs": [
+        "TOPIC_ACCESSCORE_AUTHORIZATION",
+        "TOPIC_STRUCTURE_AUTHORITY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_ACCESSCORE_GROUP_RIGHTS_CONTRACT",
+        "ACCESSCORE_AUTHORITY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "membership_rule": "Identity-to-group membership is explicit.",
+    "rights_rule": "Group carries explicit resource/operation rights such as read/write/invoke.",
+    "system_group_rule": "`system-group` may have its declared rights (for example rw where configured) through explicit policy rather than hard-coded universal bypass.",
+    "inheritance_rule": "Group-to-group inheritance, if supported, is explicit and cycle-validated.",
+    "union_rule": "Multiple group memberships compose rights according to explicit policy.",
+    "deny_rule": "Explicit deny/precedence semantics are declared rather than guessed.",
+    "authority_rule": "Group membership never changes IdentityCore identity or IAM assurance."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "ACCESSCORE_AUTHORITY_EXPLICIT",
+        "rule": "AccessCore decisions are explicit policy evaluations over identity, resource and operation context; authentication assurance, visibility and ownership never silently become authorization."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "group membership inferred from role/name text",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "system-group implemented as hidden bypass",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "group inheritance cycle unvalidated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "multiple groups resolved by file order",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "group membership changes identity/assurance",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EVAL",
+      "target_ref": "AIGMOS_ACCESSCORE_RIGHTS_EVALUATION_CONTRACT",
+      "purpose": "Group rights feed deterministic evaluation."
+    }
+  ],
+  "prose": {
+    "summary": "Define AccessCore groups and explicit rights inheritance/composition so `system-group` and other groups can grant scoped rights without implicit transitive expansion.",
+    "notes": [
+      "Unlocked pending reconciliation against existing AccessCore/IAM contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

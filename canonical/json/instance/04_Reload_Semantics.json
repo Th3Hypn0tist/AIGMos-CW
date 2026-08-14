@@ -1,0 +1,142 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_INSTANCE_RELOAD_CONTRACT",
+    "name": "Instance Reload Semantics",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define reload as an explicit bounded reconciliation operation that re-reads validated authoritative configuration/definitions and updates only the owned runtime/configuration surfaces for the requested subsystem.",
+  "scope": {
+    "owns": [
+      "Instance Reload Semantics semantics"
+    ],
+    "does_not_own": [
+      "runtime implementation internals",
+      "unrelated domain semantics",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_INSTANCE_RELOAD",
+      "name": "Instance Reload Semantics",
+      "purpose": "Define reload as an explicit bounded reconciliation operation that re-reads validated authoritative configuration/definitions and updates only the owned runtime/configuration surfaces for the requested subsystem.",
+      "parent_topic_refs": [
+        "TOPIC_INSTANCE_CONFIG",
+        "TOPIC_RUNTIME_LOADERS",
+        "TOPIC_RUNTIME_CANCELLATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_INSTANCE_RELOAD_CONTRACT",
+        "INSTANCE_CONFIG_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "examples": [
+      "reload ac",
+      "reload UserModule",
+      "reload web/nanoCMS instance",
+      "reload service/listener configuration"
+    ],
+    "target_rule": "Reload has an explicit subsystem/identity target.",
+    "source_rule": "Reload reads current authoritative definitions/configuration for that target.",
+    "ownership_rule": "Reload reconciles only source-owned state and must not overwrite unrelated runtime/user-owned state.",
+    "validation_rule": "Candidate configuration/definition validates before activation.",
+    "failure_rule": "Reload failure is visible and leaves a deterministic recoverable state.",
+    "ac_rule": "reload ac follows AccessCore activation/login semantics when AC is enabled.",
+    "state_rule": "Reload may update runtime state but does not silently rewrite unrelated canonical definitions."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "INSTANCE_CONFIG_EXPLICIT",
+        "rule": "Instance identity, configuration parents, activation state and reload behavior remain explicit and do not derive authority from UI or runtime state."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "reload target inferred ambiguously",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "reload overwrites unrelated runtime/user-owned state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "invalid candidate activated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "reload failure leaves ambiguous half-applied state",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "reload ac bypasses configured authentication/activation semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "reload silently edits unrelated canonical definitions",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_LOADER",
+      "target_ref": "AIGMOS_RUNTIME_LOADER_INERTNESS_CONTRACT",
+      "purpose": "Reload reuses inert load/validate semantics."
+    },
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_ACTIVATION_CONFIG_CONTRACT",
+      "purpose": "AC reload respects activation/authentication semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define reload as an explicit bounded reconciliation operation that re-reads validated authoritative configuration/definitions and updates only the owned runtime/configuration surfaces for the requested subsystem.",
+    "notes": [
+      "Unlocked pending reconciliation against existing instance/system configuration contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

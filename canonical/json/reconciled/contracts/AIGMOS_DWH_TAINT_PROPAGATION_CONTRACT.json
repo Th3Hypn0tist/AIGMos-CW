@@ -1,0 +1,191 @@
+{
+  "behavior": {
+    "events": [],
+    "flows": [],
+    "interfaces": [],
+    "operations": [],
+    "states": []
+  },
+  "constraints": {
+    "hard_gates": [
+      {
+        "id": "GATE_B4AD7DBB96",
+        "condition": "derived output silently drops relevant source taint",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_569843987A",
+        "condition": "join output ignores taint from one contributor",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4E54476359",
+        "condition": "aggregation clears taint automatically without policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5E2B35D8E5",
+        "condition": "remote transfer strips required taint metadata",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_DE12F89F91",
+        "condition": "runtime guesses sanitization from operation name",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_7802AB613F",
+        "condition": "derived output silently drops restrictive source classification",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_B48C8D1E31",
+        "condition": "unknown classification treated as public by default",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_273EF7C06F",
+        "condition": "multi-source propagation uses undocumented heuristic",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_DD1E2CEB1A",
+        "condition": "taint label grants/denies rights directly without AccessCore",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_A5C4BF3851",
+        "condition": "classification detached from exact lineage source",
+        "result": "hard_fail"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "DWH_LINEAGE_EXPLICIT",
+        "rule": "DWH lineage and taint state remain explicit, monotonic unless an authorized transformation says otherwise, and traceable to source evidence."
+      },
+      {
+        "id": "LINEAGE_PROVENANCE_PRESERVED",
+        "rule": "Derived DWH data retains explicit source lineage, transformation provenance and applicable classification/taint state; transformations never silently erase origin or governance metadata."
+      }
+    ]
+  },
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT",
+    "name": "DWH Taint Propagation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "members": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending reconciliation against existing DWH/provenance/security semantics and whole-tree Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against DWH schema, provenance, AccessCore and remote-data contracts.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: dwh/09_Taint_Propagation.json, dwh/16_Taint_Classification_Propagation.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define deterministic taint propagation through DWH transformations so derived data inherits all relevant source restrictions unless an explicit authorized sanitization/declassification rule removes or transforms them. [2] Define formal propagation of source classification/taint metadata through DWH transformations so derived data cannot silently become less restricted than its governed inputs."
+  },
+  "purpose": "Reconciled source purposes: [1] Define deterministic taint propagation through DWH transformations so derived data inherits all relevant source restrictions unless an explicit authorized sanitization/declassification rule removes or transforms them. [2] Define formal propagation of source classification/taint metadata through DWH transformations so derived data cannot silently become less restricted than its governed inputs.",
+  "references": [
+    {
+      "id": "REF_TAINT",
+      "target_ref": "AIGMOS_DWH_TAINT_CLASSIFICATION_CONTRACT",
+      "purpose": "Propagation operates on explicit taint metadata."
+    },
+    {
+      "id": "REF_LINEAGE",
+      "target_ref": "AIGMOS_DWH_DATA_LINEAGE_CONTRACT",
+      "purpose": "Propagation follows transformation lineage."
+    },
+    {
+      "id": "REF_LINE",
+      "target_ref": "AIGMOS_DWH_DATA_LINEAGE_IDENTITY_CONTRACT",
+      "purpose": "Propagation follows explicit lineage graph."
+    },
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_RIGHTS_EVALUATION_CONTRACT",
+      "purpose": "Classification remains an input to governed policy, not authorization itself."
+    }
+  ],
+  "scope": {
+    "does_not_own": [
+      "domain value semantics",
+      "transport implementation",
+      "presentation semantics",
+      "AccessCore authorization policy",
+      "source domain semantics",
+      "transport cryptography"
+    ],
+    "owns": [
+      "DWH Taint Propagation semantics",
+      "DWH Taint and Classification Propagation semantics"
+    ]
+  },
+  "semantics": {
+    "aggregation_rule": "Aggregation does not automatically clear taint merely because individual values are no longer directly visible.",
+    "authorization_rule": "Classification influences governance inputs but is not itself an AccessCore authorization decision.",
+    "classification_rule": "Input data may carry explicit classification/taint labels according to owning schema/policy.",
+    "default_rule": "Reconciled source clauses: [1] Relevant taint propagates monotonically from inputs to outputs. [2] Absent an explicit safe declassification rule, derived output must not be less restrictive than the most restrictive contributing input according to the active lattice/policy.",
+    "identity_rule": "Classification metadata is attached to exact data/schema/field lineage refs.",
+    "join_rule": "Multi-source derivation uses an explicit classification join/merge rule.",
+    "multi_input_rule": "For joins/compositions, output receives the union/composition of applicable input taint states.",
+    "no_guess_rule": "Runtime never guesses that data is safe because a transformation name appears benign.",
+    "operation_rule": "Transformation operation declares any taint-specific propagation semantics beyond the default monotonic rule.",
+    "projection_rule": "Selecting a field retains taint derived from that field and any transformation dependencies.",
+    "propagation_rule": "Derived output classification is computed from explicit propagation rules over all contributing inputs.",
+    "remote_rule": "Remote transport preserves taint metadata required by the governed receiving policy.",
+    "unknown_rule": "Unknown/unclassified governed input does not silently downgrade output classification."
+  },
+  "source_role": "definition",
+  "status": "locked",
+  "structure": {
+    "authority": [],
+    "containment": [],
+    "dependencies": [],
+    "ownership": [],
+    "relations": []
+  },
+  "topics": [
+    {
+      "child_topics": [],
+      "composed_topic_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_DWH_TAINT_PROPAGATION",
+      "member_refs": [
+        "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT",
+        "DWH_LINEAGE_EXPLICIT",
+        "LINEAGE_PROVENANCE_PRESERVED",
+        "GATE_B4AD7DBB96",
+        "GATE_569843987A",
+        "GATE_4E54476359",
+        "GATE_5E2B35D8E5",
+        "GATE_DE12F89F91",
+        "GATE_7802AB613F",
+        "GATE_B48C8D1E31",
+        "GATE_273EF7C06F",
+        "GATE_DD1E2CEB1A",
+        "GATE_A5C4BF3851"
+      ],
+      "metadata": {},
+      "name": "DWH Taint Propagation",
+      "operation_refs": [],
+      "parent_topic_refs": [
+        "TOPIC_DWH_TAINT",
+        "TOPIC_DWH_LINEAGE",
+        "TOPIC_DWH",
+        "TOPIC_PROVENANCE_LINEAGE"
+      ],
+      "purpose": "Reconciled source clauses: [1] Define deterministic taint propagation through DWH transformations so derived data inherits all relevant source restrictions unless an explicit authorized sanitization/declassification rule removes or transforms them. [2] Define formal propagation of source classification/taint metadata through DWH transformations so derived data cannot silently become less restricted than its governed inputs.",
+      "relation_refs": []
+    }
+  ]
+}

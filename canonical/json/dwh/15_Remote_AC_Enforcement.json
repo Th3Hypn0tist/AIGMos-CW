@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT",
+    "name": "DWH Remote AccessCore Enforcement",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define remote DWH authorization so identity originates at the caller/origin while rights are evaluated by the remote target's AccessCore policy.",
+  "scope": {
+    "owns": [
+      "DWH Remote AccessCore Enforcement semantics"
+    ],
+    "does_not_own": [
+      "domain payload semantics",
+      "transport implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_REMOTE_AC",
+      "name": "DWH Remote AccessCore Enforcement",
+      "purpose": "Define remote DWH authorization so identity originates at the caller/origin while rights are evaluated by the remote target's AccessCore policy.",
+      "parent_topic_refs": [
+        "TOPIC_DWH_EXT_ADDRESSING",
+        "TOPIC_ACCESSCORE_AUTHORIZATION",
+        "TOPIC_IAM_IDENTITY_PROPAGATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT",
+        "DWH_POLICY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Caller identity/assurance context is propagated from origin according to IAM semantics.",
+    "rights_rule": "Remote target evaluates rights using its own AccessCore policy.",
+    "nonexpansion_rule": "Delegated remote path cannot expand rights beyond what the remote policy grants.",
+    "local_rule": "Local owner authority and delegated remote authority remain distinct.",
+    "transport_rule": "Authenticated/encrypted transport does not itself grant DWH rights.",
+    "failure_rule": "Denied remote operation returns explicit authorization failure without fallback to direct EXT access."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DWH_POLICY_EXPLICIT",
+        "rule": "DWH scope, release, remote access and policy decisions remain explicit, provenance-preserving and separate from transport reachability."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "remote rights copied blindly from origin",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "transport authentication grants DWH rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "delegated remote path expands remote rights",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "denial falls back to direct EXT dereference",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "caller identity lost at remote policy boundary",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_AUTHORIZATION_CONTRACT",
+      "purpose": "Remote target owns authorization decision."
+    },
+    {
+      "id": "REF_ID",
+      "target_ref": "AIGMOS_IAM_IDENTITY_PROPAGATION_CONTRACT",
+      "purpose": "Origin identity remains traceable."
+    }
+  ],
+  "prose": {
+    "summary": "Define remote DWH authorization so identity originates at the caller/origin while rights are evaluated by the remote target's AccessCore policy.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH local/remote, AC/IAM and lineage contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

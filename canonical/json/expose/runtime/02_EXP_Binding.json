@@ -1,0 +1,168 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT",
+    "name": "Expose EXP Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define EXP as an explicit web-facing binding/projection of existing UserModule/canonical semantics, including /um/ style exposure, without creating a new semantic owner.",
+  "scope": {
+    "owns": [
+      "Expose EXP Binding semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "unrelated domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_EXP_BINDING",
+      "name": "EXP Binding",
+      "purpose": "Define EXP as an explicit web-facing binding/projection of existing UserModule/canonical semantics, including /um/ style exposure, without creating a new semantic owner.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_RUNTIME_EXP",
+        "TOPIC_CORE_PROJECTION"
+      ],
+      "member_refs": [
+        "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT",
+        "EXPOSE_RUNTIME_BINDING_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_EXP_BIND",
+        "OP_EXPOSE_EXP_PROJECT"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_EXP_BIND",
+        "name": "Bind exposed module surface",
+        "inputs": [
+          "module/operation/data ref",
+          "exposure route/policy"
+        ],
+        "outputs": [
+          "EXP binding"
+        ],
+        "errors": [
+          "source unresolved",
+          "route invalid"
+        ],
+        "side_effects": [
+          "exposure config updated"
+        ]
+      },
+      {
+        "id": "OP_EXPOSE_EXP_PROJECT",
+        "name": "Project EXP surface",
+        "inputs": [
+          "authorized exposure binding",
+          "request context"
+        ],
+        "outputs": [
+          "exposed representation/result"
+        ],
+        "errors": [
+          "authority denied"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "role": "exposure binding",
+    "example_root": "/um/",
+    "source_rule": "EXP binding references existing module/data/operation identities.",
+    "semantic_rule": "EXP does not own or redefine exposed semantics.",
+    "authority_rule": "Exposure does not bypass AccessCore or module authority.",
+    "route_rule": "Route identity and source semantic identity remain separate.",
+    "projection_rule": "Representation format may vary while source semantics remain stable."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPOSE_RUNTIME_BINDING_EXPLICIT",
+        "rule": "Web instances, protocol bindings and exposed surfaces retain explicit stable identity, binding, lifecycle and authority boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "EXP route becomes semantic source identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "EXP duplicates module/domain semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "exposure bypasses authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "representation format changes source meaning",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "binding points to unresolved/fuzzy source",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EXP",
+      "target_ref": "AIGMOS_RUNTIME_EXP_EXPOSURE_CONTRACT",
+      "purpose": "EXP runtime semantics."
+    },
+    {
+      "id": "REF_PROJECTION",
+      "target_ref": "AIGMOS_CORE_PROJECTION_BOUNDARY_CONTRACT",
+      "purpose": "Exposure remains projection/binding."
+    }
+  ],
+  "prose": {
+    "summary": "Define EXP as an explicit web-facing binding/projection of existing UserModule/canonical semantics, including /um/ style exposure, without creating a new semantic owner.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose/runtime contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

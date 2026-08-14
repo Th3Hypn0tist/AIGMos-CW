@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_SEMANTIC_RECONCILIATION_CONTRACT",
+    "name": "Canonical Semantic Reconciliation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit resolution of conflicting candidate semantic changes into a new candidate graph with preserved provenance and reviewer decisions.",
+  "scope": {
+    "owns": [
+      "Canonical Semantic Reconciliation semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_SEMANTIC_RECONCILIATION",
+      "name": "Canonical Semantic Reconciliation",
+      "purpose": "Define explicit resolution of conflicting candidate semantic changes into a new candidate graph with preserved provenance and reviewer decisions.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_CONTRACTS",
+        "TOPIC_CHANGE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_SEMANTIC_RECONCILIATION_CONTRACT",
+        "BOOTSTRAP_AUTHORITY_EXPLICIT",
+        "VALIDATE_BEFORE_ACCEPT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "input_rule": "Reconciliation references exact conflicting diffs/patches/base.",
+    "decision_rule": "Each resolved conflict records exact chosen/combined/rejected semantics.",
+    "ownership_rule": "Ownership conflicts require explicit owner-compatible resolution.",
+    "breaking_rule": "Breaking identity changes remain explicit and cannot be hidden by merge.",
+    "provenance_rule": "Final candidate retains source patch/reviewer decision refs.",
+    "validation_rule": "Reconciled graph must re-run full structural/semantic validation.",
+    "authority_rule": "Reconciliation does not itself accept/apply."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "BOOTSTRAP_AUTHORITY_EXPLICIT",
+        "rule": "Contract Format bootstrap authority, canonical contract sources, generated projections, historical artifacts and runtime state remain separate identities/roles; no file becomes authoritative merely by name, path order, timestamp or discovery order."
+      },
+      {
+        "id": "VALIDATE_BEFORE_ACCEPT",
+        "rule": "Candidate canonical changes remain inert until exact format validation, identity/reference resolution, semantic diff, applicable governance/authorization and repository acceptance succeed."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "merge hides conflicting owner",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "review choice lacks provenance",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "breaking identity collapsed into version bump",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "resolved graph skips validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "reconciliation auto-applies",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_CONFLICT",
+      "target_ref": "AIGMOS_PATCH_REBASE_CONFLICT_CONTRACT",
+      "purpose": "Reconciliation resolves explicit semantic conflicts."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit resolution of conflicting candidate semantic changes into a new candidate graph with preserved provenance and reviewer decisions.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

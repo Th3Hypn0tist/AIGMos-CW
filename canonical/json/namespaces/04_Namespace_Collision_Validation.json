@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_NAMESPACE_COLLISION_VALIDATION_CONTRACT",
+    "name": "Namespace Collision Validation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define deterministic validation preventing reserved-root shadowing, duplicate active mounts, ambiguous dynamic children and incompatible namespace ownership.",
+  "scope": {
+    "owns": [
+      "Namespace Collision Validation semantics"
+    ],
+    "does_not_own": [
+      "mounted module internal semantics",
+      "runtime authorization policy",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_NAMESPACE_VALIDATION",
+      "name": "Namespace Collision Validation",
+      "purpose": "Define deterministic validation preventing reserved-root shadowing, duplicate active mounts, ambiguous dynamic children and incompatible namespace ownership.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NAMESPACES",
+        "TOPIC_CORE_VALIDATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_NAMESPACE_COLLISION_VALIDATION_CONTRACT",
+        "NAMESPACE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "checks": [
+      "reserved root uniqueness",
+      "owner uniqueness",
+      "dynamic family child uniqueness",
+      "mount collision",
+      "case/spelling collision",
+      "active alias/mount ambiguity"
+    ],
+    "reserved_rule": "Reserved roots cannot be shadowed.",
+    "dynamic_rule": "Dynamic family children are unique within their family scope.",
+    "mount_rule": "Two active mounts cannot claim the same exact semantic address unless explicit multiplex/composition semantics permit it.",
+    "owner_rule": "Conflicting semantic owners for one active address hard-fail.",
+    "validation_rule": "Collisions are detected before affected mount/activation becomes available.",
+    "no_repair_rule": "Validator does not silently rename conflicting namespaces."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "NAMESPACE_EXPLICIT",
+        "rule": "Runtime symbol namespaces, roots, mounts and dynamic families are explicit, collision-free and never inferred solely from filesystem layout or display labels."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "reserved root shadowing accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "same exact address has conflicting active owners",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "dynamic child collision accepted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "validator silently renames namespace",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "collision discovered only after activation/effects",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RESERVED",
+      "target_ref": "AIGMOS_RESERVED_RUNTIME_ROOTS_CONTRACT",
+      "purpose": "Reserved roots are protected."
+    },
+    {
+      "id": "REF_VALID",
+      "target_ref": "AIGMOS_FORMAT_VALIDATION_CONTRACT",
+      "purpose": "Namespace validity contributes to whole-tree/runtime conformance."
+    }
+  ],
+  "prose": {
+    "summary": "Define deterministic validation preventing reserved-root shadowing, duplicate active mounts, ambiguous dynamic children and incompatible namespace ownership.",
+    "notes": [
+      "Unlocked pending reconciliation against existing runtime symbol/module contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

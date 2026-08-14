@@ -1,0 +1,175 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_RUNNER_CONTRACT",
+    "name": "Runtime Runner",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Runner as the exclusive % tracked runtime execution-lifecycle primitive with deterministic start/status/stop/error-cleanup behavior.",
+  "scope": {
+    "owns": [
+      "Runtime Runner semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_RUNNER_START",
+        "name": "Start Runner lifecycle",
+        "inputs": [
+          "Runner definition",
+          "validated dispatch context"
+        ],
+        "outputs": [
+          "tracked Runner instance"
+        ],
+        "errors": [
+          "runner unavailable",
+          "resource bound exceeded"
+        ],
+        "side_effects": [
+          "Runner runtime state created"
+        ]
+      },
+      {
+        "id": "OP_RUNNER_STATUS",
+        "name": "Read Runner status",
+        "inputs": [
+          "Runner instance"
+        ],
+        "outputs": [
+          "tracked status"
+        ],
+        "errors": [
+          "Runner unresolved"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_RUNNER_STOP",
+        "name": "Stop Runner",
+        "inputs": [
+          "Runner instance"
+        ],
+        "outputs": [
+          "stopped Runner"
+        ],
+        "errors": [
+          "stop failed"
+        ],
+        "side_effects": [
+          "Runner runtime state updated"
+        ]
+      },
+      {
+        "id": "OP_RUNNER_CLEANUP",
+        "name": "Cleanup Runner",
+        "inputs": [
+          "Runner instance",
+          "completion/error/cancel reason"
+        ],
+        "outputs": [
+          "released runtime resources"
+        ],
+        "errors": [
+          "cleanup failure"
+        ],
+        "side_effects": [
+          "runtime resources released"
+        ]
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "sigil": "%",
+    "exclusive_semantics": true,
+    "tracked_rule": "Runner may not spawn untracked execution outside Core lifecycle visibility.",
+    "autostart_default": false,
+    "autostart_priority": "numeric, smallest to largest when explicitly enabled",
+    "osc_boot_rule": "OSC input autostart belongs to system boot semantics, not normal % Runner autostart sequencing.",
+    "status_rule": "Runner lifecycle state is visible.",
+    "cleanup_rule": "Success, error, timeout and cancel all enter cleanup.",
+    "single_command_rule": "A Runner may dispatch a single literal command through the canonical parser/dispatcher; it does not gain private command semantics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "AUTOMATION_EXPLICIT",
+        "rule": "Automation semantics are explicit, bounded, and do not gain authority from data or composition."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "% used for non-Runner semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Runner spawns untracked process/work",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "Runner autostart defaults on",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "Runner autostart order is nondeterministic",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "OSC input boot is treated as normal % Runner autostart",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "Runner error/timeout/cancel skips cleanup",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DISPATCH",
+      "target_ref": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+      "purpose": "Runner-dispatched work crosses the dispatcher boundary."
+    },
+    {
+      "id": "REF_STATE",
+      "target_ref": "AIGMOS_RUNTIME_DEFINITION_STATE_SEPARATION_CONTRACT",
+      "purpose": "Runner definition and lifecycle state remain separate."
+    }
+  ],
+  "prose": {
+    "summary": "Define Runner as the exclusive % tracked runtime execution-lifecycle primitive with deterministic start/status/stop/error-cleanup behavior.",
+    "notes": [
+      "Unlocked until reconciled against the existing automation/runtime contracts and repository-wide 1.4 traceability validation."
+    ]
+  }
+}

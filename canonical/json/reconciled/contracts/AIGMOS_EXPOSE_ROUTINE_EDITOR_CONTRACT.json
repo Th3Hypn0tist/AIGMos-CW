@@ -1,0 +1,303 @@
+{
+  "behavior": {
+    "events": [],
+    "flows": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "errors": [
+          "Routine unresolved"
+        ],
+        "id": "OP_ROUTINE_EDITOR_READ",
+        "inputs": [
+          "#R routine ref"
+        ],
+        "name": "Read Routine definition",
+        "outputs": [
+          "Routine edit model"
+        ],
+        "side_effects": []
+      },
+      {
+        "errors": [
+          "command unresolved",
+          "cycle invalid",
+          "depth invalid"
+        ],
+        "id": "OP_ROUTINE_EDITOR_VALIDATE",
+        "inputs": [
+          "candidate Routine",
+          "command/operation registries"
+        ],
+        "name": "Validate Routine edit",
+        "outputs": [
+          "validated candidate"
+        ],
+        "side_effects": []
+      },
+      {
+        "errors": [
+          "authority denied"
+        ],
+        "id": "OP_ROUTINE_EDITOR_WRITE",
+        "inputs": [
+          "validated candidate",
+          "authorized #R target"
+        ],
+        "name": "Write Routine definition",
+        "outputs": [
+          "updated Routine definition"
+        ],
+        "side_effects": [
+          "#R definition updated"
+        ]
+      }
+    ],
+    "states": []
+  },
+  "constraints": {
+    "hard_gates": [
+      {
+        "id": "GATE_F7CA2828AC",
+        "condition": "Routine executes during load/view/edit",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_67F5279A0F",
+        "condition": "Editor stores arbitrary unvalidated command name",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_018CB9E77F",
+        "condition": "Routine Editor bypasses Runtime Routine dispatcher",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_EE5E8B0898",
+        "condition": "cycle/depth validation omitted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_D8BB7B01EA",
+        "condition": "editing grants run authority automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_EA18286602",
+        "condition": "editor mutates active execution history",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_D86AA0C258",
+        "condition": "graph adjacency invents dependency",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_7EE710DC54",
+        "condition": "step target selected by display label only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6A2570CEF3",
+        "condition": "recursive Routine saved without bound validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_189B692241",
+        "condition": "Editor bypasses AccessCore",
+        "result": "hard_fail"
+      }
+    ],
+    "invariants": [
+      {
+        "id": "EXPOSE_COMPONENT_EXPLICIT",
+        "rule": "Expose components reuse canonical semantics and remain non-privileged projection/composition surfaces."
+      },
+      {
+        "id": "ROUTINE_DEFINITION_EXPLICIT",
+        "rule": "Routine definitions are explicit canonical ordered compositions of exact commands/operations/routines; runtime execution state is never embedded into the reusable definition."
+      }
+    ]
+  },
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_ROUTINE_EDITOR_CONTRACT",
+    "name": "Routine Editor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "members": [],
+  "prose": {
+    "notes": [
+      "Unlocked until reconciled against existing Expose contracts and repository-wide Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against existing #R, &, Runner and command contracts.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: expose/editor/09_Routine_Editor.json, expose/editor/54_Routine_Editor.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses.",
+      "Pass 6 hosts grouping-only Topic TOPIC_ROUTINES solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership.",
+      "Pass 6 hosts grouping-only Topic TOPIC_RUNNERS solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ],
+    "summary": "Reconciled source purposes: [1] Define Routine Editor as a projection/editor over inert #R Routine definitions, validating referenced commands/operations and never executing a Routine merely because it is viewed or edited. [2] Define an AC-governed Expose editor for Routine definitions, parameters, ordered steps, nested composition and condition/branch control flow."
+  },
+  "purpose": "Reconciled source purposes: [1] Define Routine Editor as a projection/editor over inert #R Routine definitions, validating referenced commands/operations and never executing a Routine merely because it is viewed or edited. [2] Define an AC-governed Expose editor for Routine definitions, parameters, ordered steps, nested composition and condition/branch control flow.",
+  "references": [
+    {
+      "id": "REF_ROUTINE",
+      "target_ref": "AIGMOS_RUNTIME_ROUTINE_CONTRACT",
+      "purpose": "Routine Editor edits canonical inert Routine definitions."
+    },
+    {
+      "id": "REF_COMMAND",
+      "target_ref": "AIGMOS_RUNTIME_COMMAND_REGISTRY_CONTRACT",
+      "purpose": "Routine command refs resolve canonically."
+    },
+    {
+      "id": "REF_FOUND",
+      "target_ref": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT",
+      "purpose": "Routine Editor uses shared editor boundary."
+    },
+    {
+      "id": "REF_NEST",
+      "target_ref": "AIGMOS_NESTED_ROUTINE_COMPOSITION_CONTRACT",
+      "purpose": "Editor validates nested composition."
+    }
+  ],
+  "scope": {
+    "does_not_own": [
+      "runtime execution authority",
+      "unrelated domain semantics",
+      "Runner execution state",
+      "AccessCore policy ownership",
+      "domain operation semantics"
+    ],
+    "owns": [
+      "Expose Routine Editor semantics",
+      "Routine Editor semantics"
+    ]
+  },
+  "semantics": {
+    "action_rule": "Test/run controls invoke separate authorized Runner operations.",
+    "authority_rule": "Reconciled source clauses: [1] Routine Editor write/run operations are separately authorized. [2] Editor obeys normal AccessCore authorization.",
+    "cycle_rule": "Routine recursion/cycles are validated under Runtime Routine rules.",
+    "definition_rule": "Routine definitions remain inert while editing.",
+    "execution_rule": "Preview/edit is not execution; explicit run action uses canonical Runtime Routine dispatch.",
+    "form_rule": "Parameter and argument bindings use schema-driven Form Editor semantics.",
+    "foundation_rule": "Editor uses the shared validate/diff/authorize/apply foundation.",
+    "graph_rule": "Step/control-flow graph edges correspond to explicit Routine step/dependency/branch semantics.",
+    "identity_rule": "Routine/step/target identities are resolved exactly.",
+    "runtime_rule": "Editing a Routine does not mutate already recorded Runner execution history.",
+    "shared_editor_rule": "Routine Editor uses common Editor foundation rather than private backend semantics.",
+    "target": "#R Routine definitions",
+    "validation_rule": "Reconciled source clauses: [1] Referenced commands/operations resolve before candidate write. [2] Candidate Routine validates targets, inputs, dependency closure, recursion bounds and branch completeness before apply.",
+    "views": [
+      "Routine registry",
+      "parameters",
+      "ordered/dependency steps",
+      "step target bindings",
+      "nested routines",
+      "condition/branch graph",
+      "validation findings"
+    ]
+  },
+  "source_role": "definition",
+  "status": "locked",
+  "structure": {
+    "authority": [],
+    "containment": [],
+    "dependencies": [],
+    "ownership": [],
+    "relations": []
+  },
+  "topics": [
+    {
+      "child_topics": [],
+      "composed_topic_refs": [
+        "TOPIC_ROUTINE",
+        "TOPIC_EXPOSE_EDITOR",
+        "TOPIC_RUNTIME_COMMAND_REGISTRY"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "id": "TOPIC_EXPOSE_ROUTINE_EDITOR",
+      "member_refs": [
+        "AIGMOS_EXPOSE_ROUTINE_EDITOR_CONTRACT",
+        "EXPOSE_COMPONENT_EXPLICIT",
+        "ROUTINE_DEFINITION_EXPLICIT",
+        "GATE_F7CA2828AC",
+        "GATE_67F5279A0F",
+        "GATE_018CB9E77F",
+        "GATE_EE5E8B0898",
+        "GATE_D8BB7B01EA",
+        "GATE_EA18286602",
+        "GATE_D86AA0C258",
+        "GATE_7EE710DC54",
+        "GATE_6A2570CEF3",
+        "GATE_189B692241"
+      ],
+      "metadata": {},
+      "name": "Routine Editor",
+      "operation_refs": [
+        "OP_ROUTINE_EDITOR_READ",
+        "OP_ROUTINE_EDITOR_VALIDATE",
+        "OP_ROUTINE_EDITOR_WRITE"
+      ],
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_ROUTINES",
+        "TOPIC_RUNNERS"
+      ],
+      "purpose": "Reconciled source clauses: [1] Define Routine Editor as a projection/editor over inert #R Routine definitions, validating referenced commands/operations and never executing a Routine merely because it is viewed or edited. [2] Define an AC-governed Expose editor for Routine definitions, parameters, ordered steps, nested composition and condition/branch control flow.",
+      "relation_refs": []
+    },
+    {
+      "id": "TOPIC_ROUTINES",
+      "name": "Routines",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_ROUTINES already referenced by 7 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 7,
+        "distinct_child_topics": 7,
+        "host_contract_ref": "AIGMOS_EXPOSE_ROUTINE_EDITOR_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    },
+    {
+      "id": "TOPIC_RUNNERS",
+      "name": "Runners",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_RUNNERS already referenced by 13 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 13,
+        "distinct_child_topics": 13,
+        "host_contract_ref": "AIGMOS_EXPOSE_ROUTINE_EDITOR_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ]
+}

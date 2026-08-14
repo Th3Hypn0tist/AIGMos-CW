@@ -1,0 +1,167 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT",
+    "name": "Canonical Repository Manifest",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define a machine-readable manifest connecting active canonical identities to their physical source artifacts for packaging, review and replacement without making file paths semantic authority.",
+  "scope": {
+    "owns": [
+      "Canonical Repository Manifest semantics"
+    ],
+    "does_not_own": [
+      "child semantic content unless explicitly stated",
+      "filesystem authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_REPOSITORY_MANIFEST",
+      "name": "Repository Manifest",
+      "purpose": "Define a machine-readable manifest connecting active canonical identities to their physical source artifacts for packaging, review and replacement without making file paths semantic authority.",
+      "parent_topic_refs": [
+        "TOPIC_CANONICAL_MASTER",
+        "TOPIC_CORE_PROVENANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT",
+        "MIGRATION_STATE_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_REPO_MANIFEST_BUILD",
+        "OP_REPO_MANIFEST_VALIDATE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_REPO_MANIFEST_BUILD",
+        "name": "Build canonical repository manifest",
+        "inputs": [
+          "active canonical graph",
+          "file/source mapping"
+        ],
+        "outputs": [
+          "repository manifest"
+        ],
+        "errors": [
+          "source unresolved",
+          "duplicate active source"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_REPO_MANIFEST_VALIDATE",
+        "name": "Validate repository manifest",
+        "inputs": [
+          "manifest",
+          "Master",
+          "active identity graph"
+        ],
+        "outputs": [
+          "manifest validation result"
+        ],
+        "errors": [
+          "orphan active source",
+          "missing active source",
+          "source-role mismatch"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "role": "physical-source inventory",
+    "required_fields": [
+      "canonical_identity",
+      "source_artifact",
+      "source_role",
+      "active_state"
+    ],
+    "identity_rule": "Manifest maps identity to file/source; file/source does not define identity.",
+    "active_rule": "Every active canonical definition has an explicit manifest/source mapping.",
+    "orphan_rule": "Unreferenced physical files may exist but are not active solely by presence.",
+    "duplicate_rule": "One active identity cannot silently map to conflicting active source artifacts.",
+    "package_rule": "Review ZIPs may include PATCH_MANIFEST files, but repository manifest is the assembled-tree inventory.",
+    "trace_rule": "Manifest supports source provenance without becoming semantic owner."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MIGRATION_STATE_EXPLICIT",
+        "rule": "Repository activation, migration state, validation state and replacement decisions are explicit and machine-readable."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "path used as canonical identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "active definition lacks source mapping",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "physical file becomes active solely by existence",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "one active identity maps to conflicting active sources",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "manifest redefines semantic ownership",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MASTER",
+      "target_ref": "AIGMOS_CANONICAL_MASTER_1_4_CONTRACT",
+      "purpose": "Manifest inventory is validated against active Master roots."
+    }
+  ],
+  "prose": {
+    "summary": "Define a machine-readable manifest connecting active canonical identities to their physical source artifacts for packaging, review and replacement without making file paths semantic authority.",
+    "notes": [
+      "Unlocked until the complete clean Contract Format 1.4 tree is assembled and validated."
+    ]
+  }
+}

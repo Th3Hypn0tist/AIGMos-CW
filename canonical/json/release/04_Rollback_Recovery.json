@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_CANONICAL_ROLLBACK_RECOVERY_CONTRACT",
+    "name": "Canonical Rollback and Recovery",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define rollback as explicit restoration/activation of a previously accepted immutable snapshot, preserving evidence and never synthesizing a hybrid tree from old and new active sources.",
+  "scope": {
+    "owns": [
+      "Canonical Rollback and Recovery semantics"
+    ],
+    "does_not_own": [
+      "underlying canonical domain semantics",
+      "runtime implementation",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RELEASE_ROLLBACK",
+      "name": "Canonical Rollback and Recovery",
+      "purpose": "Define rollback as explicit restoration/activation of a previously accepted immutable snapshot, preserving evidence and never synthesizing a hybrid tree from old and new active sources.",
+      "parent_topic_refs": [
+        "TOPIC_RELEASE_RECORD",
+        "TOPIC_CLEAN_TREE_REPLACEMENT"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_CANONICAL_ROLLBACK_RECOVERY_CONTRACT",
+        "RELEASE_TRACEABILITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "target_rule": "Rollback target is an exact previously accepted snapshot/release identity.",
+    "atomic_rule": "Rollback activates a coherent snapshot according to repository replacement policy.",
+    "hybrid_rule": "Rollback must not leave mixed active definitions from incompatible snapshots.",
+    "evidence_rule": "Rollback target retains its original validation evidence; environment/runtime compatibility may require fresh activation checks.",
+    "audit_rule": "Rollback action records source release, target release/snapshot, authority and reason.",
+    "forward_rule": "Subsequent fixes create a new candidate snapshot rather than mutating the rolled-back accepted snapshot."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_TRACEABILITY",
+        "rule": "Release, replacement, rollback, deprecation and compatibility decisions remain explicit, snapshot-bound and traceable; no lifecycle label silently changes canonical semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "rollback target unresolved",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "rollback creates hybrid active tree",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "accepted historical snapshot mutated during rollback",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "rollback lacks audit/authority trace",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "old evidence falsely claimed to validate changed snapshot",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_REPLACE",
+      "target_ref": "AIGMOS_CANONICAL_CLEAN_TREE_REPLACEMENT_CONTRACT",
+      "purpose": "Rollback uses coherent tree replacement semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define rollback as explicit restoration/activation of a previously accepted immutable snapshot, preserving evidence and never synthesizing a hybrid tree from old and new active sources.",
+    "notes": [
+      "Unlocked pending reconciliation against the assembled 1.4 release/migration tree and whole-tree validation."
+    ]
+  }
+}

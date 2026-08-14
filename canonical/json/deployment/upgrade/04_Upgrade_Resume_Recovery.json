@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_UPGRADE_RESUME_RECOVERY_CONTRACT",
+    "name": "Interrupted Upgrade Resume and Recovery",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define recovery from partial/interrupted upgrade using exact recorded completed stages, target state, idempotency and compatibility evidence.",
+  "scope": {
+    "owns": [
+      "Interrupted Upgrade Resume and Recovery semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "canonical documentation ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_UPGRADE_RESUME_RECOVERY",
+      "name": "Interrupted Upgrade Resume and Recovery",
+      "purpose": "Define recovery from partial/interrupted upgrade using exact recorded completed stages, target state, idempotency and compatibility evidence.",
+      "parent_topic_refs": [
+        "TOPIC_DEPLOYMENT",
+        "TOPIC_UPGRADE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_UPGRADE_RESUME_RECOVERY_CONTRACT",
+        "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "OPERATIONS_FAIL_SAFE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "execution_rule": "Resume references exact interrupted deployment/upgrade execution.",
+    "state_rule": "Completed/pending/failed migration and rollout stages are explicit.",
+    "target_rule": "Current actual artifact/config/schema state is re-read and verified.",
+    "resume_rule": "Only safe pending/idempotent steps may resume.",
+    "rollback_rule": "Rollback/restore eligibility is re-evaluated.",
+    "unknown_rule": "Ambiguous current state blocks automated resume.",
+    "authority_rule": "Resume requires explicit operational authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "rule": "Release candidate, accepted release, deployment plan, deployment execution, installed artifact, active runtime instance and observed health remain separate identities/states."
+      },
+      {
+        "id": "OPERATIONS_FAIL_SAFE",
+        "rule": "Operational convenience, availability pressure, maintenance state, automation, recovery or rollback never silently bypass validation, authorization, integrity, governance or dispatcher boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "resume assumes last log line succeeded",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "ambiguous state continues automatically",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "failed non-idempotent step reruns blindly",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "rollback eligibility stale",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "resume bypasses preflight",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SEQ",
+      "target_ref": "AIGMOS_UPGRADE_MIGRATION_SEQUENCE_CONTRACT",
+      "purpose": "Resume uses exact migration-step state."
+    }
+  ],
+  "prose": {
+    "summary": "Define recovery from partial/interrupted upgrade using exact recorded completed stages, target state, idempotency and compatibility evidence.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

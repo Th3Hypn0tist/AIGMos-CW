@@ -1,0 +1,139 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_GENERIC_READER_PROFILE_CONTRACT",
+    "name": "Generic Reader Profile",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define the minimum behavior of a generic Contract Format 1.4 reader so an implementation can understand the canonical graph without AIGMos-specific filesystem or document-name heuristics.",
+  "scope": {
+    "owns": [
+      "Generic Reader Profile semantics"
+    ],
+    "does_not_own": [
+      "referenced source semantics",
+      "filesystem authority",
+      "presentation-only formatting"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_INTEROP_READER",
+      "name": "Generic Reader Profile",
+      "purpose": "Define the minimum behavior of a generic Contract Format 1.4 reader so an implementation can understand the canonical graph without AIGMos-specific filesystem or document-name heuristics.",
+      "parent_topic_refs": [
+        "TOPIC_RECURSIVE_READ",
+        "TOPIC_DOCUMENTATION_JSON"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_GENERIC_READER_PROFILE_CONTRACT",
+        "INTEROPERABILITY_SEMANTIC_PRESERVATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "required_capabilities": [
+      "parse declared format/version",
+      "resolve canonical identities",
+      "read source_role/status/purpose",
+      "resolve Topics including inheritance/composition",
+      "read structural dimensions separately",
+      "read behavior and constraints",
+      "resolve internal/external references",
+      "preserve null/empty/missing distinctions",
+      "report outsiders and unresolved refs",
+      "prevent infinite recursive traversal"
+    ],
+    "identity_rule": "Reader keys semantic nodes by canonical identity rather than path or display name.",
+    "ordering_rule": "Reader does not assign meaning to key order or ordinary array order unless the owning field declares order semantics.",
+    "unknown_rule": "Unknown extensions are preserved or reported according to extension policy; they are never silently reinterpreted.",
+    "prose_rule": "Reader may surface prose but cannot depend on prose to reconstruct missing machine-significant semantics.",
+    "determinism_rule": "Same accepted semantic graph yields semantically equivalent normalized reader output."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "INTEROPERABILITY_SEMANTIC_PRESERVATION",
+        "rule": "Reading, writing, normalization, diffing, reconciliation and patching preserve canonical identity, ownership, Topic context and machine-significant semantics."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "reader requires repository-specific path heuristics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "reader collapses canonical identity into filename/display name",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "reader invents ordering from JSON object/array position",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "reader silently discards unknown machine-significant extension",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "reader depends on prose for missing machine semantics",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_READ",
+      "target_ref": "AIGMOS_RECURSIVE_READ_CONTRACT",
+      "purpose": "Reader implements deterministic recursive traversal."
+    },
+    {
+      "id": "REF_JSON",
+      "target_ref": "AIGMOS_CANONICAL_JSON_SERIALIZATION_CONTRACT",
+      "purpose": "Reader respects JSON serialization non-semantics."
+    }
+  ],
+  "prose": {
+    "summary": "Define the minimum behavior of a generic Contract Format 1.4 reader so an implementation can understand the canonical graph without AIGMos-specific filesystem or document-name heuristics.",
+    "notes": [
+      "Unlocked pending implementation against golden fixtures and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

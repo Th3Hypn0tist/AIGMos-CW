@@ -1,0 +1,132 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_FINALIZATION_HANDOVER_MONITOR_CONTRACT",
+    "name": "Finalization and Handover Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define read-only Expose monitor for finalization plan/execution, final validation, projection rebuild, lock transitions and repository handover state.",
+  "scope": {
+    "owns": [
+      "Finalization and Handover Monitor semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_FINALIZATION_HANDOVER_MONITOR",
+      "name": "Finalization and Handover Monitor",
+      "purpose": "Define read-only Expose monitor for finalization plan/execution, final validation, projection rebuild, lock transitions and repository handover state.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_CANONICAL_RECONCILIATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXPOSE_FINALIZATION_HANDOVER_MONITOR_CONTRACT",
+        "RECONCILIATION_IS_EVIDENCE_DRIVEN",
+        "NO_SILENT_FINALIZATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "views": [
+      "finalization plan",
+      "patch set",
+      "final validation",
+      "projection rebuild",
+      "lock execution",
+      "final status inventory",
+      "active exceptions",
+      "handover state"
+    ],
+    "readonly_rule": "Default is read-only.",
+    "identity_rule": "Plan, execution, source snapshot, validation run, projection, lock transition and handover identities remain distinct.",
+    "action_rule": "execute-finalization/export-handover operations use separate authorized workflows.",
+    "authority_rule": "Viewing finalization state grants no canonical/runtime authority.",
+    "failure_rule": "partial/failed/stale-validation/stale-projection/unresolved-blocker states remain explicit."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RECONCILIATION_IS_EVIDENCE_DRIVEN",
+        "rule": "Whole-tree reconciliation operates only on exact accepted/candidate source snapshots, identities, references and declared semantics; it never repairs ambiguity through filename, path order, timestamp, nearest-name or UI layout heuristics."
+      },
+      {
+        "id": "NO_SILENT_FINALIZATION",
+        "rule": "A contract, closure set or repository remains unlocked/not-ready until all required reconciliation findings for its declared readiness profile are explicitly resolved or accepted through an explicit bounded exception."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "monitor finalizes by viewing",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "handover shown source truth",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "partial hidden",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "viewing grants repo admin",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "lock failure ignored",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [],
+  "prose": {
+    "summary": "Define read-only Expose monitor for finalization plan/execution, final validation, projection rebuild, lock transitions and repository handover state.",
+    "notes": [
+      "Unlocked pending application to the final merged review tree.",
+      "This contract defines reconciliation semantics; it does not claim that repository-wide reconciliation has already passed."
+    ]
+  }
+}

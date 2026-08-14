@@ -1,0 +1,157 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_TRIGGER_CONTRACT",
+    "name": "Runtime Trigger",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define Trigger as the exclusive ! automation primitive: an inert declaration that observes an explicit target, evaluates bounded predicates, and produces an explicit Core-owned automation dispatch request when matched.",
+  "scope": {
+    "owns": [
+      "Runtime Trigger semantics"
+    ],
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_TRIGGER_REGISTER",
+        "name": "Register Trigger definition",
+        "inputs": [
+          "inert Trigger definition"
+        ],
+        "outputs": [
+          "registered Trigger"
+        ],
+        "errors": [
+          "invalid target",
+          "invalid predicate"
+        ],
+        "side_effects": [
+          "Trigger registry updated"
+        ]
+      },
+      {
+        "id": "OP_TRIGGER_EVALUATE",
+        "name": "Evaluate Trigger predicate",
+        "inputs": [
+          "Trigger definition",
+          "current context/state"
+        ],
+        "outputs": [
+          "matched | not_matched"
+        ],
+        "errors": [
+          "predicate invalid",
+          "target unavailable"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_TRIGGER_FIRE",
+        "name": "Fire matched Trigger",
+        "inputs": [
+          "matched Trigger",
+          "validated cause context"
+        ],
+        "outputs": [
+          "explicit automation dispatch request"
+        ],
+        "errors": [
+          "dispatch rejected"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "sigil": "!",
+    "exclusive_semantics": true,
+    "target_rule": "Trigger targets an exact symbol or an intentionally declared specific group.",
+    "noisy_root_rule": "Whole-root triggers over noisy roots such as #OSC and #REST are forbidden by default.",
+    "payload_target_rule": "Payload-selected dynamic Trigger targets are forbidden.",
+    "predicate_rule": "Predicates are side-effect-free, bounded and belong to the expression system.",
+    "fire_rule": "Trigger match does not directly execute arbitrary commands/effects; it requests explicit Core dispatch.",
+    "definition_state_rule": "Trigger definition is inert; edge/timing state is runtime state."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "AUTOMATION_EXPLICIT",
+        "rule": "Automation semantics are explicit, bounded, and do not gain authority from data or composition."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "! used for non-Trigger semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "Trigger targets whole #OSC or #REST root by default",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "Trigger target selected dynamically from payload/model output",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "predicate evaluation has side effect",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "predicate evaluation is unbounded",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "Trigger match directly executes arbitrary effect outside dispatcher",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_AUTOMATION",
+      "target_ref": "AIGMOS_CORE_AUTOMATION_SEMANTICS_CONTRACT",
+      "purpose": "Trigger participates in explicit automation causality."
+    },
+    {
+      "id": "REF_DISPATCH",
+      "target_ref": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+      "purpose": "Trigger firing crosses Core dispatcher boundary."
+    }
+  ],
+  "prose": {
+    "summary": "Define Trigger as the exclusive ! automation primitive: an inert declaration that observes an explicit target, evaluates bounded predicates, and produces an explicit Core-owned automation dispatch request when matched.",
+    "notes": [
+      "Unlocked until reconciled against the existing automation/runtime contracts and repository-wide 1.4 traceability validation."
+    ]
+  }
+}

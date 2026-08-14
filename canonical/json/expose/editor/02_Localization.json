@@ -1,0 +1,189 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_LOCALIZATION_CONTRACT",
+    "name": "Expose Localization",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define managed UI localization as explicit label identities plus context metadata and translations, while commands and internal identifiers remain English-only canonical semantics.",
+  "scope": {
+    "owns": [
+      "Expose Localization semantics"
+    ],
+    "does_not_own": [
+      "runtime execution authority",
+      "unrelated domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXPOSE_LOCALIZATION",
+      "name": "Localization",
+      "purpose": "Define managed UI localization as explicit label identities plus context metadata and translations, while commands and internal identifiers remain English-only canonical semantics.",
+      "parent_topic_refs": [
+        "TOPIC_EXPOSE_EDITOR"
+      ],
+      "composed_topic_refs": [
+        "TOPIC_EXPOSE",
+        "TOPIC_CORE_PROJECTION"
+      ],
+      "member_refs": [
+        "AIGMOS_EXPOSE_LOCALIZATION_CONTRACT",
+        "EDITOR_TOOL_BOUNDARY_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_LOCALE_REGISTER_LABEL",
+        "OP_LOCALE_TRANSLATE",
+        "OP_LOCALE_PROJECT"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_LOCALE_REGISTER_LABEL",
+        "name": "Register UI label",
+        "inputs": [
+          "label identity",
+          "source text",
+          "context metadata"
+        ],
+        "outputs": [
+          "managed label"
+        ],
+        "errors": [
+          "identity collision"
+        ],
+        "side_effects": [
+          "localization registry updated"
+        ]
+      },
+      {
+        "id": "OP_LOCALE_TRANSLATE",
+        "name": "Attach translation",
+        "inputs": [
+          "label identity",
+          "language",
+          "translated text"
+        ],
+        "outputs": [
+          "localized label"
+        ],
+        "errors": [
+          "label unresolved",
+          "language unsupported"
+        ],
+        "side_effects": [
+          "localization registry updated"
+        ]
+      },
+      {
+        "id": "OP_LOCALE_PROJECT",
+        "name": "Project localized UI",
+        "inputs": [
+          "UI label refs",
+          "active language"
+        ],
+        "outputs": [
+          "localized presentation"
+        ],
+        "errors": [
+          "translation missing"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "target_languages": [
+      "Finnish",
+      "English",
+      "Japanese",
+      "Vietnamese",
+      "Korean",
+      "French"
+    ],
+    "label_rule": "UI labels are extracted into managed identities with context metadata.",
+    "command_rule": "Commands/internal identifiers remain English-only and avoid special characters.",
+    "translation_rule": "Translations alter presentation text only, not canonical semantic identity.",
+    "context_rule": "Label context metadata is retained so identical source strings in different semantic contexts may translate differently.",
+    "fallback_rule": "Missing translation uses explicit fallback policy; it does not invent semantic meaning.",
+    "projection_rule": "Localization is an Expose projection concern and does not alter domain/runtime semantics."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EDITOR_TOOL_BOUNDARY_EXPLICIT",
+        "rule": "Editor subtools are projections/operation surfaces over canonical semantics and do not become independent authorities."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "translated label changes canonical command/internal identifier",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "same textual label assumed same semantic identity without context",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "missing translation silently invents new domain semantics",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "UI language determines runtime capability or authority",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "special localized characters introduced into canonical command identifiers",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_EXPOSE",
+      "target_ref": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT",
+      "purpose": "Localization is presentation under Expose."
+    }
+  ],
+  "prose": {
+    "summary": "Define managed UI localization as explicit label identities plus context metadata and translations, while commands and internal identifiers remain English-only canonical semantics.",
+    "notes": [
+      "Unlocked until reconciled against existing Expose Editor contracts and repository-wide Contract Format 1.4 validation."
+    ]
+  }
+}

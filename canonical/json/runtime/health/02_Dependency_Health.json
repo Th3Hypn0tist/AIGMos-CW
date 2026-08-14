@@ -1,0 +1,123 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_DEPENDENCY_HEALTH_CONTRACT",
+    "name": "Runtime Dependency Health",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define derived dependency-health status over exact required/optional dependency identities without silently enabling or replacing missing dependencies.",
+  "scope": {
+    "owns": [
+      "Runtime Dependency Health semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNTIME_DEPENDENCY_HEALTH",
+      "name": "Runtime Dependency Health",
+      "purpose": "Define derived dependency-health status over exact required/optional dependency identities without silently enabling or replacing missing dependencies.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_HEALTH",
+        "TOPIC_DEPENDENCIES"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RUNTIME_DEPENDENCY_HEALTH_CONTRACT",
+        "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "dependency_rule": "Health evaluation references exact dependency bindings.",
+    "required_rule": "Failed required dependency may degrade/fail the dependent according to explicit policy.",
+    "optional_rule": "Optional dependency failure follows explicit degraded behavior.",
+    "auto_rule": "Health failure never auto-installs/enables a missing dependency.",
+    "propagation_rule": "Dependency failure propagation is explicit.",
+    "identity_rule": "Dependency health does not merge dependency/dependent identities.",
+    "authority_rule": "Healthy dependency grants no additional rights."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_IDENTITY_AND_BOUNDARY",
+        "rule": "Machine-significant definitions, executions, evidence and runtime state use explicit identities and boundaries; visibility, file order, timestamps, transport reachability or UI placement never silently create semantic authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "missing dependency auto-enabled",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "optional failure kills component without policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "dependent/dependency identities conflated",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "health propagates by name match",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "healthy dependency grants authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_DEP",
+      "target_ref": "AIGMOS_INSTALL_DEPENDENCY_VALIDATION_CONTRACT",
+      "purpose": "Health evaluates exact dependency closure."
+    }
+  ],
+  "prose": {
+    "summary": "Define derived dependency-health status over exact required/optional dependency identities without silently enabling or replacing missing dependencies.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

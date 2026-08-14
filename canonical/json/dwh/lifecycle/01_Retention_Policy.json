@@ -1,0 +1,125 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DWH_RETENTION_POLICY_CONTRACT",
+    "name": "DWH Retention Policy",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit retention rules over exact data/schema/scope identities, including duration/anchor, applicable lifecycle transition and policy provenance.",
+  "scope": {
+    "owns": [
+      "DWH Retention Policy semantics"
+    ],
+    "does_not_own": [
+      "source domain ownership",
+      "AccessCore policy ownership",
+      "storage-engine implementation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DWH_RETENTION_POLICY",
+      "name": "DWH Retention Policy",
+      "purpose": "Define explicit retention rules over exact data/schema/scope identities, including duration/anchor, applicable lifecycle transition and policy provenance.",
+      "parent_topic_refs": [
+        "TOPIC_DWH",
+        "TOPIC_DATA_LIFECYCLE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DWH_RETENTION_POLICY_CONTRACT",
+        "RETENTION_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "policy_rule": "Each retention policy has an explicit canonical identity.",
+    "scope_rule": "Policy targets exact schema/resource/classification/instance/data-scope identities.",
+    "duration_rule": "Retention duration or condition is explicit.",
+    "anchor_rule": "Retention anchor is explicit, e.g. creation time, accepted revision time, project completion or other declared event.",
+    "transition_rule": "Policy declares resulting action such as archive, expire, tombstone or purge-candidate.",
+    "priority_rule": "Multiple applicable policies use explicit precedence/combination semantics, never file order.",
+    "classification_rule": "Retention policy does not override classification/declassification semantics.",
+    "authority_rule": "Policy eligibility does not itself authorize destructive transition."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RETENTION_EXPLICIT",
+        "rule": "Retention, archival, expiry, purge and hold state are explicit lifecycle semantics over exact data identities; time passage, storage movement or archive location never silently deletes, declassifies, transfers ownership or restores data."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "retention anchor inferred",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "multiple policies resolved by file order",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "retention policy silently declassifies",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "eligible-for-purge treated as authorized purge",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "scope selected by display label",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_STATE",
+      "target_ref": "AIGMOS_DWH_DATA_LIFECYCLE_STATE_CONTRACT",
+      "purpose": "Retention policies drive explicit lifecycle transitions."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit retention rules over exact data/schema/scope identities, including duration/anchor, applicable lifecycle transition and policy provenance.",
+    "notes": [
+      "Unlocked pending reconciliation against DWH persistence, deletion, classification and governance contracts."
+    ]
+  }
+}

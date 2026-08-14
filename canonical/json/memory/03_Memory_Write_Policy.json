@@ -1,0 +1,133 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_MEMORY_WRITE_POLICY_CONTRACT",
+    "name": "Memory Write Policy",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit creation, update, promotion and removal operations for canonical memory so model output, tool output or conversation content cannot silently become persistent memory.",
+  "scope": {
+    "owns": [
+      "Memory Write Policy semantics"
+    ],
+    "does_not_own": [
+      "model hidden state",
+      "runtime authorization policy",
+      "unrelated domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_MEMORY_WRITE_POLICY",
+      "name": "Memory Write Policy",
+      "purpose": "Define explicit creation, update, promotion and removal operations for canonical memory so model output, tool output or conversation content cannot silently become persistent memory.",
+      "parent_topic_refs": [
+        "TOPIC_NAMESPACE_MEM",
+        "TOPIC_CORE_PROVENANCE"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_MEMORY_WRITE_POLICY_CONTRACT",
+        "MEMORY_EXPLICIT_DATA",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "write_sources": [
+      "explicit user/runtime operation",
+      "authorized module operation",
+      "explicit memory extraction/promotion operation"
+    ],
+    "model_rule": "Model output is inert candidate data until an explicit memory-write operation accepts it.",
+    "promotion_rule": "Transient context/cache may be promoted only through a declared operation with provenance.",
+    "update_rule": "Update targets an exact Memory Record identity.",
+    "delete_rule": "Removal/tombstone semantics are explicit and preserve audit/history where required.",
+    "validation_rule": "Write validates scope, schema/value semantics and authority before commit.",
+    "dedupe_rule": "Similarity/deduplication may propose reconciliation but cannot silently merge distinct memory identities."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "MEMORY_EXPLICIT_DATA",
+        "rule": "Machine-significant memory is explicit addressable provenance-bearing data; retrieval and storage never create hidden authority or implicit execution."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "model output silently persisted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "tool output silently persisted",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "write target chosen by fuzzy similarity only",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "similar memories silently merged",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "scope/authority validation skipped",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RECORD",
+      "target_ref": "AIGMOS_MEMORY_RECORD_CONTRACT",
+      "purpose": "Writes create/update explicit records."
+    },
+    {
+      "id": "REF_CHANGE",
+      "target_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+      "purpose": "Memory writes are canonical changes."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit creation, update, promotion and removal operations for canonical memory so model output, tool output or conversation content cannot silently become persistent memory.",
+    "notes": [
+      "Unlocked pending reconciliation against existing memory/runtime contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

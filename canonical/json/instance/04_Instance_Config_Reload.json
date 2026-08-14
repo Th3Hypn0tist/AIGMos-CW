@@ -1,0 +1,137 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT",
+    "name": "Instance Configuration Reload",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define validated instance-configuration reload that reconciles instance-owned configuration and referenced subsystem bindings without replacing unrelated semantic data.",
+  "scope": {
+    "owns": [
+      "Instance Configuration Reload semantics"
+    ],
+    "does_not_own": [
+      "IdentityCore identity semantics",
+      "AccessCore policy semantics",
+      "runtime business-domain semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_INSTANCE_CONFIG_RELOAD",
+      "name": "Instance Configuration Reload",
+      "purpose": "Define validated instance-configuration reload that reconciles instance-owned configuration and referenced subsystem bindings without replacing unrelated semantic data.",
+      "parent_topic_refs": [
+        "TOPIC_INSTANCE_CONFIG",
+        "TOPIC_RUNTIME_ACTIVATION"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT",
+        "INSTANCE_CONFIG_SEPARATION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5",
+        "GATE_6"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "target_rule": "Reload targets an exact AIGMos instance identity.",
+    "candidate_rule": "Candidate instance config is parsed/validated before affecting runtime.",
+    "owner_rule": "Reload applies instance-owned fields and invokes referenced owner-specific reconciliation where required.",
+    "iam_rule": "IAM parent changes route through explicit IAM binding semantics.",
+    "ac_rule": "AccessCore activation/reload follows explicit AC lifecycle semantics; when AC is active it cannot be disabled through an unauthorized runtime mutation.",
+    "listener_rule": "Listener binding changes use listener lifecycle/conflict validation.",
+    "module_rule": "UserModule changes use UserModule lifecycle/reload semantics.",
+    "failure_rule": "Failed reconciliation leaves a deterministic previous or safe stopped state.",
+    "trace_rule": "Reload records old/new config refs, subsystem actions and result."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "INSTANCE_CONFIG_SEPARATION",
+        "rule": "AIGMos instance identity, configuration, IAM parent, AccessCore parent and runtime state remain explicit separate dimensions; configuration never silently changes semantic ownership or authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "reload overwrites unrelated semantic data",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "reload directly rewrites AccessCore policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "listener binding changed without conflict validation",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "UserModule state replaced outside lifecycle",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "failed reload leaves mixed ambiguous config",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_6",
+        "condition": "reload disables active AC without governed operation",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RUNTIME",
+      "target_ref": "AIGMOS_RUNTIME_RELOAD_CONTRACT",
+      "purpose": "Instance config reload participates in runtime reload."
+    },
+    {
+      "id": "REF_AC",
+      "target_ref": "AIGMOS_ACCESSCORE_POLICY_CHANGE_AUDIT_CONTRACT",
+      "purpose": "AC changes remain governed/audited."
+    }
+  ],
+  "prose": {
+    "summary": "Define validated instance-configuration reload that reconciles instance-owned configuration and referenced subsystem bindings without replacing unrelated semantic data.",
+    "notes": [
+      "Unlocked pending reconciliation against existing instance-config/IAM/AccessCore/runtime contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

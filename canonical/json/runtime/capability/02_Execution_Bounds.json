@@ -1,0 +1,159 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_EXECUTION_BOUNDS_CONTRACT",
+    "name": "Execution Bounds",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define hard and soft execution bounds over exact operations/targets/arguments/resources before dispatch.",
+  "scope": {
+    "owns": [
+      "Execution Bounds semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_EXECUTION_BOUNDS",
+      "name": "Execution Bounds",
+      "purpose": "Define hard and soft execution bounds over exact operations/targets/arguments/resources before dispatch.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME",
+        "TOPIC_LIMITS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_EXECUTION_BOUNDS_CONTRACT",
+        "EXPLICIT_EXECUTION_BOUNDARY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    },
+    {
+      "id": "TOPIC_LIMITS",
+      "name": "Limits",
+      "purpose": "Define grouping-only parent Topic identity TOPIC_LIMITS already referenced by 2 existing canonical child Topic reference occurrence(s).",
+      "parent_topic_refs": [],
+      "composed_topic_refs": [],
+      "member_refs": [],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {
+        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+        "referencing_child_occurrences": 2,
+        "distinct_child_topics": 2,
+        "host_contract_ref": "AIGMOS_EXECUTION_BOUNDS_CONTRACT",
+        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+        "placement_nonsemantic": true,
+        "ownership_nontransfer": true,
+        "new_parent_edges_added": 0
+      }
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "bound_types": [
+      "numeric_range",
+      "enum_set",
+      "size",
+      "count",
+      "rate",
+      "duration",
+      "path_scope",
+      "network_scope",
+      "resource_scope",
+      "custom declared bound"
+    ],
+    "identity_rule": "Each reusable bounds profile has an explicit identity.",
+    "target_rule": "Bounds bind exact operation/parameter/target/resource scopes.",
+    "hard_rule": "Hard-bound violation fails before effect.",
+    "soft_rule": "Soft-bound violation follows explicit warn/review/throttle policy.",
+    "normalization_rule": "Units/representation are normalized before comparison.",
+    "unknown_rule": "Unknown required bounds fail closed.",
+    "authority_rule": "Being within bounds does not imply authorization."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "EXPLICIT_EXECUTION_BOUNDARY",
+        "rule": "Definitions, requests, validation evidence, authorization decisions and concrete executions remain separate identities; only an explicit validated and authorized dispatcher path may create effects."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "out-of-range request clamped silently",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "unit mismatch ignored",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "unknown bound treated unlimited",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "within bounds means authorized",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "path scope guessed from cwd",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_VALID",
+      "target_ref": "AIGMOS_OPERATION_VALIDATION_CONTRACT",
+      "purpose": "Bounds participate in pre-dispatch validation."
+    }
+  ],
+  "prose": {
+    "summary": "Define hard and soft execution bounds over exact operations/targets/arguments/resources before dispatch.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Pass 6 hosts grouping-only Topic TOPIC_LIMITS solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
+    ]
+  }
+}

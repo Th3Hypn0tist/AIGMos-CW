@@ -1,0 +1,158 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT",
+    "name": "Distribution Package Identity",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define distributable canonical packages as explicit immutable snapshots of selected canonical identities and physical source artifacts, without using archive filenames or paths as semantic identity.",
+  "scope": {
+    "owns": [
+      "Distribution Package Identity semantics"
+    ],
+    "does_not_own": [
+      "source semantic ownership",
+      "runtime authority",
+      "presentation semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_DISTRIBUTION_PACKAGE",
+      "name": "Package Identity",
+      "purpose": "Define distributable canonical packages as explicit immutable snapshots of selected canonical identities and physical source artifacts, without using archive filenames or paths as semantic identity.",
+      "parent_topic_refs": [
+        "TOPIC_REPOSITORY_MANIFEST"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT",
+        "DISTRIBUTION_NONAUTHORITY",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [
+        "OP_PACKAGE_BUILD",
+        "OP_PACKAGE_VALIDATE"
+      ],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [
+      {
+        "id": "OP_PACKAGE_BUILD",
+        "name": "Build canonical package",
+        "inputs": [
+          "explicit canonical source set",
+          "package metadata"
+        ],
+        "outputs": [
+          "package artifact"
+        ],
+        "errors": [
+          "source unresolved",
+          "duplicate member"
+        ],
+        "side_effects": []
+      },
+      {
+        "id": "OP_PACKAGE_VALIDATE",
+        "name": "Validate package contents",
+        "inputs": [
+          "package",
+          "repository manifest"
+        ],
+        "outputs": [
+          "valid package membership"
+        ],
+        "errors": [
+          "missing member",
+          "unexpected active member"
+        ],
+        "side_effects": []
+      }
+    ],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "package_rule": "Package identity is explicit metadata separate from archive filename.",
+    "membership_rule": "Package membership is explicit and traceable to canonical identities/source artifacts.",
+    "snapshot_rule": "A package represents a specific assembled snapshot.",
+    "source_rule": "Packaging does not change semantic ownership/source roles.",
+    "path_rule": "Archive path and filename are storage/distribution details only.",
+    "rebuild_rule": "Rebuilding the same semantic package must produce an explicitly comparable package manifest."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "DISTRIBUTION_NONAUTHORITY",
+        "rule": "Packaging, hashing, certification and repository distribution preserve canonical semantics but do not become semantic or runtime authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "archive filename used as semantic identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "package silently includes active semantics absent from manifest",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "packaging changes source_role or semantic ownership",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "same package identity refers to incompatible semantic snapshots",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "package membership requires filesystem inference",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_MANIFEST",
+      "target_ref": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT",
+      "purpose": "Package membership derives from explicit repository inventory."
+    }
+  ],
+  "prose": {
+    "summary": "Define distributable canonical packages as explicit immutable snapshots of selected canonical identities and physical source artifacts, without using archive filenames or paths as semantic identity.",
+    "notes": [
+      "Unlocked until reconciled against the assembled 1.4 tree and distribution/certification validation."
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_UM_USERMODULE_ROOT_CONTRACT",
+    "name": "#UM UserModule Root",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define `#UM` as the reserved root for registered UserModule definitions and explicit runtime instances, with module identity independent from library path and instance identity distinct from definition identity.",
+  "scope": {
+    "owns": [
+      "#UM UserModule Root semantics"
+    ],
+    "does_not_own": [
+      "unrelated domain semantics",
+      "presentation semantics",
+      "implicit runtime authority"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_NAMESPACE_UM",
+      "name": "#UM UserModule Root",
+      "purpose": "Define `#UM` as the reserved root for registered UserModule definitions and explicit runtime instances, with module identity independent from library path and instance identity distinct from definition identity.",
+      "parent_topic_refs": [
+        "TOPIC_RUNTIME_NAMESPACES",
+        "TOPIC_RUNTIME_USERMODULE_REGISTRY"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_UM_USERMODULE_ROOT_CONTRACT",
+        "RESERVED_ROOT_OWNER_EXPLICIT",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "root": "#UM",
+    "role": "UserModule family/root",
+    "owner_rule": "#UM resolves to the UserModule Registry.",
+    "definition_rule": "Registered UserModule definitions have explicit stable canonical identities.",
+    "instance_rule": "Runtime instance identity is distinct from UserModule definition identity where multiple instances are supported.",
+    "type_rule": "UserModule primary type is explicit: command, input, adapter or view unless a composition contract says otherwise.",
+    "path_rule": "Library/storage path does not define UserModule identity.",
+    "lifecycle_rule": "Installed, registered, enabled and running states remain separate.",
+    "authority_rule": "Module registration/visibility does not grant execution or write authority."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RESERVED_ROOT_OWNER_EXPLICIT",
+        "rule": "Each reserved runtime root resolves to one explicit semantic owner/family; the root itself never creates semantic ownership or runtime authority."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "UserModule identity inferred solely from path",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "definition identity conflated with instance identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "module type inferred from implementation behavior",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "registration automatically enables or executes module",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "#UM visibility grants execution/write authority",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_UM",
+      "target_ref": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT",
+      "purpose": "#UM exposes registered UserModules."
+    },
+    {
+      "id": "REF_TYPE",
+      "target_ref": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT",
+      "purpose": "UserModule type semantics are explicit."
+    },
+    {
+      "id": "REF_LIFE",
+      "target_ref": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT",
+      "purpose": "Lifecycle states remain separate."
+    }
+  ],
+  "prose": {
+    "summary": "Define `#UM` as the reserved root for registered UserModule definitions and explicit runtime instances, with module identity independent from library path and instance identity distinct from definition identity.",
+    "notes": [
+      "Unlocked pending reconciliation against existing namespace/runtime/domain contracts and whole-tree Contract Format 1.4 validation."
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_SCHEDULE_MISSED_OCCURRENCE_CONTRACT",
+    "name": "Missed Occurrence and Catch-up",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define explicit handling for scheduled occurrences missed while runtime/service is unavailable, preventing silent replay storms or loss.",
+  "scope": {
+    "owns": [
+      "Missed Occurrence and Catch-up semantics"
+    ],
+    "does_not_own": [
+      "Runner execution semantics",
+      "AccessCore policy ownership",
+      "external calendar provider semantics"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_SCHEDULE_MISSED_OCCURRENCE",
+      "name": "Missed Occurrence and Catch-up",
+      "purpose": "Define explicit handling for scheduled occurrences missed while runtime/service is unavailable, preventing silent replay storms or loss.",
+      "parent_topic_refs": [
+        "TOPIC_CALENDAR",
+        "TOPIC_SCHEDULING"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_SCHEDULE_MISSED_OCCURRENCE_CONTRACT",
+        "SCHEDULE_NONEXECUTION",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "policies": [
+      "skip",
+      "emit_latest",
+      "replay_bounded",
+      "manual_review"
+    ],
+    "policy_rule": "Each recurring schedule/profile declares or inherits an explicit missed-occurrence policy.",
+    "history_rule": "Missed occurrence identities/times remain traceable according to retention policy.",
+    "bounded_rule": "Replay/catch-up is finitely bounded by count/time-window/rate limits.",
+    "dedupe_rule": "Previously emitted/completed occurrences are not replayed merely because runtime restarted.",
+    "ordering_rule": "Catch-up ordering is explicit where multiple occurrences are replayed.",
+    "failure_rule": "Excess backlog beyond policy is surfaced explicitly.",
+    "authority_rule": "Catch-up does not bypass current authorization/assurance at downstream dispatch time.",
+    "clock_rule": "Clock jumps/restarts do not silently synthesize arbitrary occurrence history."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "SCHEDULE_NONEXECUTION",
+        "rule": "A schedule determines when a scheduling occurrence may be emitted; it never directly executes a Routine, command or operation. Execution requires the normal explicit Event→Trigger→Runner/operation causality chain."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "unbounded missed-run replay",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "restart duplicates completed occurrences",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "missed runs silently discarded without policy",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "catch-up bypasses current authorization",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "clock jump invents occurrences",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_SCHED",
+      "target_ref": "AIGMOS_SCHEDULE_IDENTITY_CONTRACT",
+      "purpose": "Missed-run policy is scoped to exact schedules."
+    },
+    {
+      "id": "REF_LOOP",
+      "target_ref": "AIGMOS_CAUSALITY_LOOP_BOUNDS_CONTRACT",
+      "purpose": "Catch-up/replay remains bounded."
+    }
+  ],
+  "prose": {
+    "summary": "Define explicit handling for scheduled occurrences missed while runtime/service is unavailable, preventing silent replay storms or loss.",
+    "notes": [
+      "Unlocked pending reconciliation against #CAL, Event/Trigger causality, Runner and timezone/runtime contracts."
+    ]
+  }
+}

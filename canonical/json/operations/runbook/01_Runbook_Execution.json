@@ -1,0 +1,129 @@
+{
+  "format": {
+    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
+    "format_version": "1.4"
+  },
+  "identity": {
+    "id": "AIGMOS_RUNBOOK_EXECUTION_CONTRACT",
+    "name": "Runbook Execution Session",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "locked",
+  "source_role": "definition",
+  "purpose": "Define one concrete operator/automation session following an exact runbook revision with explicit completed steps, observations and operation requests.",
+  "scope": {
+    "owns": [
+      "Runbook Execution Session semantics"
+    ],
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "canonical documentation ownership"
+    ]
+  },
+  "members": [],
+  "structure": {
+    "containment": [],
+    "relations": [],
+    "ownership": [],
+    "authority": [],
+    "dependencies": []
+  },
+  "topics": [
+    {
+      "id": "TOPIC_RUNBOOK_EXECUTION",
+      "name": "Runbook Execution Session",
+      "purpose": "Define one concrete operator/automation session following an exact runbook revision with explicit completed steps, observations and operation requests.",
+      "parent_topic_refs": [
+        "TOPIC_OPERATIONS",
+        "TOPIC_RUNBOOKS"
+      ],
+      "composed_topic_refs": [],
+      "member_refs": [
+        "AIGMOS_RUNBOOK_EXECUTION_CONTRACT",
+        "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "OPERATIONS_FAIL_SAFE",
+        "GATE_1",
+        "GATE_2",
+        "GATE_3",
+        "GATE_4",
+        "GATE_5"
+      ],
+      "relation_refs": [],
+      "operation_refs": [],
+      "event_refs": [],
+      "flow_refs": [],
+      "child_topics": [],
+      "metadata": {}
+    }
+  ],
+  "behavior": {
+    "states": [],
+    "interfaces": [],
+    "operations": [],
+    "events": [],
+    "flows": []
+  },
+  "semantics": {
+    "identity_rule": "Each runbook execution has distinct identity.",
+    "runbook_rule": "Exact runbook revision is referenced.",
+    "actor_rule": "Operator/automation identity is explicit.",
+    "step_rule": "Completed/skipped/failed step state is explicit.",
+    "observation_rule": "Observations/evidence are explicit.",
+    "operation_rule": "Effectful step creates exact Operation Request/deployment/change request.",
+    "authority_rule": "Runbook session does not inherit author privileges."
+  },
+  "constraints": {
+    "invariants": [
+      {
+        "id": "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+        "rule": "Release candidate, accepted release, deployment plan, deployment execution, installed artifact, active runtime instance and observed health remain separate identities/states."
+      },
+      {
+        "id": "OPERATIONS_FAIL_SAFE",
+        "rule": "Operational convenience, availability pressure, maintenance state, automation, recovery or rollback never silently bypass validation, authorization, integrity, governance or dispatcher boundaries."
+      }
+    ],
+    "hard_gates": [
+      {
+        "id": "GATE_1",
+        "condition": "runbook author rights inherited by operator",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_2",
+        "condition": "step marked complete from time alone",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_3",
+        "condition": "free-form action bypasses dispatcher",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_4",
+        "condition": "session identity reused as runbook identity",
+        "result": "hard_fail"
+      },
+      {
+        "id": "GATE_5",
+        "condition": "skipped step hidden",
+        "result": "hard_fail"
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "REF_RUNBOOK",
+      "target_ref": "AIGMOS_RUNBOOK_IDENTITY_CONTRACT",
+      "purpose": "Session follows exact procedure revision."
+    }
+  ],
+  "prose": {
+    "summary": "Define one concrete operator/automation session following an exact runbook revision with explicit completed steps, observations and operation requests.",
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
+    ]
+  }
+}

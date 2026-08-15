@@ -1,0 +1,54 @@
+name: CW 1.6 migration
+
+on:
+  push:
+    branches:
+      - cw-1.6-migration
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: ${{ !contains(github.event.head_commit.message, '[cw16-migrated]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run deterministic migration
+        run: python tools/migrate_cw_1_4_to_1_6.py | tee cw16-migration-report.json
+
+      - name: Validate migrated JSON syntax
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          files = list(Path('canonical/json').rglob('*.json'))
+          for p in files:
+              json.loads(p.read_text(encoding='utf-8'))
+          print(f'JSON syntax OK: {len(files)} canonical files')
+          PY
+
+      - name: Commit migration result
+        run: |
+          if git diff --quiet && git status --porcelain | grep -q '^??' ; then
+            :
+          fi
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No migration changes to commit."
+            exit 0
+          fi
+          git config user.name "AIGMos CW migration"
+          git config user.email "actions@users.noreply.github.com"
+          git add canonical/json cw16-migration-report.json
+          git commit -m "Migrate AIGMos canonical tree to CW 1.6 unlocked [cw16-migrated]"
+          git push

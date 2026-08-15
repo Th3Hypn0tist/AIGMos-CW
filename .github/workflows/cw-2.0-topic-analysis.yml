@@ -1,0 +1,56 @@
+name: CW 2.0 legacy Topic analysis
+
+on:
+  push:
+    branches:
+      - cw-2.0-topic-analysis
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  analyze:
+    if: ${{ !contains(github.event.head_commit.message, '[topic-analysis]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Analyze legacy Topic references
+        run: python tools/analyze_legacy_topic_members.py
+
+      - name: Validate report
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('cw20-legacy-topic-member-analysis.json')
+          d = json.loads(p.read_text(encoding='utf-8'))
+          assert d['total_member_refs'] > 0
+          print(json.dumps({
+              'total_member_refs': d['total_member_refs'],
+              'member_ref_categories': d['member_ref_categories'],
+              'unresolved_count': d['unresolved_count'],
+              'multi_kind_count': d['multi_kind_count'],
+          }, indent=2))
+          PY
+
+      - name: Commit report
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No analysis changes to commit."
+            exit 0
+          fi
+          git config user.name "AIGMos CW analysis"
+          git config user.email "actions@users.noreply.github.com"
+          git add cw20-legacy-topic-member-analysis.json
+          git commit -m "Classify legacy Topic member semantics [topic-analysis]"
+          git push

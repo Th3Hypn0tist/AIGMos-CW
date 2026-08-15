@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_SOURCE_RESOLUTION_VALIDATION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define validation of repository/package source resolution, including bootstrap separation, source-role completeness, same-identity conflicts, precedence determinism and local/package equivalence.",
   "scope": {
     "owns": [
@@ -22,67 +21,216 @@
       "runtime business authority"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_SOURCE_RESOLUTION_VALIDATION_CONTRACT",
+      "name": "Source Resolution Validation",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_SOURCE_RESOLUTION_VALIDATION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "checks": [
+              "bootstrap source exactness",
+              "canonical tree root",
+              "source-role completeness",
+              "same-identity conflict detection",
+              "active/historical separation",
+              "candidate/accepted separation",
+              "local/package normalized equivalence",
+              "source provenance"
+            ],
+            "bootstrap_rule": "Format bootstrap source and canonical tree source are validated as separate layers.",
+            "conflict_rule": "Ambiguous active same-identity sources hard-fail.",
+            "precedence_rule": "No precedence may depend only on mtime/path/archive ordering.",
+            "equivalence_rule": "Where both carriers exist, same accepted snapshot must normalize equivalently.",
+            "evidence_rule": "Validation report records exact selected/rejected source artifacts and reason.",
+            "release_rule": "Unresolved source-resolution failures block repository acceptance/release."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_SOURCE_RESOLUTION_VALIDATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_SOURCE_RESOLUTION_VALIDATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CANONICAL_SOURCE_RESOLUTION",
+            "child_ref": "TOPIC_SOURCE_RESOLUTION_VALIDATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_SOURCE_RESOLUTION_VALIDATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_SOURCE_RESOLUTION_VALIDATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_REPOSITORY",
+            "child_ref": "TOPIC_SOURCE_RESOLUTION_VALIDATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_SOURCE_RESOLUTION_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SOURCE_RESOLUTION_VALIDATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SOURCE_RESOLUTION_VALIDATION",
+            "child_ref": "AIGMOS_SOURCE_RESOLUTION_VALIDATION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_SOURCE_RESOLUTION_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SOURCE_RESOLUTION_VALIDATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SOURCE_RESOLUTION_VALIDATION",
+            "child_ref": "SOURCE_RESOLUTION_DETERMINISTIC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_SOURCE_RESOLUTION_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SOURCE_RESOLUTION_VALIDATION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SOURCE_RESOLUTION_VALIDATION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_SOURCE_RESOLUTION_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SOURCE_RESOLUTION_VALIDATION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SOURCE_RESOLUTION_VALIDATION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_SOURCE_RESOLUTION_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SOURCE_RESOLUTION_VALIDATION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SOURCE_RESOLUTION_VALIDATION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_SOURCE_RESOLUTION_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SOURCE_RESOLUTION_VALIDATION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SOURCE_RESOLUTION_VALIDATION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_SOURCE_RESOLUTION_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SOURCE_RESOLUTION_VALIDATION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SOURCE_RESOLUTION_VALIDATION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_SOURCE_RESOLUTION_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SOURCE_RESOLUTION_VALIDATION_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SOURCE_RESOLUTION_VALIDATION",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/validation/17_Source_Resolution_Validation.json"
+      }
+    },
     {
       "id": "TOPIC_SOURCE_RESOLUTION_VALIDATION",
       "name": "Source Resolution Validation",
-      "purpose": "Define validation of repository/package source resolution, including bootstrap separation, source-role completeness, same-identity conflicts, precedence determinism and local/package equivalence.",
-      "parent_topic_refs": [
-        "TOPIC_CANONICAL_SOURCE_RESOLUTION",
-        "TOPIC_REPOSITORY"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_SOURCE_RESOLUTION_VALIDATION_CONTRACT",
-        "SOURCE_RESOLUTION_DETERMINISTIC",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_SOURCE_RESOLUTION_VALIDATION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define validation of repository/package source resolution, including bootstrap separation, source-role completeness, same-identity conflicts, precedence determinism and local/package equivalence.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "checks": [
-      "bootstrap source exactness",
-      "canonical tree root",
-      "source-role completeness",
-      "same-identity conflict detection",
-      "active/historical separation",
-      "candidate/accepted separation",
-      "local/package normalized equivalence",
-      "source provenance"
-    ],
-    "bootstrap_rule": "Format bootstrap source and canonical tree source are validated as separate layers.",
-    "conflict_rule": "Ambiguous active same-identity sources hard-fail.",
-    "precedence_rule": "No precedence may depend only on mtime/path/archive ordering.",
-    "equivalence_rule": "Where both carriers exist, same accepted snapshot must normalize equivalently.",
-    "evidence_rule": "Validation report records exact selected/rejected source artifacts and reason.",
-    "release_rule": "Unresolved source-resolution failures block repository acceptance/release."
-  },
   "constraints": {
     "invariants": [
       {
@@ -135,10 +283,83 @@
       "purpose": "Validator checks deterministic precedence."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define validation of repository/package source resolution, including bootstrap separation, source-role completeness, same-identity conflicts, precedence determinism and local/package equivalence.",
     "notes": [
       "Unlocked pending reconciliation against BootstrapResolution, source-role and repository validation contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_SOURCE_RESOLUTION_VALIDATION",
+          "name": "Source Resolution Validation",
+          "purpose": "Define validation of repository/package source resolution, including bootstrap separation, source-role completeness, same-identity conflicts, precedence determinism and local/package equivalence.",
+          "parent_topic_refs": [
+            "TOPIC_CANONICAL_SOURCE_RESOLUTION",
+            "TOPIC_REPOSITORY"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_SOURCE_RESOLUTION_VALIDATION_CONTRACT",
+            "SOURCE_RESOLUTION_DETERMINISTIC",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "checks": [
+          "bootstrap source exactness",
+          "canonical tree root",
+          "source-role completeness",
+          "same-identity conflict detection",
+          "active/historical separation",
+          "candidate/accepted separation",
+          "local/package normalized equivalence",
+          "source provenance"
+        ],
+        "bootstrap_rule": "Format bootstrap source and canonical tree source are validated as separate layers.",
+        "conflict_rule": "Ambiguous active same-identity sources hard-fail.",
+        "precedence_rule": "No precedence may depend only on mtime/path/archive ordering.",
+        "equivalence_rule": "Where both carriers exist, same accepted snapshot must normalize equivalently.",
+        "evidence_rule": "Validation report records exact selected/rejected source artifacts and reason.",
+        "release_rule": "Unresolved source-resolution failures block repository acceptance/release."
+      }
+    }
   }
 }

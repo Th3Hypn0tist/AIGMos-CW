@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_ACCESSCORE_RUNTIME_ACTIVE_STATE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define AccessCore runtime active state separately from configured enablement and current caller authentication, including protection against accidental or unauthorized deactivation.",
   "scope": {
     "owns": [
@@ -22,65 +21,200 @@
       "domain business semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_ACCESSCORE_RUNTIME_ACTIVE_STATE_CONTRACT",
+      "name": "AccessCore Runtime Active State",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_ACCESSCORE_RUNTIME_ACTIVE_STATE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "states": [
+              "configured_disabled",
+              "configured_enabled_inactive",
+              "active_unauthenticated",
+              "active_authenticated",
+              "reload_required",
+              "error_protected"
+            ],
+            "active_rule": "When active, AccessCore enforcement remains in the runtime request/operation path.",
+            "auth_rule": "Active AccessCore may exist with no currently authenticated caller; this results in denied/login-required governed access rather than disabled enforcement.",
+            "disable_rule": "Active AccessCore cannot be disabled by ordinary ungoverned runtime mutation.",
+            "change_rule": "Disabling/removing AC requires an explicit authorized configuration/change workflow and subsequent lifecycle transition.",
+            "failure_rule": "Policy/auth subsystem failure fails protected/closed rather than silently falling back to AC-off behavior.",
+            "visibility_rule": "Runtime state is observable separately from instance config flag.",
+            "authority_rule": "AC runtime state never substitutes for the caller's rights."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_RUNTIME_ACTIVE_STATE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_ACCESSCORE_AUTHORIZATION",
+            "child_ref": "TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_RUNTIME_ACTIVE_STATE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_ACTIVATION",
+            "child_ref": "TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_RUNTIME_ACTIVE_STATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE",
+            "child_ref": "AIGMOS_ACCESSCORE_RUNTIME_ACTIVE_STATE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_RUNTIME_ACTIVE_STATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE",
+            "child_ref": "ACCESSCORE_ACTIVATION_GOVERNED",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_RUNTIME_ACTIVE_STATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_RUNTIME_ACTIVE_STATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_RUNTIME_ACTIVE_STATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_RUNTIME_ACTIVE_STATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_RUNTIME_ACTIVE_STATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/accesscore/08_AC_Runtime_Active_State.json"
+      }
+    },
     {
       "id": "TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE",
       "name": "AccessCore Runtime Active State",
-      "purpose": "Define AccessCore runtime active state separately from configured enablement and current caller authentication, including protection against accidental or unauthorized deactivation.",
-      "parent_topic_refs": [
-        "TOPIC_ACCESSCORE_AUTHORIZATION",
-        "TOPIC_RUNTIME_ACTIVATION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_ACCESSCORE_RUNTIME_ACTIVE_STATE_CONTRACT",
-        "ACCESSCORE_ACTIVATION_GOVERNED",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define AccessCore runtime active state separately from configured enablement and current caller authentication, including protection against accidental or unauthorized deactivation.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "states": [
-      "configured_disabled",
-      "configured_enabled_inactive",
-      "active_unauthenticated",
-      "active_authenticated",
-      "reload_required",
-      "error_protected"
-    ],
-    "active_rule": "When active, AccessCore enforcement remains in the runtime request/operation path.",
-    "auth_rule": "Active AccessCore may exist with no currently authenticated caller; this results in denied/login-required governed access rather than disabled enforcement.",
-    "disable_rule": "Active AccessCore cannot be disabled by ordinary ungoverned runtime mutation.",
-    "change_rule": "Disabling/removing AC requires an explicit authorized configuration/change workflow and subsequent lifecycle transition.",
-    "failure_rule": "Policy/auth subsystem failure fails protected/closed rather than silently falling back to AC-off behavior.",
-    "visibility_rule": "Runtime state is observable separately from instance config flag.",
-    "authority_rule": "AC runtime state never substitutes for the caller's rights."
-  },
   "constraints": {
     "invariants": [
       {
@@ -123,10 +257,81 @@
       "purpose": "Runtime state remains distinct from config state."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define AccessCore runtime active state separately from configured enablement and current caller authentication, including protection against accidental or unauthorized deactivation.",
     "notes": [
       "Unlocked pending reconciliation against existing AccessCore/IAM/runtime activation contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_ACCESSCORE_RUNTIME_ACTIVE_STATE",
+          "name": "AccessCore Runtime Active State",
+          "purpose": "Define AccessCore runtime active state separately from configured enablement and current caller authentication, including protection against accidental or unauthorized deactivation.",
+          "parent_topic_refs": [
+            "TOPIC_ACCESSCORE_AUTHORIZATION",
+            "TOPIC_RUNTIME_ACTIVATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_ACCESSCORE_RUNTIME_ACTIVE_STATE_CONTRACT",
+            "ACCESSCORE_ACTIVATION_GOVERNED",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "states": [
+          "configured_disabled",
+          "configured_enabled_inactive",
+          "active_unauthenticated",
+          "active_authenticated",
+          "reload_required",
+          "error_protected"
+        ],
+        "active_rule": "When active, AccessCore enforcement remains in the runtime request/operation path.",
+        "auth_rule": "Active AccessCore may exist with no currently authenticated caller; this results in denied/login-required governed access rather than disabled enforcement.",
+        "disable_rule": "Active AccessCore cannot be disabled by ordinary ungoverned runtime mutation.",
+        "change_rule": "Disabling/removing AC requires an explicit authorized configuration/change workflow and subsequent lifecycle transition.",
+        "failure_rule": "Policy/auth subsystem failure fails protected/closed rather than silently falling back to AC-off behavior.",
+        "visibility_rule": "Runtime state is observable separately from instance config flag.",
+        "authority_rule": "AC runtime state never substitutes for the caller's rights."
+      }
+    }
   }
 }

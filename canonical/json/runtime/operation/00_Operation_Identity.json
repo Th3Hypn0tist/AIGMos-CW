@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_OPERATION_IDENTITY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define every effect-capable canonical operation as an explicit stable identity with declared target type, input/output schema, side-effect class and lifecycle semantics.",
   "scope": {
     "owns": [
@@ -21,81 +20,220 @@
       "AccessCore policy ownership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_OPERATION_IDENTITY_CONTRACT",
+      "name": "Operation Identity",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_OPERATION_IDENTITY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "identity_rule": "Each effect-capable operation has an explicit stable operation identity.",
+            "definition_rule": "Operation definition is separate from invocation/request/execution identities.",
+            "target_rule": "Accepted target types/scopes are explicit.",
+            "input_rule": "Input schema is explicit and machine-validatable.",
+            "output_rule": "Output/result schema is explicit where applicable.",
+            "effect_rule": "Operation side-effect class is explicit.",
+            "lifecycle_rule": "Timeout, cancellation, retry/idempotency support are declared rather than inferred.",
+            "authority_rule": "Operation visibility or registration does not grant execution authority."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_OPERATION_IDENTITY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_OPERATION_IDENTITY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME",
+            "child_ref": "TOPIC_OPERATION_IDENTITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_OPERATION_IDENTITY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_OPERATION_IDENTITY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_OPERATION",
+            "child_ref": "TOPIC_OPERATION_IDENTITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_OPERATION_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_OPERATION_IDENTITY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_OPERATION_IDENTITY",
+            "child_ref": "AIGMOS_OPERATION_IDENTITY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_OPERATION_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_OPERATION_IDENTITY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_OPERATION_IDENTITY",
+            "child_ref": "EXPLICIT_EXECUTION_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_OPERATION_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_OPERATION_IDENTITY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_OPERATION_IDENTITY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_OPERATION_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_OPERATION_IDENTITY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_OPERATION_IDENTITY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_OPERATION_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_OPERATION_IDENTITY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_OPERATION_IDENTITY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_OPERATION_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_OPERATION_IDENTITY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_OPERATION_IDENTITY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_OPERATION_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_OPERATION_IDENTITY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_OPERATION_IDENTITY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/operation/00_Operation_Identity.json"
+      }
+    },
     {
       "id": "TOPIC_OPERATION_IDENTITY",
       "name": "Operation Identity",
-      "purpose": "Define every effect-capable canonical operation as an explicit stable identity with declared target type, input/output schema, side-effect class and lifecycle semantics.",
-      "parent_topic_refs": [
-        "TOPIC_RUNTIME",
-        "TOPIC_OPERATION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_OPERATION_IDENTITY_CONTRACT",
-        "EXPLICIT_EXECUTION_BOUNDARY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_OPERATION_IDENTITY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define every effect-capable canonical operation as an explicit stable identity with declared target type, input/output schema, side-effect class and lifecycle semantics.",
+            "metadata": {}
+          }
+        }
+      ]
     },
     {
       "id": "TOPIC_OPERATION",
       "name": "Operation",
-      "purpose": "Define grouping-only parent Topic identity TOPIC_OPERATION already referenced by 3 existing canonical child Topic reference occurrence(s).",
-      "parent_topic_refs": [],
-      "composed_topic_refs": [],
-      "member_refs": [],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {
-        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
-        "referencing_child_occurrences": 3,
-        "distinct_child_topics": 3,
-        "host_contract_ref": "AIGMOS_OPERATION_IDENTITY_CONTRACT",
-        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
-        "placement_nonsemantic": true,
-        "ownership_nontransfer": true,
-        "new_parent_edges_added": 0
-      }
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_OPERATION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define grouping-only parent Topic identity TOPIC_OPERATION already referenced by 3 existing canonical child Topic reference occurrence(s).",
+            "metadata": {
+              "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+              "referencing_child_occurrences": 3,
+              "distinct_child_topics": 3,
+              "host_contract_ref": "AIGMOS_OPERATION_IDENTITY_CONTRACT",
+              "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+              "placement_nonsemantic": true,
+              "ownership_nontransfer": true,
+              "new_parent_edges_added": 0
+            }
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "identity_rule": "Each effect-capable operation has an explicit stable operation identity.",
-    "definition_rule": "Operation definition is separate from invocation/request/execution identities.",
-    "target_rule": "Accepted target types/scopes are explicit.",
-    "input_rule": "Input schema is explicit and machine-validatable.",
-    "output_rule": "Output/result schema is explicit where applicable.",
-    "effect_rule": "Operation side-effect class is explicit.",
-    "lifecycle_rule": "Timeout, cancellation, retry/idempotency support are declared rather than inferred.",
-    "authority_rule": "Operation visibility or registration does not grant execution authority."
-  },
   "constraints": {
     "invariants": [
       {
@@ -132,11 +270,98 @@
     ]
   },
   "references": [],
+  "gaps": [],
   "prose": {
     "summary": "Define every effect-capable canonical operation as an explicit stable identity with declared target type, input/output schema, side-effect class and lifecycle semantics.",
     "notes": [
       "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
       "Pass 6 hosts grouping-only Topic TOPIC_OPERATION solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_OPERATION_IDENTITY",
+          "name": "Operation Identity",
+          "purpose": "Define every effect-capable canonical operation as an explicit stable identity with declared target type, input/output schema, side-effect class and lifecycle semantics.",
+          "parent_topic_refs": [
+            "TOPIC_RUNTIME",
+            "TOPIC_OPERATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_OPERATION_IDENTITY_CONTRACT",
+            "EXPLICIT_EXECUTION_BOUNDARY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        },
+        {
+          "id": "TOPIC_OPERATION",
+          "name": "Operation",
+          "purpose": "Define grouping-only parent Topic identity TOPIC_OPERATION already referenced by 3 existing canonical child Topic reference occurrence(s).",
+          "parent_topic_refs": [],
+          "composed_topic_refs": [],
+          "member_refs": [],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {
+            "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+            "referencing_child_occurrences": 3,
+            "distinct_child_topics": 3,
+            "host_contract_ref": "AIGMOS_OPERATION_IDENTITY_CONTRACT",
+            "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+            "placement_nonsemantic": true,
+            "ownership_nontransfer": true,
+            "new_parent_edges_added": 0
+          }
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "identity_rule": "Each effect-capable operation has an explicit stable operation identity.",
+        "definition_rule": "Operation definition is separate from invocation/request/execution identities.",
+        "target_rule": "Accepted target types/scopes are explicit.",
+        "input_rule": "Input schema is explicit and machine-validatable.",
+        "output_rule": "Output/result schema is explicit where applicable.",
+        "effect_rule": "Operation side-effect class is explicit.",
+        "lifecycle_rule": "Timeout, cancellation, retry/idempotency support are declared rather than inferred.",
+        "authority_rule": "Operation visibility or registration does not grant execution authority."
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_WEBRTC_TRANSPORT_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define WebRTC as the peer-to-peer transport binding used by DWH and messaging where configured, keeping peer semantic identity separate from transient ICE/session/channel state.",
   "scope": {
     "owns": [
@@ -22,58 +21,193 @@
       "AccessCore authorization policy"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_WEBRTC_TRANSPORT_CONTRACT",
+      "name": "WebRTC Peer Transport",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_WEBRTC_TRANSPORT_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "protocol": "WebRTC",
+            "role": "peer transport",
+            "identity_rule": "Peer semantic identity is explicit and independent from ICE candidate, DTLS/SRTP session or data-channel identifier.",
+            "p2p_rule": "Application payload path is peer-to-peer after successful establishment.",
+            "signaling_rule": "Signaling/rendezvous is bootstrap coordination only.",
+            "channel_rule": "Data channels are transient transport resources.",
+            "cleanup_rule": "Failed/closed/cancelled transport releases channel/session/ICE resources.",
+            "authority_rule": "Successful WebRTC establishment does not grant application data or operation authority."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_WEBRTC_TRANSPORT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_NETWORK",
+            "child_ref": "TOPIC_WEBRTC_TRANSPORT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_WEBRTC_TRANSPORT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH_BOUNDARY",
+            "child_ref": "TOPIC_WEBRTC_TRANSPORT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_WEBRTC_TRANSPORT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_WEBRTC_TRANSPORT",
+            "child_ref": "AIGMOS_WEBRTC_TRANSPORT_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_WEBRTC_TRANSPORT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_WEBRTC_TRANSPORT",
+            "child_ref": "TRANSPORT_SECURITY_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_WEBRTC_TRANSPORT_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_WEBRTC_TRANSPORT",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_WEBRTC_TRANSPORT_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_WEBRTC_TRANSPORT",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_WEBRTC_TRANSPORT_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_WEBRTC_TRANSPORT",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_WEBRTC_TRANSPORT_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_WEBRTC_TRANSPORT",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_WEBRTC_TRANSPORT_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_WEBRTC_TRANSPORT",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/transport/00_WebRTC_Peer_Transport.json"
+      }
+    },
     {
       "id": "TOPIC_WEBRTC_TRANSPORT",
       "name": "WebRTC Peer Transport",
-      "purpose": "Define WebRTC as the peer-to-peer transport binding used by DWH and messaging where configured, keeping peer semantic identity separate from transient ICE/session/channel state.",
-      "parent_topic_refs": [
-        "TOPIC_RUNTIME_NETWORK",
-        "TOPIC_DWH_BOUNDARY"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_WEBRTC_TRANSPORT_CONTRACT",
-        "TRANSPORT_SECURITY_SEPARATION",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_WEBRTC_TRANSPORT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define WebRTC as the peer-to-peer transport binding used by DWH and messaging where configured, keeping peer semantic identity separate from transient ICE/session/channel state.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "protocol": "WebRTC",
-    "role": "peer transport",
-    "identity_rule": "Peer semantic identity is explicit and independent from ICE candidate, DTLS/SRTP session or data-channel identifier.",
-    "p2p_rule": "Application payload path is peer-to-peer after successful establishment.",
-    "signaling_rule": "Signaling/rendezvous is bootstrap coordination only.",
-    "channel_rule": "Data channels are transient transport resources.",
-    "cleanup_rule": "Failed/closed/cancelled transport releases channel/session/ICE resources.",
-    "authority_rule": "Successful WebRTC establishment does not grant application data or operation authority."
-  },
   "constraints": {
     "invariants": [
       {
@@ -121,10 +255,74 @@
       "purpose": "DWH may use WebRTC for remote payload transport."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define WebRTC as the peer-to-peer transport binding used by DWH and messaging where configured, keeping peer semantic identity separate from transient ICE/session/channel state.",
     "notes": [
       "Unlocked pending reconciliation against existing WebRTC/PGP/rendezvous contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_WEBRTC_TRANSPORT",
+          "name": "WebRTC Peer Transport",
+          "purpose": "Define WebRTC as the peer-to-peer transport binding used by DWH and messaging where configured, keeping peer semantic identity separate from transient ICE/session/channel state.",
+          "parent_topic_refs": [
+            "TOPIC_RUNTIME_NETWORK",
+            "TOPIC_DWH_BOUNDARY"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_WEBRTC_TRANSPORT_CONTRACT",
+            "TRANSPORT_SECURITY_SEPARATION",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "protocol": "WebRTC",
+        "role": "peer transport",
+        "identity_rule": "Peer semantic identity is explicit and independent from ICE candidate, DTLS/SRTP session or data-channel identifier.",
+        "p2p_rule": "Application payload path is peer-to-peer after successful establishment.",
+        "signaling_rule": "Signaling/rendezvous is bootstrap coordination only.",
+        "channel_rule": "Data channels are transient transport resources.",
+        "cleanup_rule": "Failed/closed/cancelled transport releases channel/session/ICE resources.",
+        "authority_rule": "Successful WebRTC establishment does not grant application data or operation authority."
+      }
+    }
   }
 }

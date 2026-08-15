@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define optimizer statistics as derived, revision/snapshot-bound evidence about data distribution, size and selectivity rather than canonical domain facts.",
   "scope": {
     "owns": [
@@ -22,66 +21,201 @@
       "query semantic ownership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT",
+      "name": "DWH Statistics Evidence",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "statistics_types": [
+              "row_count",
+              "distinct_count",
+              "null_fraction",
+              "distribution/histogram",
+              "size",
+              "selectivity",
+              "other declared metric"
+            ],
+            "identity_rule": "Each statistics set/evidence record has an explicit identity.",
+            "scope_rule": "Statistics reference exact schema/resource/field and source revision/snapshot/watermark.",
+            "derived_rule": "Statistics are derived evidence and never canonical business/domain truth.",
+            "freshness_rule": "Collection time and source revision/watermark are explicit.",
+            "stale_rule": "Stale statistics remain identifiable and may affect planning quality but not query semantics.",
+            "privacy_rule": "Statistics exposure obeys governance where distributions may reveal sensitive information.",
+            "authority_rule": "Statistics do not grant source data authorization."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_STATISTICS_EVIDENCE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_STATISTICS_EVIDENCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_STATISTICS_EVIDENCE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_QUERY_OPTIMIZATION",
+            "child_ref": "TOPIC_DWH_STATISTICS_EVIDENCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_STATISTICS_EVIDENCE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_STATISTICS_EVIDENCE",
+            "child_ref": "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_STATISTICS_EVIDENCE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_STATISTICS_EVIDENCE",
+            "child_ref": "OPTIMIZATION_NONSEMANTIC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_STATISTICS_EVIDENCE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_STATISTICS_EVIDENCE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_STATISTICS_EVIDENCE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_STATISTICS_EVIDENCE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_STATISTICS_EVIDENCE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_STATISTICS_EVIDENCE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_STATISTICS_EVIDENCE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_STATISTICS_EVIDENCE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_STATISTICS_EVIDENCE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_STATISTICS_EVIDENCE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/optimization/01_Statistics_Evidence.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_STATISTICS_EVIDENCE",
       "name": "DWH Statistics Evidence",
-      "purpose": "Define optimizer statistics as derived, revision/snapshot-bound evidence about data distribution, size and selectivity rather than canonical domain facts.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_QUERY_OPTIMIZATION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT",
-        "OPTIMIZATION_NONSEMANTIC",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_STATISTICS_EVIDENCE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define optimizer statistics as derived, revision/snapshot-bound evidence about data distribution, size and selectivity rather than canonical domain facts.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "statistics_types": [
-      "row_count",
-      "distinct_count",
-      "null_fraction",
-      "distribution/histogram",
-      "size",
-      "selectivity",
-      "other declared metric"
-    ],
-    "identity_rule": "Each statistics set/evidence record has an explicit identity.",
-    "scope_rule": "Statistics reference exact schema/resource/field and source revision/snapshot/watermark.",
-    "derived_rule": "Statistics are derived evidence and never canonical business/domain truth.",
-    "freshness_rule": "Collection time and source revision/watermark are explicit.",
-    "stale_rule": "Stale statistics remain identifiable and may affect planning quality but not query semantics.",
-    "privacy_rule": "Statistics exposure obeys governance where distributions may reveal sensitive information.",
-    "authority_rule": "Statistics do not grant source data authorization."
-  },
   "constraints": {
     "invariants": [
       {
@@ -124,10 +258,82 @@
       "purpose": "Statistics can bind exact captured state."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define optimizer statistics as derived, revision/snapshot-bound evidence about data distribution, size and selectivity rather than canonical domain facts.",
     "notes": [
       "Unlocked pending reconciliation against DWH query, persistence, changefeed and schema-migration contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_STATISTICS_EVIDENCE",
+          "name": "DWH Statistics Evidence",
+          "purpose": "Define optimizer statistics as derived, revision/snapshot-bound evidence about data distribution, size and selectivity rather than canonical domain facts.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_QUERY_OPTIMIZATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_STATISTICS_EVIDENCE_CONTRACT",
+            "OPTIMIZATION_NONSEMANTIC",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "statistics_types": [
+          "row_count",
+          "distinct_count",
+          "null_fraction",
+          "distribution/histogram",
+          "size",
+          "selectivity",
+          "other declared metric"
+        ],
+        "identity_rule": "Each statistics set/evidence record has an explicit identity.",
+        "scope_rule": "Statistics reference exact schema/resource/field and source revision/snapshot/watermark.",
+        "derived_rule": "Statistics are derived evidence and never canonical business/domain truth.",
+        "freshness_rule": "Collection time and source revision/watermark are explicit.",
+        "stale_rule": "Stale statistics remain identifiable and may affect planning quality but not query semantics.",
+        "privacy_rule": "Statistics exposure obeys governance where distributions may reveal sensitive information.",
+        "authority_rule": "Statistics do not grant source data authorization."
+      }
+    }
   }
 }

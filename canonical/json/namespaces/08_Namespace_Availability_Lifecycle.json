@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define the separation between canonical namespace existence, configured capability availability, mounted availability and active runtime state.",
   "scope": {
     "owns": [
@@ -22,65 +21,214 @@
       "implicit runtime authority"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT",
+      "name": "Namespace Availability and Lifecycle",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "states": [
+              "canonically_defined",
+              "configured",
+              "available",
+              "mounted",
+              "active",
+              "unavailable"
+            ],
+            "existence_rule": "A reserved root may exist canonically even when its optional subsystem is unavailable or inactive.",
+            "configuration_rule": "Configured capability does not automatically imply mounted or active runtime state.",
+            "mount_rule": "Mount availability is runtime/configuration state and does not redefine namespace identity.",
+            "active_rule": "Active service/module state is separate from namespace definition.",
+            "disable_rule": "Disabling optional capability removes availability but not the canonical reserved-root definition where that root remains reserved.",
+            "introspection_rule": "Introspection exposes both canonical definition and current availability state distinctly."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_NAMESPACE_AVAILABILITY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "child_ref": "TOPIC_NAMESPACE_AVAILABILITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_NAMESPACE_AVAILABILITY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_DEFINITION_STATE",
+            "child_ref": "TOPIC_NAMESPACE_AVAILABILITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_NAMESPACE_AVAILABILITY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_BOOT_BASE_ZERO",
+            "child_ref": "TOPIC_NAMESPACE_AVAILABILITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_NAMESPACE_AVAILABILITY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_NAMESPACE_AVAILABILITY",
+            "child_ref": "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_NAMESPACE_AVAILABILITY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_NAMESPACE_AVAILABILITY",
+            "child_ref": "NAMESPACE_OWNER_CLOSURE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_NAMESPACE_AVAILABILITY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_NAMESPACE_AVAILABILITY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_NAMESPACE_AVAILABILITY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_NAMESPACE_AVAILABILITY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_NAMESPACE_AVAILABILITY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_NAMESPACE_AVAILABILITY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_NAMESPACE_AVAILABILITY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_NAMESPACE_AVAILABILITY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_NAMESPACE_AVAILABILITY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_NAMESPACE_AVAILABILITY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/namespaces/08_Namespace_Availability_Lifecycle.json"
+      }
+    },
     {
       "id": "TOPIC_NAMESPACE_AVAILABILITY",
       "name": "Namespace Availability and Lifecycle",
-      "purpose": "Define the separation between canonical namespace existence, configured capability availability, mounted availability and active runtime state.",
-      "parent_topic_refs": [
-        "TOPIC_RUNTIME_NAMESPACES",
-        "TOPIC_RUNTIME_DEFINITION_STATE",
-        "TOPIC_BOOT_BASE_ZERO"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT",
-        "NAMESPACE_OWNER_CLOSURE",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_NAMESPACE_AVAILABILITY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define the separation between canonical namespace existence, configured capability availability, mounted availability and active runtime state.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "states": [
-      "canonically_defined",
-      "configured",
-      "available",
-      "mounted",
-      "active",
-      "unavailable"
-    ],
-    "existence_rule": "A reserved root may exist canonically even when its optional subsystem is unavailable or inactive.",
-    "configuration_rule": "Configured capability does not automatically imply mounted or active runtime state.",
-    "mount_rule": "Mount availability is runtime/configuration state and does not redefine namespace identity.",
-    "active_rule": "Active service/module state is separate from namespace definition.",
-    "disable_rule": "Disabling optional capability removes availability but not the canonical reserved-root definition where that root remains reserved.",
-    "introspection_rule": "Introspection exposes both canonical definition and current availability state distinctly."
-  },
   "constraints": {
     "invariants": [
       {
@@ -128,10 +276,81 @@
       "purpose": "Optional capability availability is explicit."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define the separation between canonical namespace existence, configured capability availability, mounted availability and active runtime state.",
     "notes": [
       "Unlocked pending reconciliation against the complete reserved-root set and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_NAMESPACE_AVAILABILITY",
+          "name": "Namespace Availability and Lifecycle",
+          "purpose": "Define the separation between canonical namespace existence, configured capability availability, mounted availability and active runtime state.",
+          "parent_topic_refs": [
+            "TOPIC_RUNTIME_NAMESPACES",
+            "TOPIC_RUNTIME_DEFINITION_STATE",
+            "TOPIC_BOOT_BASE_ZERO"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_NAMESPACE_AVAILABILITY_LIFECYCLE_CONTRACT",
+            "NAMESPACE_OWNER_CLOSURE",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "states": [
+          "canonically_defined",
+          "configured",
+          "available",
+          "mounted",
+          "active",
+          "unavailable"
+        ],
+        "existence_rule": "A reserved root may exist canonically even when its optional subsystem is unavailable or inactive.",
+        "configuration_rule": "Configured capability does not automatically imply mounted or active runtime state.",
+        "mount_rule": "Mount availability is runtime/configuration state and does not redefine namespace identity.",
+        "active_rule": "Active service/module state is separate from namespace definition.",
+        "disable_rule": "Disabling optional capability removes availability but not the canonical reserved-root definition where that root remains reserved.",
+        "introspection_rule": "Introspection exposes both canonical definition and current availability state distinctly."
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_MAPPING_VERSION_COMPATIBILITY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define compatibility and migration rules when source schema/profile, field mapping or destination schema versions change, preventing stale mappings from silently producing wrong semantics.",
   "scope": {
     "owns": [
@@ -22,64 +21,199 @@
       "AccessCore policy ownership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_MAPPING_VERSION_COMPATIBILITY_CONTRACT",
+      "name": "DWH Mapping Version Compatibility",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_MAPPING_VERSION_COMPATIBILITY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "binding_rule": "Mapping profile binds exact source-profile version and destination-schema version/compatibility range.",
+            "change_rule": "Source/destination version change triggers explicit compatibility evaluation.",
+            "compatibility_states": [
+              "compatible",
+              "revalidation_required",
+              "remap_required",
+              "migration_required",
+              "incompatible"
+            ],
+            "stale_rule": "Stale mapping never continues silently when referenced field identities/types/semantics changed incompatibly.",
+            "identity_rule": "Mapping version/profile identity is separate from source/destination schema identities.",
+            "migration_rule": "Mapping migration is explicit and preserves prior mapping history.",
+            "test_rule": "Compatible mapping claims may require fixtures/conformance tests where declared.",
+            "failure_rule": "Unresolved mapping incompatibility blocks ingest rather than guessing new bindings."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_MAPPING_VERSION_COMPATIBILITY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_MAPPING_VERSION_COMPATIBILITY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_INGEST_MAPPING",
+            "child_ref": "TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_MAPPING_VERSION_COMPATIBILITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY",
+            "child_ref": "AIGMOS_DWH_MAPPING_VERSION_COMPATIBILITY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_MAPPING_VERSION_COMPATIBILITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY",
+            "child_ref": "INGEST_MAPPING_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_MAPPING_VERSION_COMPATIBILITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_MAPPING_VERSION_COMPATIBILITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_MAPPING_VERSION_COMPATIBILITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_MAPPING_VERSION_COMPATIBILITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_MAPPING_VERSION_COMPATIBILITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/ingest/04_Mapping_Version_Compatibility.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY",
       "name": "DWH Mapping Version Compatibility",
-      "purpose": "Define compatibility and migration rules when source schema/profile, field mapping or destination schema versions change, preventing stale mappings from silently producing wrong semantics.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_INGEST_MAPPING"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_MAPPING_VERSION_COMPATIBILITY_CONTRACT",
-        "INGEST_MAPPING_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define compatibility and migration rules when source schema/profile, field mapping or destination schema versions change, preventing stale mappings from silently producing wrong semantics.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "binding_rule": "Mapping profile binds exact source-profile version and destination-schema version/compatibility range.",
-    "change_rule": "Source/destination version change triggers explicit compatibility evaluation.",
-    "compatibility_states": [
-      "compatible",
-      "revalidation_required",
-      "remap_required",
-      "migration_required",
-      "incompatible"
-    ],
-    "stale_rule": "Stale mapping never continues silently when referenced field identities/types/semantics changed incompatibly.",
-    "identity_rule": "Mapping version/profile identity is separate from source/destination schema identities.",
-    "migration_rule": "Mapping migration is explicit and preserves prior mapping history.",
-    "test_rule": "Compatible mapping claims may require fixtures/conformance tests where declared.",
-    "failure_rule": "Unresolved mapping incompatibility blocks ingest rather than guessing new bindings."
-  },
   "constraints": {
     "invariants": [
       {
@@ -127,10 +261,80 @@
       "purpose": "Mapping version governs exact field bindings."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define compatibility and migration rules when source schema/profile, field mapping or destination schema versions change, preventing stale mappings from silently producing wrong semantics.",
     "notes": [
       "Unlocked pending reconciliation against DWH origin governance, schema binding, transformation provenance and adapter contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_MAPPING_VERSION_COMPATIBILITY",
+          "name": "DWH Mapping Version Compatibility",
+          "purpose": "Define compatibility and migration rules when source schema/profile, field mapping or destination schema versions change, preventing stale mappings from silently producing wrong semantics.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_INGEST_MAPPING"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_MAPPING_VERSION_COMPATIBILITY_CONTRACT",
+            "INGEST_MAPPING_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "binding_rule": "Mapping profile binds exact source-profile version and destination-schema version/compatibility range.",
+        "change_rule": "Source/destination version change triggers explicit compatibility evaluation.",
+        "compatibility_states": [
+          "compatible",
+          "revalidation_required",
+          "remap_required",
+          "migration_required",
+          "incompatible"
+        ],
+        "stale_rule": "Stale mapping never continues silently when referenced field identities/types/semantics changed incompatibly.",
+        "identity_rule": "Mapping version/profile identity is separate from source/destination schema identities.",
+        "migration_rule": "Mapping migration is explicit and preserves prior mapping history.",
+        "test_rule": "Compatible mapping claims may require fixtures/conformance tests where declared.",
+        "failure_rule": "Unresolved mapping incompatibility blocks ingest rather than guessing new bindings."
+      }
+    }
   }
 }

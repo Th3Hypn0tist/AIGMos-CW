@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define Elements as reusable human-interface primitives shared across Expose views, carrying presentation and interaction contracts but not duplicating domain or runtime semantics.",
   "scope": {
     "owns": [
@@ -21,98 +20,274 @@
       "unrelated domain semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT",
+      "name": "Expose Elements",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT::OPERATIONS::OP_ELEMENT_DEFINE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_ELEMENT_DEFINE",
+            "name": "Define reusable element",
+            "inputs": [
+              "element identity",
+              "semantic role",
+              "presentation contract"
+            ],
+            "outputs": [
+              "Element definition"
+            ],
+            "errors": [
+              "identity collision"
+            ],
+            "side_effects": [
+              "Element registry updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT::OPERATIONS::OP_ELEMENT_COMPOSE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_ELEMENT_COMPOSE",
+            "name": "Compose element into view",
+            "inputs": [
+              "element_ref",
+              "binding refs"
+            ],
+            "outputs": [
+              "composed view element"
+            ],
+            "errors": [
+              "element unresolved",
+              "binding invalid"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "role": "reusable UI primitives",
+            "identity_rule": "Elements have explicit stable identities.",
+            "composition_rule": "Elements bind to existing values, schemas and canonical operations.",
+            "semantic_rule": "Element type/presentation does not redefine source data semantics.",
+            "authority_rule": "Element availability or enabled visual state does not grant authority.",
+            "style_rule": "Elements consume canonical site style/tokens.",
+            "extension_rule": "New shared primitive is added when multiple surfaces benefit or an irreducible UI semantic is needed."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_ELEMENTS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_EXPOSE_ELEMENTS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_ELEMENTS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_ELEMENTS",
+            "child_ref": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_ELEMENTS_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_ELEMENTS",
+            "child_ref": "EXPOSE_COMPONENT_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_ELEMENTS_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_ELEMENTS",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_ELEMENTS_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_ELEMENTS",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_ELEMENTS_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_ELEMENTS",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_ELEMENTS_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_ELEMENTS",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_ELEMENTS_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_ELEMENTS",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_ELEMENTS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_ELEMENTS",
+            "child_ref": "TOPIC_EXPOSE_WEB_BASE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_ELEMENTS_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_ELEMENTS",
+            "child_ref": "TOPIC_EXPOSE_STYLE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_ELEMENTS_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_ELEMENTS",
+            "child_ref": "TOPIC_CORE_STRUCTURAL_CLOSURE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/elements/00_Elements.json"
+      }
+    },
     {
       "id": "TOPIC_EXPOSE_ELEMENTS",
       "name": "Elements",
-      "purpose": "Define Elements as reusable human-interface primitives shared across Expose views, carrying presentation and interaction contracts but not duplicating domain or runtime semantics.",
-      "parent_topic_refs": [
-        "TOPIC_EXPOSE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_EXPOSE_WEB_BASE",
-        "TOPIC_EXPOSE_STYLE",
-        "TOPIC_CORE_STRUCTURAL_CLOSURE"
-      ],
-      "member_refs": [
-        "AIGMOS_EXPOSE_ELEMENTS_CONTRACT",
-        "EXPOSE_COMPONENT_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_ELEMENT_DEFINE",
-        "OP_ELEMENT_COMPOSE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_ELEMENTS::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define Elements as reusable human-interface primitives shared across Expose views, carrying presentation and interaction contracts but not duplicating domain or runtime semantics.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_ELEMENT_DEFINE",
-        "name": "Define reusable element",
-        "inputs": [
-          "element identity",
-          "semantic role",
-          "presentation contract"
-        ],
-        "outputs": [
-          "Element definition"
-        ],
-        "errors": [
-          "identity collision"
-        ],
-        "side_effects": [
-          "Element registry updated"
-        ]
-      },
-      {
-        "id": "OP_ELEMENT_COMPOSE",
-        "name": "Compose element into view",
-        "inputs": [
-          "element_ref",
-          "binding refs"
-        ],
-        "outputs": [
-          "composed view element"
-        ],
-        "errors": [
-          "element unresolved",
-          "binding invalid"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "role": "reusable UI primitives",
-    "identity_rule": "Elements have explicit stable identities.",
-    "composition_rule": "Elements bind to existing values, schemas and canonical operations.",
-    "semantic_rule": "Element type/presentation does not redefine source data semantics.",
-    "authority_rule": "Element availability or enabled visual state does not grant authority.",
-    "style_rule": "Elements consume canonical site style/tokens.",
-    "extension_rule": "New shared primitive is added when multiple surfaces benefit or an irreducible UI semantic is needed."
-  },
   "constraints": {
     "invariants": [
       {
@@ -160,10 +335,124 @@
       "purpose": "Shared reusable UI primitives follow reuse-before-extension."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_EXPOSE_ELEMENTS_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_EXPOSE_ELEMENTS",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_EXPOSE_ELEMENTS",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define Elements as reusable human-interface primitives shared across Expose views, carrying presentation and interaction contracts but not duplicating domain or runtime semantics.",
     "notes": [
       "Unlocked until reconciled against existing Expose contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXPOSE_ELEMENTS",
+          "name": "Elements",
+          "purpose": "Define Elements as reusable human-interface primitives shared across Expose views, carrying presentation and interaction contracts but not duplicating domain or runtime semantics.",
+          "parent_topic_refs": [
+            "TOPIC_EXPOSE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_EXPOSE_WEB_BASE",
+            "TOPIC_EXPOSE_STYLE",
+            "TOPIC_CORE_STRUCTURAL_CLOSURE"
+          ],
+          "member_refs": [
+            "AIGMOS_EXPOSE_ELEMENTS_CONTRACT",
+            "EXPOSE_COMPONENT_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_ELEMENT_DEFINE",
+            "OP_ELEMENT_COMPOSE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_ELEMENT_DEFINE",
+            "name": "Define reusable element",
+            "inputs": [
+              "element identity",
+              "semantic role",
+              "presentation contract"
+            ],
+            "outputs": [
+              "Element definition"
+            ],
+            "errors": [
+              "identity collision"
+            ],
+            "side_effects": [
+              "Element registry updated"
+            ]
+          },
+          {
+            "id": "OP_ELEMENT_COMPOSE",
+            "name": "Compose element into view",
+            "inputs": [
+              "element_ref",
+              "binding refs"
+            ],
+            "outputs": [
+              "composed view element"
+            ],
+            "errors": [
+              "element unresolved",
+              "binding invalid"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "role": "reusable UI primitives",
+        "identity_rule": "Elements have explicit stable identities.",
+        "composition_rule": "Elements bind to existing values, schemas and canonical operations.",
+        "semantic_rule": "Element type/presentation does not redefine source data semantics.",
+        "authority_rule": "Element availability or enabled visual state does not grant authority.",
+        "style_rule": "Elements consume canonical site style/tokens.",
+        "extension_rule": "New shared primitive is added when multiple surfaces benefit or an irreducible UI semantic is needed."
+      }
+    }
   }
 }

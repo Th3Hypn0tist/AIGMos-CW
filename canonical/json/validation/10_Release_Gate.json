@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define the final machine-readable release/replacement gate for a Contract Format 1.4 canonical tree, composing repository acceptance, evidence freshness, regression status and explicit approval.",
   "scope": {
     "owns": [
@@ -22,72 +21,235 @@
       "presentation-only reporting"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT",
+      "name": "Canonical Release Gate",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "required_inputs": [
+              "repository acceptance result",
+              "validation evidence bundle",
+              "migration coverage result",
+              "graph closure result",
+              "regression comparison",
+              "replacement/release approval"
+            ],
+            "gate_states": [
+              "blocked",
+              "ready_for_approval",
+              "approved"
+            ],
+            "blocked_rule": "Any mandatory failing/incomplete dimension, stale evidence or unresolved regression blocks release.",
+            "ready_rule": "ready_for_approval means all machine gates pass but explicit approval has not yet been recorded.",
+            "approval_rule": "approved requires explicit authorized approval and exact candidate snapshot identity.",
+            "replacement_rule": "Only approved candidate is eligible to replace the current canonical tree.",
+            "change_rule": "Any semantic change after approval invalidates approval for the changed snapshot and returns the candidate to validation.",
+            "lock_rule": "Repository-level locked/released state traces to the exact approved evidence bundle.",
+            "rollback_rule": "Release metadata preserves previous accepted snapshot for rollback/recovery."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_VALIDATION_RELEASE_GATE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_VALIDATION_REPOSITORY_ACCEPTANCE",
+            "child_ref": "TOPIC_VALIDATION_RELEASE_GATE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_VALIDATION_RELEASE_GATE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CLEAN_TREE_REPLACEMENT",
+            "child_ref": "TOPIC_VALIDATION_RELEASE_GATE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_VALIDATION_RELEASE_GATE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_TESTING_REGRESSION",
+            "child_ref": "TOPIC_VALIDATION_RELEASE_GATE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_VALIDATION_RELEASE_GATE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_VALIDATION_RELEASE_GATE",
+            "child_ref": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_VALIDATION_RELEASE_GATE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_VALIDATION_RELEASE_GATE",
+            "child_ref": "VALIDATION_EVIDENCE_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_VALIDATION_RELEASE_GATE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_VALIDATION_RELEASE_GATE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_VALIDATION_RELEASE_GATE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_VALIDATION_RELEASE_GATE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_VALIDATION_RELEASE_GATE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_VALIDATION_RELEASE_GATE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_VALIDATION_RELEASE_GATE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_VALIDATION_RELEASE_GATE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_VALIDATION_RELEASE_GATE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_VALIDATION_RELEASE_GATE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_VALIDATION_RELEASE_GATE_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_VALIDATION_RELEASE_GATE",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/validation/10_Release_Gate.json"
+      }
+    },
     {
       "id": "TOPIC_VALIDATION_RELEASE_GATE",
       "name": "Canonical Release Gate",
-      "purpose": "Define the final machine-readable release/replacement gate for a Contract Format 1.4 canonical tree, composing repository acceptance, evidence freshness, regression status and explicit approval.",
-      "parent_topic_refs": [
-        "TOPIC_VALIDATION_REPOSITORY_ACCEPTANCE",
-        "TOPIC_CLEAN_TREE_REPLACEMENT",
-        "TOPIC_TESTING_REGRESSION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT",
-        "VALIDATION_EVIDENCE_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_VALIDATION_RELEASE_GATE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define the final machine-readable release/replacement gate for a Contract Format 1.4 canonical tree, composing repository acceptance, evidence freshness, regression status and explicit approval.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "required_inputs": [
-      "repository acceptance result",
-      "validation evidence bundle",
-      "migration coverage result",
-      "graph closure result",
-      "regression comparison",
-      "replacement/release approval"
-    ],
-    "gate_states": [
-      "blocked",
-      "ready_for_approval",
-      "approved"
-    ],
-    "blocked_rule": "Any mandatory failing/incomplete dimension, stale evidence or unresolved regression blocks release.",
-    "ready_rule": "ready_for_approval means all machine gates pass but explicit approval has not yet been recorded.",
-    "approval_rule": "approved requires explicit authorized approval and exact candidate snapshot identity.",
-    "replacement_rule": "Only approved candidate is eligible to replace the current canonical tree.",
-    "change_rule": "Any semantic change after approval invalidates approval for the changed snapshot and returns the candidate to validation.",
-    "lock_rule": "Repository-level locked/released state traces to the exact approved evidence bundle.",
-    "rollback_rule": "Release metadata preserves previous accepted snapshot for rollback/recovery."
-  },
   "constraints": {
     "invariants": [
       {
@@ -145,10 +307,88 @@
       "purpose": "Approved release candidate may replace the old tree."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define the final machine-readable release/replacement gate for a Contract Format 1.4 canonical tree, composing repository acceptance, evidence freshness, regression status and explicit approval.",
     "notes": [
       "Unlocked until exercised against the complete clean Contract Format 1.4 candidate tree."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_VALIDATION_RELEASE_GATE",
+          "name": "Canonical Release Gate",
+          "purpose": "Define the final machine-readable release/replacement gate for a Contract Format 1.4 canonical tree, composing repository acceptance, evidence freshness, regression status and explicit approval.",
+          "parent_topic_refs": [
+            "TOPIC_VALIDATION_REPOSITORY_ACCEPTANCE",
+            "TOPIC_CLEAN_TREE_REPLACEMENT",
+            "TOPIC_TESTING_REGRESSION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_CANONICAL_RELEASE_GATE_CONTRACT",
+            "VALIDATION_EVIDENCE_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "required_inputs": [
+          "repository acceptance result",
+          "validation evidence bundle",
+          "migration coverage result",
+          "graph closure result",
+          "regression comparison",
+          "replacement/release approval"
+        ],
+        "gate_states": [
+          "blocked",
+          "ready_for_approval",
+          "approved"
+        ],
+        "blocked_rule": "Any mandatory failing/incomplete dimension, stale evidence or unresolved regression blocks release.",
+        "ready_rule": "ready_for_approval means all machine gates pass but explicit approval has not yet been recorded.",
+        "approval_rule": "approved requires explicit authorized approval and exact candidate snapshot identity.",
+        "replacement_rule": "Only approved candidate is eligible to replace the current canonical tree.",
+        "change_rule": "Any semantic change after approval invalidates approval for the changed snapshot and returns the candidate to validation.",
+        "lock_rule": "Repository-level locked/released state traces to the exact approved evidence bundle.",
+        "rollback_rule": "Release metadata preserves previous accepted snapshot for rollback/recovery."
+      }
+    }
   }
 }

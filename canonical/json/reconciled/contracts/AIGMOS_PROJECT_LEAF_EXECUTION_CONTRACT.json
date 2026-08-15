@@ -1,61 +1,845 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "errors": [
-          "Project graph unresolved"
-        ],
-        "id": "OP_PROJECT_RESOLVE_LEAF",
-        "inputs": [
-          "Project tree"
-        ],
-        "name": "Resolve executable leaf Projects",
-        "outputs": [
-          "leaf Project set"
-        ],
-        "side_effects": []
-      },
-      {
-        "errors": [
-          "Project not executable leaf",
-          "authority denied"
-        ],
-        "id": "OP_PROJECT_START_WORK",
-        "inputs": [
-          "leaf Project",
-          "authorized participant/context"
-        ],
-        "name": "Start leaf Project work",
-        "outputs": [
-          "tracked work context"
-        ],
-        "side_effects": [
-          "Project runtime/work state updated"
-        ]
-      },
-      {
-        "errors": [
-          "evidence invalid"
-        ],
-        "id": "OP_PROJECT_COMPLETE_WORK",
-        "inputs": [
-          "tracked work context",
-          "evidence/outcome"
-        ],
-        "name": "Complete leaf Project work",
-        "outputs": [
-          "completed work result"
-        ],
-        "side_effects": [
-          "Project state/evidence updated"
-        ]
-      }
-    ],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT",
+    "name": "Project Leaf Execution",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define leaf Projects as the executable work units while composite Projects organize and aggregate child work without becoming a second execution primitive. [2] Define leaf Projects as the executable work units while composite Projects organize/decompose work and derive state from explicit child/work semantics. [3] Define leaf Projects as executable work units while keeping execution evidence/results separate from the Project definition and from MeritCore evaluation.",
+  "scope": {
+    "does_not_own": [
+      "presentation semantics",
+      "transport implementation",
+      "unrelated identity semantics",
+      "MeritCore calculations",
+      "IdentityCore authentication",
+      "presentation-only hierarchy",
+      "MeritCore scoring semantics",
+      "FreeMarket broker policy"
+    ],
+    "owns": [
+      "Project Leaf Execution semantics",
+      "Leaf Project Execution semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT",
+      "name": "Project Leaf Execution",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::OPERATIONS::OP_PROJECT_RESOLVE_LEAF",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "Project graph unresolved"
+            ],
+            "id": "OP_PROJECT_RESOLVE_LEAF",
+            "inputs": [
+              "Project tree"
+            ],
+            "name": "Resolve executable leaf Projects",
+            "outputs": [
+              "leaf Project set"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::OPERATIONS::OP_PROJECT_START_WORK",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "Project not executable leaf",
+              "authority denied"
+            ],
+            "id": "OP_PROJECT_START_WORK",
+            "inputs": [
+              "leaf Project",
+              "authorized participant/context"
+            ],
+            "name": "Start leaf Project work",
+            "outputs": [
+              "tracked work context"
+            ],
+            "side_effects": [
+              "Project runtime/work state updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::OPERATIONS::OP_PROJECT_COMPLETE_WORK",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "evidence invalid"
+            ],
+            "id": "OP_PROJECT_COMPLETE_WORK",
+            "inputs": [
+              "tracked work context",
+              "evidence/outcome"
+            ],
+            "name": "Complete leaf Project work",
+            "outputs": [
+              "completed work result"
+            ],
+            "side_effects": [
+              "Project state/evidence updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "authority_rule": "Reconciled source clauses: [1] Being a Project participant does not automatically bypass applicable authorization/policy. [2] Ability to view/participate in Project does not automatically grant execution-control authority.",
+            "causality_rule": "Project parent-child structure does not itself define execution order; order/dependencies must be explicit.",
+            "completion_rule": "Reconciled source clauses: [1] Composite completion criteria are explicit and may depend on child outcomes according to declared policy. [2] Completion state follows explicit Project lifecycle/evidence policy.",
+            "composite_rule": "Reconciled source clauses: [1] Composite Project execution is expressed through its child/leaf Projects. [2] Composite Project coordinates/contains child Projects rather than representing hidden executable work by default.",
+            "definition_rule": "Project definition and individual execution/activity evidence are separate identities/data.",
+            "event_rule": "Execution transitions may emit explicit Events for automation/observability.",
+            "evidence_rule": "Completion may produce evidence linked to that Project.",
+            "execution_rule": "Reconciled source clauses: [1] Leaf Project is the canonical executable work unit. [2] Execution/activity records reference the exact leaf Project identity.",
+            "hidden_work_rule": "Executable work must not be hidden only in prose inside a composite Project.",
+            "leaf_rule": "Reconciled source clauses: [1] A Project with no active executable child Projects is a leaf executable work unit. [2] Executable work unit is represented by a leaf Project.",
+            "merit_rule": "Project execution may produce evidence consumed by MeritCore, but Project does not calculate MeritCore points/tiers.",
+            "result_rule": "Work outputs/results reference the Project and retain their own semantic identity.",
+            "runner_rule": "Automation used to perform Project work remains runner/operation execution and does not replace Project identity.",
+            "state_rule": "Project execution state is explicit and separate from static definition.",
+            "tracking_rule": "Work start/completion is tracked against explicit Project identity."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROJECT_EXECUTION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "TOPIC_PROJECT_EXECUTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "PROJECT_MODEL_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "PROJECT_UNIVERSAL_PRIMITIVE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "PROJECT_UNIVERSAL_RECURSIVE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "GATE_373B13048E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "GATE_647EB503C4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "GATE_8988290B0A",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "GATE_AA1819685D",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "GATE_A4E72058FB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "GATE_1915A8C65E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "GATE_25C1556E12",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "GATE_DE3517CE72",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "GATE_8AC2478963",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "GATE_25BB560692",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_14",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "GATE_67ED55AFCC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[14]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_15",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "GATE_6C822A4AF6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[15]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_16",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "GATE_23C36FA9D7",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[16]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_17",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "GATE_7E233234AA",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[17]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_EXECUTION_18",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "GATE_D9FF49B58E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[18]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_PROJECT_EXECUTION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "TOPIC_PROJECT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_PROJECT_EXECUTION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_PROJECT_EXECUTION",
+            "child_ref": "TOPIC_CORE_CAUSALITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROJECT_LEAF_EXECUTION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_PROJECT",
+            "child_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROJECT_LEAF_EXECUTION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_FREEMARKET",
+            "child_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROJECT_LEAF_EXECUTION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_UNIVERSAL_MODULE",
+            "child_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "PROJECT_MODEL_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "PROJECT_UNIVERSAL_PRIMITIVE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "PROJECT_UNIVERSAL_RECURSIVE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "GATE_373B13048E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "GATE_647EB503C4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "GATE_8988290B0A",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "GATE_AA1819685D",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "GATE_A4E72058FB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "GATE_1915A8C65E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "GATE_25C1556E12",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "GATE_DE3517CE72",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "GATE_8AC2478963",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "GATE_25BB560692",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_14",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "GATE_67ED55AFCC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[14]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_15",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "GATE_6C822A4AF6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[15]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_16",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "GATE_23C36FA9D7",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[16]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_17",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "GATE_7E233234AA",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[17]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_LEAF_EXECUTION_18",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+            "child_ref": "GATE_D9FF49B58E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[18]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_PROJECT_EXECUTION",
+      "name": "Project Execution",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_PROJECT_EXECUTION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define leaf Projects as the executable work units while composite Projects organize and aggregate child work without becoming a second execution primitive.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_PROJECT_LEAF_EXECUTION",
+      "name": "Leaf Project Execution",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_PROJECT_LEAF_EXECUTION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Reconciled source clauses: [1] Define leaf Projects as the executable work units while composite Projects organize/decompose work and derive state from explicit child/work semantics. [2] Define leaf Projects as executable work units while keeping execution evidence/results separate from the Project definition and from MeritCore evaluation.",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -149,29 +933,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT",
-    "name": "Project Leaf Execution",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked until reconciled against existing FreeMarket/Project/Merit contracts and repository-wide Contract Format 1.4 validation.",
-      "Unlocked pending reconciliation against existing Project/FreeMarket/MeritCore contracts and whole-tree Contract Format 1.4 validation.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: freemarket/project/01_Project_Leaf_Execution.json, project/02_Leaf_Project_Execution.json, universal_module/project/02_Project_Leaf_Execution.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
-    ],
-    "summary": "Reconciled source purposes: [1] Define leaf Projects as the executable work units while composite Projects organize and aggregate child work without becoming a second execution primitive. [2] Define leaf Projects as the executable work units while composite Projects organize/decompose work and derive state from explicit child/work semantics. [3] Define leaf Projects as executable work units while keeping execution evidence/results separate from the Project definition and from MeritCore evaluation."
-  },
-  "purpose": "Reconciled source purposes: [1] Define leaf Projects as the executable work units while composite Projects organize and aggregate child work without becoming a second execution primitive. [2] Define leaf Projects as the executable work units while composite Projects organize/decompose work and derive state from explicit child/work semantics. [3] Define leaf Projects as executable work units while keeping execution evidence/results separate from the Project definition and from MeritCore evaluation.",
   "references": [
     {
       "id": "REF_PROJECT",
@@ -199,133 +960,215 @@
       "purpose": "Automated execution remains separate from Project identity."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "presentation semantics",
-      "transport implementation",
-      "unrelated identity semantics",
-      "MeritCore calculations",
-      "IdentityCore authentication",
-      "presentation-only hierarchy",
-      "MeritCore scoring semantics",
-      "FreeMarket broker policy"
-    ],
-    "owns": [
-      "Project Leaf Execution semantics",
-      "Leaf Project Execution semantics"
-    ]
-  },
-  "semantics": {
-    "authority_rule": "Reconciled source clauses: [1] Being a Project participant does not automatically bypass applicable authorization/policy. [2] Ability to view/participate in Project does not automatically grant execution-control authority.",
-    "causality_rule": "Project parent-child structure does not itself define execution order; order/dependencies must be explicit.",
-    "completion_rule": "Reconciled source clauses: [1] Composite completion criteria are explicit and may depend on child outcomes according to declared policy. [2] Completion state follows explicit Project lifecycle/evidence policy.",
-    "composite_rule": "Reconciled source clauses: [1] Composite Project execution is expressed through its child/leaf Projects. [2] Composite Project coordinates/contains child Projects rather than representing hidden executable work by default.",
-    "definition_rule": "Project definition and individual execution/activity evidence are separate identities/data.",
-    "event_rule": "Execution transitions may emit explicit Events for automation/observability.",
-    "evidence_rule": "Completion may produce evidence linked to that Project.",
-    "execution_rule": "Reconciled source clauses: [1] Leaf Project is the canonical executable work unit. [2] Execution/activity records reference the exact leaf Project identity.",
-    "hidden_work_rule": "Executable work must not be hidden only in prose inside a composite Project.",
-    "leaf_rule": "Reconciled source clauses: [1] A Project with no active executable child Projects is a leaf executable work unit. [2] Executable work unit is represented by a leaf Project.",
-    "merit_rule": "Project execution may produce evidence consumed by MeritCore, but Project does not calculate MeritCore points/tiers.",
-    "result_rule": "Work outputs/results reference the Project and retain their own semantic identity.",
-    "runner_rule": "Automation used to perform Project work remains runner/operation execution and does not replace Project identity.",
-    "state_rule": "Project execution state is explicit and separate from static definition.",
-    "tracking_rule": "Work start/completion is tracked against explicit Project identity."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
+  "gaps": [
     {
-      "child_topics": [],
-      "composed_topic_refs": [
-        "TOPIC_PROJECT",
-        "TOPIC_CORE_CAUSALITY"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_PROJECT_EXECUTION",
-      "member_refs": [
-        "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT",
-        "PROJECT_MODEL_EXPLICIT",
-        "PROJECT_UNIVERSAL_PRIMITIVE",
-        "PROJECT_UNIVERSAL_RECURSIVE",
-        "GATE_373B13048E",
-        "GATE_647EB503C4",
-        "GATE_8988290B0A",
-        "GATE_AA1819685D",
-        "GATE_A4E72058FB",
-        "GATE_1915A8C65E",
-        "GATE_25C1556E12",
-        "GATE_DE3517CE72",
-        "GATE_8AC2478963",
-        "GATE_25BB560692",
-        "GATE_67ED55AFCC",
-        "GATE_6C822A4AF6",
-        "GATE_23C36FA9D7",
-        "GATE_7E233234AA",
-        "GATE_D9FF49B58E"
-      ],
-      "metadata": {},
-      "name": "Project Execution",
-      "operation_refs": [
-        "OP_PROJECT_RESOLVE_LEAF",
-        "OP_PROJECT_START_WORK",
-        "OP_PROJECT_COMPLETE_WORK"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_CORE"
-      ],
-      "purpose": "Define leaf Projects as the executable work units while composite Projects organize and aggregate child work without becoming a second execution primitive.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_PROJECT_EXECUTION",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_PROJECT_EXECUTION",
+      "field_path": "topics[0].operation_refs"
     },
     {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_PROJECT_LEAF_EXECUTION",
-      "member_refs": [
-        "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT",
-        "PROJECT_MODEL_EXPLICIT",
-        "PROJECT_UNIVERSAL_PRIMITIVE",
-        "PROJECT_UNIVERSAL_RECURSIVE",
-        "GATE_373B13048E",
-        "GATE_647EB503C4",
-        "GATE_8988290B0A",
-        "GATE_AA1819685D",
-        "GATE_A4E72058FB",
-        "GATE_1915A8C65E",
-        "GATE_25C1556E12",
-        "GATE_DE3517CE72",
-        "GATE_8AC2478963",
-        "GATE_25BB560692",
-        "GATE_67ED55AFCC",
-        "GATE_6C822A4AF6",
-        "GATE_23C36FA9D7",
-        "GATE_7E233234AA",
-        "GATE_D9FF49B58E"
-      ],
-      "metadata": {},
-      "name": "Leaf Project Execution",
-      "operation_refs": [
-        "OP_PROJECT_RESOLVE_LEAF",
-        "OP_PROJECT_START_WORK",
-        "OP_PROJECT_COMPLETE_WORK"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_PROJECT",
-        "TOPIC_FREEMARKET",
-        "TOPIC_UNIVERSAL_MODULE"
-      ],
-      "purpose": "Reconciled source clauses: [1] Define leaf Projects as the executable work units while composite Projects organize/decompose work and derive state from explicit child/work semantics. [2] Define leaf Projects as executable work units while keeping execution evidence/results separate from the Project definition and from MeritCore evaluation.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_PROJECT_LEAF_EXECUTION",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_PROJECT_LEAF_EXECUTION",
+      "field_path": "topics[1].operation_refs"
     }
-  ]
+  ],
+  "prose": {
+    "notes": [
+      "Unlocked until reconciled against existing FreeMarket/Project/Merit contracts and repository-wide Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against existing Project/FreeMarket/MeritCore contracts and whole-tree Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: freemarket/project/01_Project_Leaf_Execution.json, project/02_Leaf_Project_Execution.json, universal_module/project/02_Project_Leaf_Execution.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define leaf Projects as the executable work units while composite Projects organize and aggregate child work without becoming a second execution primitive. [2] Define leaf Projects as the executable work units while composite Projects organize/decompose work and derive state from explicit child/work semantics. [3] Define leaf Projects as executable work units while keeping execution evidence/results separate from the Project definition and from MeritCore evaluation."
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [
+            "TOPIC_PROJECT",
+            "TOPIC_CORE_CAUSALITY"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_PROJECT_EXECUTION",
+          "member_refs": [
+            "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT",
+            "PROJECT_MODEL_EXPLICIT",
+            "PROJECT_UNIVERSAL_PRIMITIVE",
+            "PROJECT_UNIVERSAL_RECURSIVE",
+            "GATE_373B13048E",
+            "GATE_647EB503C4",
+            "GATE_8988290B0A",
+            "GATE_AA1819685D",
+            "GATE_A4E72058FB",
+            "GATE_1915A8C65E",
+            "GATE_25C1556E12",
+            "GATE_DE3517CE72",
+            "GATE_8AC2478963",
+            "GATE_25BB560692",
+            "GATE_67ED55AFCC",
+            "GATE_6C822A4AF6",
+            "GATE_23C36FA9D7",
+            "GATE_7E233234AA",
+            "GATE_D9FF49B58E"
+          ],
+          "metadata": {},
+          "name": "Project Execution",
+          "operation_refs": [
+            "OP_PROJECT_RESOLVE_LEAF",
+            "OP_PROJECT_START_WORK",
+            "OP_PROJECT_COMPLETE_WORK"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_CORE"
+          ],
+          "purpose": "Define leaf Projects as the executable work units while composite Projects organize and aggregate child work without becoming a second execution primitive.",
+          "relation_refs": []
+        },
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_PROJECT_LEAF_EXECUTION",
+          "member_refs": [
+            "AIGMOS_PROJECT_LEAF_EXECUTION_CONTRACT",
+            "PROJECT_MODEL_EXPLICIT",
+            "PROJECT_UNIVERSAL_PRIMITIVE",
+            "PROJECT_UNIVERSAL_RECURSIVE",
+            "GATE_373B13048E",
+            "GATE_647EB503C4",
+            "GATE_8988290B0A",
+            "GATE_AA1819685D",
+            "GATE_A4E72058FB",
+            "GATE_1915A8C65E",
+            "GATE_25C1556E12",
+            "GATE_DE3517CE72",
+            "GATE_8AC2478963",
+            "GATE_25BB560692",
+            "GATE_67ED55AFCC",
+            "GATE_6C822A4AF6",
+            "GATE_23C36FA9D7",
+            "GATE_7E233234AA",
+            "GATE_D9FF49B58E"
+          ],
+          "metadata": {},
+          "name": "Leaf Project Execution",
+          "operation_refs": [
+            "OP_PROJECT_RESOLVE_LEAF",
+            "OP_PROJECT_START_WORK",
+            "OP_PROJECT_COMPLETE_WORK"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_PROJECT",
+            "TOPIC_FREEMARKET",
+            "TOPIC_UNIVERSAL_MODULE"
+          ],
+          "purpose": "Reconciled source clauses: [1] Define leaf Projects as the executable work units while composite Projects organize/decompose work and derive state from explicit child/work semantics. [2] Define leaf Projects as executable work units while keeping execution evidence/results separate from the Project definition and from MeritCore evaluation.",
+          "relation_refs": []
+        }
+      ],
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "errors": [
+              "Project graph unresolved"
+            ],
+            "id": "OP_PROJECT_RESOLVE_LEAF",
+            "inputs": [
+              "Project tree"
+            ],
+            "name": "Resolve executable leaf Projects",
+            "outputs": [
+              "leaf Project set"
+            ],
+            "side_effects": []
+          },
+          {
+            "errors": [
+              "Project not executable leaf",
+              "authority denied"
+            ],
+            "id": "OP_PROJECT_START_WORK",
+            "inputs": [
+              "leaf Project",
+              "authorized participant/context"
+            ],
+            "name": "Start leaf Project work",
+            "outputs": [
+              "tracked work context"
+            ],
+            "side_effects": [
+              "Project runtime/work state updated"
+            ]
+          },
+          {
+            "errors": [
+              "evidence invalid"
+            ],
+            "id": "OP_PROJECT_COMPLETE_WORK",
+            "inputs": [
+              "tracked work context",
+              "evidence/outcome"
+            ],
+            "name": "Complete leaf Project work",
+            "outputs": [
+              "completed work result"
+            ],
+            "side_effects": [
+              "Project state/evidence updated"
+            ]
+          }
+        ],
+        "states": []
+      },
+      "semantics": {
+        "authority_rule": "Reconciled source clauses: [1] Being a Project participant does not automatically bypass applicable authorization/policy. [2] Ability to view/participate in Project does not automatically grant execution-control authority.",
+        "causality_rule": "Project parent-child structure does not itself define execution order; order/dependencies must be explicit.",
+        "completion_rule": "Reconciled source clauses: [1] Composite completion criteria are explicit and may depend on child outcomes according to declared policy. [2] Completion state follows explicit Project lifecycle/evidence policy.",
+        "composite_rule": "Reconciled source clauses: [1] Composite Project execution is expressed through its child/leaf Projects. [2] Composite Project coordinates/contains child Projects rather than representing hidden executable work by default.",
+        "definition_rule": "Project definition and individual execution/activity evidence are separate identities/data.",
+        "event_rule": "Execution transitions may emit explicit Events for automation/observability.",
+        "evidence_rule": "Completion may produce evidence linked to that Project.",
+        "execution_rule": "Reconciled source clauses: [1] Leaf Project is the canonical executable work unit. [2] Execution/activity records reference the exact leaf Project identity.",
+        "hidden_work_rule": "Executable work must not be hidden only in prose inside a composite Project.",
+        "leaf_rule": "Reconciled source clauses: [1] A Project with no active executable child Projects is a leaf executable work unit. [2] Executable work unit is represented by a leaf Project.",
+        "merit_rule": "Project execution may produce evidence consumed by MeritCore, but Project does not calculate MeritCore points/tiers.",
+        "result_rule": "Work outputs/results reference the Project and retain their own semantic identity.",
+        "runner_rule": "Automation used to perform Project work remains runner/operation execution and does not replace Project identity.",
+        "state_rule": "Project execution state is explicit and separate from static definition.",
+        "tracking_rule": "Work start/completion is tracked against explicit Project identity."
+      }
+    }
+  }
 }

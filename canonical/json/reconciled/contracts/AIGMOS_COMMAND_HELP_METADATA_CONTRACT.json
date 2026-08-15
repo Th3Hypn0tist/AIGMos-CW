@@ -1,11 +1,611 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT",
+    "name": "Command Help Metadata",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define recursive help metadata with per-family master help and per-concrete-command short/long descriptions without maintaining a duplicated separate help tree. [2] Define recursive command help metadata so every command family and concrete subcommand can expose machine-readable short and long help without maintaining a separate duplicated help tree.",
+  "scope": {
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling",
+      "backend provider implementation",
+      "UI presentation",
+      "unrelated runtime authority"
+    ],
+    "owns": [
+      "Command Help Metadata semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT",
+      "name": "Command Help Metadata",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "authority_rule": "Reconciled source clauses: [1] Help visibility grants no invocation authority. [2] Help metadata describes commands but cannot create capability or authority.",
+            "command_rule": "Each concrete subcommand carries its own short and long help.",
+            "duplication_rule": "Reconciled source clauses: [1] A separate manually duplicated help command hierarchy is not required. [2] No separately maintained duplicate help hierarchy is required.",
+            "enumeration_rule": "Help system recursively enumerates the command tree from canonical command metadata.",
+            "family_rule": "Reconciled source clauses: [1] Command-family root may carry master help/metadata while remaining non-executable. [2] Command family roots may carry master help/metadata describing the namespace even when non-executable.",
+            "fields": [
+              "short",
+              "long"
+            ],
+            "localization_rule": "Internal command names remain English/ASCII; human descriptions may be localized by UI projection.",
+            "long_rule": "Reconciled source clauses: [1] Each concrete command carries detailed `long` help. [2] long provides detailed command-specific help.",
+            "recursive_rule": "Help listings are generated recursively from the command tree.",
+            "short_rule": "Reconciled source clauses: [1] Each concrete command carries concise `short` help. [2] short is suitable for recursive concise listings."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_PARENT_TOPIC_COMMAND_HELP_METADATA_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_COMMANDS",
+            "child_ref": "TOPIC_COMMAND_HELP_METADATA",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_PARENT_TOPIC_COMMAND_HELP_METADATA_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_HELP",
+            "child_ref": "TOPIC_COMMAND_HELP_METADATA",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_METADATA_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP_METADATA",
+            "child_ref": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_METADATA_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP_METADATA",
+            "child_ref": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_METADATA_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP_METADATA",
+            "child_ref": "AUTOMATION_EFFECT_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_METADATA_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP_METADATA",
+            "child_ref": "COMMAND_AI_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_METADATA_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP_METADATA",
+            "child_ref": "GATE_C5968C7510",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_METADATA_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP_METADATA",
+            "child_ref": "GATE_A5F088DFD4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_METADATA_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP_METADATA",
+            "child_ref": "GATE_0A5F9E2EE1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_METADATA_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP_METADATA",
+            "child_ref": "GATE_363D272613",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_METADATA_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP_METADATA",
+            "child_ref": "GATE_2F30B81DF0",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_METADATA_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP_METADATA",
+            "child_ref": "GATE_0C572113CD",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_METADATA_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP_METADATA",
+            "child_ref": "GATE_886C0B6BCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_METADATA_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP_METADATA",
+            "child_ref": "GATE_569FF02A80",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_METADATA_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP_METADATA",
+            "child_ref": "GATE_6127F988D9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_METADATA_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP_METADATA",
+            "child_ref": "GATE_E48B66EA4A",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_PARENT_TOPIC_COMMAND_HELP_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_COMMAND_NAMESPACES",
+            "child_ref": "TOPIC_COMMAND_HELP",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_PARENT_TOPIC_COMMAND_HELP_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_COMMAND_REGISTRY",
+            "child_ref": "TOPIC_COMMAND_HELP",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP",
+            "child_ref": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP",
+            "child_ref": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP",
+            "child_ref": "AUTOMATION_EFFECT_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP",
+            "child_ref": "COMMAND_AI_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP",
+            "child_ref": "GATE_C5968C7510",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP",
+            "child_ref": "GATE_A5F088DFD4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP",
+            "child_ref": "GATE_0A5F9E2EE1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP",
+            "child_ref": "GATE_363D272613",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP",
+            "child_ref": "GATE_2F30B81DF0",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP",
+            "child_ref": "GATE_0C572113CD",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP",
+            "child_ref": "GATE_886C0B6BCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP",
+            "child_ref": "GATE_569FF02A80",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP",
+            "child_ref": "GATE_6127F988D9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_HELP_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_HELP",
+            "child_ref": "GATE_E48B66EA4A",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[13]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_COMMAND_HELP_METADATA_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_COMMAND_HELP_METADATA",
+      "name": "Command Help Metadata",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_COMMAND_HELP_METADATA::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define recursive help metadata with per-family master help and per-concrete-command short/long descriptions without maintaining a duplicated separate help tree.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_COMMAND_HELP",
+      "name": "Command Help Metadata",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_COMMAND_HELP::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define recursive command help metadata so every command family and concrete subcommand can expose machine-readable short and long help without maintaining a separate duplicated help tree.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_HELP",
+      "name": "HELP",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_HELP::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define grouping-only parent Topic identity TOPIC_HELP already referenced by 1 existing canonical child Topic reference occurrence(s).",
+            "metadata": {
+              "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+              "referencing_child_occurrences": 1,
+              "distinct_child_topics": 1,
+              "host_contract_ref": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT",
+              "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+              "placement_nonsemantic": true,
+              "ownership_nontransfer": true,
+              "new_parent_edges_added": 0
+            }
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -74,30 +674,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT",
-    "name": "Command Help Metadata",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
-      "Unlocked pending reconciliation against existing q/qc/qt and command-tree contracts and whole-tree Contract Format 1.4 validation.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: command/02_Command_Help_Metadata.json, commands/02_Command_Help_Metadata.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses.",
-      "Pass 6 hosts grouping-only Topic TOPIC_HELP solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
-    ],
-    "summary": "Reconciled source purposes: [1] Define recursive help metadata with per-family master help and per-concrete-command short/long descriptions without maintaining a duplicated separate help tree. [2] Define recursive command help metadata so every command family and concrete subcommand can expose machine-readable short and long help without maintaining a separate duplicated help tree."
-  },
-  "purpose": "Reconciled source purposes: [1] Define recursive help metadata with per-family master help and per-concrete-command short/long descriptions without maintaining a duplicated separate help tree. [2] Define recursive command help metadata so every command family and concrete subcommand can expose machine-readable short and long help without maintaining a separate duplicated help tree.",
   "references": [
     {
       "id": "REF_NODE",
@@ -115,130 +691,147 @@
       "purpose": "Help metadata belongs to canonical command registry."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "AccessCore policy ownership",
-      "domain semantic ownership",
-      "implementation-specific process scheduling",
-      "backend provider implementation",
-      "UI presentation",
-      "unrelated runtime authority"
+  "gaps": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against existing q/qc/qt and command-tree contracts and whole-tree Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: command/02_Command_Help_Metadata.json, commands/02_Command_Help_Metadata.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses.",
+      "Pass 6 hosts grouping-only Topic TOPIC_HELP solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
     ],
-    "owns": [
-      "Command Help Metadata semantics"
-    ]
+    "summary": "Reconciled source purposes: [1] Define recursive help metadata with per-family master help and per-concrete-command short/long descriptions without maintaining a duplicated separate help tree. [2] Define recursive command help metadata so every command family and concrete subcommand can expose machine-readable short and long help without maintaining a separate duplicated help tree."
   },
-  "semantics": {
-    "authority_rule": "Reconciled source clauses: [1] Help visibility grants no invocation authority. [2] Help metadata describes commands but cannot create capability or authority.",
-    "command_rule": "Each concrete subcommand carries its own short and long help.",
-    "duplication_rule": "Reconciled source clauses: [1] A separate manually duplicated help command hierarchy is not required. [2] No separately maintained duplicate help hierarchy is required.",
-    "enumeration_rule": "Help system recursively enumerates the command tree from canonical command metadata.",
-    "family_rule": "Reconciled source clauses: [1] Command-family root may carry master help/metadata while remaining non-executable. [2] Command family roots may carry master help/metadata describing the namespace even when non-executable.",
-    "fields": [
-      "short",
-      "long"
-    ],
-    "localization_rule": "Internal command names remain English/ASCII; human descriptions may be localized by UI projection.",
-    "long_rule": "Reconciled source clauses: [1] Each concrete command carries detailed `long` help. [2] long provides detailed command-specific help.",
-    "recursive_rule": "Help listings are generated recursively from the command tree.",
-    "short_rule": "Reconciled source clauses: [1] Each concrete command carries concise `short` help. [2] short is suitable for recursive concise listings."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
-    {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_COMMAND_HELP_METADATA",
-      "member_refs": [
-        "AIGMOS_COMMAND_HELP_METADATA_CONTRACT",
-        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
-        "AUTOMATION_EFFECT_BOUNDARY",
-        "COMMAND_AI_BOUNDARY_EXPLICIT",
-        "GATE_C5968C7510",
-        "GATE_A5F088DFD4",
-        "GATE_0A5F9E2EE1",
-        "GATE_363D272613",
-        "GATE_2F30B81DF0",
-        "GATE_0C572113CD",
-        "GATE_886C0B6BCE",
-        "GATE_569FF02A80",
-        "GATE_6127F988D9",
-        "GATE_E48B66EA4A"
-      ],
-      "metadata": {},
-      "name": "Command Help Metadata",
-      "operation_refs": [],
-      "parent_topic_refs": [
-        "TOPIC_COMMANDS",
-        "TOPIC_HELP"
-      ],
-      "purpose": "Define recursive help metadata with per-family master help and per-concrete-command short/long descriptions without maintaining a duplicated separate help tree.",
-      "relation_refs": []
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
     },
-    {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_COMMAND_HELP",
-      "member_refs": [
-        "AIGMOS_COMMAND_HELP_METADATA_CONTRACT",
-        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
-        "AUTOMATION_EFFECT_BOUNDARY",
-        "COMMAND_AI_BOUNDARY_EXPLICIT",
-        "GATE_C5968C7510",
-        "GATE_A5F088DFD4",
-        "GATE_0A5F9E2EE1",
-        "GATE_363D272613",
-        "GATE_2F30B81DF0",
-        "GATE_0C572113CD",
-        "GATE_886C0B6BCE",
-        "GATE_569FF02A80",
-        "GATE_6127F988D9",
-        "GATE_E48B66EA4A"
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_COMMAND_HELP_METADATA",
+          "member_refs": [
+            "AIGMOS_COMMAND_HELP_METADATA_CONTRACT",
+            "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+            "AUTOMATION_EFFECT_BOUNDARY",
+            "COMMAND_AI_BOUNDARY_EXPLICIT",
+            "GATE_C5968C7510",
+            "GATE_A5F088DFD4",
+            "GATE_0A5F9E2EE1",
+            "GATE_363D272613",
+            "GATE_2F30B81DF0",
+            "GATE_0C572113CD",
+            "GATE_886C0B6BCE",
+            "GATE_569FF02A80",
+            "GATE_6127F988D9",
+            "GATE_E48B66EA4A"
+          ],
+          "metadata": {},
+          "name": "Command Help Metadata",
+          "operation_refs": [],
+          "parent_topic_refs": [
+            "TOPIC_COMMANDS",
+            "TOPIC_HELP"
+          ],
+          "purpose": "Define recursive help metadata with per-family master help and per-concrete-command short/long descriptions without maintaining a duplicated separate help tree.",
+          "relation_refs": []
+        },
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_COMMAND_HELP",
+          "member_refs": [
+            "AIGMOS_COMMAND_HELP_METADATA_CONTRACT",
+            "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+            "AUTOMATION_EFFECT_BOUNDARY",
+            "COMMAND_AI_BOUNDARY_EXPLICIT",
+            "GATE_C5968C7510",
+            "GATE_A5F088DFD4",
+            "GATE_0A5F9E2EE1",
+            "GATE_363D272613",
+            "GATE_2F30B81DF0",
+            "GATE_0C572113CD",
+            "GATE_886C0B6BCE",
+            "GATE_569FF02A80",
+            "GATE_6127F988D9",
+            "GATE_E48B66EA4A"
+          ],
+          "metadata": {},
+          "name": "Command Help Metadata",
+          "operation_refs": [],
+          "parent_topic_refs": [
+            "TOPIC_COMMAND_NAMESPACES",
+            "TOPIC_RUNTIME_COMMAND_REGISTRY"
+          ],
+          "purpose": "Define recursive command help metadata so every command family and concrete subcommand can expose machine-readable short and long help without maintaining a separate duplicated help tree.",
+          "relation_refs": []
+        },
+        {
+          "id": "TOPIC_HELP",
+          "name": "HELP",
+          "purpose": "Define grouping-only parent Topic identity TOPIC_HELP already referenced by 1 existing canonical child Topic reference occurrence(s).",
+          "parent_topic_refs": [],
+          "composed_topic_refs": [],
+          "member_refs": [],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {
+            "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+            "referencing_child_occurrences": 1,
+            "distinct_child_topics": 1,
+            "host_contract_ref": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT",
+            "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+            "placement_nonsemantic": true,
+            "ownership_nontransfer": true,
+            "new_parent_edges_added": 0
+          }
+        }
       ],
-      "metadata": {},
-      "name": "Command Help Metadata",
-      "operation_refs": [],
-      "parent_topic_refs": [
-        "TOPIC_COMMAND_NAMESPACES",
-        "TOPIC_RUNTIME_COMMAND_REGISTRY"
-      ],
-      "purpose": "Define recursive command help metadata so every command family and concrete subcommand can expose machine-readable short and long help without maintaining a separate duplicated help tree.",
-      "relation_refs": []
-    },
-    {
-      "id": "TOPIC_HELP",
-      "name": "HELP",
-      "purpose": "Define grouping-only parent Topic identity TOPIC_HELP already referenced by 1 existing canonical child Topic reference occurrence(s).",
-      "parent_topic_refs": [],
-      "composed_topic_refs": [],
-      "member_refs": [],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {
-        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
-        "referencing_child_occurrences": 1,
-        "distinct_child_topics": 1,
-        "host_contract_ref": "AIGMOS_COMMAND_HELP_METADATA_CONTRACT",
-        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
-        "placement_nonsemantic": true,
-        "ownership_nontransfer": true,
-        "new_parent_edges_added": 0
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [],
+        "states": []
+      },
+      "semantics": {
+        "authority_rule": "Reconciled source clauses: [1] Help visibility grants no invocation authority. [2] Help metadata describes commands but cannot create capability or authority.",
+        "command_rule": "Each concrete subcommand carries its own short and long help.",
+        "duplication_rule": "Reconciled source clauses: [1] A separate manually duplicated help command hierarchy is not required. [2] No separately maintained duplicate help hierarchy is required.",
+        "enumeration_rule": "Help system recursively enumerates the command tree from canonical command metadata.",
+        "family_rule": "Reconciled source clauses: [1] Command-family root may carry master help/metadata while remaining non-executable. [2] Command family roots may carry master help/metadata describing the namespace even when non-executable.",
+        "fields": [
+          "short",
+          "long"
+        ],
+        "localization_rule": "Internal command names remain English/ASCII; human descriptions may be localized by UI projection.",
+        "long_rule": "Reconciled source clauses: [1] Each concrete command carries detailed `long` help. [2] long provides detailed command-specific help.",
+        "recursive_rule": "Help listings are generated recursively from the command tree.",
+        "short_rule": "Reconciled source clauses: [1] Each concrete command carries concise `short` help. [2] short is suitable for recursive concise listings."
       }
     }
-  ]
+  }
 }

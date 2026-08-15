@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define EXP as an explicit web-facing binding/projection of existing UserModule/canonical semantics, including /um/ style exposure, without creating a new semantic owner.",
   "scope": {
     "owns": [
@@ -21,97 +20,273 @@
       "unrelated domain semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT",
+      "name": "Expose EXP Binding",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT::OPERATIONS::OP_EXP_BIND",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_EXP_BIND",
+            "name": "Bind exposed module surface",
+            "inputs": [
+              "module/operation/data ref",
+              "exposure route/policy"
+            ],
+            "outputs": [
+              "EXP binding"
+            ],
+            "errors": [
+              "source unresolved",
+              "route invalid"
+            ],
+            "side_effects": [
+              "exposure config updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT::OPERATIONS::OP_EXPOSE_EXP_PROJECT",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_EXPOSE_EXP_PROJECT",
+            "name": "Project EXP surface",
+            "inputs": [
+              "authorized exposure binding",
+              "request context"
+            ],
+            "outputs": [
+              "exposed representation/result"
+            ],
+            "errors": [
+              "authority denied"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "role": "exposure binding",
+            "example_root": "/um/",
+            "source_rule": "EXP binding references existing module/data/operation identities.",
+            "semantic_rule": "EXP does not own or redefine exposed semantics.",
+            "authority_rule": "Exposure does not bypass AccessCore or module authority.",
+            "route_rule": "Route identity and source semantic identity remain separate.",
+            "projection_rule": "Representation format may vary while source semantics remain stable."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_EXP_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_EXPOSE_EXP_BINDING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EXP_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EXP_BINDING",
+            "child_ref": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EXP_BINDING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EXP_BINDING",
+            "child_ref": "EXPOSE_RUNTIME_BINDING_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EXP_BINDING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EXP_BINDING",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EXP_BINDING_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EXP_BINDING",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EXP_BINDING_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EXP_BINDING",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EXP_BINDING_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EXP_BINDING",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EXP_BINDING_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EXP_BINDING",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_EXP_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_EXP_BINDING",
+            "child_ref": "TOPIC_EXPOSE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_EXP_BINDING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_EXP_BINDING",
+            "child_ref": "TOPIC_RUNTIME_EXP",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_EXP_BINDING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_EXP_BINDING",
+            "child_ref": "TOPIC_CORE_PROJECTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/runtime/02_EXP_Binding.json"
+      }
+    },
     {
       "id": "TOPIC_EXPOSE_EXP_BINDING",
       "name": "EXP Binding",
-      "purpose": "Define EXP as an explicit web-facing binding/projection of existing UserModule/canonical semantics, including /um/ style exposure, without creating a new semantic owner.",
-      "parent_topic_refs": [
-        "TOPIC_EXPOSE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_EXPOSE",
-        "TOPIC_RUNTIME_EXP",
-        "TOPIC_CORE_PROJECTION"
-      ],
-      "member_refs": [
-        "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT",
-        "EXPOSE_RUNTIME_BINDING_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_EXP_BIND",
-        "OP_EXPOSE_EXP_PROJECT"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_EXP_BINDING::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define EXP as an explicit web-facing binding/projection of existing UserModule/canonical semantics, including /um/ style exposure, without creating a new semantic owner.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_EXP_BIND",
-        "name": "Bind exposed module surface",
-        "inputs": [
-          "module/operation/data ref",
-          "exposure route/policy"
-        ],
-        "outputs": [
-          "EXP binding"
-        ],
-        "errors": [
-          "source unresolved",
-          "route invalid"
-        ],
-        "side_effects": [
-          "exposure config updated"
-        ]
-      },
-      {
-        "id": "OP_EXPOSE_EXP_PROJECT",
-        "name": "Project EXP surface",
-        "inputs": [
-          "authorized exposure binding",
-          "request context"
-        ],
-        "outputs": [
-          "exposed representation/result"
-        ],
-        "errors": [
-          "authority denied"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "role": "exposure binding",
-    "example_root": "/um/",
-    "source_rule": "EXP binding references existing module/data/operation identities.",
-    "semantic_rule": "EXP does not own or redefine exposed semantics.",
-    "authority_rule": "Exposure does not bypass AccessCore or module authority.",
-    "route_rule": "Route identity and source semantic identity remain separate.",
-    "projection_rule": "Representation format may vary while source semantics remain stable."
-  },
   "constraints": {
     "invariants": [
       {
@@ -159,10 +334,123 @@
       "purpose": "Exposure remains projection/binding."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_EXPOSE_EXP_BINDING",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_EXPOSE_EXP_BINDING",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define EXP as an explicit web-facing binding/projection of existing UserModule/canonical semantics, including /um/ style exposure, without creating a new semantic owner.",
     "notes": [
       "Unlocked until reconciled against existing Expose/runtime contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXPOSE_EXP_BINDING",
+          "name": "EXP Binding",
+          "purpose": "Define EXP as an explicit web-facing binding/projection of existing UserModule/canonical semantics, including /um/ style exposure, without creating a new semantic owner.",
+          "parent_topic_refs": [
+            "TOPIC_EXPOSE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_EXPOSE",
+            "TOPIC_RUNTIME_EXP",
+            "TOPIC_CORE_PROJECTION"
+          ],
+          "member_refs": [
+            "AIGMOS_EXPOSE_EXP_BINDING_CONTRACT",
+            "EXPOSE_RUNTIME_BINDING_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_EXP_BIND",
+            "OP_EXPOSE_EXP_PROJECT"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_EXP_BIND",
+            "name": "Bind exposed module surface",
+            "inputs": [
+              "module/operation/data ref",
+              "exposure route/policy"
+            ],
+            "outputs": [
+              "EXP binding"
+            ],
+            "errors": [
+              "source unresolved",
+              "route invalid"
+            ],
+            "side_effects": [
+              "exposure config updated"
+            ]
+          },
+          {
+            "id": "OP_EXPOSE_EXP_PROJECT",
+            "name": "Project EXP surface",
+            "inputs": [
+              "authorized exposure binding",
+              "request context"
+            ],
+            "outputs": [
+              "exposed representation/result"
+            ],
+            "errors": [
+              "authority denied"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "role": "exposure binding",
+        "example_root": "/um/",
+        "source_rule": "EXP binding references existing module/data/operation identities.",
+        "semantic_rule": "EXP does not own or redefine exposed semantics.",
+        "authority_rule": "Exposure does not bypass AccessCore or module authority.",
+        "route_rule": "Route identity and source semantic identity remain separate.",
+        "projection_rule": "Representation format may vary while source semantics remain stable."
+      }
+    }
   }
 }

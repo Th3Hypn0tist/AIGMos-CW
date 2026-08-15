@@ -1,11 +1,405 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT",
+    "name": "Tool and MCP Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define a read-only Expose monitor for MCP endpoints, advertisements, Tool registry, schemas/capabilities, invocation requests, results and composite plans. [2] Define a read-only Expose monitor for MCP endpoints, advertised capabilities, `#T` registrations, schema validation, availability/enabled state and concrete tool invocations/results.",
+  "scope": {
+    "does_not_own": [
+      "AccessCore policy ownership",
+      "domain semantic ownership",
+      "implementation-specific process scheduling",
+      "external MCP implementation semantics",
+      "domain business semantics"
+    ],
+    "owns": [
+      "Tool and MCP Monitor semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT",
+      "name": "Tool and MCP Monitor",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "action_rule": "Reconciled source clauses: [1] register/unregister/invoke/test operations use separate authorized workflows. [2] connect/revalidate/register/enable/disable/invoke operations use separate authorized canonical operations.",
+            "authority_rule": "Reconciled source clauses: [1] Viewing/availability grants no invocation authority. [2] Viewing or availability grants no tool invocation authority.",
+            "failure_rule": "invalid/unregistered/unavailable/partial/failed states remain explicit.",
+            "graph_rule": "Visual bindings correspond only to explicit endpoint→advertisement→tool relations.",
+            "identity_rule": "Reconciled source clauses: [1] MCP endpoint, advertisement, tool, invocation, execution, result and plan identities remain distinct. [2] Endpoint, advertisement, registered tool, invocation and result identities remain distinct.",
+            "readonly_rule": "Monitor is read-only by default.",
+            "redaction_rule": "Sensitive arguments/results are redacted according to policy.",
+            "result_rule": "UI distinguishes inert tool result from any subsequently accepted runtime effect.",
+            "views": [
+              "MCP endpoint registry",
+              "advertised capabilities",
+              "local tool registry",
+              "schema/capability validation",
+              "registration state",
+              "tool invocations/results",
+              "composite plans",
+              "connection state",
+              "capability advertisements",
+              "advertisement→#T bindings",
+              "tool schemas/capabilities",
+              "registered/available/enabled states",
+              "invocation trace",
+              "errors/timeouts/results"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_TOOL_MCP_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_TOOL_MCP_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_TOOLS",
+            "child_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_TOOL_MCP_MONITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_MCP",
+            "child_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_TOOL_MCP_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "child_ref": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_TOOL_MCP_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "child_ref": "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_TOOL_MCP_MONITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "child_ref": "AUTOMATION_EFFECT_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_TOOL_MCP_MONITOR_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "child_ref": "MCP_TOOL_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_TOOL_MCP_MONITOR_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "child_ref": "GATE_772644F7A2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_TOOL_MCP_MONITOR_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "child_ref": "GATE_D81E5D77A7",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_TOOL_MCP_MONITOR_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "child_ref": "GATE_AAA6B056E2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_TOOL_MCP_MONITOR_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "child_ref": "GATE_3BCF8ED6C2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_TOOL_MCP_MONITOR_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "child_ref": "GATE_043A708125",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_TOOL_MCP_MONITOR_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "child_ref": "GATE_82A77990CB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_TOOL_MCP_MONITOR_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "child_ref": "GATE_868176B1C1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_TOOL_MCP_MONITOR_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "child_ref": "GATE_636E68F0C7",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_TOOL_MCP_MONITOR_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "child_ref": "GATE_D8BB414663",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_TOOL_MCP_MONITOR_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+            "child_ref": "GATE_4B026DDDF8",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[13]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+      "name": "Tool and MCP Monitor",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_TOOL_MCP_MONITOR::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Reconciled source clauses: [1] Define a read-only Expose monitor for MCP endpoints, advertisements, Tool registry, schemas/capabilities, invocation requests, results and composite plans. [2] Define a read-only Expose monitor for MCP endpoints, advertised capabilities, `#T` registrations, schema validation, availability/enabled state and concrete tool invocations/results.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_MCP",
+      "name": "MCP",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_MCP::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define grouping-only parent Topic identity TOPIC_MCP already referenced by 10 existing canonical child Topic reference occurrence(s).",
+            "metadata": {
+              "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+              "referencing_child_occurrences": 10,
+              "distinct_child_topics": 10,
+              "host_contract_ref": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT",
+              "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+              "placement_nonsemantic": true,
+              "ownership_nontransfer": true,
+              "new_parent_edges_added": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_TOOLS",
+      "name": "Tools",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_TOOLS::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define grouping-only parent Topic identity TOPIC_TOOLS already referenced by 11 existing canonical child Topic reference occurrence(s).",
+            "metadata": {
+              "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+              "referencing_child_occurrences": 11,
+              "distinct_child_topics": 11,
+              "host_contract_ref": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT",
+              "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+              "placement_nonsemantic": true,
+              "ownership_nontransfer": true,
+              "new_parent_edges_added": 0
+            }
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -74,31 +468,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT",
-    "name": "Tool and MCP Monitor",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
-      "Unlocked pending reconciliation against #MCP, #T, q-family and command-dispatch contracts.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: expose/editor/144_Tool_MCP_Monitor.json, expose/editor/61_Tool_MCP_Monitor.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses.",
-      "Pass 6 hosts grouping-only Topic TOPIC_MCP solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership.",
-      "Pass 6 hosts grouping-only Topic TOPIC_TOOLS solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
-    ],
-    "summary": "Reconciled source purposes: [1] Define a read-only Expose monitor for MCP endpoints, advertisements, Tool registry, schemas/capabilities, invocation requests, results and composite plans. [2] Define a read-only Expose monitor for MCP endpoints, advertised capabilities, `#T` registrations, schema validation, availability/enabled state and concrete tool invocations/results."
-  },
-  "purpose": "Reconciled source purposes: [1] Define a read-only Expose monitor for MCP endpoints, advertisements, Tool registry, schemas/capabilities, invocation requests, results and composite plans. [2] Define a read-only Expose monitor for MCP endpoints, advertised capabilities, `#T` registrations, schema validation, availability/enabled state and concrete tool invocations/results.",
   "references": [
     {
       "id": "REF_287CB0B834",
@@ -116,132 +485,151 @@
       "purpose": "Monitor shows governed invocation/result trace."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "AccessCore policy ownership",
-      "domain semantic ownership",
-      "implementation-specific process scheduling",
-      "external MCP implementation semantics",
-      "domain business semantics"
+  "gaps": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against #MCP, #T, q-family and command-dispatch contracts.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: expose/editor/144_Tool_MCP_Monitor.json, expose/editor/61_Tool_MCP_Monitor.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses.",
+      "Pass 6 hosts grouping-only Topic TOPIC_MCP solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership.",
+      "Pass 6 hosts grouping-only Topic TOPIC_TOOLS solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
     ],
-    "owns": [
-      "Tool and MCP Monitor semantics"
-    ]
+    "summary": "Reconciled source purposes: [1] Define a read-only Expose monitor for MCP endpoints, advertisements, Tool registry, schemas/capabilities, invocation requests, results and composite plans. [2] Define a read-only Expose monitor for MCP endpoints, advertised capabilities, `#T` registrations, schema validation, availability/enabled state and concrete tool invocations/results."
   },
-  "semantics": {
-    "action_rule": "Reconciled source clauses: [1] register/unregister/invoke/test operations use separate authorized workflows. [2] connect/revalidate/register/enable/disable/invoke operations use separate authorized canonical operations.",
-    "authority_rule": "Reconciled source clauses: [1] Viewing/availability grants no invocation authority. [2] Viewing or availability grants no tool invocation authority.",
-    "failure_rule": "invalid/unregistered/unavailable/partial/failed states remain explicit.",
-    "graph_rule": "Visual bindings correspond only to explicit endpoint→advertisement→tool relations.",
-    "identity_rule": "Reconciled source clauses: [1] MCP endpoint, advertisement, tool, invocation, execution, result and plan identities remain distinct. [2] Endpoint, advertisement, registered tool, invocation and result identities remain distinct.",
-    "readonly_rule": "Monitor is read-only by default.",
-    "redaction_rule": "Sensitive arguments/results are redacted according to policy.",
-    "result_rule": "UI distinguishes inert tool result from any subsequently accepted runtime effect.",
-    "views": [
-      "MCP endpoint registry",
-      "advertised capabilities",
-      "local tool registry",
-      "schema/capability validation",
-      "registration state",
-      "tool invocations/results",
-      "composite plans",
-      "connection state",
-      "capability advertisements",
-      "advertisement→#T bindings",
-      "tool schemas/capabilities",
-      "registered/available/enabled states",
-      "invocation trace",
-      "errors/timeouts/results"
-    ]
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
-    {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
-      "member_refs": [
-        "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT",
-        "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
-        "AUTOMATION_EFFECT_BOUNDARY",
-        "MCP_TOOL_SEPARATION",
-        "GATE_772644F7A2",
-        "GATE_D81E5D77A7",
-        "GATE_AAA6B056E2",
-        "GATE_3BCF8ED6C2",
-        "GATE_043A708125",
-        "GATE_82A77990CB",
-        "GATE_868176B1C1",
-        "GATE_636E68F0C7",
-        "GATE_D8BB414663",
-        "GATE_4B026DDDF8"
-      ],
-      "metadata": {},
-      "name": "Tool and MCP Monitor",
-      "operation_refs": [],
-      "parent_topic_refs": [
-        "TOPIC_EXPOSE",
-        "TOPIC_TOOLS",
-        "TOPIC_MCP"
-      ],
-      "purpose": "Reconciled source clauses: [1] Define a read-only Expose monitor for MCP endpoints, advertisements, Tool registry, schemas/capabilities, invocation requests, results and composite plans. [2] Define a read-only Expose monitor for MCP endpoints, advertised capabilities, `#T` registrations, schema validation, availability/enabled state and concrete tool invocations/results.",
-      "relation_refs": []
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
     },
-    {
-      "id": "TOPIC_MCP",
-      "name": "MCP",
-      "purpose": "Define grouping-only parent Topic identity TOPIC_MCP already referenced by 10 existing canonical child Topic reference occurrence(s).",
-      "parent_topic_refs": [],
-      "composed_topic_refs": [],
-      "member_refs": [],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {
-        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
-        "referencing_child_occurrences": 10,
-        "distinct_child_topics": 10,
-        "host_contract_ref": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT",
-        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
-        "placement_nonsemantic": true,
-        "ownership_nontransfer": true,
-        "new_parent_edges_added": 0
-      }
-    },
-    {
-      "id": "TOPIC_TOOLS",
-      "name": "Tools",
-      "purpose": "Define grouping-only parent Topic identity TOPIC_TOOLS already referenced by 11 existing canonical child Topic reference occurrence(s).",
-      "parent_topic_refs": [],
-      "composed_topic_refs": [],
-      "member_refs": [],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {
-        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
-        "referencing_child_occurrences": 11,
-        "distinct_child_topics": 11,
-        "host_contract_ref": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT",
-        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
-        "placement_nonsemantic": true,
-        "ownership_nontransfer": true,
-        "new_parent_edges_added": 0
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_EXPOSE_TOOL_MCP_MONITOR",
+          "member_refs": [
+            "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT",
+            "DEFINITION_INVOCATION_EXECUTION_SEPARATION",
+            "AUTOMATION_EFFECT_BOUNDARY",
+            "MCP_TOOL_SEPARATION",
+            "GATE_772644F7A2",
+            "GATE_D81E5D77A7",
+            "GATE_AAA6B056E2",
+            "GATE_3BCF8ED6C2",
+            "GATE_043A708125",
+            "GATE_82A77990CB",
+            "GATE_868176B1C1",
+            "GATE_636E68F0C7",
+            "GATE_D8BB414663",
+            "GATE_4B026DDDF8"
+          ],
+          "metadata": {},
+          "name": "Tool and MCP Monitor",
+          "operation_refs": [],
+          "parent_topic_refs": [
+            "TOPIC_EXPOSE",
+            "TOPIC_TOOLS",
+            "TOPIC_MCP"
+          ],
+          "purpose": "Reconciled source clauses: [1] Define a read-only Expose monitor for MCP endpoints, advertisements, Tool registry, schemas/capabilities, invocation requests, results and composite plans. [2] Define a read-only Expose monitor for MCP endpoints, advertised capabilities, `#T` registrations, schema validation, availability/enabled state and concrete tool invocations/results.",
+          "relation_refs": []
+        },
+        {
+          "id": "TOPIC_MCP",
+          "name": "MCP",
+          "purpose": "Define grouping-only parent Topic identity TOPIC_MCP already referenced by 10 existing canonical child Topic reference occurrence(s).",
+          "parent_topic_refs": [],
+          "composed_topic_refs": [],
+          "member_refs": [],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {
+            "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+            "referencing_child_occurrences": 10,
+            "distinct_child_topics": 10,
+            "host_contract_ref": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT",
+            "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+            "placement_nonsemantic": true,
+            "ownership_nontransfer": true,
+            "new_parent_edges_added": 0
+          }
+        },
+        {
+          "id": "TOPIC_TOOLS",
+          "name": "Tools",
+          "purpose": "Define grouping-only parent Topic identity TOPIC_TOOLS already referenced by 11 existing canonical child Topic reference occurrence(s).",
+          "parent_topic_refs": [],
+          "composed_topic_refs": [],
+          "member_refs": [],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {
+            "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+            "referencing_child_occurrences": 11,
+            "distinct_child_topics": 11,
+            "host_contract_ref": "AIGMOS_EXPOSE_TOOL_MCP_MONITOR_CONTRACT",
+            "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+            "placement_nonsemantic": true,
+            "ownership_nontransfer": true,
+            "new_parent_edges_added": 0
+          }
+        }
+      ],
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [],
+        "states": []
+      },
+      "semantics": {
+        "action_rule": "Reconciled source clauses: [1] register/unregister/invoke/test operations use separate authorized workflows. [2] connect/revalidate/register/enable/disable/invoke operations use separate authorized canonical operations.",
+        "authority_rule": "Reconciled source clauses: [1] Viewing/availability grants no invocation authority. [2] Viewing or availability grants no tool invocation authority.",
+        "failure_rule": "invalid/unregistered/unavailable/partial/failed states remain explicit.",
+        "graph_rule": "Visual bindings correspond only to explicit endpoint→advertisement→tool relations.",
+        "identity_rule": "Reconciled source clauses: [1] MCP endpoint, advertisement, tool, invocation, execution, result and plan identities remain distinct. [2] Endpoint, advertisement, registered tool, invocation and result identities remain distinct.",
+        "readonly_rule": "Monitor is read-only by default.",
+        "redaction_rule": "Sensitive arguments/results are redacted according to policy.",
+        "result_rule": "UI distinguishes inert tool result from any subsequently accepted runtime effect.",
+        "views": [
+          "MCP endpoint registry",
+          "advertised capabilities",
+          "local tool registry",
+          "schema/capability validation",
+          "registration state",
+          "tool invocations/results",
+          "composite plans",
+          "connection state",
+          "capability advertisements",
+          "advertisement→#T bindings",
+          "tool schemas/capabilities",
+          "registered/available/enabled states",
+          "invocation trace",
+          "errors/timeouts/results"
+        ]
       }
     }
-  ]
+  }
 }

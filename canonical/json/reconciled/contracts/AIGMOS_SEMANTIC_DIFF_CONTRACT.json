@@ -1,11 +1,606 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT",
+    "name": "Semantic Diff",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define machine-readable semantic difference between exact base and candidate contract graphs, distinct from textual/JSON serialization diff. [2] Define semantic diffing between two Contract Format 1.4 graphs so machine-significant changes are separated from serialization-only noise.",
+  "scope": {
+    "does_not_own": [
+      "domain semantic ownership",
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "referenced source semantics",
+      "filesystem authority",
+      "presentation-only formatting"
+    ],
+    "owns": [
+      "Canonical Semantic Diff semantics",
+      "Semantic Diff semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT",
+      "name": "Semantic Diff",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "authority_rule": "Diff evidence never applies changes.",
+            "base_rule": "Base source-set/contract revisions are exact.",
+            "breaking_rule": "Diff itself does not decide compatibility; compatibility policy consumes the semantic diff.",
+            "candidate_rule": "Candidate source-set/contract revisions are exact.",
+            "change_types": [
+              "add",
+              "remove",
+              "modify",
+              "move_presentation_only",
+              "rename_alias",
+              "breaking_identity_change",
+              "other declared change"
+            ],
+            "diff_kinds": [
+              "identity_added",
+              "identity_removed",
+              "semantic_value_changed",
+              "topic_membership_changed",
+              "structural_edge_changed",
+              "ownership_changed",
+              "authority_changed",
+              "dependency_changed",
+              "behavior_changed",
+              "constraint_changed",
+              "reference_changed",
+              "source_role_or_status_changed"
+            ],
+            "evidence_rule": "Each diff item records before/after refs and exact semantic location.",
+            "identity_rule": "Reconciled source clauses: [1] Each semantic diff evaluation has explicit identity. [2] Comparison aligns nodes by canonical identity.",
+            "impact_rule": "Reconciled source clauses: [1] Ownership/authority/breaking/dependency impact is explicit. [2] Diff may report impacted consumers/Topics/owners through reverse trace.",
+            "noise_rule": "Whitespace, object-key order and other declared representation-only differences do not produce semantic diffs.",
+            "normalization_rule": "Inputs are semantically normalized before comparison.",
+            "presentation_rule": "Pure prose/layout/order changes may be distinguished from semantic changes.",
+            "semantic_rule": "Diff compares machine-significant identities/ownership/relations/behavior/constraints/refs, not whitespace/key order."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_PARENT_TOPIC_SEMANTIC_DIFF_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CANONICAL_CONTRACTS",
+            "child_ref": "TOPIC_SEMANTIC_DIFF",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_PARENT_TOPIC_SEMANTIC_DIFF_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CHANGE",
+            "child_ref": "TOPIC_SEMANTIC_DIFF",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SEMANTIC_DIFF_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SEMANTIC_DIFF",
+            "child_ref": "AIGMOS_SEMANTIC_DIFF_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SEMANTIC_DIFF_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SEMANTIC_DIFF",
+            "child_ref": "BOOTSTRAP_AUTHORITY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SEMANTIC_DIFF_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SEMANTIC_DIFF",
+            "child_ref": "VALIDATE_BEFORE_ACCEPT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SEMANTIC_DIFF_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SEMANTIC_DIFF",
+            "child_ref": "INTEROPERABILITY_SEMANTIC_PRESERVATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SEMANTIC_DIFF_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SEMANTIC_DIFF",
+            "child_ref": "GATE_6897C5A4BC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SEMANTIC_DIFF_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SEMANTIC_DIFF",
+            "child_ref": "GATE_CD6C9EBF2C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SEMANTIC_DIFF_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SEMANTIC_DIFF",
+            "child_ref": "GATE_B98E6E6EB1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SEMANTIC_DIFF_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SEMANTIC_DIFF",
+            "child_ref": "GATE_F35688191A",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SEMANTIC_DIFF_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SEMANTIC_DIFF",
+            "child_ref": "GATE_154FD4298A",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SEMANTIC_DIFF_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SEMANTIC_DIFF",
+            "child_ref": "GATE_0500259E6D",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SEMANTIC_DIFF_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SEMANTIC_DIFF",
+            "child_ref": "GATE_818185E761",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SEMANTIC_DIFF_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SEMANTIC_DIFF",
+            "child_ref": "GATE_E05D6135F8",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SEMANTIC_DIFF_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SEMANTIC_DIFF",
+            "child_ref": "GATE_33CDA3EADC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SEMANTIC_DIFF_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SEMANTIC_DIFF",
+            "child_ref": "GATE_53AD843F05",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_PARENT_TOPIC_INTEROP_DIFF_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_INTEROP_NORMALIZATION",
+            "child_ref": "TOPIC_INTEROP_DIFF",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_PARENT_TOPIC_INTEROP_DIFF_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RELEASE_COMPATIBILITY",
+            "child_ref": "TOPIC_INTEROP_DIFF",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INTEROP_DIFF_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INTEROP_DIFF",
+            "child_ref": "AIGMOS_SEMANTIC_DIFF_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INTEROP_DIFF_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INTEROP_DIFF",
+            "child_ref": "BOOTSTRAP_AUTHORITY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INTEROP_DIFF_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INTEROP_DIFF",
+            "child_ref": "VALIDATE_BEFORE_ACCEPT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INTEROP_DIFF_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INTEROP_DIFF",
+            "child_ref": "INTEROPERABILITY_SEMANTIC_PRESERVATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INTEROP_DIFF_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INTEROP_DIFF",
+            "child_ref": "GATE_6897C5A4BC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INTEROP_DIFF_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INTEROP_DIFF",
+            "child_ref": "GATE_CD6C9EBF2C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INTEROP_DIFF_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INTEROP_DIFF",
+            "child_ref": "GATE_B98E6E6EB1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INTEROP_DIFF_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INTEROP_DIFF",
+            "child_ref": "GATE_F35688191A",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INTEROP_DIFF_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INTEROP_DIFF",
+            "child_ref": "GATE_154FD4298A",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INTEROP_DIFF_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INTEROP_DIFF",
+            "child_ref": "GATE_0500259E6D",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INTEROP_DIFF_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INTEROP_DIFF",
+            "child_ref": "GATE_818185E761",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INTEROP_DIFF_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INTEROP_DIFF",
+            "child_ref": "GATE_E05D6135F8",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INTEROP_DIFF_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INTEROP_DIFF",
+            "child_ref": "GATE_33CDA3EADC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INTEROP_DIFF_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INTEROP_DIFF",
+            "child_ref": "GATE_53AD843F05",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[13]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_SEMANTIC_DIFF_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_SEMANTIC_DIFF",
+      "name": "Canonical Semantic Diff",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_SEMANTIC_DIFF::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define machine-readable semantic difference between exact base and candidate contract graphs, distinct from textual/JSON serialization diff.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_INTEROP_DIFF",
+      "name": "Semantic Diff",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_INTEROP_DIFF::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define semantic diffing between two Contract Format 1.4 graphs so machine-significant changes are separated from serialization-only noise.",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -74,29 +669,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_SEMANTIC_DIFF_CONTRACT",
-    "name": "Semantic Diff",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
-      "Unlocked pending implementation against golden fixtures and whole-tree Contract Format 1.4 validation.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: contracts/change/00_Semantic_Diff.json, interoperability/03_Semantic_Diff.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
-    ],
-    "summary": "Reconciled source purposes: [1] Define machine-readable semantic difference between exact base and candidate contract graphs, distinct from textual/JSON serialization diff. [2] Define semantic diffing between two Contract Format 1.4 graphs so machine-significant changes are separated from serialization-only noise."
-  },
-  "purpose": "Reconciled source purposes: [1] Define machine-readable semantic difference between exact base and candidate contract graphs, distinct from textual/JSON serialization diff. [2] Define semantic diffing between two Contract Format 1.4 graphs so machine-significant changes are separated from serialization-only noise.",
   "references": [
     {
       "id": "REF_NORM",
@@ -109,129 +681,144 @@
       "purpose": "Compatibility consumes semantic change evidence."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "domain semantic ownership",
-      "runtime execution authority",
-      "AccessCore policy ownership",
-      "referenced source semantics",
-      "filesystem authority",
-      "presentation-only formatting"
+  "gaps": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Unlocked pending implementation against golden fixtures and whole-tree Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: contracts/change/00_Semantic_Diff.json, interoperability/03_Semantic_Diff.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
     ],
-    "owns": [
-      "Canonical Semantic Diff semantics",
-      "Semantic Diff semantics"
-    ]
+    "summary": "Reconciled source purposes: [1] Define machine-readable semantic difference between exact base and candidate contract graphs, distinct from textual/JSON serialization diff. [2] Define semantic diffing between two Contract Format 1.4 graphs so machine-significant changes are separated from serialization-only noise."
   },
-  "semantics": {
-    "authority_rule": "Diff evidence never applies changes.",
-    "base_rule": "Base source-set/contract revisions are exact.",
-    "breaking_rule": "Diff itself does not decide compatibility; compatibility policy consumes the semantic diff.",
-    "candidate_rule": "Candidate source-set/contract revisions are exact.",
-    "change_types": [
-      "add",
-      "remove",
-      "modify",
-      "move_presentation_only",
-      "rename_alias",
-      "breaking_identity_change",
-      "other declared change"
-    ],
-    "diff_kinds": [
-      "identity_added",
-      "identity_removed",
-      "semantic_value_changed",
-      "topic_membership_changed",
-      "structural_edge_changed",
-      "ownership_changed",
-      "authority_changed",
-      "dependency_changed",
-      "behavior_changed",
-      "constraint_changed",
-      "reference_changed",
-      "source_role_or_status_changed"
-    ],
-    "evidence_rule": "Each diff item records before/after refs and exact semantic location.",
-    "identity_rule": "Reconciled source clauses: [1] Each semantic diff evaluation has explicit identity. [2] Comparison aligns nodes by canonical identity.",
-    "impact_rule": "Reconciled source clauses: [1] Ownership/authority/breaking/dependency impact is explicit. [2] Diff may report impacted consumers/Topics/owners through reverse trace.",
-    "noise_rule": "Whitespace, object-key order and other declared representation-only differences do not produce semantic diffs.",
-    "normalization_rule": "Inputs are semantically normalized before comparison.",
-    "presentation_rule": "Pure prose/layout/order changes may be distinguished from semantic changes.",
-    "semantic_rule": "Diff compares machine-significant identities/ownership/relations/behavior/constraints/refs, not whitespace/key order."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
-    {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_SEMANTIC_DIFF",
-      "member_refs": [
-        "AIGMOS_SEMANTIC_DIFF_CONTRACT",
-        "BOOTSTRAP_AUTHORITY_EXPLICIT",
-        "VALIDATE_BEFORE_ACCEPT",
-        "INTEROPERABILITY_SEMANTIC_PRESERVATION",
-        "GATE_6897C5A4BC",
-        "GATE_CD6C9EBF2C",
-        "GATE_B98E6E6EB1",
-        "GATE_F35688191A",
-        "GATE_154FD4298A",
-        "GATE_0500259E6D",
-        "GATE_818185E761",
-        "GATE_E05D6135F8",
-        "GATE_33CDA3EADC",
-        "GATE_53AD843F05"
-      ],
-      "metadata": {},
-      "name": "Canonical Semantic Diff",
-      "operation_refs": [],
-      "parent_topic_refs": [
-        "TOPIC_CANONICAL_CONTRACTS",
-        "TOPIC_CHANGE"
-      ],
-      "purpose": "Define machine-readable semantic difference between exact base and candidate contract graphs, distinct from textual/JSON serialization diff.",
-      "relation_refs": []
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
     },
-    {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_INTEROP_DIFF",
-      "member_refs": [
-        "AIGMOS_SEMANTIC_DIFF_CONTRACT",
-        "BOOTSTRAP_AUTHORITY_EXPLICIT",
-        "VALIDATE_BEFORE_ACCEPT",
-        "INTEROPERABILITY_SEMANTIC_PRESERVATION",
-        "GATE_6897C5A4BC",
-        "GATE_CD6C9EBF2C",
-        "GATE_B98E6E6EB1",
-        "GATE_F35688191A",
-        "GATE_154FD4298A",
-        "GATE_0500259E6D",
-        "GATE_818185E761",
-        "GATE_E05D6135F8",
-        "GATE_33CDA3EADC",
-        "GATE_53AD843F05"
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_SEMANTIC_DIFF",
+          "member_refs": [
+            "AIGMOS_SEMANTIC_DIFF_CONTRACT",
+            "BOOTSTRAP_AUTHORITY_EXPLICIT",
+            "VALIDATE_BEFORE_ACCEPT",
+            "INTEROPERABILITY_SEMANTIC_PRESERVATION",
+            "GATE_6897C5A4BC",
+            "GATE_CD6C9EBF2C",
+            "GATE_B98E6E6EB1",
+            "GATE_F35688191A",
+            "GATE_154FD4298A",
+            "GATE_0500259E6D",
+            "GATE_818185E761",
+            "GATE_E05D6135F8",
+            "GATE_33CDA3EADC",
+            "GATE_53AD843F05"
+          ],
+          "metadata": {},
+          "name": "Canonical Semantic Diff",
+          "operation_refs": [],
+          "parent_topic_refs": [
+            "TOPIC_CANONICAL_CONTRACTS",
+            "TOPIC_CHANGE"
+          ],
+          "purpose": "Define machine-readable semantic difference between exact base and candidate contract graphs, distinct from textual/JSON serialization diff.",
+          "relation_refs": []
+        },
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_INTEROP_DIFF",
+          "member_refs": [
+            "AIGMOS_SEMANTIC_DIFF_CONTRACT",
+            "BOOTSTRAP_AUTHORITY_EXPLICIT",
+            "VALIDATE_BEFORE_ACCEPT",
+            "INTEROPERABILITY_SEMANTIC_PRESERVATION",
+            "GATE_6897C5A4BC",
+            "GATE_CD6C9EBF2C",
+            "GATE_B98E6E6EB1",
+            "GATE_F35688191A",
+            "GATE_154FD4298A",
+            "GATE_0500259E6D",
+            "GATE_818185E761",
+            "GATE_E05D6135F8",
+            "GATE_33CDA3EADC",
+            "GATE_53AD843F05"
+          ],
+          "metadata": {},
+          "name": "Semantic Diff",
+          "operation_refs": [],
+          "parent_topic_refs": [
+            "TOPIC_INTEROP_NORMALIZATION",
+            "TOPIC_RELEASE_COMPATIBILITY"
+          ],
+          "purpose": "Define semantic diffing between two Contract Format 1.4 graphs so machine-significant changes are separated from serialization-only noise.",
+          "relation_refs": []
+        }
       ],
-      "metadata": {},
-      "name": "Semantic Diff",
-      "operation_refs": [],
-      "parent_topic_refs": [
-        "TOPIC_INTEROP_NORMALIZATION",
-        "TOPIC_RELEASE_COMPATIBILITY"
-      ],
-      "purpose": "Define semantic diffing between two Contract Format 1.4 graphs so machine-significant changes are separated from serialization-only noise.",
-      "relation_refs": []
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [],
+        "states": []
+      },
+      "semantics": {
+        "authority_rule": "Diff evidence never applies changes.",
+        "base_rule": "Base source-set/contract revisions are exact.",
+        "breaking_rule": "Diff itself does not decide compatibility; compatibility policy consumes the semantic diff.",
+        "candidate_rule": "Candidate source-set/contract revisions are exact.",
+        "change_types": [
+          "add",
+          "remove",
+          "modify",
+          "move_presentation_only",
+          "rename_alias",
+          "breaking_identity_change",
+          "other declared change"
+        ],
+        "diff_kinds": [
+          "identity_added",
+          "identity_removed",
+          "semantic_value_changed",
+          "topic_membership_changed",
+          "structural_edge_changed",
+          "ownership_changed",
+          "authority_changed",
+          "dependency_changed",
+          "behavior_changed",
+          "constraint_changed",
+          "reference_changed",
+          "source_role_or_status_changed"
+        ],
+        "evidence_rule": "Each diff item records before/after refs and exact semantic location.",
+        "identity_rule": "Reconciled source clauses: [1] Each semantic diff evaluation has explicit identity. [2] Comparison aligns nodes by canonical identity.",
+        "impact_rule": "Reconciled source clauses: [1] Ownership/authority/breaking/dependency impact is explicit. [2] Diff may report impacted consumers/Topics/owners through reverse trace.",
+        "noise_rule": "Whitespace, object-key order and other declared representation-only differences do not produce semantic diffs.",
+        "normalization_rule": "Inputs are semantically normalized before comparison.",
+        "presentation_rule": "Pure prose/layout/order changes may be distinguished from semantic changes.",
+        "semantic_rule": "Diff compares machine-significant identities/ownership/relations/behavior/constraints/refs, not whitespace/key order."
+      }
     }
-  ]
+  }
 }

@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNTIME_TRIGGER_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define Trigger as the exclusive ! automation primitive: an inert declaration that observes an explicit target, evaluates bounded predicates, and produces an explicit Core-owned automation dispatch request when matched.",
   "scope": {
     "owns": [
@@ -21,81 +20,115 @@
       "projection semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_TRIGGER_REGISTER",
-        "name": "Register Trigger definition",
-        "inputs": [
-          "inert Trigger definition"
-        ],
-        "outputs": [
-          "registered Trigger"
-        ],
-        "errors": [
-          "invalid target",
-          "invalid predicate"
-        ],
-        "side_effects": [
-          "Trigger registry updated"
-        ]
-      },
-      {
-        "id": "OP_TRIGGER_EVALUATE",
-        "name": "Evaluate Trigger predicate",
-        "inputs": [
-          "Trigger definition",
-          "current context/state"
-        ],
-        "outputs": [
-          "matched | not_matched"
-        ],
-        "errors": [
-          "predicate invalid",
-          "target unavailable"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_TRIGGER_FIRE",
-        "name": "Fire matched Trigger",
-        "inputs": [
-          "matched Trigger",
-          "validated cause context"
-        ],
-        "outputs": [
-          "explicit automation dispatch request"
-        ],
-        "errors": [
-          "dispatch rejected"
-        ],
-        "side_effects": []
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_TRIGGER_CONTRACT",
+      "name": "Runtime Trigger",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_TRIGGER_CONTRACT::OPERATIONS::OP_TRIGGER_REGISTER",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_TRIGGER_REGISTER",
+            "name": "Register Trigger definition",
+            "inputs": [
+              "inert Trigger definition"
+            ],
+            "outputs": [
+              "registered Trigger"
+            ],
+            "errors": [
+              "invalid target",
+              "invalid predicate"
+            ],
+            "side_effects": [
+              "Trigger registry updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TRIGGER_CONTRACT::OPERATIONS::OP_TRIGGER_EVALUATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_TRIGGER_EVALUATE",
+            "name": "Evaluate Trigger predicate",
+            "inputs": [
+              "Trigger definition",
+              "current context/state"
+            ],
+            "outputs": [
+              "matched | not_matched"
+            ],
+            "errors": [
+              "predicate invalid",
+              "target unavailable"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TRIGGER_CONTRACT::OPERATIONS::OP_TRIGGER_FIRE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_TRIGGER_FIRE",
+            "name": "Fire matched Trigger",
+            "inputs": [
+              "matched Trigger",
+              "validated cause context"
+            ],
+            "outputs": [
+              "explicit automation dispatch request"
+            ],
+            "errors": [
+              "dispatch rejected"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TRIGGER_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "sigil": "!",
+            "exclusive_semantics": true,
+            "target_rule": "Trigger targets an exact symbol or an intentionally declared specific group.",
+            "noisy_root_rule": "Whole-root triggers over noisy roots such as #OSC and #REST are forbidden by default.",
+            "payload_target_rule": "Payload-selected dynamic Trigger targets are forbidden.",
+            "predicate_rule": "Predicates are side-effect-free, bounded and belong to the expression system.",
+            "fire_rule": "Trigger match does not directly execute arbitrary commands/effects; it requests explicit Core dispatch.",
+            "definition_state_rule": "Trigger definition is inert; edge/timing state is runtime state."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/automation/trigger/00_Runtime_Trigger.json"
       }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "sigil": "!",
-    "exclusive_semantics": true,
-    "target_rule": "Trigger targets an exact symbol or an intentionally declared specific group.",
-    "noisy_root_rule": "Whole-root triggers over noisy roots such as #OSC and #REST are forbidden by default.",
-    "payload_target_rule": "Payload-selected dynamic Trigger targets are forbidden.",
-    "predicate_rule": "Predicates are side-effect-free, bounded and belong to the expression system.",
-    "fire_rule": "Trigger match does not directly execute arbitrary commands/effects; it requests explicit Core dispatch.",
-    "definition_state_rule": "Trigger definition is inert; edge/timing state is runtime state."
-  },
+    }
+  ],
   "constraints": {
     "invariants": [
       {
@@ -148,10 +181,97 @@
       "purpose": "Trigger firing crosses Core dispatcher boundary."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define Trigger as the exclusive ! automation primitive: an inert declaration that observes an explicit target, evaluates bounded predicates, and produces an explicit Core-owned automation dispatch request when matched.",
     "notes": [
       "Unlocked until reconciled against the existing automation/runtime contracts and repository-wide 1.4 traceability validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_TRIGGER_REGISTER",
+            "name": "Register Trigger definition",
+            "inputs": [
+              "inert Trigger definition"
+            ],
+            "outputs": [
+              "registered Trigger"
+            ],
+            "errors": [
+              "invalid target",
+              "invalid predicate"
+            ],
+            "side_effects": [
+              "Trigger registry updated"
+            ]
+          },
+          {
+            "id": "OP_TRIGGER_EVALUATE",
+            "name": "Evaluate Trigger predicate",
+            "inputs": [
+              "Trigger definition",
+              "current context/state"
+            ],
+            "outputs": [
+              "matched | not_matched"
+            ],
+            "errors": [
+              "predicate invalid",
+              "target unavailable"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_TRIGGER_FIRE",
+            "name": "Fire matched Trigger",
+            "inputs": [
+              "matched Trigger",
+              "validated cause context"
+            ],
+            "outputs": [
+              "explicit automation dispatch request"
+            ],
+            "errors": [
+              "dispatch rejected"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "sigil": "!",
+        "exclusive_semantics": true,
+        "target_rule": "Trigger targets an exact symbol or an intentionally declared specific group.",
+        "noisy_root_rule": "Whole-root triggers over noisy roots such as #OSC and #REST are forbidden by default.",
+        "payload_target_rule": "Payload-selected dynamic Trigger targets are forbidden.",
+        "predicate_rule": "Predicates are side-effect-free, bounded and belong to the expression system.",
+        "fire_rule": "Trigger match does not directly execute arbitrary commands/effects; it requests explicit Core dispatch.",
+        "definition_state_rule": "Trigger definition is inert; edge/timing state is runtime state."
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_IAM_AUTH_SESSION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define authenticated sessions as explicit bounded identities tied to an IAM identity and assurance evidence, separate from AccessCore permissions.",
   "scope": {
     "owns": [
@@ -21,59 +20,208 @@
       "runtime operation implementation"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_IAM_AUTH_SESSION_CONTRACT",
+      "name": "IAM Authentication Session Identity",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_IAM_AUTH_SESSION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "identity_rule": "Each session has an explicit session identity.",
+            "subject_rule": "Session references one exact IAM identity.",
+            "assurance_rule": "Current assurance evidence/level is explicit.",
+            "lifetime_rule": "Issued, expiry, idle-lifetime and renewal semantics are explicit.",
+            "channel_rule": "Terminal/web/remote channel binding is explicit where required.",
+            "authorization_rule": "Session proves authenticated context only; it does not itself grant AccessCore rights.",
+            "revocation_rule": "Revoked session cannot be reused.",
+            "secret_rule": "Session secret material is never emitted into ordinary logs/canonical JSON."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_AUTH_SESSION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_IAM_AUTH_SESSION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_IAM",
+            "child_ref": "TOPIC_IAM_AUTH_SESSION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_AUTH_SESSION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_IAM_AUTH_SESSION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_AUTHENTICATION",
+            "child_ref": "TOPIC_IAM_AUTH_SESSION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_AUTH_SESSION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IAM_AUTH_SESSION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IAM_AUTH_SESSION",
+            "child_ref": "AIGMOS_IAM_AUTH_SESSION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_AUTH_SESSION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IAM_AUTH_SESSION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IAM_AUTH_SESSION",
+            "child_ref": "IDENTITY_AUTHORITY_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_AUTH_SESSION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IAM_AUTH_SESSION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IAM_AUTH_SESSION",
+            "child_ref": "FAIL_CLOSED_AUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_AUTH_SESSION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IAM_AUTH_SESSION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IAM_AUTH_SESSION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_AUTH_SESSION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IAM_AUTH_SESSION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IAM_AUTH_SESSION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_AUTH_SESSION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IAM_AUTH_SESSION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IAM_AUTH_SESSION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_AUTH_SESSION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IAM_AUTH_SESSION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IAM_AUTH_SESSION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_AUTH_SESSION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IAM_AUTH_SESSION_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IAM_AUTH_SESSION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/iam/auth/01_Auth_Session_Identity.json"
+      }
+    },
     {
       "id": "TOPIC_IAM_AUTH_SESSION",
       "name": "IAM Authentication Session Identity",
-      "purpose": "Define authenticated sessions as explicit bounded identities tied to an IAM identity and assurance evidence, separate from AccessCore permissions.",
-      "parent_topic_refs": [
-        "TOPIC_IAM",
-        "TOPIC_AUTHENTICATION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_IAM_AUTH_SESSION_CONTRACT",
-        "IDENTITY_AUTHORITY_SEPARATION",
-        "FAIL_CLOSED_AUTHORITY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_IAM_AUTH_SESSION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define authenticated sessions as explicit bounded identities tied to an IAM identity and assurance evidence, separate from AccessCore permissions.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "identity_rule": "Each session has an explicit session identity.",
-    "subject_rule": "Session references one exact IAM identity.",
-    "assurance_rule": "Current assurance evidence/level is explicit.",
-    "lifetime_rule": "Issued, expiry, idle-lifetime and renewal semantics are explicit.",
-    "channel_rule": "Terminal/web/remote channel binding is explicit where required.",
-    "authorization_rule": "Session proves authenticated context only; it does not itself grant AccessCore rights.",
-    "revocation_rule": "Revoked session cannot be reused.",
-    "secret_rule": "Session secret material is never emitted into ordinary logs/canonical JSON."
-  },
   "constraints": {
     "invariants": [
       {
@@ -120,10 +268,75 @@
       "purpose": "Successful authentication may create a bounded session."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define authenticated sessions as explicit bounded identities tied to an IAM identity and assurance evidence, separate from AccessCore permissions.",
     "notes": [
       "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_IAM_AUTH_SESSION",
+          "name": "IAM Authentication Session Identity",
+          "purpose": "Define authenticated sessions as explicit bounded identities tied to an IAM identity and assurance evidence, separate from AccessCore permissions.",
+          "parent_topic_refs": [
+            "TOPIC_IAM",
+            "TOPIC_AUTHENTICATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_IAM_AUTH_SESSION_CONTRACT",
+            "IDENTITY_AUTHORITY_SEPARATION",
+            "FAIL_CLOSED_AUTHORITY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "identity_rule": "Each session has an explicit session identity.",
+        "subject_rule": "Session references one exact IAM identity.",
+        "assurance_rule": "Current assurance evidence/level is explicit.",
+        "lifetime_rule": "Issued, expiry, idle-lifetime and renewal semantics are explicit.",
+        "channel_rule": "Terminal/web/remote channel binding is explicit where required.",
+        "authorization_rule": "Session proves authenticated context only; it does not itself grant AccessCore rights.",
+        "revocation_rule": "Revoked session cannot be reused.",
+        "secret_rule": "Session secret material is never emitted into ordinary logs/canonical JSON."
+      }
+    }
   }
 }

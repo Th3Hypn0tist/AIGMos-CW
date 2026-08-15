@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define optional per-resource reauthentication with explicit assurance requirement, allowed authentication methods, resource-specific lifetime and key/session rotation.",
   "scope": {
     "owns": [
@@ -22,116 +21,286 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT",
+      "name": "AccessCore Reauthentication",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT::OPERATIONS::OP_REAUTH_REQUIRE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_REAUTH_REQUIRE",
+            "name": "Resolve resource reauthentication requirement",
+            "inputs": [
+              "resource ref",
+              "reauth policy"
+            ],
+            "outputs": [
+              "required assurance + allowed auth methods + lifetime"
+            ],
+            "errors": [
+              "policy invalid"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT::OPERATIONS::OP_REAUTH_PERFORM",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_REAUTH_PERFORM",
+            "name": "Perform resource reauthentication",
+            "inputs": [
+              "identity",
+              "allowed auth method",
+              "required assurance"
+            ],
+            "outputs": [
+              "resource-specific reauth grant"
+            ],
+            "errors": [
+              "reauth failed"
+            ],
+            "side_effects": [
+              "resource-specific auth state created"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT::OPERATIONS::OP_REAUTH_EXPIRE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_REAUTH_EXPIRE",
+            "name": "Expire reauthentication grant",
+            "inputs": [
+              "grant",
+              "lifetime/rotation condition"
+            ],
+            "outputs": [
+              "expired grant"
+            ],
+            "errors": [],
+            "side_effects": [
+              "resource-specific auth state removed"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "scope": "per resource/operation",
+            "required_fields": [
+              "required_assurance",
+              "allowed_auth_methods",
+              "lifetime"
+            ],
+            "success_rule": "Successful reauthentication creates a resource-specific bounded grant.",
+            "rotation_rule": "Successful reauthentication rotates applicable keys/session material according to the resource policy.",
+            "lifetime_rule": "Reauth lifetime is resource-specific and finite where enabled.",
+            "separation_rule": "Reauthentication raises/refreshes assurance for the scoped resource; it does not create unrelated authorization.",
+            "fallback_rule": "Failure does not silently fall back to weaker assurance."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_ACCESSCORE_REAUTH_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_ACCESSCORE_AUTHORIZATION",
+            "child_ref": "TOPIC_ACCESSCORE_REAUTH",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_REAUTH_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_REAUTH",
+            "child_ref": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_REAUTH_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_REAUTH",
+            "child_ref": "GOVERNANCE_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_REAUTH_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_REAUTH",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_REAUTH_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_REAUTH",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_REAUTH_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_REAUTH",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_REAUTH_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_REAUTH",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_REAUTH_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_REAUTH",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_REAUTH_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_REAUTH",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_ACCESSCORE_REAUTH_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_ACCESSCORE_REAUTH",
+            "child_ref": "TOPIC_IAM_ASSURANCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/governance/ac/01_AccessCore_Reauthentication.json"
+      }
+    },
     {
       "id": "TOPIC_ACCESSCORE_REAUTH",
       "name": "AccessCore Reauthentication",
-      "purpose": "Define optional per-resource reauthentication with explicit assurance requirement, allowed authentication methods, resource-specific lifetime and key/session rotation.",
-      "parent_topic_refs": [
-        "TOPIC_ACCESSCORE_AUTHORIZATION"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_IAM_ASSURANCE"
-      ],
-      "member_refs": [
-        "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT",
-        "GOVERNANCE_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_REAUTH_REQUIRE",
-        "OP_REAUTH_PERFORM",
-        "OP_REAUTH_EXPIRE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_ACCESSCORE_REAUTH::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define optional per-resource reauthentication with explicit assurance requirement, allowed authentication methods, resource-specific lifetime and key/session rotation.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_REAUTH_REQUIRE",
-        "name": "Resolve resource reauthentication requirement",
-        "inputs": [
-          "resource ref",
-          "reauth policy"
-        ],
-        "outputs": [
-          "required assurance + allowed auth methods + lifetime"
-        ],
-        "errors": [
-          "policy invalid"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_REAUTH_PERFORM",
-        "name": "Perform resource reauthentication",
-        "inputs": [
-          "identity",
-          "allowed auth method",
-          "required assurance"
-        ],
-        "outputs": [
-          "resource-specific reauth grant"
-        ],
-        "errors": [
-          "reauth failed"
-        ],
-        "side_effects": [
-          "resource-specific auth state created"
-        ]
-      },
-      {
-        "id": "OP_REAUTH_EXPIRE",
-        "name": "Expire reauthentication grant",
-        "inputs": [
-          "grant",
-          "lifetime/rotation condition"
-        ],
-        "outputs": [
-          "expired grant"
-        ],
-        "errors": [],
-        "side_effects": [
-          "resource-specific auth state removed"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "scope": "per resource/operation",
-    "required_fields": [
-      "required_assurance",
-      "allowed_auth_methods",
-      "lifetime"
-    ],
-    "success_rule": "Successful reauthentication creates a resource-specific bounded grant.",
-    "rotation_rule": "Successful reauthentication rotates applicable keys/session material according to the resource policy.",
-    "lifetime_rule": "Reauth lifetime is resource-specific and finite where enabled.",
-    "separation_rule": "Reauthentication raises/refreshes assurance for the scoped resource; it does not create unrelated authorization.",
-    "fallback_rule": "Failure does not silently fall back to weaker assurance."
-  },
   "constraints": {
     "invariants": [
       {
@@ -184,10 +353,142 @@
       "purpose": "Reauth complements but does not replace authorization."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_ACCESSCORE_REAUTH",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_ACCESSCORE_REAUTH",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define optional per-resource reauthentication with explicit assurance requirement, allowed authentication methods, resource-specific lifetime and key/session rotation.",
     "notes": [
       "Unlocked until reconciled against existing IAM/AC/DWH contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_ACCESSCORE_REAUTH",
+          "name": "AccessCore Reauthentication",
+          "purpose": "Define optional per-resource reauthentication with explicit assurance requirement, allowed authentication methods, resource-specific lifetime and key/session rotation.",
+          "parent_topic_refs": [
+            "TOPIC_ACCESSCORE_AUTHORIZATION"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_IAM_ASSURANCE"
+          ],
+          "member_refs": [
+            "AIGMOS_ACCESSCORE_REAUTHENTICATION_CONTRACT",
+            "GOVERNANCE_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_REAUTH_REQUIRE",
+            "OP_REAUTH_PERFORM",
+            "OP_REAUTH_EXPIRE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_REAUTH_REQUIRE",
+            "name": "Resolve resource reauthentication requirement",
+            "inputs": [
+              "resource ref",
+              "reauth policy"
+            ],
+            "outputs": [
+              "required assurance + allowed auth methods + lifetime"
+            ],
+            "errors": [
+              "policy invalid"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_REAUTH_PERFORM",
+            "name": "Perform resource reauthentication",
+            "inputs": [
+              "identity",
+              "allowed auth method",
+              "required assurance"
+            ],
+            "outputs": [
+              "resource-specific reauth grant"
+            ],
+            "errors": [
+              "reauth failed"
+            ],
+            "side_effects": [
+              "resource-specific auth state created"
+            ]
+          },
+          {
+            "id": "OP_REAUTH_EXPIRE",
+            "name": "Expire reauthentication grant",
+            "inputs": [
+              "grant",
+              "lifetime/rotation condition"
+            ],
+            "outputs": [
+              "expired grant"
+            ],
+            "errors": [],
+            "side_effects": [
+              "resource-specific auth state removed"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "scope": "per resource/operation",
+        "required_fields": [
+          "required_assurance",
+          "allowed_auth_methods",
+          "lifetime"
+        ],
+        "success_rule": "Successful reauthentication creates a resource-specific bounded grant.",
+        "rotation_rule": "Successful reauthentication rotates applicable keys/session material according to the resource policy.",
+        "lifetime_rule": "Reauth lifetime is resource-specific and finite where enabled.",
+        "separation_rule": "Reauthentication raises/refreshes assurance for the scoped resource; it does not create unrelated authorization.",
+        "fallback_rule": "Failure does not silently fall back to weaker assurance."
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define UserModule identity and registry semantics so each module has stable logical identity independent of filesystem path, runtime instance state or presentation.",
   "scope": {
     "owns": [
@@ -21,108 +20,278 @@
       "projection semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT",
+      "name": "Runtime UserModule Registry",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT::OPERATIONS::OP_UM_REGISTER",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_UM_REGISTER",
+            "name": "Register UserModule definition",
+            "inputs": [
+              "validated UserModule definition"
+            ],
+            "outputs": [
+              "registered UserModule identity"
+            ],
+            "errors": [
+              "identity collision",
+              "invalid module shape"
+            ],
+            "side_effects": [
+              "UserModule registry updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT::OPERATIONS::OP_UM_RESOLVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_UM_RESOLVE",
+            "name": "Resolve UserModule identity",
+            "inputs": [
+              "literal UserModule id"
+            ],
+            "outputs": [
+              "exact module definition"
+            ],
+            "errors": [
+              "module unresolved",
+              "module ambiguous"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT::OPERATIONS::OP_UM_ENUMERATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_UM_ENUMERATE",
+            "name": "Enumerate UserModules",
+            "inputs": [
+              "registry filter"
+            ],
+            "outputs": [
+              "registered module identities"
+            ],
+            "errors": [],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "symbol_root": "#UM",
+            "identity_rule": "UserModule identity is explicit and stable; filesystem path is storage, not identity.",
+            "registry_rule": "#UM resolves registered UserModule semantic identities and instances.",
+            "collision_rule": "Duplicate active logical identities are rejected.",
+            "path_rule": "Moving a module source file does not redefine its semantic identity when the declared identity is unchanged.",
+            "authority_rule": "Registration does not grant runtime authority beyond the module's declared capabilities and applicable policy.",
+            "instance_rule": "Module definition identity and runtime instance identity are separate when multiple instances are permitted."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_USERMODULE_REGISTRY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME_USER_MODULES",
+            "child_ref": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_REGISTRY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "child_ref": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_REGISTRY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "child_ref": "USERMODULE_SEMANTICS_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_REGISTRY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_REGISTRY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_REGISTRY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_REGISTRY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_REGISTRY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_USERMODULE_REGISTRY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "child_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_USERMODULE_REGISTRY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "child_ref": "TOPIC_CORE_IDENTITY_RESOLUTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/usermodule/00_Runtime_UserModule_Registry.json"
+      }
+    },
     {
       "id": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
       "name": "UserModule Registry",
-      "purpose": "Define UserModule identity and registry semantics so each module has stable logical identity independent of filesystem path, runtime instance state or presentation.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME_USER_MODULES"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_RUNTIME_SYMBOL_REGISTRY",
-        "TOPIC_CORE_IDENTITY_RESOLUTION"
-      ],
-      "member_refs": [
-        "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT",
-        "USERMODULE_SEMANTICS_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_UM_REGISTER",
-        "OP_UM_RESOLVE",
-        "OP_UM_ENUMERATE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_USERMODULE_REGISTRY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define UserModule identity and registry semantics so each module has stable logical identity independent of filesystem path, runtime instance state or presentation.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_UM_REGISTER",
-        "name": "Register UserModule definition",
-        "inputs": [
-          "validated UserModule definition"
-        ],
-        "outputs": [
-          "registered UserModule identity"
-        ],
-        "errors": [
-          "identity collision",
-          "invalid module shape"
-        ],
-        "side_effects": [
-          "UserModule registry updated"
-        ]
-      },
-      {
-        "id": "OP_UM_RESOLVE",
-        "name": "Resolve UserModule identity",
-        "inputs": [
-          "literal UserModule id"
-        ],
-        "outputs": [
-          "exact module definition"
-        ],
-        "errors": [
-          "module unresolved",
-          "module ambiguous"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_UM_ENUMERATE",
-        "name": "Enumerate UserModules",
-        "inputs": [
-          "registry filter"
-        ],
-        "outputs": [
-          "registered module identities"
-        ],
-        "errors": [],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "symbol_root": "#UM",
-    "identity_rule": "UserModule identity is explicit and stable; filesystem path is storage, not identity.",
-    "registry_rule": "#UM resolves registered UserModule semantic identities and instances.",
-    "collision_rule": "Duplicate active logical identities are rejected.",
-    "path_rule": "Moving a module source file does not redefine its semantic identity when the declared identity is unchanged.",
-    "authority_rule": "Registration does not grant runtime authority beyond the module's declared capabilities and applicable policy.",
-    "instance_rule": "Module definition identity and runtime instance identity are separate when multiple instances are permitted."
-  },
   "constraints": {
     "invariants": [
       {
@@ -170,10 +339,134 @@
       "purpose": "UserModule identities resolve deterministically."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_USERMODULE_REGISTRY",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define UserModule identity and registry semantics so each module has stable logical identity independent of filesystem path, runtime instance state or presentation.",
     "notes": [
       "Unlocked until reconciled against existing UserModule contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+          "name": "UserModule Registry",
+          "purpose": "Define UserModule identity and registry semantics so each module has stable logical identity independent of filesystem path, runtime instance state or presentation.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME_USER_MODULES"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "TOPIC_CORE_IDENTITY_RESOLUTION"
+          ],
+          "member_refs": [
+            "AIGMOS_RUNTIME_USERMODULE_REGISTRY_CONTRACT",
+            "USERMODULE_SEMANTICS_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_UM_REGISTER",
+            "OP_UM_RESOLVE",
+            "OP_UM_ENUMERATE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_UM_REGISTER",
+            "name": "Register UserModule definition",
+            "inputs": [
+              "validated UserModule definition"
+            ],
+            "outputs": [
+              "registered UserModule identity"
+            ],
+            "errors": [
+              "identity collision",
+              "invalid module shape"
+            ],
+            "side_effects": [
+              "UserModule registry updated"
+            ]
+          },
+          {
+            "id": "OP_UM_RESOLVE",
+            "name": "Resolve UserModule identity",
+            "inputs": [
+              "literal UserModule id"
+            ],
+            "outputs": [
+              "exact module definition"
+            ],
+            "errors": [
+              "module unresolved",
+              "module ambiguous"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_UM_ENUMERATE",
+            "name": "Enumerate UserModules",
+            "inputs": [
+              "registry filter"
+            ],
+            "outputs": [
+              "registered module identities"
+            ],
+            "errors": [],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "symbol_root": "#UM",
+        "identity_rule": "UserModule identity is explicit and stable; filesystem path is storage, not identity.",
+        "registry_rule": "#UM resolves registered UserModule semantic identities and instances.",
+        "collision_rule": "Duplicate active logical identities are rejected.",
+        "path_rule": "Moving a module source file does not redefine its semantic identity when the declared identity is unchanged.",
+        "authority_rule": "Registration does not grant runtime authority beyond the module's declared capabilities and applicable policy.",
+        "instance_rule": "Module definition identity and runtime instance identity are separate when multiple instances are permitted."
+      }
+    }
   }
 }

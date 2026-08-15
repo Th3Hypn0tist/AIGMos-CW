@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_CORE_TOPIC_ROOT",
@@ -9,8 +9,7 @@
     "type": "canonical_topic_root",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Provide the recursive Topic root for canonical Core semantics. Core groups foundational semantics without taking semantic ownership from the contracts and mechanisms it groups.",
   "scope": {
     "owns": [
@@ -23,317 +22,114 @@
       "dependencies implied solely by Topic membership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_CORE_TOPIC_ROOT",
+      "name": "Core",
+      "entity_type_ref": "canonical_topic_root",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_CORE_TOPIC_ROOT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "topic_root": true,
+            "classification_rule": "A canonical identity may participate in multiple Topics. Direct child Topic membership inherits all ancestor Topic grouping contexts.",
+            "composition_rule": "Topics may compose existing Topics to describe mechanisms without duplicating their already-defined semantics.",
+            "outsider_rule": "An active identity with no direct or inherited Topic membership must be explicitly exposed as an Outsider rather than hidden or guessed into a Topic."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_TOPIC_ROOT::LINK::TOPIC_MEMBER_TOPIC_CORE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "AIGMOS_CORE_TOPIC_ROOT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_TOPIC_ROOT::LINK::TOPIC_MEMBER_TOPIC_CORE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "CORE_TOPIC_GROUPING_ONLY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_TOPIC_ROOT::LINK::TOPIC_MEMBER_TOPIC_CORE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "CORE_TOPIC_SEMANTIC_LEAK",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_TOPIC_ROOT::LINK::TOPIC_MEMBER_TOPIC_CORE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "CORE_TOPIC_PATH_INFERENCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/core/00_Core_Topics.json"
+      }
+    },
     {
       "id": "TOPIC_CORE",
       "name": "Core",
-      "purpose": "Group canonical foundational mechanisms and semantic contracts that participate in AIGMos Core.",
-      "parent_topic_refs": [],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_CORE_TOPIC_ROOT",
-        "CORE_TOPIC_GROUPING_ONLY",
-        "CORE_TOPIC_SEMANTIC_LEAK",
-        "CORE_TOPIC_PATH_INFERENCE"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
         {
-          "id": "TOPIC_CORE_RUNTIME",
-          "name": "Runtime",
-          "purpose": "Group runtime-facing Core mechanisms. Runtime intentionally spans multiple kinds of mechanism and is refined by child Topics rather than treated as one semantic primitive.",
-          "parent_topic_refs": [
-            "TOPIC_CORE"
-          ],
-          "composed_topic_refs": [],
-          "member_refs": [],
-          "relation_refs": [],
-          "operation_refs": [],
-          "event_refs": [],
-          "flow_refs": [],
-          "child_topics": [
-            {
-              "id": "TOPIC_CORE_RUNTIME_AUTOMATION",
-              "name": "Automation",
-              "purpose": "Group runtime automation mechanisms and their explicit execution surfaces.",
-              "parent_topic_refs": [
-                "TOPIC_CORE_RUNTIME"
-              ],
-              "composed_topic_refs": [],
-              "member_refs": [],
-              "relation_refs": [],
-              "operation_refs": [],
-              "event_refs": [],
-              "flow_refs": [],
-              "child_topics": [
-                {
-                  "child_topics": [],
-                  "composed_topic_refs": [
-                    "TOPIC_CORE_CAUSALITY",
-                    "TOPIC_RUNTIME_DISPATCHER"
-                  ],
-                  "event_refs": [],
-                  "flow_refs": [],
-                  "id": "TOPIC_TRIGGER",
-                  "member_refs": [
-                    "AIGMOS_RUNTIME_TRIGGER_CONTRACT"
-                  ],
-                  "metadata": {},
-                  "name": "Trigger",
-                  "operation_refs": [
-                    "OP_TRIGGER_REGISTER",
-                    "OP_TRIGGER_EVALUATE",
-                    "OP_TRIGGER_FIRE"
-                  ],
-                  "parent_topic_refs": [
-                    "TOPIC_CORE_RUNTIME_AUTOMATION"
-                  ],
-                  "purpose": "Reconciled source purposes: [1] Group Trigger semantics and mechanisms. Membership inherits Automation, Runtime and Core grouping context. [2] Define Trigger as the exclusive ! automation primitive: an inert declaration that observes an explicit target, evaluates bounded predicates, and produces an explicit Core-owned automation dispatch request when matched.",
-                  "relation_refs": []
-                },
-                {
-                  "child_topics": [],
-                  "composed_topic_refs": [
-                    "TOPIC_CORE_VALUES",
-                    "TOPIC_CORE_PROVENANCE",
-                    "TOPIC_RUNTIME_DISPATCHER"
-                  ],
-                  "event_refs": [],
-                  "flow_refs": [],
-                  "id": "TOPIC_EVENT",
-                  "member_refs": [
-                    "AIGMOS_RUNTIME_EVENT_CONTRACT"
-                  ],
-                  "metadata": {},
-                  "name": "Event",
-                  "operation_refs": [
-                    "OP_EVENT_CREATE",
-                    "OP_EVENT_EMIT",
-                    "OP_EVENT_ROUTE"
-                  ],
-                  "parent_topic_refs": [
-                    "TOPIC_CORE_RUNTIME_AUTOMATION"
-                  ],
-                  "purpose": "Reconciled source purposes: [1] Group Event semantics and mechanisms. Membership inherits Automation, Runtime and Core grouping context. [2] Define Event as the exclusive @ automation occurrence primitive: inert event identity and payload with explicit cause/provenance, never authority and never implicit command execution.",
-                  "relation_refs": []
-                },
-                {
-                  "child_topics": [],
-                  "composed_topic_refs": [
-                    "TOPIC_RUNTIME_DISPATCHER",
-                    "TOPIC_CORE_BOUNDED_OPERATION",
-                    "TOPIC_RUNTIME_DEFINITION_STATE"
-                  ],
-                  "event_refs": [],
-                  "flow_refs": [],
-                  "id": "TOPIC_RUNNER",
-                  "member_refs": [
-                    "AIGMOS_RUNTIME_RUNNER_CONTRACT"
-                  ],
-                  "metadata": {},
-                  "name": "Runner",
-                  "operation_refs": [
-                    "OP_RUNNER_START",
-                    "OP_RUNNER_STATUS",
-                    "OP_RUNNER_STOP",
-                    "OP_RUNNER_CLEANUP"
-                  ],
-                  "parent_topic_refs": [
-                    "TOPIC_CORE_RUNTIME_AUTOMATION"
-                  ],
-                  "purpose": "Reconciled source purposes: [1] Group Runner semantics and mechanisms. Membership inherits Automation, Runtime and Core grouping context. [2] Define Runner as the exclusive % tracked runtime execution-lifecycle primitive with deterministic start/status/stop/error-cleanup behavior.",
-                  "relation_refs": []
-                },
-                {
-                  "child_topics": [],
-                  "composed_topic_refs": [
-                    "TOPIC_RUNTIME_COMMAND_REGISTRY",
-                    "TOPIC_RUNTIME_DISPATCHER",
-                    "TOPIC_CORE_BOUNDED_OPERATION"
-                  ],
-                  "event_refs": [],
-                  "flow_refs": [],
-                  "id": "TOPIC_ROUTINE",
-                  "member_refs": [
-                    "AIGMOS_RUNTIME_ROUTINE_CONTRACT"
-                  ],
-                  "metadata": {},
-                  "name": "Routine",
-                  "operation_refs": [
-                    "OP_ROUTINE_REGISTER",
-                    "OP_ROUTINE_RESOLVE",
-                    "OP_ROUTINE_DISPATCH"
-                  ],
-                  "parent_topic_refs": [
-                    "TOPIC_CORE_RUNTIME_AUTOMATION"
-                  ],
-                  "purpose": "Reconciled source purposes: [1] Group authored routine definitions and their bounded dispatch mechanisms. [2] Define #R as the inert authored Routine definition registry and Routine dispatch as explicit bounded Core-owned command/operation sequencing.",
-                  "relation_refs": []
-                }
-              ],
-              "metadata": {}
-            },
-            {
-              "id": "TOPIC_CORE_RUNTIME_SYMBOLS",
-              "name": "Symbols",
-              "purpose": "Group runtime symbol roots, symbol resolution and symbol-addressable semantic surfaces.",
-              "parent_topic_refs": [
-                "TOPIC_CORE_RUNTIME"
-              ],
-              "composed_topic_refs": [],
-              "member_refs": [],
-              "relation_refs": [],
-              "operation_refs": [],
-              "event_refs": [],
-              "flow_refs": [],
-              "child_topics": [],
-              "metadata": {}
-            },
-            {
-              "id": "TOPIC_CORE_RUNTIME_QUEUE",
-              "name": "Queue",
-              "purpose": "Group queue semantics and queue-driven runtime mechanisms.",
-              "parent_topic_refs": [
-                "TOPIC_CORE_RUNTIME"
-              ],
-              "composed_topic_refs": [],
-              "member_refs": [],
-              "relation_refs": [],
-              "operation_refs": [],
-              "event_refs": [],
-              "flow_refs": [],
-              "child_topics": [],
-              "metadata": {}
-            },
-            {
-              "id": "TOPIC_CORE_RUNTIME_USER_MODULES",
-              "name": "UserModules",
-              "purpose": "Group UserModule runtime semantics and lifecycle surfaces.",
-              "parent_topic_refs": [
-                "TOPIC_CORE_RUNTIME"
-              ],
-              "composed_topic_refs": [],
-              "member_refs": [],
-              "relation_refs": [],
-              "operation_refs": [],
-              "event_refs": [],
-              "flow_refs": [],
-              "child_topics": [],
-              "metadata": {}
-            },
-            {
-              "id": "TOPIC_CORE_RUNTIME_TOOLS",
-              "name": "Tools",
-              "purpose": "Group runtime tool invocation and validation surfaces.",
-              "parent_topic_refs": [
-                "TOPIC_CORE_RUNTIME"
-              ],
-              "composed_topic_refs": [],
-              "member_refs": [],
-              "relation_refs": [],
-              "operation_refs": [],
-              "event_refs": [],
-              "flow_refs": [],
-              "child_topics": [],
-              "metadata": {}
-            },
-            {
-              "id": "TOPIC_CORE_RUNTIME_IO",
-              "name": "I/O",
-              "purpose": "Group runtime input and output surfaces without implying transport or authority semantics.",
-              "parent_topic_refs": [
-                "TOPIC_CORE_RUNTIME"
-              ],
-              "composed_topic_refs": [],
-              "member_refs": [],
-              "relation_refs": [],
-              "operation_refs": [],
-              "event_refs": [],
-              "flow_refs": [],
-              "child_topics": [],
-              "metadata": {}
-            },
-            {
-              "id": "TOPIC_CORE_RUNTIME_AI",
-              "name": "AI Runtime",
-              "purpose": "Group AI/model-facing runtime mechanisms while preserving Runtime as execution authority.",
-              "parent_topic_refs": [
-                "TOPIC_CORE_RUNTIME"
-              ],
-              "composed_topic_refs": [],
-              "member_refs": [],
-              "relation_refs": [],
-              "operation_refs": [],
-              "event_refs": [],
-              "flow_refs": [],
-              "child_topics": [],
-              "metadata": {}
-            }
-          ],
-          "metadata": {}
-        },
-        {
-          "id": "TOPIC_CORE_META",
-          "name": "Meta",
-          "purpose": "Group Meta-owned schema, composition and semantic topology mechanisms.",
-          "parent_topic_refs": [
-            "TOPIC_CORE"
-          ],
-          "composed_topic_refs": [],
-          "member_refs": [],
-          "relation_refs": [],
-          "operation_refs": [],
-          "event_refs": [],
-          "flow_refs": [],
-          "child_topics": [],
-          "metadata": {}
-        },
-        {
-          "id": "TOPIC_CORE_RELATIONS",
-          "name": "Relations",
-          "purpose": "Group relation topology and relation ownership semantics while preserving relation_type authority in the owning Meta.",
-          "parent_topic_refs": [
-            "TOPIC_CORE"
-          ],
-          "composed_topic_refs": [
-            "TOPIC_CORE_META"
-          ],
-          "member_refs": [],
-          "relation_refs": [],
-          "operation_refs": [],
-          "event_refs": [],
-          "flow_refs": [],
-          "child_topics": [],
-          "metadata": {}
+          "id": "TOPIC_CORE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Group canonical foundational mechanisms and semantic contracts that participate in AIGMos Core.",
+            "metadata": {}
+          }
         }
-      ],
-      "metadata": {}
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "topic_root": true,
-    "classification_rule": "A canonical identity may participate in multiple Topics. Direct child Topic membership inherits all ancestor Topic grouping contexts.",
-    "composition_rule": "Topics may compose existing Topics to describe mechanisms without duplicating their already-defined semantics.",
-    "outsider_rule": "An active identity with no direct or inherited Topic membership must be explicitly exposed as an Outsider rather than hidden or guessed into a Topic."
-  },
   "constraints": {
     "invariants": [
       {
@@ -355,10 +151,343 @@
     ]
   },
   "references": [],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_CORE_TOPIC_ROOT::GAP::TOPIC_child_topics_TOPIC_CORE",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field child_topics is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_CORE",
+      "field_path": "topics[0].child_topics"
+    }
+  ],
   "prose": {
     "summary": "Core Topic root for recursive discovery and cross-cutting canonical trace views.",
     "notes": [
       "Initial 1.4 Topic scaffold. Member references remain intentionally empty until each source contract is migrated and validated against Contract Format 1.4."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_CORE",
+          "name": "Core",
+          "purpose": "Group canonical foundational mechanisms and semantic contracts that participate in AIGMos Core.",
+          "parent_topic_refs": [],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_CORE_TOPIC_ROOT",
+            "CORE_TOPIC_GROUPING_ONLY",
+            "CORE_TOPIC_SEMANTIC_LEAK",
+            "CORE_TOPIC_PATH_INFERENCE"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [
+            {
+              "id": "TOPIC_CORE_RUNTIME",
+              "name": "Runtime",
+              "purpose": "Group runtime-facing Core mechanisms. Runtime intentionally spans multiple kinds of mechanism and is refined by child Topics rather than treated as one semantic primitive.",
+              "parent_topic_refs": [
+                "TOPIC_CORE"
+              ],
+              "composed_topic_refs": [],
+              "member_refs": [],
+              "relation_refs": [],
+              "operation_refs": [],
+              "event_refs": [],
+              "flow_refs": [],
+              "child_topics": [
+                {
+                  "id": "TOPIC_CORE_RUNTIME_AUTOMATION",
+                  "name": "Automation",
+                  "purpose": "Group runtime automation mechanisms and their explicit execution surfaces.",
+                  "parent_topic_refs": [
+                    "TOPIC_CORE_RUNTIME"
+                  ],
+                  "composed_topic_refs": [],
+                  "member_refs": [],
+                  "relation_refs": [],
+                  "operation_refs": [],
+                  "event_refs": [],
+                  "flow_refs": [],
+                  "child_topics": [
+                    {
+                      "child_topics": [],
+                      "composed_topic_refs": [
+                        "TOPIC_CORE_CAUSALITY",
+                        "TOPIC_RUNTIME_DISPATCHER"
+                      ],
+                      "event_refs": [],
+                      "flow_refs": [],
+                      "id": "TOPIC_TRIGGER",
+                      "member_refs": [
+                        "AIGMOS_RUNTIME_TRIGGER_CONTRACT"
+                      ],
+                      "metadata": {},
+                      "name": "Trigger",
+                      "operation_refs": [
+                        "OP_TRIGGER_REGISTER",
+                        "OP_TRIGGER_EVALUATE",
+                        "OP_TRIGGER_FIRE"
+                      ],
+                      "parent_topic_refs": [
+                        "TOPIC_CORE_RUNTIME_AUTOMATION"
+                      ],
+                      "purpose": "Reconciled source purposes: [1] Group Trigger semantics and mechanisms. Membership inherits Automation, Runtime and Core grouping context. [2] Define Trigger as the exclusive ! automation primitive: an inert declaration that observes an explicit target, evaluates bounded predicates, and produces an explicit Core-owned automation dispatch request when matched.",
+                      "relation_refs": []
+                    },
+                    {
+                      "child_topics": [],
+                      "composed_topic_refs": [
+                        "TOPIC_CORE_VALUES",
+                        "TOPIC_CORE_PROVENANCE",
+                        "TOPIC_RUNTIME_DISPATCHER"
+                      ],
+                      "event_refs": [],
+                      "flow_refs": [],
+                      "id": "TOPIC_EVENT",
+                      "member_refs": [
+                        "AIGMOS_RUNTIME_EVENT_CONTRACT"
+                      ],
+                      "metadata": {},
+                      "name": "Event",
+                      "operation_refs": [
+                        "OP_EVENT_CREATE",
+                        "OP_EVENT_EMIT",
+                        "OP_EVENT_ROUTE"
+                      ],
+                      "parent_topic_refs": [
+                        "TOPIC_CORE_RUNTIME_AUTOMATION"
+                      ],
+                      "purpose": "Reconciled source purposes: [1] Group Event semantics and mechanisms. Membership inherits Automation, Runtime and Core grouping context. [2] Define Event as the exclusive @ automation occurrence primitive: inert event identity and payload with explicit cause/provenance, never authority and never implicit command execution.",
+                      "relation_refs": []
+                    },
+                    {
+                      "child_topics": [],
+                      "composed_topic_refs": [
+                        "TOPIC_RUNTIME_DISPATCHER",
+                        "TOPIC_CORE_BOUNDED_OPERATION",
+                        "TOPIC_RUNTIME_DEFINITION_STATE"
+                      ],
+                      "event_refs": [],
+                      "flow_refs": [],
+                      "id": "TOPIC_RUNNER",
+                      "member_refs": [
+                        "AIGMOS_RUNTIME_RUNNER_CONTRACT"
+                      ],
+                      "metadata": {},
+                      "name": "Runner",
+                      "operation_refs": [
+                        "OP_RUNNER_START",
+                        "OP_RUNNER_STATUS",
+                        "OP_RUNNER_STOP",
+                        "OP_RUNNER_CLEANUP"
+                      ],
+                      "parent_topic_refs": [
+                        "TOPIC_CORE_RUNTIME_AUTOMATION"
+                      ],
+                      "purpose": "Reconciled source purposes: [1] Group Runner semantics and mechanisms. Membership inherits Automation, Runtime and Core grouping context. [2] Define Runner as the exclusive % tracked runtime execution-lifecycle primitive with deterministic start/status/stop/error-cleanup behavior.",
+                      "relation_refs": []
+                    },
+                    {
+                      "child_topics": [],
+                      "composed_topic_refs": [
+                        "TOPIC_RUNTIME_COMMAND_REGISTRY",
+                        "TOPIC_RUNTIME_DISPATCHER",
+                        "TOPIC_CORE_BOUNDED_OPERATION"
+                      ],
+                      "event_refs": [],
+                      "flow_refs": [],
+                      "id": "TOPIC_ROUTINE",
+                      "member_refs": [
+                        "AIGMOS_RUNTIME_ROUTINE_CONTRACT"
+                      ],
+                      "metadata": {},
+                      "name": "Routine",
+                      "operation_refs": [
+                        "OP_ROUTINE_REGISTER",
+                        "OP_ROUTINE_RESOLVE",
+                        "OP_ROUTINE_DISPATCH"
+                      ],
+                      "parent_topic_refs": [
+                        "TOPIC_CORE_RUNTIME_AUTOMATION"
+                      ],
+                      "purpose": "Reconciled source purposes: [1] Group authored routine definitions and their bounded dispatch mechanisms. [2] Define #R as the inert authored Routine definition registry and Routine dispatch as explicit bounded Core-owned command/operation sequencing.",
+                      "relation_refs": []
+                    }
+                  ],
+                  "metadata": {}
+                },
+                {
+                  "id": "TOPIC_CORE_RUNTIME_SYMBOLS",
+                  "name": "Symbols",
+                  "purpose": "Group runtime symbol roots, symbol resolution and symbol-addressable semantic surfaces.",
+                  "parent_topic_refs": [
+                    "TOPIC_CORE_RUNTIME"
+                  ],
+                  "composed_topic_refs": [],
+                  "member_refs": [],
+                  "relation_refs": [],
+                  "operation_refs": [],
+                  "event_refs": [],
+                  "flow_refs": [],
+                  "child_topics": [],
+                  "metadata": {}
+                },
+                {
+                  "id": "TOPIC_CORE_RUNTIME_QUEUE",
+                  "name": "Queue",
+                  "purpose": "Group queue semantics and queue-driven runtime mechanisms.",
+                  "parent_topic_refs": [
+                    "TOPIC_CORE_RUNTIME"
+                  ],
+                  "composed_topic_refs": [],
+                  "member_refs": [],
+                  "relation_refs": [],
+                  "operation_refs": [],
+                  "event_refs": [],
+                  "flow_refs": [],
+                  "child_topics": [],
+                  "metadata": {}
+                },
+                {
+                  "id": "TOPIC_CORE_RUNTIME_USER_MODULES",
+                  "name": "UserModules",
+                  "purpose": "Group UserModule runtime semantics and lifecycle surfaces.",
+                  "parent_topic_refs": [
+                    "TOPIC_CORE_RUNTIME"
+                  ],
+                  "composed_topic_refs": [],
+                  "member_refs": [],
+                  "relation_refs": [],
+                  "operation_refs": [],
+                  "event_refs": [],
+                  "flow_refs": [],
+                  "child_topics": [],
+                  "metadata": {}
+                },
+                {
+                  "id": "TOPIC_CORE_RUNTIME_TOOLS",
+                  "name": "Tools",
+                  "purpose": "Group runtime tool invocation and validation surfaces.",
+                  "parent_topic_refs": [
+                    "TOPIC_CORE_RUNTIME"
+                  ],
+                  "composed_topic_refs": [],
+                  "member_refs": [],
+                  "relation_refs": [],
+                  "operation_refs": [],
+                  "event_refs": [],
+                  "flow_refs": [],
+                  "child_topics": [],
+                  "metadata": {}
+                },
+                {
+                  "id": "TOPIC_CORE_RUNTIME_IO",
+                  "name": "I/O",
+                  "purpose": "Group runtime input and output surfaces without implying transport or authority semantics.",
+                  "parent_topic_refs": [
+                    "TOPIC_CORE_RUNTIME"
+                  ],
+                  "composed_topic_refs": [],
+                  "member_refs": [],
+                  "relation_refs": [],
+                  "operation_refs": [],
+                  "event_refs": [],
+                  "flow_refs": [],
+                  "child_topics": [],
+                  "metadata": {}
+                },
+                {
+                  "id": "TOPIC_CORE_RUNTIME_AI",
+                  "name": "AI Runtime",
+                  "purpose": "Group AI/model-facing runtime mechanisms while preserving Runtime as execution authority.",
+                  "parent_topic_refs": [
+                    "TOPIC_CORE_RUNTIME"
+                  ],
+                  "composed_topic_refs": [],
+                  "member_refs": [],
+                  "relation_refs": [],
+                  "operation_refs": [],
+                  "event_refs": [],
+                  "flow_refs": [],
+                  "child_topics": [],
+                  "metadata": {}
+                }
+              ],
+              "metadata": {}
+            },
+            {
+              "id": "TOPIC_CORE_META",
+              "name": "Meta",
+              "purpose": "Group Meta-owned schema, composition and semantic topology mechanisms.",
+              "parent_topic_refs": [
+                "TOPIC_CORE"
+              ],
+              "composed_topic_refs": [],
+              "member_refs": [],
+              "relation_refs": [],
+              "operation_refs": [],
+              "event_refs": [],
+              "flow_refs": [],
+              "child_topics": [],
+              "metadata": {}
+            },
+            {
+              "id": "TOPIC_CORE_RELATIONS",
+              "name": "Relations",
+              "purpose": "Group relation topology and relation ownership semantics while preserving relation_type authority in the owning Meta.",
+              "parent_topic_refs": [
+                "TOPIC_CORE"
+              ],
+              "composed_topic_refs": [
+                "TOPIC_CORE_META"
+              ],
+              "member_refs": [],
+              "relation_refs": [],
+              "operation_refs": [],
+              "event_refs": [],
+              "flow_refs": [],
+              "child_topics": [],
+              "metadata": {}
+            }
+          ],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "topic_root": true,
+        "classification_rule": "A canonical identity may participate in multiple Topics. Direct child Topic membership inherits all ancestor Topic grouping contexts.",
+        "composition_rule": "Topics may compose existing Topics to describe mechanisms without duplicating their already-defined semantics.",
+        "outsider_rule": "An active identity with no direct or inherited Topic membership must be explicitly exposed as an Outsider rather than hidden or guessed into a Topic."
+      }
+    }
   }
 }

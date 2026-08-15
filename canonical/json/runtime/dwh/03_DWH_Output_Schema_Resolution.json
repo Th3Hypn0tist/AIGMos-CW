@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define DWH output from the resolved semantic schema and applicable authorization context rather than mirroring arbitrary input shape or transport payload.",
   "scope": {
     "owns": [
@@ -22,97 +21,287 @@
       "remote policy owned elsewhere"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT",
+      "name": "DWH Output Schema Resolution",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT::OPERATIONS::OP_DWH_RESOLVE_OUTPUT_SCHEMA",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_DWH_RESOLVE_OUTPUT_SCHEMA",
+            "name": "Resolve DWH output schema",
+            "inputs": [
+              "semantic target",
+              "schema ownership context"
+            ],
+            "outputs": [
+              "exact output schema"
+            ],
+            "errors": [
+              "schema unresolved",
+              "schema ambiguous"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT::OPERATIONS::OP_DWH_VALIDATE_OUTPUT",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_DWH_VALIDATE_OUTPUT",
+            "name": "Validate DWH output",
+            "inputs": [
+              "candidate output",
+              "resolved schema",
+              "authorization context"
+            ],
+            "outputs": [
+              "validated output"
+            ],
+            "errors": [
+              "schema violation",
+              "authorization denied"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "schema_rule": "Output schema is resolved from the owning semantic schema/Meta context.",
+            "input_output_rule": "Input shape does not determine output shape.",
+            "authorization_rule": "Output is filtered by applicable data/remote authorization after schema resolution.",
+            "unknown_field_rule": "Fields outside resolved schema are not emitted unless explicit extension semantics permit them.",
+            "projection_rule": "Projection may select a subset but may not invent fields.",
+            "trace_rule": "Output retains schema provenance and authorization provenance."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_OUTPUT_SCHEMA_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME_IO",
+            "child_ref": "TOPIC_DWH_OUTPUT_SCHEMA",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_OUTPUT_SCHEMA_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_OUTPUT_SCHEMA",
+            "child_ref": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_OUTPUT_SCHEMA_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_OUTPUT_SCHEMA",
+            "child_ref": "DWH_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_OUTPUT_SCHEMA_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_OUTPUT_SCHEMA",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_OUTPUT_SCHEMA_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_OUTPUT_SCHEMA",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_OUTPUT_SCHEMA_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_OUTPUT_SCHEMA",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_OUTPUT_SCHEMA_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_OUTPUT_SCHEMA",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_OUTPUT_SCHEMA_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_OUTPUT_SCHEMA",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_OUTPUT_SCHEMA_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_OUTPUT_SCHEMA",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_DWH_OUTPUT_SCHEMA_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_DWH_OUTPUT_SCHEMA",
+            "child_ref": "TOPIC_CORE_SCHEMA",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_DWH_OUTPUT_SCHEMA_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_DWH_OUTPUT_SCHEMA",
+            "child_ref": "TOPIC_DWH_ORIGIN_SCOPE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_DWH_OUTPUT_SCHEMA_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_DWH_OUTPUT_SCHEMA",
+            "child_ref": "TOPIC_CORE_PROVENANCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/dwh/03_DWH_Output_Schema_Resolution.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_OUTPUT_SCHEMA",
       "name": "DWH Output Schema",
-      "purpose": "Define DWH output from the resolved semantic schema and applicable authorization context rather than mirroring arbitrary input shape or transport payload.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME_IO"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_SCHEMA",
-        "TOPIC_DWH_ORIGIN_SCOPE",
-        "TOPIC_CORE_PROVENANCE"
-      ],
-      "member_refs": [
-        "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT",
-        "DWH_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_DWH_RESOLVE_OUTPUT_SCHEMA",
-        "OP_DWH_VALIDATE_OUTPUT"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_OUTPUT_SCHEMA::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define DWH output from the resolved semantic schema and applicable authorization context rather than mirroring arbitrary input shape or transport payload.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_DWH_RESOLVE_OUTPUT_SCHEMA",
-        "name": "Resolve DWH output schema",
-        "inputs": [
-          "semantic target",
-          "schema ownership context"
-        ],
-        "outputs": [
-          "exact output schema"
-        ],
-        "errors": [
-          "schema unresolved",
-          "schema ambiguous"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_DWH_VALIDATE_OUTPUT",
-        "name": "Validate DWH output",
-        "inputs": [
-          "candidate output",
-          "resolved schema",
-          "authorization context"
-        ],
-        "outputs": [
-          "validated output"
-        ],
-        "errors": [
-          "schema violation",
-          "authorization denied"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "schema_rule": "Output schema is resolved from the owning semantic schema/Meta context.",
-    "input_output_rule": "Input shape does not determine output shape.",
-    "authorization_rule": "Output is filtered by applicable data/remote authorization after schema resolution.",
-    "unknown_field_rule": "Fields outside resolved schema are not emitted unless explicit extension semantics permit them.",
-    "projection_rule": "Projection may select a subset but may not invent fields.",
-    "trace_rule": "Output retains schema provenance and authorization provenance."
-  },
   "constraints": {
     "invariants": [
       {
@@ -165,10 +354,123 @@
       "purpose": "Input and output scopes remain separate."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_DWH_OUTPUT_SCHEMA",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_DWH_OUTPUT_SCHEMA",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define DWH output from the resolved semantic schema and applicable authorization context rather than mirroring arbitrary input shape or transport payload.",
     "notes": [
       "Unlocked until reconciled against existing DWH/IAM/AC contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_OUTPUT_SCHEMA",
+          "name": "DWH Output Schema",
+          "purpose": "Define DWH output from the resolved semantic schema and applicable authorization context rather than mirroring arbitrary input shape or transport payload.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME_IO"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_SCHEMA",
+            "TOPIC_DWH_ORIGIN_SCOPE",
+            "TOPIC_CORE_PROVENANCE"
+          ],
+          "member_refs": [
+            "AIGMOS_DWH_OUTPUT_SCHEMA_RESOLUTION_CONTRACT",
+            "DWH_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_DWH_RESOLVE_OUTPUT_SCHEMA",
+            "OP_DWH_VALIDATE_OUTPUT"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_DWH_RESOLVE_OUTPUT_SCHEMA",
+            "name": "Resolve DWH output schema",
+            "inputs": [
+              "semantic target",
+              "schema ownership context"
+            ],
+            "outputs": [
+              "exact output schema"
+            ],
+            "errors": [
+              "schema unresolved",
+              "schema ambiguous"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_DWH_VALIDATE_OUTPUT",
+            "name": "Validate DWH output",
+            "inputs": [
+              "candidate output",
+              "resolved schema",
+              "authorization context"
+            ],
+            "outputs": [
+              "validated output"
+            ],
+            "errors": [
+              "schema violation",
+              "authorization denied"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "schema_rule": "Output schema is resolved from the owning semantic schema/Meta context.",
+        "input_output_rule": "Input shape does not determine output shape.",
+        "authorization_rule": "Output is filtered by applicable data/remote authorization after schema resolution.",
+        "unknown_field_rule": "Fields outside resolved schema are not emitted unless explicit extension semantics permit them.",
+        "projection_rule": "Projection may select a subset but may not invent fields.",
+        "trace_rule": "Output retains schema provenance and authorization provenance."
+      }
+    }
   }
 }

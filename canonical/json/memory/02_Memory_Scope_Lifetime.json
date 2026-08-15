@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_MEMORY_SCOPE_LIFETIME_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define explicit scope and lifetime semantics for memory records so user-, identity-, Project-, module-, instance- and system-scoped memories cannot leak across boundaries by retrieval heuristics.",
   "scope": {
     "owns": [
@@ -22,64 +21,199 @@
       "unrelated domain semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_MEMORY_SCOPE_LIFETIME_CONTRACT",
+      "name": "Memory Scope and Lifetime",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_MEMORY_SCOPE_LIFETIME_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "scope_examples": [
+              "identity",
+              "Project",
+              "UserModule instance",
+              "AIGMos instance",
+              "system",
+              "explicit shared scope"
+            ],
+            "scope_rule": "Every record has an explicit scope owner/boundary.",
+            "visibility_rule": "Retrieval candidates are filtered by applicable scope and authorization before relevance ranking.",
+            "lifetime_rule": "Retention may be persistent, bounded-duration, event-bounded or explicit-until-removed.",
+            "expiry_rule": "Expired memory is unavailable to normal retrieval and remains historical only where explicit retention/audit policy says so.",
+            "shared_rule": "Cross-scope sharing requires explicit relation/policy.",
+            "inheritance_rule": "No scope inheritance is assumed unless explicitly declared."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_MEMORY_SCOPE_LIFETIME_CONTRACT::LINK::TOPIC_PARENT_TOPIC_MEMORY_SCOPE_LIFETIME_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_NAMESPACE_MEM",
+            "child_ref": "TOPIC_MEMORY_SCOPE_LIFETIME",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_MEMORY_SCOPE_LIFETIME_CONTRACT::LINK::TOPIC_PARENT_TOPIC_MEMORY_SCOPE_LIFETIME_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_PROVENANCE",
+            "child_ref": "TOPIC_MEMORY_SCOPE_LIFETIME",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_MEMORY_SCOPE_LIFETIME_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MEMORY_SCOPE_LIFETIME_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MEMORY_SCOPE_LIFETIME",
+            "child_ref": "AIGMOS_MEMORY_SCOPE_LIFETIME_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_MEMORY_SCOPE_LIFETIME_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MEMORY_SCOPE_LIFETIME_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MEMORY_SCOPE_LIFETIME",
+            "child_ref": "MEMORY_EXPLICIT_DATA",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_MEMORY_SCOPE_LIFETIME_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MEMORY_SCOPE_LIFETIME_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MEMORY_SCOPE_LIFETIME",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_MEMORY_SCOPE_LIFETIME_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MEMORY_SCOPE_LIFETIME_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MEMORY_SCOPE_LIFETIME",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_MEMORY_SCOPE_LIFETIME_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MEMORY_SCOPE_LIFETIME_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MEMORY_SCOPE_LIFETIME",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_MEMORY_SCOPE_LIFETIME_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MEMORY_SCOPE_LIFETIME_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MEMORY_SCOPE_LIFETIME",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_MEMORY_SCOPE_LIFETIME_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MEMORY_SCOPE_LIFETIME_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MEMORY_SCOPE_LIFETIME",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/memory/02_Memory_Scope_Lifetime.json"
+      }
+    },
     {
       "id": "TOPIC_MEMORY_SCOPE_LIFETIME",
       "name": "Memory Scope and Lifetime",
-      "purpose": "Define explicit scope and lifetime semantics for memory records so user-, identity-, Project-, module-, instance- and system-scoped memories cannot leak across boundaries by retrieval heuristics.",
-      "parent_topic_refs": [
-        "TOPIC_NAMESPACE_MEM",
-        "TOPIC_CORE_PROVENANCE"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_MEMORY_SCOPE_LIFETIME_CONTRACT",
-        "MEMORY_EXPLICIT_DATA",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_MEMORY_SCOPE_LIFETIME::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define explicit scope and lifetime semantics for memory records so user-, identity-, Project-, module-, instance- and system-scoped memories cannot leak across boundaries by retrieval heuristics.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "scope_examples": [
-      "identity",
-      "Project",
-      "UserModule instance",
-      "AIGMos instance",
-      "system",
-      "explicit shared scope"
-    ],
-    "scope_rule": "Every record has an explicit scope owner/boundary.",
-    "visibility_rule": "Retrieval candidates are filtered by applicable scope and authorization before relevance ranking.",
-    "lifetime_rule": "Retention may be persistent, bounded-duration, event-bounded or explicit-until-removed.",
-    "expiry_rule": "Expired memory is unavailable to normal retrieval and remains historical only where explicit retention/audit policy says so.",
-    "shared_rule": "Cross-scope sharing requires explicit relation/policy.",
-    "inheritance_rule": "No scope inheritance is assumed unless explicitly declared."
-  },
   "constraints": {
     "invariants": [
       {
@@ -122,10 +256,80 @@
       "purpose": "Memory visibility obeys explicit authorization."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define explicit scope and lifetime semantics for memory records so user-, identity-, Project-, module-, instance- and system-scoped memories cannot leak across boundaries by retrieval heuristics.",
     "notes": [
       "Unlocked pending reconciliation against existing memory/runtime contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_MEMORY_SCOPE_LIFETIME",
+          "name": "Memory Scope and Lifetime",
+          "purpose": "Define explicit scope and lifetime semantics for memory records so user-, identity-, Project-, module-, instance- and system-scoped memories cannot leak across boundaries by retrieval heuristics.",
+          "parent_topic_refs": [
+            "TOPIC_NAMESPACE_MEM",
+            "TOPIC_CORE_PROVENANCE"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_MEMORY_SCOPE_LIFETIME_CONTRACT",
+            "MEMORY_EXPLICIT_DATA",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "scope_examples": [
+          "identity",
+          "Project",
+          "UserModule instance",
+          "AIGMos instance",
+          "system",
+          "explicit shared scope"
+        ],
+        "scope_rule": "Every record has an explicit scope owner/boundary.",
+        "visibility_rule": "Retrieval candidates are filtered by applicable scope and authorization before relevance ranking.",
+        "lifetime_rule": "Retention may be persistent, bounded-duration, event-bounded or explicit-until-removed.",
+        "expiry_rule": "Expired memory is unavailable to normal retrieval and remains historical only where explicit retention/audit policy says so.",
+        "shared_rule": "Cross-scope sharing requires explicit relation/policy.",
+        "inheritance_rule": "No scope inheritance is assumed unless explicitly declared."
+      }
+    }
   }
 }

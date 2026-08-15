@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define a read-only Expose monitor for UserModule registry, type, schema/domain bindings, dependencies, instances and lifecycle/reload state.",
   "scope": {
     "owns": [
@@ -22,67 +21,202 @@
       "presentation-only placement"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT",
+      "name": "UserModule Monitor",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "views": [
+              "module registry",
+              "module type",
+              "definition/version",
+              "schema/domain refs",
+              "dependencies",
+              "instances",
+              "lifecycle state",
+              "load/reload errors"
+            ],
+            "readonly_rule": "Monitor is read-only by default.",
+            "identity_rule": "Definition and runtime instance identities are shown separately.",
+            "state_rule": "Installed/registered/enabled/running states remain separately visible.",
+            "action_rule": "Enable/disable/start/stop/reload/edit controls invoke separate explicit canonical operations.",
+            "authority_rule": "Viewing a module does not grant lifecycle/edit authority.",
+            "redaction_rule": "Restricted config/secret values are redacted according to policy.",
+            "trace_rule": "Load/reload failures link exact module, dependency and validation refs."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_USERMODULE_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "child_ref": "TOPIC_EXPOSE_USERMODULE_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_USERMODULE_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_NAMESPACE_UM",
+            "child_ref": "TOPIC_EXPOSE_USERMODULE_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_USERMODULE_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_USERMODULE_MONITOR",
+            "child_ref": "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_USERMODULE_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_USERMODULE_MONITOR",
+            "child_ref": "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_USERMODULE_MONITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_USERMODULE_MONITOR",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_USERMODULE_MONITOR_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_USERMODULE_MONITOR",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_USERMODULE_MONITOR_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_USERMODULE_MONITOR",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_USERMODULE_MONITOR_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_USERMODULE_MONITOR",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_USERMODULE_MONITOR_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_USERMODULE_MONITOR",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/editor/30_UserModule_Monitor.json"
+      }
+    },
     {
       "id": "TOPIC_EXPOSE_USERMODULE_MONITOR",
       "name": "UserModule Monitor",
-      "purpose": "Define a read-only Expose monitor for UserModule registry, type, schema/domain bindings, dependencies, instances and lifecycle/reload state.",
-      "parent_topic_refs": [
-        "TOPIC_RUNTIME_USERMODULE_REGISTRY",
-        "TOPIC_NAMESPACE_UM"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT",
-        "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_USERMODULE_MONITOR::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define a read-only Expose monitor for UserModule registry, type, schema/domain bindings, dependencies, instances and lifecycle/reload state.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "views": [
-      "module registry",
-      "module type",
-      "definition/version",
-      "schema/domain refs",
-      "dependencies",
-      "instances",
-      "lifecycle state",
-      "load/reload errors"
-    ],
-    "readonly_rule": "Monitor is read-only by default.",
-    "identity_rule": "Definition and runtime instance identities are shown separately.",
-    "state_rule": "Installed/registered/enabled/running states remain separately visible.",
-    "action_rule": "Enable/disable/start/stop/reload/edit controls invoke separate explicit canonical operations.",
-    "authority_rule": "Viewing a module does not grant lifecycle/edit authority.",
-    "redaction_rule": "Restricted config/secret values are redacted according to policy.",
-    "trace_rule": "Load/reload failures link exact module, dependency and validation refs."
-  },
   "constraints": {
     "invariants": [
       {
@@ -130,10 +264,83 @@
       "purpose": "Monitor exposes schema/domain bindings."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define a read-only Expose monitor for UserModule registry, type, schema/domain bindings, dependencies, instances and lifecycle/reload state.",
     "notes": [
       "Unlocked pending reconciliation against existing UserModule runtime contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXPOSE_USERMODULE_MONITOR",
+          "name": "UserModule Monitor",
+          "purpose": "Define a read-only Expose monitor for UserModule registry, type, schema/domain bindings, dependencies, instances and lifecycle/reload state.",
+          "parent_topic_refs": [
+            "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "TOPIC_NAMESPACE_UM"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_EXPOSE_USERMODULE_MONITOR_CONTRACT",
+            "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "views": [
+          "module registry",
+          "module type",
+          "definition/version",
+          "schema/domain refs",
+          "dependencies",
+          "instances",
+          "lifecycle state",
+          "load/reload errors"
+        ],
+        "readonly_rule": "Monitor is read-only by default.",
+        "identity_rule": "Definition and runtime instance identities are shown separately.",
+        "state_rule": "Installed/registered/enabled/running states remain separately visible.",
+        "action_rule": "Enable/disable/start/stop/reload/edit controls invoke separate explicit canonical operations.",
+        "authority_rule": "Viewing a module does not grant lifecycle/edit authority.",
+        "redaction_rule": "Restricted config/secret values are redacted according to policy.",
+        "trace_rule": "Load/reload failures link exact module, dependency and validation refs."
+      }
+    }
   }
 }

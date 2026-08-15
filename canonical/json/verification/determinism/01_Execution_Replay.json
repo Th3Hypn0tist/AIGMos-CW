@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXECUTION_REPLAY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define replay of recorded requests/events/context in a controlled test/simulation target to compare behavior without silently reissuing production effects.",
   "scope": {
     "owns": [
@@ -22,81 +21,234 @@
       "domain semantic ownership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXECUTION_REPLAY_CONTRACT",
+      "name": "Execution Replay Verification",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXECUTION_REPLAY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "source_rule": "Replay source references exact historical execution/event/request evidence.",
+            "target_rule": "Replay target is explicit test/sandbox environment by default.",
+            "context_rule": "Required execution context snapshot inputs are explicit.",
+            "effect_rule": "Production effect replay is prohibited unless separately explicitly authorized and intended.",
+            "comparison_rule": "Replay observations compare against declared expected/equivalence profile.",
+            "time_rule": "Recorded timestamps are inputs/evidence only as declared.",
+            "authority_rule": "Historical authorization decision is not automatically reusable for replay."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_REPLAY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXECUTION_REPLAY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_VERIFICATION",
+            "child_ref": "TOPIC_EXECUTION_REPLAY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_REPLAY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXECUTION_REPLAY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_REPLAY",
+            "child_ref": "TOPIC_EXECUTION_REPLAY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_REPLAY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXECUTION_REPLAY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXECUTION_REPLAY",
+            "child_ref": "AIGMOS_EXECUTION_REPLAY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_REPLAY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXECUTION_REPLAY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXECUTION_REPLAY",
+            "child_ref": "TEST_NONAUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_REPLAY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXECUTION_REPLAY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXECUTION_REPLAY",
+            "child_ref": "EVIDENCE_REPRODUCIBILITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_REPLAY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXECUTION_REPLAY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXECUTION_REPLAY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_REPLAY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXECUTION_REPLAY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXECUTION_REPLAY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_REPLAY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXECUTION_REPLAY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXECUTION_REPLAY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_REPLAY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXECUTION_REPLAY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXECUTION_REPLAY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_REPLAY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXECUTION_REPLAY_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXECUTION_REPLAY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/verification/determinism/01_Execution_Replay.json"
+      }
+    },
     {
       "id": "TOPIC_EXECUTION_REPLAY",
       "name": "Execution Replay Verification",
-      "purpose": "Define replay of recorded requests/events/context in a controlled test/simulation target to compare behavior without silently reissuing production effects.",
-      "parent_topic_refs": [
-        "TOPIC_VERIFICATION",
-        "TOPIC_REPLAY"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_EXECUTION_REPLAY_CONTRACT",
-        "TEST_NONAUTHORITY",
-        "EVIDENCE_REPRODUCIBILITY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXECUTION_REPLAY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define replay of recorded requests/events/context in a controlled test/simulation target to compare behavior without silently reissuing production effects.",
+            "metadata": {}
+          }
+        }
+      ]
     },
     {
       "id": "TOPIC_REPLAY",
       "name": "Replay",
-      "purpose": "Define grouping-only parent Topic identity TOPIC_REPLAY already referenced by 1 existing canonical child Topic reference occurrence(s).",
-      "parent_topic_refs": [],
-      "composed_topic_refs": [],
-      "member_refs": [],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {
-        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
-        "referencing_child_occurrences": 1,
-        "distinct_child_topics": 1,
-        "host_contract_ref": "AIGMOS_EXECUTION_REPLAY_CONTRACT",
-        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
-        "placement_nonsemantic": true,
-        "ownership_nontransfer": true,
-        "new_parent_edges_added": 0
-      }
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_REPLAY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define grouping-only parent Topic identity TOPIC_REPLAY already referenced by 1 existing canonical child Topic reference occurrence(s).",
+            "metadata": {
+              "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+              "referencing_child_occurrences": 1,
+              "distinct_child_topics": 1,
+              "host_contract_ref": "AIGMOS_EXECUTION_REPLAY_CONTRACT",
+              "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+              "placement_nonsemantic": true,
+              "ownership_nontransfer": true,
+              "new_parent_edges_added": 0
+            }
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "source_rule": "Replay source references exact historical execution/event/request evidence.",
-    "target_rule": "Replay target is explicit test/sandbox environment by default.",
-    "context_rule": "Required execution context snapshot inputs are explicit.",
-    "effect_rule": "Production effect replay is prohibited unless separately explicitly authorized and intended.",
-    "comparison_rule": "Replay observations compare against declared expected/equivalence profile.",
-    "time_rule": "Recorded timestamps are inputs/evidence only as declared.",
-    "authority_rule": "Historical authorization decision is not automatically reusable for replay."
-  },
   "constraints": {
     "invariants": [
       {
@@ -143,11 +295,98 @@
       "purpose": "Replay uses explicit controlled inputs."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define replay of recorded requests/events/context in a controlled test/simulation target to compare behavior without silently reissuing production effects.",
     "notes": [
       "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
       "Pass 6 hosts grouping-only Topic TOPIC_REPLAY solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXECUTION_REPLAY",
+          "name": "Execution Replay Verification",
+          "purpose": "Define replay of recorded requests/events/context in a controlled test/simulation target to compare behavior without silently reissuing production effects.",
+          "parent_topic_refs": [
+            "TOPIC_VERIFICATION",
+            "TOPIC_REPLAY"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_EXECUTION_REPLAY_CONTRACT",
+            "TEST_NONAUTHORITY",
+            "EVIDENCE_REPRODUCIBILITY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        },
+        {
+          "id": "TOPIC_REPLAY",
+          "name": "Replay",
+          "purpose": "Define grouping-only parent Topic identity TOPIC_REPLAY already referenced by 1 existing canonical child Topic reference occurrence(s).",
+          "parent_topic_refs": [],
+          "composed_topic_refs": [],
+          "member_refs": [],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {
+            "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+            "referencing_child_occurrences": 1,
+            "distinct_child_topics": 1,
+            "host_contract_ref": "AIGMOS_EXECUTION_REPLAY_CONTRACT",
+            "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+            "placement_nonsemantic": true,
+            "ownership_nontransfer": true,
+            "new_parent_edges_added": 0
+          }
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "source_rule": "Replay source references exact historical execution/event/request evidence.",
+        "target_rule": "Replay target is explicit test/sandbox environment by default.",
+        "context_rule": "Required execution context snapshot inputs are explicit.",
+        "effect_rule": "Production effect replay is prohibited unless separately explicitly authorized and intended.",
+        "comparison_rule": "Replay observations compare against declared expected/equivalence profile.",
+        "time_rule": "Recorded timestamps are inputs/evidence only as declared.",
+        "authority_rule": "Historical authorization decision is not automatically reusable for replay."
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EVENT_PROVENANCE_TRACE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define end-to-end traceability from an observed Event back through its emitting operation/runner/Trigger/source Event or external origin.",
   "scope": {
     "owns": [
@@ -22,58 +21,193 @@
       "AccessCore policy ownership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EVENT_PROVENANCE_TRACE_CONTRACT",
+      "name": "Event Provenance Trace",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EVENT_PROVENANCE_TRACE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "trace_rule": "Event retains exact immediate origin refs.",
+            "recursive_rule": "Origin refs can be recursively followed to causal root within configured trace bounds.",
+            "external_rule": "Externally originated Events identify the external/input source boundary.",
+            "runner_rule": "Runner-generated Events reference exact runner/step/execution identities.",
+            "operation_rule": "Operation-generated Events reference exact canonical operation and dispatch execution.",
+            "input_rule": "Input-derived Events preserve input source and UserModule instance refs.",
+            "privacy_rule": "Trace details may be redacted for viewers while canonical provenance remains preserved.",
+            "failure_rule": "Unknown provenance remains explicit unknown rather than fabricated."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EVENT_PROVENANCE_TRACE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EVENT_PROVENANCE_TRACE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EVENTS",
+            "child_ref": "TOPIC_EVENT_PROVENANCE_TRACE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EVENT_PROVENANCE_TRACE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EVENT_PROVENANCE_TRACE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_TRIGGERS",
+            "child_ref": "TOPIC_EVENT_PROVENANCE_TRACE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EVENT_PROVENANCE_TRACE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EVENT_PROVENANCE_TRACE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EVENT_PROVENANCE_TRACE",
+            "child_ref": "AIGMOS_EVENT_PROVENANCE_TRACE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EVENT_PROVENANCE_TRACE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EVENT_PROVENANCE_TRACE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EVENT_PROVENANCE_TRACE",
+            "child_ref": "CAUSALITY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EVENT_PROVENANCE_TRACE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EVENT_PROVENANCE_TRACE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EVENT_PROVENANCE_TRACE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EVENT_PROVENANCE_TRACE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EVENT_PROVENANCE_TRACE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EVENT_PROVENANCE_TRACE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EVENT_PROVENANCE_TRACE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EVENT_PROVENANCE_TRACE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EVENT_PROVENANCE_TRACE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EVENT_PROVENANCE_TRACE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EVENT_PROVENANCE_TRACE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EVENT_PROVENANCE_TRACE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EVENT_PROVENANCE_TRACE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EVENT_PROVENANCE_TRACE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EVENT_PROVENANCE_TRACE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/events/02_Event_Provenance_Trace.json"
+      }
+    },
     {
       "id": "TOPIC_EVENT_PROVENANCE_TRACE",
       "name": "Event Provenance Trace",
-      "purpose": "Define end-to-end traceability from an observed Event back through its emitting operation/runner/Trigger/source Event or external origin.",
-      "parent_topic_refs": [
-        "TOPIC_EVENTS",
-        "TOPIC_TRIGGERS"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_EVENT_PROVENANCE_TRACE_CONTRACT",
-        "CAUSALITY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EVENT_PROVENANCE_TRACE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define end-to-end traceability from an observed Event back through its emitting operation/runner/Trigger/source Event or external origin.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "trace_rule": "Event retains exact immediate origin refs.",
-    "recursive_rule": "Origin refs can be recursively followed to causal root within configured trace bounds.",
-    "external_rule": "Externally originated Events identify the external/input source boundary.",
-    "runner_rule": "Runner-generated Events reference exact runner/step/execution identities.",
-    "operation_rule": "Operation-generated Events reference exact canonical operation and dispatch execution.",
-    "input_rule": "Input-derived Events preserve input source and UserModule instance refs.",
-    "privacy_rule": "Trace details may be redacted for viewers while canonical provenance remains preserved.",
-    "failure_rule": "Unknown provenance remains explicit unknown rather than fabricated."
-  },
   "constraints": {
     "invariants": [
       {
@@ -121,10 +255,74 @@
       "purpose": "Runner events retain execution provenance."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define end-to-end traceability from an observed Event back through its emitting operation/runner/Trigger/source Event or external origin.",
     "notes": [
       "Unlocked pending reconciliation against existing Event/Trigger/Runner contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EVENT_PROVENANCE_TRACE",
+          "name": "Event Provenance Trace",
+          "purpose": "Define end-to-end traceability from an observed Event back through its emitting operation/runner/Trigger/source Event or external origin.",
+          "parent_topic_refs": [
+            "TOPIC_EVENTS",
+            "TOPIC_TRIGGERS"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_EVENT_PROVENANCE_TRACE_CONTRACT",
+            "CAUSALITY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "trace_rule": "Event retains exact immediate origin refs.",
+        "recursive_rule": "Origin refs can be recursively followed to causal root within configured trace bounds.",
+        "external_rule": "Externally originated Events identify the external/input source boundary.",
+        "runner_rule": "Runner-generated Events reference exact runner/step/execution identities.",
+        "operation_rule": "Operation-generated Events reference exact canonical operation and dispatch execution.",
+        "input_rule": "Input-derived Events preserve input source and UserModule instance refs.",
+        "privacy_rule": "Trace details may be redacted for viewers while canonical provenance remains preserved.",
+        "failure_rule": "Unknown provenance remains explicit unknown rather than fabricated."
+      }
+    }
   }
 }

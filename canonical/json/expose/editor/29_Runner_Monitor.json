@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXPOSE_RUNNER_MONITOR_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define a read-only Expose monitor for Routine definitions and active/historical runner executions, including step state, dispatch traces, bounds, failures and originating Event/Trigger refs.",
   "scope": {
     "owns": [
@@ -22,66 +21,201 @@
       "arbitrary hidden scheduler state"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_RUNNER_MONITOR_CONTRACT",
+      "name": "Runner Monitor",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_RUNNER_MONITOR_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "views": [
+              "Routine identity/version",
+              "runner identity/state",
+              "current/completed steps",
+              "per-step dispatch result",
+              "timeouts/retries",
+              "Event/Trigger origin",
+              "cleanup/result"
+            ],
+            "readonly_rule": "Monitor is read-only by default.",
+            "identity_rule": "Routine definition identity and runner execution identity are shown separately.",
+            "action_rule": "Start/go/cancel/retry controls, if exposed, invoke separate authorized commands.",
+            "authority_rule": "Viewing runner does not grant execution/control authority.",
+            "redaction_rule": "Restricted arguments/results are redacted according to policy.",
+            "trace_rule": "Displayed steps retain exact command/dispatch refs.",
+            "layout_rule": "Visual ordering follows explicit step sequence and does not invent execution semantics."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_RUNNER_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_RUNNER_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_ROUTINE",
+            "child_ref": "TOPIC_EXPOSE_RUNNER_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_RUNNER_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_RUNNER_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNNER",
+            "child_ref": "TOPIC_EXPOSE_RUNNER_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_RUNNER_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_RUNNER_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_RUNNER_MONITOR",
+            "child_ref": "AIGMOS_EXPOSE_RUNNER_MONITOR_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_RUNNER_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_RUNNER_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_RUNNER_MONITOR",
+            "child_ref": "ROUTINE_RUNNER_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_RUNNER_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_RUNNER_MONITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_RUNNER_MONITOR",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_RUNNER_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_RUNNER_MONITOR_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_RUNNER_MONITOR",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_RUNNER_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_RUNNER_MONITOR_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_RUNNER_MONITOR",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_RUNNER_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_RUNNER_MONITOR_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_RUNNER_MONITOR",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_RUNNER_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_RUNNER_MONITOR_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_RUNNER_MONITOR",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/editor/29_Runner_Monitor.json"
+      }
+    },
     {
       "id": "TOPIC_EXPOSE_RUNNER_MONITOR",
       "name": "Runner Monitor",
-      "purpose": "Define a read-only Expose monitor for Routine definitions and active/historical runner executions, including step state, dispatch traces, bounds, failures and originating Event/Trigger refs.",
-      "parent_topic_refs": [
-        "TOPIC_ROUTINE",
-        "TOPIC_RUNNER"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_EXPOSE_RUNNER_MONITOR_CONTRACT",
-        "ROUTINE_RUNNER_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_RUNNER_MONITOR::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define a read-only Expose monitor for Routine definitions and active/historical runner executions, including step state, dispatch traces, bounds, failures and originating Event/Trigger refs.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "views": [
-      "Routine identity/version",
-      "runner identity/state",
-      "current/completed steps",
-      "per-step dispatch result",
-      "timeouts/retries",
-      "Event/Trigger origin",
-      "cleanup/result"
-    ],
-    "readonly_rule": "Monitor is read-only by default.",
-    "identity_rule": "Routine definition identity and runner execution identity are shown separately.",
-    "action_rule": "Start/go/cancel/retry controls, if exposed, invoke separate authorized commands.",
-    "authority_rule": "Viewing runner does not grant execution/control authority.",
-    "redaction_rule": "Restricted arguments/results are redacted according to policy.",
-    "trace_rule": "Displayed steps retain exact command/dispatch refs.",
-    "layout_rule": "Visual ordering follows explicit step sequence and does not invent execution semantics."
-  },
   "constraints": {
     "invariants": [
       {
@@ -129,10 +263,82 @@
       "purpose": "Monitor exposes per-step dispatch trace."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define a read-only Expose monitor for Routine definitions and active/historical runner executions, including step state, dispatch traces, bounds, failures and originating Event/Trigger refs.",
     "notes": [
       "Unlocked pending reconciliation against existing Routine/Runner/Event/Trigger contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXPOSE_RUNNER_MONITOR",
+          "name": "Runner Monitor",
+          "purpose": "Define a read-only Expose monitor for Routine definitions and active/historical runner executions, including step state, dispatch traces, bounds, failures and originating Event/Trigger refs.",
+          "parent_topic_refs": [
+            "TOPIC_ROUTINE",
+            "TOPIC_RUNNER"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_EXPOSE_RUNNER_MONITOR_CONTRACT",
+            "ROUTINE_RUNNER_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "views": [
+          "Routine identity/version",
+          "runner identity/state",
+          "current/completed steps",
+          "per-step dispatch result",
+          "timeouts/retries",
+          "Event/Trigger origin",
+          "cleanup/result"
+        ],
+        "readonly_rule": "Monitor is read-only by default.",
+        "identity_rule": "Routine definition identity and runner execution identity are shown separately.",
+        "action_rule": "Start/go/cancel/retry controls, if exposed, invoke separate authorized commands.",
+        "authority_rule": "Viewing runner does not grant execution/control authority.",
+        "redaction_rule": "Restricted arguments/results are redacted according to policy.",
+        "trace_rule": "Displayed steps retain exact command/dispatch refs.",
+        "layout_rule": "Visual ordering follows explicit step sequence and does not invent execution semantics."
+      }
+    }
   }
 }

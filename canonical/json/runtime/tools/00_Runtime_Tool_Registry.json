@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define tools as registered runtime capabilities with explicit identities, schemas, declared effects and Core-owned invocation boundaries.",
   "scope": {
     "owns": [
@@ -21,119 +20,317 @@
       "projection semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT",
+      "name": "Runtime Tool Registry",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::OPERATIONS::OP_TOOL_REGISTER",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_TOOL_REGISTER",
+            "name": "Register tool",
+            "inputs": [
+              "tool definition"
+            ],
+            "outputs": [
+              "registered tool"
+            ],
+            "errors": [
+              "duplicate tool",
+              "invalid schema"
+            ],
+            "side_effects": [
+              "tool registry updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::OPERATIONS::OP_TOOL_RESOLVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_TOOL_RESOLVE",
+            "name": "Resolve tool",
+            "inputs": [
+              "literal tool identity"
+            ],
+            "outputs": [
+              "exact tool definition"
+            ],
+            "errors": [
+              "tool unresolved",
+              "tool ambiguous"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::OPERATIONS::OP_TOOL_INVOKE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_TOOL_INVOKE",
+            "name": "Invoke tool through Core dispatch",
+            "inputs": [
+              "resolved tool",
+              "validated arguments",
+              "authority context"
+            ],
+            "outputs": [
+              "bounded tool result"
+            ],
+            "errors": [
+              "argument invalid",
+              "authority denied",
+              "tool failure",
+              "timeout"
+            ],
+            "side_effects": [
+              "only declared authorized tool effects"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "identity_rule": "Tool identity is explicit and literal.",
+            "schema_rule": "Tool inputs and outputs are explicitly declared.",
+            "effect_rule": "Tool side effects are declared and validated before invocation.",
+            "authority_rule": "Tool output or metadata cannot grant authority.",
+            "dynamic_tool_rule": "Payload/model/backend-selected arbitrary tool identities are forbidden unless an owning contract explicitly resolves a bounded declared set.",
+            "result_rule": "Tool results are inert data until explicitly interpreted by a following canonical operation.",
+            "failure_rule": "Tool failure is structured, visible and bounded."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_TOOL_REGISTRY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME_TOOLS",
+            "child_ref": "TOPIC_RUNTIME_TOOL_REGISTRY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_TOOL_REGISTRY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_TOOL_REGISTRY",
+            "child_ref": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_TOOL_REGISTRY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_TOOL_REGISTRY",
+            "child_ref": "RUNTIME_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_TOOL_REGISTRY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_TOOL_REGISTRY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_TOOL_REGISTRY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_TOOL_REGISTRY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_TOOL_REGISTRY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_TOOL_REGISTRY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_TOOL_REGISTRY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_TOOL_REGISTRY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_TOOL_REGISTRY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_TOOL_REGISTRY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_TOOL_REGISTRY_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_TOOL_REGISTRY",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_TOOL_REGISTRY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_TOOL_REGISTRY",
+            "child_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_TOOL_REGISTRY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_TOOL_REGISTRY",
+            "child_ref": "TOPIC_CORE_OPERATIONS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_TOOL_REGISTRY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_TOOL_REGISTRY",
+            "child_ref": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/tools/00_Runtime_Tool_Registry.json"
+      }
+    },
     {
       "id": "TOPIC_RUNTIME_TOOL_REGISTRY",
       "name": "Tool Registry",
-      "purpose": "Define tools as registered runtime capabilities with explicit identities, schemas, declared effects and Core-owned invocation boundaries.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME_TOOLS"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_RUNTIME_DISPATCHER",
-        "TOPIC_CORE_OPERATIONS",
-        "TOPIC_CORE_CAPABILITY_AUTHORITY"
-      ],
-      "member_refs": [
-        "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT",
-        "RUNTIME_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_TOOL_REGISTER",
-        "OP_TOOL_RESOLVE",
-        "OP_TOOL_INVOKE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_TOOL_REGISTRY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define tools as registered runtime capabilities with explicit identities, schemas, declared effects and Core-owned invocation boundaries.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_TOOL_REGISTER",
-        "name": "Register tool",
-        "inputs": [
-          "tool definition"
-        ],
-        "outputs": [
-          "registered tool"
-        ],
-        "errors": [
-          "duplicate tool",
-          "invalid schema"
-        ],
-        "side_effects": [
-          "tool registry updated"
-        ]
-      },
-      {
-        "id": "OP_TOOL_RESOLVE",
-        "name": "Resolve tool",
-        "inputs": [
-          "literal tool identity"
-        ],
-        "outputs": [
-          "exact tool definition"
-        ],
-        "errors": [
-          "tool unresolved",
-          "tool ambiguous"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_TOOL_INVOKE",
-        "name": "Invoke tool through Core dispatch",
-        "inputs": [
-          "resolved tool",
-          "validated arguments",
-          "authority context"
-        ],
-        "outputs": [
-          "bounded tool result"
-        ],
-        "errors": [
-          "argument invalid",
-          "authority denied",
-          "tool failure",
-          "timeout"
-        ],
-        "side_effects": [
-          "only declared authorized tool effects"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "identity_rule": "Tool identity is explicit and literal.",
-    "schema_rule": "Tool inputs and outputs are explicitly declared.",
-    "effect_rule": "Tool side effects are declared and validated before invocation.",
-    "authority_rule": "Tool output or metadata cannot grant authority.",
-    "dynamic_tool_rule": "Payload/model/backend-selected arbitrary tool identities are forbidden unless an owning contract explicitly resolves a bounded declared set.",
-    "result_rule": "Tool results are inert data until explicitly interpreted by a following canonical operation.",
-    "failure_rule": "Tool failure is structured, visible and bounded."
-  },
   "constraints": {
     "invariants": [
       {
@@ -186,10 +383,145 @@
       "purpose": "Tool interfaces follow explicit operation semantics."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_TOOL_REGISTRY",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_TOOL_REGISTRY",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define tools as registered runtime capabilities with explicit identities, schemas, declared effects and Core-owned invocation boundaries.",
     "notes": [
       "Unlocked until reconciled against existing runtime contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RUNTIME_TOOL_REGISTRY",
+          "name": "Tool Registry",
+          "purpose": "Define tools as registered runtime capabilities with explicit identities, schemas, declared effects and Core-owned invocation boundaries.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME_TOOLS"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_RUNTIME_DISPATCHER",
+            "TOPIC_CORE_OPERATIONS",
+            "TOPIC_CORE_CAPABILITY_AUTHORITY"
+          ],
+          "member_refs": [
+            "AIGMOS_RUNTIME_TOOL_REGISTRY_CONTRACT",
+            "RUNTIME_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_TOOL_REGISTER",
+            "OP_TOOL_RESOLVE",
+            "OP_TOOL_INVOKE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_TOOL_REGISTER",
+            "name": "Register tool",
+            "inputs": [
+              "tool definition"
+            ],
+            "outputs": [
+              "registered tool"
+            ],
+            "errors": [
+              "duplicate tool",
+              "invalid schema"
+            ],
+            "side_effects": [
+              "tool registry updated"
+            ]
+          },
+          {
+            "id": "OP_TOOL_RESOLVE",
+            "name": "Resolve tool",
+            "inputs": [
+              "literal tool identity"
+            ],
+            "outputs": [
+              "exact tool definition"
+            ],
+            "errors": [
+              "tool unresolved",
+              "tool ambiguous"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_TOOL_INVOKE",
+            "name": "Invoke tool through Core dispatch",
+            "inputs": [
+              "resolved tool",
+              "validated arguments",
+              "authority context"
+            ],
+            "outputs": [
+              "bounded tool result"
+            ],
+            "errors": [
+              "argument invalid",
+              "authority denied",
+              "tool failure",
+              "timeout"
+            ],
+            "side_effects": [
+              "only declared authorized tool effects"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "identity_rule": "Tool identity is explicit and literal.",
+        "schema_rule": "Tool inputs and outputs are explicitly declared.",
+        "effect_rule": "Tool side effects are declared and validated before invocation.",
+        "authority_rule": "Tool output or metadata cannot grant authority.",
+        "dynamic_tool_rule": "Payload/model/backend-selected arbitrary tool identities are forbidden unless an owning contract explicitly resolves a bounded declared set.",
+        "result_rule": "Tool results are inert data until explicitly interpreted by a following canonical operation.",
+        "failure_rule": "Tool failure is structured, visible and bounded."
+      }
+    }
   }
 }

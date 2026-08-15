@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_ROUTINE_REGISTRY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define `#R` as the registry of inert authored Routine definitions and expose explicit run/cycle/status semantics without treating Routine storage or view access as execution.",
   "scope": {
     "owns": [
@@ -22,59 +21,208 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_ROUTINE_REGISTRY_CONTRACT",
+      "name": "Routine Registry",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_ROUTINE_REGISTRY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "root": "#R",
+            "definition_rule": "Routine definition is inert authored data.",
+            "registry_rule": "Each Routine has exact canonical identity.",
+            "content_rule": "Routine contains explicit ordered/causal step semantics rather than relying on incidental JSON array order alone.",
+            "invocation_rule": "Routine starts only through explicit `&` or canonical run operation.",
+            "status_rule": "Active Routine execution status belongs to tracked runtime state.",
+            "cycle_rule": "Cycle/loop behavior is explicit and bounded.",
+            "authority_rule": "Reading/editing a Routine does not grant run authority."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_ROUTINE_REGISTRY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_AUTOMATION_ROUTINES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_AUTOMATION_RUNNERS",
+            "child_ref": "TOPIC_AUTOMATION_ROUTINES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_ROUTINE_REGISTRY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_AUTOMATION_ROUTINES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_CAUSALITY",
+            "child_ref": "TOPIC_AUTOMATION_ROUTINES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_ROUTINE_REGISTRY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_AUTOMATION_ROUTINES_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_COMMAND_ROUTINE_INVOCATION",
+            "child_ref": "TOPIC_AUTOMATION_ROUTINES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_ROUTINE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_AUTOMATION_ROUTINES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_AUTOMATION_ROUTINES",
+            "child_ref": "AIGMOS_ROUTINE_REGISTRY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_ROUTINE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_AUTOMATION_ROUTINES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_AUTOMATION_ROUTINES",
+            "child_ref": "AUTOMATION_CAUSALITY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_ROUTINE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_AUTOMATION_ROUTINES_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_AUTOMATION_ROUTINES",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_ROUTINE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_AUTOMATION_ROUTINES_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_AUTOMATION_ROUTINES",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_ROUTINE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_AUTOMATION_ROUTINES_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_AUTOMATION_ROUTINES",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_ROUTINE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_AUTOMATION_ROUTINES_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_AUTOMATION_ROUTINES",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_ROUTINE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_AUTOMATION_ROUTINES_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_AUTOMATION_ROUTINES",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/automation/03_Routine_Registry.json"
+      }
+    },
     {
       "id": "TOPIC_AUTOMATION_ROUTINES",
       "name": "Routine Registry",
-      "purpose": "Define `#R` as the registry of inert authored Routine definitions and expose explicit run/cycle/status semantics without treating Routine storage or view access as execution.",
-      "parent_topic_refs": [
-        "TOPIC_AUTOMATION_RUNNERS",
-        "TOPIC_CORE_CAUSALITY",
-        "TOPIC_COMMAND_ROUTINE_INVOCATION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_ROUTINE_REGISTRY_CONTRACT",
-        "AUTOMATION_CAUSALITY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_AUTOMATION_ROUTINES::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define `#R` as the registry of inert authored Routine definitions and expose explicit run/cycle/status semantics without treating Routine storage or view access as execution.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "root": "#R",
-    "definition_rule": "Routine definition is inert authored data.",
-    "registry_rule": "Each Routine has exact canonical identity.",
-    "content_rule": "Routine contains explicit ordered/causal step semantics rather than relying on incidental JSON array order alone.",
-    "invocation_rule": "Routine starts only through explicit `&` or canonical run operation.",
-    "status_rule": "Active Routine execution status belongs to tracked runtime state.",
-    "cycle_rule": "Cycle/loop behavior is explicit and bounded.",
-    "authority_rule": "Reading/editing a Routine does not grant run authority."
-  },
   "constraints": {
     "invariants": [
       {
@@ -117,10 +265,75 @@
       "purpose": "& explicitly invokes inert Routine definitions."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define `#R` as the registry of inert authored Routine definitions and expose explicit run/cycle/status semantics without treating Routine storage or view access as execution.",
     "notes": [
       "Unlocked pending reconciliation against existing Trigger/Event/Runner/Routine contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_AUTOMATION_ROUTINES",
+          "name": "Routine Registry",
+          "purpose": "Define `#R` as the registry of inert authored Routine definitions and expose explicit run/cycle/status semantics without treating Routine storage or view access as execution.",
+          "parent_topic_refs": [
+            "TOPIC_AUTOMATION_RUNNERS",
+            "TOPIC_CORE_CAUSALITY",
+            "TOPIC_COMMAND_ROUTINE_INVOCATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_ROUTINE_REGISTRY_CONTRACT",
+            "AUTOMATION_CAUSALITY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "root": "#R",
+        "definition_rule": "Routine definition is inert authored data.",
+        "registry_rule": "Each Routine has exact canonical identity.",
+        "content_rule": "Routine contains explicit ordered/causal step semantics rather than relying on incidental JSON array order alone.",
+        "invocation_rule": "Routine starts only through explicit `&` or canonical run operation.",
+        "status_rule": "Active Routine execution status belongs to tracked runtime state.",
+        "cycle_rule": "Cycle/loop behavior is explicit and bounded.",
+        "authority_rule": "Reading/editing a Routine does not grant run authority."
+      }
+    }
   }
 }

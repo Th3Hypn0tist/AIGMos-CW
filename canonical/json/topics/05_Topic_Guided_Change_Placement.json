@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define Topic-first placement for new specification material: determine all applicable existing Topics first, create additional Topics freely when needed, and keep cross-cutting mechanisms traceable through every affected semantic chain.",
   "scope": {
     "owns": [
@@ -21,105 +20,281 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT",
+      "name": "Topic-Guided Change Placement",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT::OPERATIONS::OP_TOPIC_PLACE_CHANGE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_TOPIC_PLACE_CHANGE",
+            "name": "Place new semantic change by Topic",
+            "inputs": [
+              "candidate semantics",
+              "existing Topic graph"
+            ],
+            "outputs": [
+              "existing Topic assignments | new Topic proposal"
+            ],
+            "errors": [
+              "semantic placement unresolved"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT::OPERATIONS::OP_TOPIC_NEW_DEFINE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_TOPIC_NEW_DEFINE",
+            "name": "Define new Topic for change",
+            "inputs": [
+              "Topic identity",
+              "purpose",
+              "parents/components",
+              "candidate members"
+            ],
+            "outputs": [
+              "new Topic definition"
+            ],
+            "errors": [
+              "identity collision",
+              "invalid refs"
+            ],
+            "side_effects": [
+              "Topic graph updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "decision_sequence": [
+              "identify the semantic mechanism/change",
+              "resolve all existing Topics it belongs to",
+              "assign all applicable Topic memberships",
+              "if coverage remains semantically incomplete, define a new Topic",
+              "compose/inherit existing Topics where that expresses the mechanism",
+              "otherwise mark outsider explicitly until resolved"
+            ],
+            "multi_topic_rule": "A mechanism may belong to multiple Topics; e.g. Trigger can be its own Topic and also belong to Core.",
+            "chain_rule": "A mechanism such as order creation may be its own Topic and span the entire affected chain.",
+            "local_rule": "Topic declarations stay with the nodes/subtrees they classify for recursive readability.",
+            "no_scarcity_rule": "Do not reduce Topic count at the cost of semantic clarity.",
+            "documentation_rule": "Prefer Topic inheritance/composition over redundant explanatory documents."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_TOPIC_CHANGE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_TOPIC_SYSTEM",
+            "child_ref": "TOPIC_TOPIC_CHANGE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_TOPIC_CHANGE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "TOPIC_TOPIC_CHANGE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_CHANGE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_CHANGE",
+            "child_ref": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_CHANGE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_CHANGE",
+            "child_ref": "TOPIC_GRAPH_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_CHANGE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_CHANGE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_CHANGE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_CHANGE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_CHANGE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_CHANGE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_CHANGE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_CHANGE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_CHANGE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_CHANGE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_TOPIC_CHANGE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_TOPIC_CHANGE",
+            "child_ref": "TOPIC_TOPIC_INHERITANCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_TOPIC_CHANGE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_TOPIC_CHANGE",
+            "child_ref": "TOPIC_TOPIC_COMPOSITION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/topics/05_Topic_Guided_Change_Placement.json"
+      }
+    },
     {
       "id": "TOPIC_TOPIC_CHANGE",
       "name": "Topic-Guided Change",
-      "purpose": "Define Topic-first placement for new specification material: determine all applicable existing Topics first, create additional Topics freely when needed, and keep cross-cutting mechanisms traceable through every affected semantic chain.",
-      "parent_topic_refs": [
-        "TOPIC_TOPIC_SYSTEM",
-        "TOPIC_CORE_CHANGE_CONTROL"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_TOPIC_INHERITANCE",
-        "TOPIC_TOPIC_COMPOSITION"
-      ],
-      "member_refs": [
-        "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT",
-        "TOPIC_GRAPH_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_TOPIC_PLACE_CHANGE",
-        "OP_TOPIC_NEW_DEFINE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_TOPIC_CHANGE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define Topic-first placement for new specification material: determine all applicable existing Topics first, create additional Topics freely when needed, and keep cross-cutting mechanisms traceable through every affected semantic chain.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_TOPIC_PLACE_CHANGE",
-        "name": "Place new semantic change by Topic",
-        "inputs": [
-          "candidate semantics",
-          "existing Topic graph"
-        ],
-        "outputs": [
-          "existing Topic assignments | new Topic proposal"
-        ],
-        "errors": [
-          "semantic placement unresolved"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_TOPIC_NEW_DEFINE",
-        "name": "Define new Topic for change",
-        "inputs": [
-          "Topic identity",
-          "purpose",
-          "parents/components",
-          "candidate members"
-        ],
-        "outputs": [
-          "new Topic definition"
-        ],
-        "errors": [
-          "identity collision",
-          "invalid refs"
-        ],
-        "side_effects": [
-          "Topic graph updated"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "decision_sequence": [
-      "identify the semantic mechanism/change",
-      "resolve all existing Topics it belongs to",
-      "assign all applicable Topic memberships",
-      "if coverage remains semantically incomplete, define a new Topic",
-      "compose/inherit existing Topics where that expresses the mechanism",
-      "otherwise mark outsider explicitly until resolved"
-    ],
-    "multi_topic_rule": "A mechanism may belong to multiple Topics; e.g. Trigger can be its own Topic and also belong to Core.",
-    "chain_rule": "A mechanism such as order creation may be its own Topic and span the entire affected chain.",
-    "local_rule": "Topic declarations stay with the nodes/subtrees they classify for recursive readability.",
-    "no_scarcity_rule": "Do not reduce Topic count at the cost of semantic clarity.",
-    "documentation_rule": "Prefer Topic inheritance/composition over redundant explanatory documents."
-  },
   "constraints": {
     "invariants": [
       {
@@ -167,10 +342,131 @@
       "purpose": "Cross-cutting mechanisms may compose existing Topics."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_TOPIC_CHANGE",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_TOPIC_CHANGE",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define Topic-first placement for new specification material: determine all applicable existing Topics first, create additional Topics freely when needed, and keep cross-cutting mechanisms traceable through every affected semantic chain.",
     "notes": [
       "Unlocked until reconciled against the assembled 1.4 Topic graph and repository-wide validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_TOPIC_CHANGE",
+          "name": "Topic-Guided Change",
+          "purpose": "Define Topic-first placement for new specification material: determine all applicable existing Topics first, create additional Topics freely when needed, and keep cross-cutting mechanisms traceable through every affected semantic chain.",
+          "parent_topic_refs": [
+            "TOPIC_TOPIC_SYSTEM",
+            "TOPIC_CORE_CHANGE_CONTROL"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_TOPIC_INHERITANCE",
+            "TOPIC_TOPIC_COMPOSITION"
+          ],
+          "member_refs": [
+            "AIGMOS_TOPIC_CHANGE_PLACEMENT_CONTRACT",
+            "TOPIC_GRAPH_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_TOPIC_PLACE_CHANGE",
+            "OP_TOPIC_NEW_DEFINE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_TOPIC_PLACE_CHANGE",
+            "name": "Place new semantic change by Topic",
+            "inputs": [
+              "candidate semantics",
+              "existing Topic graph"
+            ],
+            "outputs": [
+              "existing Topic assignments | new Topic proposal"
+            ],
+            "errors": [
+              "semantic placement unresolved"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_TOPIC_NEW_DEFINE",
+            "name": "Define new Topic for change",
+            "inputs": [
+              "Topic identity",
+              "purpose",
+              "parents/components",
+              "candidate members"
+            ],
+            "outputs": [
+              "new Topic definition"
+            ],
+            "errors": [
+              "identity collision",
+              "invalid refs"
+            ],
+            "side_effects": [
+              "Topic graph updated"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "decision_sequence": [
+          "identify the semantic mechanism/change",
+          "resolve all existing Topics it belongs to",
+          "assign all applicable Topic memberships",
+          "if coverage remains semantically incomplete, define a new Topic",
+          "compose/inherit existing Topics where that expresses the mechanism",
+          "otherwise mark outsider explicitly until resolved"
+        ],
+        "multi_topic_rule": "A mechanism may belong to multiple Topics; e.g. Trigger can be its own Topic and also belong to Core.",
+        "chain_rule": "A mechanism such as order creation may be its own Topic and span the entire affected chain.",
+        "local_rule": "Topic declarations stay with the nodes/subtrees they classify for recursive readability.",
+        "no_scarcity_rule": "Do not reduce Topic count at the cost of semantic clarity.",
+        "documentation_rule": "Prefer Topic inheritance/composition over redundant explanatory documents."
+      }
+    }
   }
 }

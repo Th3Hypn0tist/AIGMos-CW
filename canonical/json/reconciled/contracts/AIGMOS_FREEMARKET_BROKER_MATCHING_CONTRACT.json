@@ -1,44 +1,645 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "errors": [
-          "policy unresolved"
-        ],
-        "id": "OP_BROKER_MATCH",
-        "inputs": [
-          "listing/Project intent",
-          "candidate competence evidence",
-          "explicit relevance policy"
-        ],
-        "name": "Match opportunity and candidate",
-        "outputs": [
-          "ranked match candidates"
-        ],
-        "side_effects": []
-      },
-      {
-        "errors": [
-          "provenance missing"
-        ],
-        "id": "OP_BROKER_EXPLAIN",
-        "inputs": [
-          "match result",
-          "source evidence",
-          "policy"
-        ],
-        "name": "Explain match",
-        "outputs": [
-          "match provenance/explanation"
-        ],
-        "side_effects": []
-      }
-    ],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT",
+    "name": "FreeMarket Broker Matching",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define Broker matching as a read/analysis operation that compares explicit Project requirements with identity-linked PortfolioCore and MeritCore evidence without mutating those source semantics. [2] Define broker matching as a derived contextual relevance process over explicit opportunity requirements and identity competence evidence, without introducing a global MeritCore weighting.",
+  "scope": {
+    "does_not_own": [
+      "Project work semantics",
+      "MeritCore scoring",
+      "IdentityCore authentication",
+      "AccessCore authorization",
+      "presentation semantics",
+      "transport implementation",
+      "unrelated IAM/AC policy"
+    ],
+    "owns": [
+      "FreeMarket Broker Matching semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT",
+      "name": "FreeMarket Broker Matching",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::OPERATIONS::OP_BROKER_MATCH",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "policy unresolved"
+            ],
+            "id": "OP_BROKER_MATCH",
+            "inputs": [
+              "listing/Project intent",
+              "candidate competence evidence",
+              "explicit relevance policy"
+            ],
+            "name": "Match opportunity and candidate",
+            "outputs": [
+              "ranked match candidates"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::OPERATIONS::OP_BROKER_EXPLAIN",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "provenance missing"
+            ],
+            "id": "OP_BROKER_EXPLAIN",
+            "inputs": [
+              "match result",
+              "source evidence",
+              "policy"
+            ],
+            "name": "Explain match",
+            "outputs": [
+              "match provenance/explanation"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "authority_rule": "Reconciled source clauses: [1] A high match score does not grant assignment/Project authority. [2] High match score does not grant participation or AccessCore authority.",
+            "determinism_rule": "Given the same source snapshot and Broker policy version, matching is reproducible where the policy is deterministic.",
+            "evidence_rule": "Each match retains the relevant Project requirement and candidate evidence refs.",
+            "evidence_sources": [
+              "PortfolioCore",
+              "MeritCore",
+              "Project evidence",
+              "listing/Project requirements"
+            ],
+            "explainability_rule": "Match results retain policy/evidence provenance.",
+            "identity_rule": "Candidates resolve by exact IdentityCore identity.",
+            "inputs": [
+              "published Project requirements",
+              "candidate identity refs",
+              "PortfolioCore evidence",
+              "MeritCore signals",
+              "explicit Broker policy"
+            ],
+            "no_global_weight_rule": "Broker relevance policy is not a universal MeritCore weighting.",
+            "output": "ranked or filtered candidate/project matches with evidence refs",
+            "policy_rule": "Matching uses explicit contextual relevance policy.",
+            "projection_rule": "Reconciled source clauses: [1] Matching result is a derived projection, not a new semantic owner. [2] Match ranking is derived output and does not mutate evidence sources.",
+            "write_rule": "Matching does not alter Project, PortfolioCore or MeritCore evidence."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_FREEMARKET_BROKER_MATCHING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_FREEMARKET",
+            "child_ref": "TOPIC_FREEMARKET_BROKER_MATCHING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_FREEMARKET_BROKER_MATCHING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_PROJECT",
+            "child_ref": "TOPIC_FREEMARKET_BROKER_MATCHING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_MATCHING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER_MATCHING",
+            "child_ref": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_MATCHING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER_MATCHING",
+            "child_ref": "FREEMARKET_DERIVED_MATCHING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_MATCHING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER_MATCHING",
+            "child_ref": "MARKET_SEMANTICS_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_MATCHING_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER_MATCHING",
+            "child_ref": "GATE_DFCCB0D376",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_MATCHING_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER_MATCHING",
+            "child_ref": "GATE_BE54A9C7C7",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_MATCHING_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER_MATCHING",
+            "child_ref": "GATE_C70D727900",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_MATCHING_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER_MATCHING",
+            "child_ref": "GATE_49C50BDDCF",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_MATCHING_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER_MATCHING",
+            "child_ref": "GATE_D49CA5AB7C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_MATCHING_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER_MATCHING",
+            "child_ref": "GATE_A279537733",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_MATCHING_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER_MATCHING",
+            "child_ref": "GATE_DA35DDD332",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_MATCHING_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER_MATCHING",
+            "child_ref": "GATE_390C30DF05",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_MATCHING_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER_MATCHING",
+            "child_ref": "GATE_3EC65BEDA9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_MATCHING_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER_MATCHING",
+            "child_ref": "GATE_5EC6B948B6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_FREEMARKET_BROKER_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_PROJECT",
+            "child_ref": "TOPIC_FREEMARKET_BROKER",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER",
+            "child_ref": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER",
+            "child_ref": "FREEMARKET_DERIVED_MATCHING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER",
+            "child_ref": "MARKET_SEMANTICS_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER",
+            "child_ref": "GATE_DFCCB0D376",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER",
+            "child_ref": "GATE_BE54A9C7C7",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER",
+            "child_ref": "GATE_C70D727900",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER",
+            "child_ref": "GATE_49C50BDDCF",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER",
+            "child_ref": "GATE_D49CA5AB7C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER",
+            "child_ref": "GATE_A279537733",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER",
+            "child_ref": "GATE_DA35DDD332",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER",
+            "child_ref": "GATE_390C30DF05",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER",
+            "child_ref": "GATE_3EC65BEDA9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FREEMARKET_BROKER_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER",
+            "child_ref": "GATE_5EC6B948B6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_FREEMARKET_BROKER_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER",
+            "child_ref": "TOPIC_PORTFOLIOCORE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_FREEMARKET_BROKER_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER",
+            "child_ref": "TOPIC_MERITCORE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_FREEMARKET_BROKER_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_FREEMARKET_BROKER",
+            "child_ref": "TOPIC_PROJECT_RANKING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_FREEMARKET_BROKER_MATCHING",
+      "name": "FreeMarket Broker Matching",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_FREEMARKET_BROKER_MATCHING::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define Broker matching as a read/analysis operation that compares explicit Project requirements with identity-linked PortfolioCore and MeritCore evidence without mutating those source semantics.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_FREEMARKET_BROKER",
+      "name": "Broker Matching",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_FREEMARKET_BROKER::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define broker matching as a derived contextual relevance process over explicit opportunity requirements and identity competence evidence, without introducing a global MeritCore weighting.",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -103,29 +704,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT",
-    "name": "FreeMarket Broker Matching",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked pending reconciliation against existing FreeMarket/Broker contracts and whole-tree Contract Format 1.4 validation.",
-      "Unlocked until reconciled against existing FreeMarket contracts and repository-wide Contract Format 1.4 validation.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: freemarket/01_Broker_Matching.json, freemarket/market/01_Broker_Matching.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
-    ],
-    "summary": "Reconciled source purposes: [1] Define Broker matching as a read/analysis operation that compares explicit Project requirements with identity-linked PortfolioCore and MeritCore evidence without mutating those source semantics. [2] Define broker matching as a derived contextual relevance process over explicit opportunity requirements and identity competence evidence, without introducing a global MeritCore weighting."
-  },
-  "purpose": "Reconciled source purposes: [1] Define Broker matching as a read/analysis operation that compares explicit Project requirements with identity-linked PortfolioCore and MeritCore evidence without mutating those source semantics. [2] Define broker matching as a derived contextual relevance process over explicit opportunity requirements and identity competence evidence, without introducing a global MeritCore weighting.",
   "references": [
     {
       "id": "REF_PORT",
@@ -148,125 +726,192 @@
       "purpose": "Competence outcome source."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "Project work semantics",
-      "MeritCore scoring",
-      "IdentityCore authentication",
-      "AccessCore authorization",
-      "presentation semantics",
-      "transport implementation",
-      "unrelated IAM/AC policy"
-    ],
-    "owns": [
-      "FreeMarket Broker Matching semantics"
-    ]
-  },
-  "semantics": {
-    "authority_rule": "Reconciled source clauses: [1] A high match score does not grant assignment/Project authority. [2] High match score does not grant participation or AccessCore authority.",
-    "determinism_rule": "Given the same source snapshot and Broker policy version, matching is reproducible where the policy is deterministic.",
-    "evidence_rule": "Each match retains the relevant Project requirement and candidate evidence refs.",
-    "evidence_sources": [
-      "PortfolioCore",
-      "MeritCore",
-      "Project evidence",
-      "listing/Project requirements"
-    ],
-    "explainability_rule": "Match results retain policy/evidence provenance.",
-    "identity_rule": "Candidates resolve by exact IdentityCore identity.",
-    "inputs": [
-      "published Project requirements",
-      "candidate identity refs",
-      "PortfolioCore evidence",
-      "MeritCore signals",
-      "explicit Broker policy"
-    ],
-    "no_global_weight_rule": "Broker relevance policy is not a universal MeritCore weighting.",
-    "output": "ranked or filtered candidate/project matches with evidence refs",
-    "policy_rule": "Matching uses explicit contextual relevance policy.",
-    "projection_rule": "Reconciled source clauses: [1] Matching result is a derived projection, not a new semantic owner. [2] Match ranking is derived output and does not mutate evidence sources.",
-    "write_rule": "Matching does not alter Project, PortfolioCore or MeritCore evidence."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
+  "gaps": [
     {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_FREEMARKET_BROKER_MATCHING",
-      "member_refs": [
-        "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT",
-        "FREEMARKET_DERIVED_MATCHING",
-        "MARKET_SEMANTICS_EXPLICIT",
-        "GATE_DFCCB0D376",
-        "GATE_BE54A9C7C7",
-        "GATE_C70D727900",
-        "GATE_49C50BDDCF",
-        "GATE_D49CA5AB7C",
-        "GATE_A279537733",
-        "GATE_DA35DDD332",
-        "GATE_390C30DF05",
-        "GATE_3EC65BEDA9",
-        "GATE_5EC6B948B6"
-      ],
-      "metadata": {},
-      "name": "FreeMarket Broker Matching",
-      "operation_refs": [
-        "OP_BROKER_MATCH",
-        "OP_BROKER_EXPLAIN"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_FREEMARKET",
-        "TOPIC_PROJECT"
-      ],
-      "purpose": "Define Broker matching as a read/analysis operation that compares explicit Project requirements with identity-linked PortfolioCore and MeritCore evidence without mutating those source semantics.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_FREEMARKET_BROKER_MATCHING",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_FREEMARKET_BROKER_MATCHING",
+      "field_path": "topics[0].operation_refs"
     },
     {
-      "child_topics": [],
-      "composed_topic_refs": [
-        "TOPIC_PORTFOLIOCORE",
-        "TOPIC_MERITCORE",
-        "TOPIC_PROJECT_RANKING"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_FREEMARKET_BROKER",
-      "member_refs": [
-        "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT",
-        "FREEMARKET_DERIVED_MATCHING",
-        "MARKET_SEMANTICS_EXPLICIT",
-        "GATE_DFCCB0D376",
-        "GATE_BE54A9C7C7",
-        "GATE_C70D727900",
-        "GATE_49C50BDDCF",
-        "GATE_D49CA5AB7C",
-        "GATE_A279537733",
-        "GATE_DA35DDD332",
-        "GATE_390C30DF05",
-        "GATE_3EC65BEDA9",
-        "GATE_5EC6B948B6"
-      ],
-      "metadata": {},
-      "name": "Broker Matching",
-      "operation_refs": [
-        "OP_BROKER_MATCH",
-        "OP_BROKER_EXPLAIN"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_PROJECT"
-      ],
-      "purpose": "Define broker matching as a derived contextual relevance process over explicit opportunity requirements and identity competence evidence, without introducing a global MeritCore weighting.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_FREEMARKET_BROKER",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_FREEMARKET_BROKER",
+      "field_path": "topics[1].operation_refs"
     }
-  ]
+  ],
+  "prose": {
+    "notes": [
+      "Unlocked pending reconciliation against existing FreeMarket/Broker contracts and whole-tree Contract Format 1.4 validation.",
+      "Unlocked until reconciled against existing FreeMarket contracts and repository-wide Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: freemarket/01_Broker_Matching.json, freemarket/market/01_Broker_Matching.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define Broker matching as a read/analysis operation that compares explicit Project requirements with identity-linked PortfolioCore and MeritCore evidence without mutating those source semantics. [2] Define broker matching as a derived contextual relevance process over explicit opportunity requirements and identity competence evidence, without introducing a global MeritCore weighting."
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_FREEMARKET_BROKER_MATCHING",
+          "member_refs": [
+            "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT",
+            "FREEMARKET_DERIVED_MATCHING",
+            "MARKET_SEMANTICS_EXPLICIT",
+            "GATE_DFCCB0D376",
+            "GATE_BE54A9C7C7",
+            "GATE_C70D727900",
+            "GATE_49C50BDDCF",
+            "GATE_D49CA5AB7C",
+            "GATE_A279537733",
+            "GATE_DA35DDD332",
+            "GATE_390C30DF05",
+            "GATE_3EC65BEDA9",
+            "GATE_5EC6B948B6"
+          ],
+          "metadata": {},
+          "name": "FreeMarket Broker Matching",
+          "operation_refs": [
+            "OP_BROKER_MATCH",
+            "OP_BROKER_EXPLAIN"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_FREEMARKET",
+            "TOPIC_PROJECT"
+          ],
+          "purpose": "Define Broker matching as a read/analysis operation that compares explicit Project requirements with identity-linked PortfolioCore and MeritCore evidence without mutating those source semantics.",
+          "relation_refs": []
+        },
+        {
+          "child_topics": [],
+          "composed_topic_refs": [
+            "TOPIC_PORTFOLIOCORE",
+            "TOPIC_MERITCORE",
+            "TOPIC_PROJECT_RANKING"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_FREEMARKET_BROKER",
+          "member_refs": [
+            "AIGMOS_FREEMARKET_BROKER_MATCHING_CONTRACT",
+            "FREEMARKET_DERIVED_MATCHING",
+            "MARKET_SEMANTICS_EXPLICIT",
+            "GATE_DFCCB0D376",
+            "GATE_BE54A9C7C7",
+            "GATE_C70D727900",
+            "GATE_49C50BDDCF",
+            "GATE_D49CA5AB7C",
+            "GATE_A279537733",
+            "GATE_DA35DDD332",
+            "GATE_390C30DF05",
+            "GATE_3EC65BEDA9",
+            "GATE_5EC6B948B6"
+          ],
+          "metadata": {},
+          "name": "Broker Matching",
+          "operation_refs": [
+            "OP_BROKER_MATCH",
+            "OP_BROKER_EXPLAIN"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_PROJECT"
+          ],
+          "purpose": "Define broker matching as a derived contextual relevance process over explicit opportunity requirements and identity competence evidence, without introducing a global MeritCore weighting.",
+          "relation_refs": []
+        }
+      ],
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "errors": [
+              "policy unresolved"
+            ],
+            "id": "OP_BROKER_MATCH",
+            "inputs": [
+              "listing/Project intent",
+              "candidate competence evidence",
+              "explicit relevance policy"
+            ],
+            "name": "Match opportunity and candidate",
+            "outputs": [
+              "ranked match candidates"
+            ],
+            "side_effects": []
+          },
+          {
+            "errors": [
+              "provenance missing"
+            ],
+            "id": "OP_BROKER_EXPLAIN",
+            "inputs": [
+              "match result",
+              "source evidence",
+              "policy"
+            ],
+            "name": "Explain match",
+            "outputs": [
+              "match provenance/explanation"
+            ],
+            "side_effects": []
+          }
+        ],
+        "states": []
+      },
+      "semantics": {
+        "authority_rule": "Reconciled source clauses: [1] A high match score does not grant assignment/Project authority. [2] High match score does not grant participation or AccessCore authority.",
+        "determinism_rule": "Given the same source snapshot and Broker policy version, matching is reproducible where the policy is deterministic.",
+        "evidence_rule": "Each match retains the relevant Project requirement and candidate evidence refs.",
+        "evidence_sources": [
+          "PortfolioCore",
+          "MeritCore",
+          "Project evidence",
+          "listing/Project requirements"
+        ],
+        "explainability_rule": "Match results retain policy/evidence provenance.",
+        "identity_rule": "Candidates resolve by exact IdentityCore identity.",
+        "inputs": [
+          "published Project requirements",
+          "candidate identity refs",
+          "PortfolioCore evidence",
+          "MeritCore signals",
+          "explicit Broker policy"
+        ],
+        "no_global_weight_rule": "Broker relevance policy is not a universal MeritCore weighting.",
+        "output": "ranked or filtered candidate/project matches with evidence refs",
+        "policy_rule": "Matching uses explicit contextual relevance policy.",
+        "projection_rule": "Reconciled source clauses: [1] Matching result is a derived projection, not a new semantic owner. [2] Match ranking is derived output and does not mutate evidence sources.",
+        "write_rule": "Matching does not alter Project, PortfolioCore or MeritCore evidence."
+      }
+    }
+  }
 }

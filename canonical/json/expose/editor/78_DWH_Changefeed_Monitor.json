@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define a read-only Expose monitor for change records, subscriptions, cursors, snapshot-stream handoff, emitted Events, lag/backpressure and replay/failure state.",
   "scope": {
     "owns": [
@@ -22,69 +21,204 @@
       "AccessCore policy ownership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT",
+      "name": "DWH Changefeed and CDC Monitor",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "views": [
+              "change records/source revisions",
+              "subscription registry",
+              "source/filter/projection refs",
+              "cursor/watermark",
+              "snapshot→stream handoff",
+              "emitted DWH-change Events",
+              "delivery/ack state",
+              "lag/backpressure",
+              "overflow/replay",
+              "errors/gaps"
+            ],
+            "readonly_rule": "Monitor is read-only by default.",
+            "identity_rule": "Record, revision, change record, subscription, cursor, Event and delivery/replay identities remain distinct.",
+            "authority_rule": "Viewing CDC state grants no source mutation or downstream execution authority.",
+            "action_rule": "create/pause/resume/replay/resnapshot/close subscription operations invoke separate authorized canonical workflows.",
+            "graph_rule": "Change→subscription→Event and snapshot→stream edges correspond only to explicit refs.",
+            "derived_rule": "Lag/current/healthy status is derived runtime evidence and not source authority.",
+            "failure_rule": "Gaps, overflow, failed Event emission and stale subscriptions are surfaced explicitly."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CHANGEFEED_CDC",
+            "child_ref": "TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR",
+            "child_ref": "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR",
+            "child_ref": "CHANGEFEED_NONEXECUTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/editor/78_DWH_Changefeed_Monitor.json"
+      }
+    },
     {
       "id": "TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR",
       "name": "DWH Changefeed and CDC Monitor",
-      "purpose": "Define a read-only Expose monitor for change records, subscriptions, cursors, snapshot-stream handoff, emitted Events, lag/backpressure and replay/failure state.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_CHANGEFEED_CDC"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT",
-        "CHANGEFEED_NONEXECUTION",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define a read-only Expose monitor for change records, subscriptions, cursors, snapshot-stream handoff, emitted Events, lag/backpressure and replay/failure state.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "views": [
-      "change records/source revisions",
-      "subscription registry",
-      "source/filter/projection refs",
-      "cursor/watermark",
-      "snapshot→stream handoff",
-      "emitted DWH-change Events",
-      "delivery/ack state",
-      "lag/backpressure",
-      "overflow/replay",
-      "errors/gaps"
-    ],
-    "readonly_rule": "Monitor is read-only by default.",
-    "identity_rule": "Record, revision, change record, subscription, cursor, Event and delivery/replay identities remain distinct.",
-    "authority_rule": "Viewing CDC state grants no source mutation or downstream execution authority.",
-    "action_rule": "create/pause/resume/replay/resnapshot/close subscription operations invoke separate authorized canonical workflows.",
-    "graph_rule": "Change→subscription→Event and snapshot→stream edges correspond only to explicit refs.",
-    "derived_rule": "Lag/current/healthy status is derived runtime evidence and not source authority.",
-    "failure_rule": "Gaps, overflow, failed Event emission and stale subscriptions are surfaced explicitly."
-  },
   "constraints": {
     "invariants": [
       {
@@ -137,10 +271,85 @@
       "purpose": "Monitor exposes lag/backpressure/replay state."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define a read-only Expose monitor for change records, subscriptions, cursors, snapshot-stream handoff, emitted Events, lag/backpressure and replay/failure state.",
     "notes": [
       "Unlocked pending reconciliation against DWH mutation/persistence, Event causality, sync and remote-sharing contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXPOSE_DWH_CHANGEFEED_MONITOR",
+          "name": "DWH Changefeed and CDC Monitor",
+          "purpose": "Define a read-only Expose monitor for change records, subscriptions, cursors, snapshot-stream handoff, emitted Events, lag/backpressure and replay/failure state.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_CHANGEFEED_CDC"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_EXPOSE_DWH_CHANGEFEED_MONITOR_CONTRACT",
+            "CHANGEFEED_NONEXECUTION",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "views": [
+          "change records/source revisions",
+          "subscription registry",
+          "source/filter/projection refs",
+          "cursor/watermark",
+          "snapshot→stream handoff",
+          "emitted DWH-change Events",
+          "delivery/ack state",
+          "lag/backpressure",
+          "overflow/replay",
+          "errors/gaps"
+        ],
+        "readonly_rule": "Monitor is read-only by default.",
+        "identity_rule": "Record, revision, change record, subscription, cursor, Event and delivery/replay identities remain distinct.",
+        "authority_rule": "Viewing CDC state grants no source mutation or downstream execution authority.",
+        "action_rule": "create/pause/resume/replay/resnapshot/close subscription operations invoke separate authorized canonical workflows.",
+        "graph_rule": "Change→subscription→Event and snapshot→stream edges correspond only to explicit refs.",
+        "derived_rule": "Lag/current/healthy status is derived runtime evidence and not source authority.",
+        "failure_rule": "Gaps, overflow, failed Event emission and stale subscriptions are surfaced explicitly."
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_COMMAND_PARSING_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define deterministic parsing of command identities, namespace segments, literal arguments and control sigils before any runtime dispatch occurs.",
   "scope": {
     "owns": [
@@ -22,65 +21,200 @@
       "domain semantics outside explicit command targets"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_COMMAND_PARSING_CONTRACT",
+      "name": "Command Parsing",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_COMMAND_PARSING_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "parse_order": [
+              "identify leading control/sigil semantics if present",
+              "parse canonical command namespace",
+              "resolve exact executable command",
+              "parse declared arguments/options",
+              "validate target/value/address grammar",
+              "dispatch only after successful parse"
+            ],
+            "namespace_separator": ".",
+            "address_separator": ":",
+            "literal_rule": "Literal argument data remains inert until consumed by the resolved command operation.",
+            "exact_rule": "Executable command identity resolves exactly through the command registry.",
+            "family_rule": "Intermediate command-family segments are namespaces and are not executed unless separately declared executable.",
+            "error_rule": "Unknown command, invalid namespace or invalid argument produces a structured parse/validation error before effects.",
+            "authority_rule": "Parsing never grants capability or authority."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_PARSING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_COMMAND_PARSING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_COMMAND_NAMESPACES",
+            "child_ref": "TOPIC_COMMAND_PARSING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_PARSING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_COMMAND_PARSING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_COMMAND_REGISTRY",
+            "child_ref": "TOPIC_COMMAND_PARSING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_PARSING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_PARSING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_PARSING",
+            "child_ref": "AIGMOS_COMMAND_PARSING_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_PARSING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_PARSING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_PARSING",
+            "child_ref": "COMMAND_EXECUTION_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_PARSING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_PARSING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_PARSING",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_PARSING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_PARSING_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_PARSING",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_PARSING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_PARSING_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_PARSING",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_PARSING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_PARSING_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_PARSING",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_PARSING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_PARSING_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_PARSING",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/commands/03_Command_Parsing.json"
+      }
+    },
     {
       "id": "TOPIC_COMMAND_PARSING",
       "name": "Command Parsing",
-      "purpose": "Define deterministic parsing of command identities, namespace segments, literal arguments and control sigils before any runtime dispatch occurs.",
-      "parent_topic_refs": [
-        "TOPIC_COMMAND_NAMESPACES",
-        "TOPIC_RUNTIME_COMMAND_REGISTRY"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_COMMAND_PARSING_CONTRACT",
-        "COMMAND_EXECUTION_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_COMMAND_PARSING::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define deterministic parsing of command identities, namespace segments, literal arguments and control sigils before any runtime dispatch occurs.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "parse_order": [
-      "identify leading control/sigil semantics if present",
-      "parse canonical command namespace",
-      "resolve exact executable command",
-      "parse declared arguments/options",
-      "validate target/value/address grammar",
-      "dispatch only after successful parse"
-    ],
-    "namespace_separator": ".",
-    "address_separator": ":",
-    "literal_rule": "Literal argument data remains inert until consumed by the resolved command operation.",
-    "exact_rule": "Executable command identity resolves exactly through the command registry.",
-    "family_rule": "Intermediate command-family segments are namespaces and are not executed unless separately declared executable.",
-    "error_rule": "Unknown command, invalid namespace or invalid argument produces a structured parse/validation error before effects.",
-    "authority_rule": "Parsing never grants capability or authority."
-  },
   "constraints": {
     "invariants": [
       {
@@ -128,10 +262,81 @@
       "purpose": "Executable targets resolve exactly."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define deterministic parsing of command identities, namespace segments, literal arguments and control sigils before any runtime dispatch occurs.",
     "notes": [
       "Unlocked pending reconciliation against the existing command/runtime grammar and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_COMMAND_PARSING",
+          "name": "Command Parsing",
+          "purpose": "Define deterministic parsing of command identities, namespace segments, literal arguments and control sigils before any runtime dispatch occurs.",
+          "parent_topic_refs": [
+            "TOPIC_COMMAND_NAMESPACES",
+            "TOPIC_RUNTIME_COMMAND_REGISTRY"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_COMMAND_PARSING_CONTRACT",
+            "COMMAND_EXECUTION_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "parse_order": [
+          "identify leading control/sigil semantics if present",
+          "parse canonical command namespace",
+          "resolve exact executable command",
+          "parse declared arguments/options",
+          "validate target/value/address grammar",
+          "dispatch only after successful parse"
+        ],
+        "namespace_separator": ".",
+        "address_separator": ":",
+        "literal_rule": "Literal argument data remains inert until consumed by the resolved command operation.",
+        "exact_rule": "Executable command identity resolves exactly through the command registry.",
+        "family_rule": "Intermediate command-family segments are namespaces and are not executed unless separately declared executable.",
+        "error_rule": "Unknown command, invalid namespace or invalid argument produces a structured parse/validation error before effects.",
+        "authority_rule": "Parsing never grants capability or authority."
+      }
+    }
   }
 }

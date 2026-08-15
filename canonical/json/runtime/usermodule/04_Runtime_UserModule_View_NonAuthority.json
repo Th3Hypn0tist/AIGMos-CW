@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define UserModule view modules as derived human/UI projections that never become semantic or runtime authority and perform writes only by invoking explicit canonical operations owned elsewhere.",
   "scope": {
     "owns": [
@@ -21,97 +20,287 @@
       "projection semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT",
+      "name": "Runtime View Non-Authority",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT::OPERATIONS::OP_VIEW_PROJECT",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_VIEW_PROJECT",
+            "name": "Project module view",
+            "inputs": [
+              "canonical/runtime source refs",
+              "view definition"
+            ],
+            "outputs": [
+              "read-only view model"
+            ],
+            "errors": [
+              "source unresolved"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT::OPERATIONS::OP_VIEW_INVOKE_OPERATION",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_VIEW_INVOKE_OPERATION",
+            "name": "Invoke canonical operation from view",
+            "inputs": [
+              "operation_ref",
+              "validated user input"
+            ],
+            "outputs": [
+              "operation result"
+            ],
+            "errors": [
+              "operation unresolved",
+              "authority denied"
+            ],
+            "side_effects": [
+              "only side effects owned by invoked canonical operation"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "view_rule": "View is UI-only/read projection by default.",
+            "backend_rule": "View owns no private semantic backend.",
+            "write_rule": "Any user-initiated mutation resolves to an explicit canonical operation and authoritative write target.",
+            "authority_rule": "UI visibility or control presence does not grant runtime authority.",
+            "state_rule": "Ephemeral presentation state is view state and does not silently become canonical/runtime semantic state.",
+            "projection_rule": "View layout, ordering and nesting are projection semantics only."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_USERMODULE_VIEWS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME_USER_MODULES",
+            "child_ref": "TOPIC_RUNTIME_USERMODULE_VIEWS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_VIEWS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_VIEWS",
+            "child_ref": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_VIEWS_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_VIEWS",
+            "child_ref": "USERMODULE_SEMANTICS_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_VIEWS_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_VIEWS",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_VIEWS_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_VIEWS",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_VIEWS_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_VIEWS",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_VIEWS_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_VIEWS",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_VIEWS_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_VIEWS",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_VIEWS_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_VIEWS",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_USERMODULE_VIEWS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_VIEWS",
+            "child_ref": "TOPIC_CORE_PROJECTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_USERMODULE_VIEWS_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_VIEWS",
+            "child_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_USERMODULE_VIEWS_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_VIEWS",
+            "child_ref": "TOPIC_CORE_OPERATIONS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/usermodule/04_Runtime_UserModule_View_NonAuthority.json"
+      }
+    },
     {
       "id": "TOPIC_RUNTIME_USERMODULE_VIEWS",
       "name": "UserModule Views",
-      "purpose": "Define UserModule view modules as derived human/UI projections that never become semantic or runtime authority and perform writes only by invoking explicit canonical operations owned elsewhere.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME_USER_MODULES"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_PROJECTION",
-        "TOPIC_CORE_CHANGE_CONTROL",
-        "TOPIC_CORE_OPERATIONS"
-      ],
-      "member_refs": [
-        "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT",
-        "USERMODULE_SEMANTICS_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_VIEW_PROJECT",
-        "OP_VIEW_INVOKE_OPERATION"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_USERMODULE_VIEWS::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define UserModule view modules as derived human/UI projections that never become semantic or runtime authority and perform writes only by invoking explicit canonical operations owned elsewhere.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_VIEW_PROJECT",
-        "name": "Project module view",
-        "inputs": [
-          "canonical/runtime source refs",
-          "view definition"
-        ],
-        "outputs": [
-          "read-only view model"
-        ],
-        "errors": [
-          "source unresolved"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_VIEW_INVOKE_OPERATION",
-        "name": "Invoke canonical operation from view",
-        "inputs": [
-          "operation_ref",
-          "validated user input"
-        ],
-        "outputs": [
-          "operation result"
-        ],
-        "errors": [
-          "operation unresolved",
-          "authority denied"
-        ],
-        "side_effects": [
-          "only side effects owned by invoked canonical operation"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "view_rule": "View is UI-only/read projection by default.",
-    "backend_rule": "View owns no private semantic backend.",
-    "write_rule": "Any user-initiated mutation resolves to an explicit canonical operation and authoritative write target.",
-    "authority_rule": "UI visibility or control presence does not grant runtime authority.",
-    "state_rule": "Ephemeral presentation state is view state and does not silently become canonical/runtime semantic state.",
-    "projection_rule": "View layout, ordering and nesting are projection semantics only."
-  },
   "constraints": {
     "invariants": [
       {
@@ -169,10 +358,123 @@
       "purpose": "Views invoke canonical operations."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_USERMODULE_VIEWS",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_USERMODULE_VIEWS",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define UserModule view modules as derived human/UI projections that never become semantic or runtime authority and perform writes only by invoking explicit canonical operations owned elsewhere.",
     "notes": [
       "Unlocked until reconciled against existing UserModule contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RUNTIME_USERMODULE_VIEWS",
+          "name": "UserModule Views",
+          "purpose": "Define UserModule view modules as derived human/UI projections that never become semantic or runtime authority and perform writes only by invoking explicit canonical operations owned elsewhere.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME_USER_MODULES"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_PROJECTION",
+            "TOPIC_CORE_CHANGE_CONTROL",
+            "TOPIC_CORE_OPERATIONS"
+          ],
+          "member_refs": [
+            "AIGMOS_RUNTIME_VIEW_NONAUTHORITY_CONTRACT",
+            "USERMODULE_SEMANTICS_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_VIEW_PROJECT",
+            "OP_VIEW_INVOKE_OPERATION"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_VIEW_PROJECT",
+            "name": "Project module view",
+            "inputs": [
+              "canonical/runtime source refs",
+              "view definition"
+            ],
+            "outputs": [
+              "read-only view model"
+            ],
+            "errors": [
+              "source unresolved"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_VIEW_INVOKE_OPERATION",
+            "name": "Invoke canonical operation from view",
+            "inputs": [
+              "operation_ref",
+              "validated user input"
+            ],
+            "outputs": [
+              "operation result"
+            ],
+            "errors": [
+              "operation unresolved",
+              "authority denied"
+            ],
+            "side_effects": [
+              "only side effects owned by invoked canonical operation"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "view_rule": "View is UI-only/read projection by default.",
+        "backend_rule": "View owns no private semantic backend.",
+        "write_rule": "Any user-initiated mutation resolves to an explicit canonical operation and authoritative write target.",
+        "authority_rule": "UI visibility or control presence does not grant runtime authority.",
+        "state_rule": "Ephemeral presentation state is view state and does not silently become canonical/runtime semantic state.",
+        "projection_rule": "View layout, ordering and nesting are projection semantics only."
+      }
+    }
   }
 }

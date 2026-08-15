@@ -1,43 +1,822 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "errors": [
-          "time invalid"
-        ],
-        "id": "OP_PROJECT_TIME_BUCKET",
-        "inputs": [
-          "Project",
-          "work timestamps/duration"
-        ],
-        "name": "Represent Project work period",
-        "outputs": [
-          "week/hour Project time atoms"
-        ],
-        "side_effects": []
-      },
-      {
-        "errors": [
-          "evidence multiplication",
-          "overlap invalid"
-        ],
-        "id": "OP_PROJECT_TIME_VALIDATE",
-        "inputs": [
-          "time atoms",
-          "underlying work evidence"
-        ],
-        "name": "Validate Project time atom evidence",
-        "outputs": [
-          "validated time distribution"
-        ],
-        "side_effects": []
-      }
-    ],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT",
+    "name": "Project Time Atoms",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define Project work evidence using a one-week base atom with subdivision to hour atoms while preventing time splitting from multiplying merit/Tier evidence. [2] Define Project evidence time granularity using week as the base reporting atom with subdivision down to hour atoms without multiplying merit evidence. [3] Define Project work evidence time distribution using a base week period with subdivision to hour atoms, preventing decomposition from multiplying the same evidence.",
+  "scope": {
+    "does_not_own": [
+      "presentation semantics",
+      "transport implementation",
+      "unrelated identity semantics",
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "presentation/layout semantics",
+      "MeritCore scoring semantics",
+      "FreeMarket broker policy",
+      "presentation-only hierarchy"
+    ],
+    "owns": [
+      "Project Time Atoms semantics",
+      "Project Time Atom semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT",
+      "name": "Project Time Atoms",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::OPERATIONS::OP_PROJECT_TIME_BUCKET",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "time invalid"
+            ],
+            "id": "OP_PROJECT_TIME_BUCKET",
+            "inputs": [
+              "Project",
+              "work timestamps/duration"
+            ],
+            "name": "Represent Project work period",
+            "outputs": [
+              "week/hour Project time atoms"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::OPERATIONS::OP_PROJECT_TIME_VALIDATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "evidence multiplication",
+              "overlap invalid"
+            ],
+            "id": "OP_PROJECT_TIME_VALIDATE",
+            "inputs": [
+              "time atoms",
+              "underlying work evidence"
+            ],
+            "name": "Validate Project time atom evidence",
+            "outputs": [
+              "validated time distribution"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "aggregation_rule": "Reconciled source clauses: [1] Hour atoms aggregate back into their containing reporting periods deterministically. [2] Hour atoms aggregate into their owning weekly/work evidence periods without duplication.",
+            "anchor_rule": "Project time evidence uses explicit temporal boundaries/context.",
+            "anti_multiplication_rule": "Splitting one underlying work period into multiple atoms cannot create more qualifying evidence than the actual work.",
+            "authority_rule": "Time evidence has no operation authority.",
+            "base_atom": "Reconciled source clauses: [1] one week [2] one_week [3] week",
+            "conservation_rule": "Splitting time cannot multiply Tier/merit evidence beyond represented actual hour atoms.",
+            "distribution_rule": "Project work evidence may be distributed across weekly periods and subdivided to hour atoms.",
+            "identity_rule": "Time atom identity/reference is distinct from Project identity.",
+            "merit_alignment_rule": "Project time atoms provide temporal evidence consumed by MeritCore timing semantics.",
+            "minimum_atom": "one_hour",
+            "minimum_subdivision": "Reconciled source clauses: [1] hour atom [2] hour",
+            "nonmultiplication_rule": "Splitting a Project/time period cannot multiply the same underlying work evidence or Tier evidence.",
+            "overlap_rule": "Overlapping atoms must not double-count the same underlying work unless an explicit independent evidence rule justifies it.",
+            "precision_rule": "Sub-hour evidence is not required by this canonical Project atom model unless a future compatible contract explicitly extends it.",
+            "provenance_rule": "Atoms retain Project and underlying evidence refs.",
+            "reporting_rule": "MeritCore may consume Project-linked time atoms according to its own user-anchored reporting cadence.",
+            "representation_rule": "Project work can be distributed across weekly and hour-level atoms.",
+            "split_rule": "A week may be subdivided into explicit hour atoms."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROJECT_TIME_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "TOPIC_PROJECT_TIME",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "PROJECT_MODEL_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "COMPOSITION_NONOWNERSHIP",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "EXPLICIT_STRUCTURE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "PROJECT_UNIVERSAL_RECURSIVE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "GATE_427C8618EF",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "GATE_FDC2ABBCCD",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "GATE_B677B20462",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "GATE_2AFF5DAEBE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "GATE_B2E9B2119E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "GATE_4D9127894F",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "GATE_E87D85195D",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "GATE_8A1CA4FE14",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "GATE_A2813C2519",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_14",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "GATE_C15C706303",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[14]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_15",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "GATE_FCCD499D35",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[15]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_16",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "GATE_5406BF57CB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[16]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_17",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "GATE_CC733EB6A2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[17]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_18",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "GATE_E9A17B88CE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[18]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_PROJECT_TIME_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "TOPIC_PROJECT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_PROJECT_TIME_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_PROJECT_TIME",
+            "child_ref": "TOPIC_MERIT_TIME",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROJECT_TIME_ATOM_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_PROJECT",
+            "child_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROJECT_TIME_ATOM_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_TIME",
+            "child_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROJECT_TIME_ATOM_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_UNIVERSAL_MODULE",
+            "child_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "PROJECT_MODEL_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "COMPOSITION_NONOWNERSHIP",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "EXPLICIT_STRUCTURE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "PROJECT_UNIVERSAL_RECURSIVE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "GATE_427C8618EF",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "GATE_FDC2ABBCCD",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "GATE_B677B20462",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "GATE_2AFF5DAEBE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "GATE_B2E9B2119E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "GATE_4D9127894F",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "GATE_E87D85195D",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "GATE_8A1CA4FE14",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "GATE_A2813C2519",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_14",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "GATE_C15C706303",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[14]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_15",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "GATE_FCCD499D35",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[15]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_16",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "GATE_5406BF57CB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[16]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_17",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "GATE_CC733EB6A2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[17]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_TIME_ATOM_18",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_TIME_ATOM",
+            "child_ref": "GATE_E9A17B88CE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[18]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_PROJECT_TIME_ATOM_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_PROJECT_TIME",
+      "name": "Project Time",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_PROJECT_TIME::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define Project work evidence using a one-week base atom with subdivision to hour atoms while preventing time splitting from multiplying merit/Tier evidence.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_PROJECT_TIME_ATOM",
+      "name": "Project Time Atom",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_PROJECT_TIME_ATOM::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Reconciled source clauses: [1] Define Project evidence time granularity using week as the base reporting atom with subdivision down to hour atoms without multiplying merit evidence. [2] Define Project work evidence time distribution using a base week period with subdivision to hour atoms, preventing decomposition from multiplying the same evidence.",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -130,30 +909,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT",
-    "name": "Project Time Atoms",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked until reconciled against existing FreeMarket/Project/Merit contracts and repository-wide Contract Format 1.4 validation.",
-      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
-      "Unlocked pending reconciliation against existing Project/FreeMarket/MeritCore contracts and whole-tree Contract Format 1.4 validation.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: freemarket/project/03_Project_Time_Atoms.json, project/02_Project_Time_Atom.json, universal_module/project/03_Project_Time_Atoms.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
-    ],
-    "summary": "Reconciled source purposes: [1] Define Project work evidence using a one-week base atom with subdivision to hour atoms while preventing time splitting from multiplying merit/Tier evidence. [2] Define Project evidence time granularity using week as the base reporting atom with subdivision down to hour atoms without multiplying merit evidence. [3] Define Project work evidence time distribution using a base week period with subdivision to hour atoms, preventing decomposition from multiplying the same evidence."
-  },
-  "purpose": "Reconciled source purposes: [1] Define Project work evidence using a one-week base atom with subdivision to hour atoms while preventing time splitting from multiplying merit/Tier evidence. [2] Define Project evidence time granularity using week as the base reporting atom with subdivision down to hour atoms without multiplying merit evidence. [3] Define Project work evidence time distribution using a base week period with subdivision to hour atoms, preventing decomposition from multiplying the same evidence.",
   "references": [
     {
       "id": "REF_MERIT_TIME",
@@ -166,135 +921,199 @@
       "purpose": "MeritCore consumes Project-linked temporal evidence under its own cadence."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "presentation semantics",
-      "transport implementation",
-      "unrelated identity semantics",
-      "runtime execution authority",
-      "AccessCore policy ownership",
-      "presentation/layout semantics",
-      "MeritCore scoring semantics",
-      "FreeMarket broker policy",
-      "presentation-only hierarchy"
-    ],
-    "owns": [
-      "Project Time Atoms semantics",
-      "Project Time Atom semantics"
-    ]
-  },
-  "semantics": {
-    "aggregation_rule": "Reconciled source clauses: [1] Hour atoms aggregate back into their containing reporting periods deterministically. [2] Hour atoms aggregate into their owning weekly/work evidence periods without duplication.",
-    "anchor_rule": "Project time evidence uses explicit temporal boundaries/context.",
-    "anti_multiplication_rule": "Splitting one underlying work period into multiple atoms cannot create more qualifying evidence than the actual work.",
-    "authority_rule": "Time evidence has no operation authority.",
-    "base_atom": "Reconciled source clauses: [1] one week [2] one_week [3] week",
-    "conservation_rule": "Splitting time cannot multiply Tier/merit evidence beyond represented actual hour atoms.",
-    "distribution_rule": "Project work evidence may be distributed across weekly periods and subdivided to hour atoms.",
-    "identity_rule": "Time atom identity/reference is distinct from Project identity.",
-    "merit_alignment_rule": "Project time atoms provide temporal evidence consumed by MeritCore timing semantics.",
-    "minimum_atom": "one_hour",
-    "minimum_subdivision": "Reconciled source clauses: [1] hour atom [2] hour",
-    "nonmultiplication_rule": "Splitting a Project/time period cannot multiply the same underlying work evidence or Tier evidence.",
-    "overlap_rule": "Overlapping atoms must not double-count the same underlying work unless an explicit independent evidence rule justifies it.",
-    "precision_rule": "Sub-hour evidence is not required by this canonical Project atom model unless a future compatible contract explicitly extends it.",
-    "provenance_rule": "Atoms retain Project and underlying evidence refs.",
-    "reporting_rule": "MeritCore may consume Project-linked time atoms according to its own user-anchored reporting cadence.",
-    "representation_rule": "Project work can be distributed across weekly and hour-level atoms.",
-    "split_rule": "A week may be subdivided into explicit hour atoms."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
+  "gaps": [
     {
-      "child_topics": [],
-      "composed_topic_refs": [
-        "TOPIC_PROJECT",
-        "TOPIC_MERIT_TIME"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_PROJECT_TIME",
-      "member_refs": [
-        "AIGMOS_PROJECT_TIME_ATOM_CONTRACT",
-        "PROJECT_MODEL_EXPLICIT",
-        "COMPOSITION_NONOWNERSHIP",
-        "EXPLICIT_STRUCTURE",
-        "PROJECT_UNIVERSAL_RECURSIVE",
-        "GATE_427C8618EF",
-        "GATE_FDC2ABBCCD",
-        "GATE_B677B20462",
-        "GATE_2AFF5DAEBE",
-        "GATE_B2E9B2119E",
-        "GATE_4D9127894F",
-        "GATE_E87D85195D",
-        "GATE_8A1CA4FE14",
-        "GATE_A2813C2519",
-        "GATE_C15C706303",
-        "GATE_FCCD499D35",
-        "GATE_5406BF57CB",
-        "GATE_CC733EB6A2",
-        "GATE_E9A17B88CE"
-      ],
-      "metadata": {},
-      "name": "Project Time",
-      "operation_refs": [
-        "OP_PROJECT_TIME_BUCKET",
-        "OP_PROJECT_TIME_VALIDATE"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_CORE"
-      ],
-      "purpose": "Define Project work evidence using a one-week base atom with subdivision to hour atoms while preventing time splitting from multiplying merit/Tier evidence.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_PROJECT_TIME",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_PROJECT_TIME",
+      "field_path": "topics[0].operation_refs"
     },
     {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_PROJECT_TIME_ATOM",
-      "member_refs": [
-        "AIGMOS_PROJECT_TIME_ATOM_CONTRACT",
-        "PROJECT_MODEL_EXPLICIT",
-        "COMPOSITION_NONOWNERSHIP",
-        "EXPLICIT_STRUCTURE",
-        "PROJECT_UNIVERSAL_RECURSIVE",
-        "GATE_427C8618EF",
-        "GATE_FDC2ABBCCD",
-        "GATE_B677B20462",
-        "GATE_2AFF5DAEBE",
-        "GATE_B2E9B2119E",
-        "GATE_4D9127894F",
-        "GATE_E87D85195D",
-        "GATE_8A1CA4FE14",
-        "GATE_A2813C2519",
-        "GATE_C15C706303",
-        "GATE_FCCD499D35",
-        "GATE_5406BF57CB",
-        "GATE_CC733EB6A2",
-        "GATE_E9A17B88CE"
-      ],
-      "metadata": {},
-      "name": "Project Time Atom",
-      "operation_refs": [
-        "OP_PROJECT_TIME_BUCKET",
-        "OP_PROJECT_TIME_VALIDATE"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_PROJECT",
-        "TOPIC_TIME",
-        "TOPIC_UNIVERSAL_MODULE"
-      ],
-      "purpose": "Reconciled source clauses: [1] Define Project evidence time granularity using week as the base reporting atom with subdivision down to hour atoms without multiplying merit evidence. [2] Define Project work evidence time distribution using a base week period with subdivision to hour atoms, preventing decomposition from multiplying the same evidence.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_PROJECT_TIME_ATOM_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_PROJECT_TIME_ATOM",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_PROJECT_TIME_ATOM",
+      "field_path": "topics[1].operation_refs"
     }
-  ]
+  ],
+  "prose": {
+    "notes": [
+      "Unlocked until reconciled against existing FreeMarket/Project/Merit contracts and repository-wide Contract Format 1.4 validation.",
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against existing Project/FreeMarket/MeritCore contracts and whole-tree Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: freemarket/project/03_Project_Time_Atoms.json, project/02_Project_Time_Atom.json, universal_module/project/03_Project_Time_Atoms.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define Project work evidence using a one-week base atom with subdivision to hour atoms while preventing time splitting from multiplying merit/Tier evidence. [2] Define Project evidence time granularity using week as the base reporting atom with subdivision down to hour atoms without multiplying merit evidence. [3] Define Project work evidence time distribution using a base week period with subdivision to hour atoms, preventing decomposition from multiplying the same evidence."
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [
+            "TOPIC_PROJECT",
+            "TOPIC_MERIT_TIME"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_PROJECT_TIME",
+          "member_refs": [
+            "AIGMOS_PROJECT_TIME_ATOM_CONTRACT",
+            "PROJECT_MODEL_EXPLICIT",
+            "COMPOSITION_NONOWNERSHIP",
+            "EXPLICIT_STRUCTURE",
+            "PROJECT_UNIVERSAL_RECURSIVE",
+            "GATE_427C8618EF",
+            "GATE_FDC2ABBCCD",
+            "GATE_B677B20462",
+            "GATE_2AFF5DAEBE",
+            "GATE_B2E9B2119E",
+            "GATE_4D9127894F",
+            "GATE_E87D85195D",
+            "GATE_8A1CA4FE14",
+            "GATE_A2813C2519",
+            "GATE_C15C706303",
+            "GATE_FCCD499D35",
+            "GATE_5406BF57CB",
+            "GATE_CC733EB6A2",
+            "GATE_E9A17B88CE"
+          ],
+          "metadata": {},
+          "name": "Project Time",
+          "operation_refs": [
+            "OP_PROJECT_TIME_BUCKET",
+            "OP_PROJECT_TIME_VALIDATE"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_CORE"
+          ],
+          "purpose": "Define Project work evidence using a one-week base atom with subdivision to hour atoms while preventing time splitting from multiplying merit/Tier evidence.",
+          "relation_refs": []
+        },
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_PROJECT_TIME_ATOM",
+          "member_refs": [
+            "AIGMOS_PROJECT_TIME_ATOM_CONTRACT",
+            "PROJECT_MODEL_EXPLICIT",
+            "COMPOSITION_NONOWNERSHIP",
+            "EXPLICIT_STRUCTURE",
+            "PROJECT_UNIVERSAL_RECURSIVE",
+            "GATE_427C8618EF",
+            "GATE_FDC2ABBCCD",
+            "GATE_B677B20462",
+            "GATE_2AFF5DAEBE",
+            "GATE_B2E9B2119E",
+            "GATE_4D9127894F",
+            "GATE_E87D85195D",
+            "GATE_8A1CA4FE14",
+            "GATE_A2813C2519",
+            "GATE_C15C706303",
+            "GATE_FCCD499D35",
+            "GATE_5406BF57CB",
+            "GATE_CC733EB6A2",
+            "GATE_E9A17B88CE"
+          ],
+          "metadata": {},
+          "name": "Project Time Atom",
+          "operation_refs": [
+            "OP_PROJECT_TIME_BUCKET",
+            "OP_PROJECT_TIME_VALIDATE"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_PROJECT",
+            "TOPIC_TIME",
+            "TOPIC_UNIVERSAL_MODULE"
+          ],
+          "purpose": "Reconciled source clauses: [1] Define Project evidence time granularity using week as the base reporting atom with subdivision down to hour atoms without multiplying merit evidence. [2] Define Project work evidence time distribution using a base week period with subdivision to hour atoms, preventing decomposition from multiplying the same evidence.",
+          "relation_refs": []
+        }
+      ],
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "errors": [
+              "time invalid"
+            ],
+            "id": "OP_PROJECT_TIME_BUCKET",
+            "inputs": [
+              "Project",
+              "work timestamps/duration"
+            ],
+            "name": "Represent Project work period",
+            "outputs": [
+              "week/hour Project time atoms"
+            ],
+            "side_effects": []
+          },
+          {
+            "errors": [
+              "evidence multiplication",
+              "overlap invalid"
+            ],
+            "id": "OP_PROJECT_TIME_VALIDATE",
+            "inputs": [
+              "time atoms",
+              "underlying work evidence"
+            ],
+            "name": "Validate Project time atom evidence",
+            "outputs": [
+              "validated time distribution"
+            ],
+            "side_effects": []
+          }
+        ],
+        "states": []
+      },
+      "semantics": {
+        "aggregation_rule": "Reconciled source clauses: [1] Hour atoms aggregate back into their containing reporting periods deterministically. [2] Hour atoms aggregate into their owning weekly/work evidence periods without duplication.",
+        "anchor_rule": "Project time evidence uses explicit temporal boundaries/context.",
+        "anti_multiplication_rule": "Splitting one underlying work period into multiple atoms cannot create more qualifying evidence than the actual work.",
+        "authority_rule": "Time evidence has no operation authority.",
+        "base_atom": "Reconciled source clauses: [1] one week [2] one_week [3] week",
+        "conservation_rule": "Splitting time cannot multiply Tier/merit evidence beyond represented actual hour atoms.",
+        "distribution_rule": "Project work evidence may be distributed across weekly periods and subdivided to hour atoms.",
+        "identity_rule": "Time atom identity/reference is distinct from Project identity.",
+        "merit_alignment_rule": "Project time atoms provide temporal evidence consumed by MeritCore timing semantics.",
+        "minimum_atom": "one_hour",
+        "minimum_subdivision": "Reconciled source clauses: [1] hour atom [2] hour",
+        "nonmultiplication_rule": "Splitting a Project/time period cannot multiply the same underlying work evidence or Tier evidence.",
+        "overlap_rule": "Overlapping atoms must not double-count the same underlying work unless an explicit independent evidence rule justifies it.",
+        "precision_rule": "Sub-hour evidence is not required by this canonical Project atom model unless a future compatible contract explicitly extends it.",
+        "provenance_rule": "Atoms retain Project and underlying evidence refs.",
+        "reporting_rule": "MeritCore may consume Project-linked time atoms according to its own user-anchored reporting cadence.",
+        "representation_rule": "Project work can be distributed across weekly and hour-level atoms.",
+        "split_rule": "A week may be subdivided into explicit hour atoms."
+      }
+    }
+  }
 }

@@ -1,0 +1,765 @@
+{
+  "name": "CanonicalWireframe Dependency Rules",
+  "type": "dependency_rules",
+  "version": "2.0.0",
+  "status": "locked",
+  "release": {
+    "state": "final",
+    "delta_from": "1.0.0",
+    "change_class": "breaking_cw_ruleset_refactor",
+    "semantic_delta": [
+      "Updates CW rule membership for the Entity + Property CCF 2.0 model.",
+      "Moves Link and Event Property semantics into CW-specific DependencyRules Rulesets.",
+      "Preserves base DependencyRules semantics unchanged.",
+      "Retains parent_ref -> child_ref universal Link topology inside Link Property values."
+    ]
+  },
+  "purpose": "Define the CW-specific DependencyRules layer required by Canonical Contract Format 2.0, including direct CCF rule membership and normative Rulesets for core Property Types without redefining the underlying DependencyRules standard.",
+  "inheritance": {
+    "model": "DependencyRules",
+    "mode": "recursive_DR_on_DR",
+    "base_semantics": "inherited_unchanged",
+    "rule": "Ruleset composition, dependency closure, conflict, exclusion, cycle, resolution and validation semantics are inherited from DependencyRules and are not redefined by CW."
+  },
+  "target": {
+    "format_ref": "Canonical Contract Format",
+    "format_version": "2.0.0",
+    "candidate_artifact": "Canonical_Contract_Format_v2.0.0.json"
+  },
+  "ruleset": {
+    "id": "CW_CCF_2_0_RULESET",
+    "name": "CanonicalWireframe / CCF 2.0 Ruleset",
+    "status": "locked",
+    "direct_rule_refs": [
+      "CF_NO_SEMANTIC_GUESSING",
+      "CF_ENTITY_IS_UNIVERSAL_SEMANTIC_OBJECT",
+      "CF_ONE_ENTITY_ONE_ACTIVE_DEFINITION",
+      "CF_ENTITY_PROPERTIES_ARE_UNBOUNDED",
+      "CF_PROPERTY_TYPE_IS_EXPLICIT",
+      "CF_PROPERTY_RULESET_IS_EXPLICIT",
+      "CF_RULESET_DEFINES_PROPERTY_SEMANTICS",
+      "CF_LINK_IS_PROPERTY",
+      "CF_EVENT_IS_PROPERTY",
+      "CF_NODE_IS_REPRESENTATION",
+      "CF_PROPERTY_MINIMUM_NOT_MAXIMUM",
+      "CF_PROPERTY_SEMANTICS_NOT_INFERRED_FROM_RENDERING",
+      "CF_UNKNOWN_NOT_INVENTED",
+      "CF_PROGRESSIVE_FORMALIZATION",
+      "CF_ROUND_TRIP",
+      "CF_PROFILE_DEFINES_ENTITY_MINIMUM",
+      "CF_FORMAT_DEMAND_IS_EXPLICIT",
+      "CF_FORMAT_DEMAND_MINIMUM_NOT_MAXIMUM",
+      "CF_FORMAT_DEMANDS_ARE_COMPOSABLE",
+      "CF_FORMAT_DEMAND_CONFLICT_IS_EXPLICIT",
+      "CF_FORMAT_DEMAND_NOT_SEMANTIC_AUTHORITY",
+      "CF_RULESET_AUTHORITY_IS_DEPENDENCY_RULES",
+      "CF_STRUCTURE_TREE_IS_DERIVED",
+      "CF_ENTITY_PROPERTY_IDS_SHARE_CANONICAL_NAMESPACE",
+      "CF_LINK_IS_UNIVERSAL_DIRECTED_CONNECTION_PROPERTY",
+      "CF_LINK_PROPERTY_OWNER_DEFINED_BY_RULESET",
+      "CF_EVENT_REFERENCES_ARE_LINK_PROPERTIES",
+      "CF_DETERMINISTIC_CAUSAL_TRACEABILITY",
+      "CF_CAUSAL_DATA_SURFACE_IS_EXPLICIT",
+      "CF_MISSING_REQUIRED_FIELD",
+      "CF_AMBIGUOUS_ENTITY",
+      "CF_UNRESOLVED_REFERENCE",
+      "CF_AMBIGUOUS_REFERENCE",
+      "CF_PROPERTY_TYPE_UNRESOLVED",
+      "CF_PROPERTY_RULESET_UNRESOLVED",
+      "CF_PROPERTY_RULESET_VIOLATION",
+      "CF_PROFILE_REQUIRED_PROPERTY_MISSING",
+      "CF_ENTITY_PROPERTY_COLLECTION_BOUNDED",
+      "CF_LINK_STORED_OUTSIDE_PROPERTY_MODEL",
+      "CF_EVENT_STORED_AS_PARALLEL_ONTOLOGY",
+      "CF_PRESENTATION_BECOMES_IMPLICIT_SEMANTICS",
+      "CF_FORMAT_DEMAND_UNRESOLVED_FORMAT",
+      "CF_FORMAT_DEMAND_SCOPE_UNRESOLVED",
+      "CF_FORMAT_DEMAND_REQUIRED_MINIMUM_MISSING",
+      "CF_FORMAT_DEMAND_TOTAL_MODEL_BOUND",
+      "CF_FORMAT_DEMAND_CONFLICT_HIDDEN",
+      "CF_SEMANTIC_GUESS_REQUIRED",
+      "CF_ROUND_TRIP_LOSS",
+      "CF_DUAL_TRUTH",
+      "CF_ENTITY_PROPERTY_ID_COLLISION",
+      "CF_LINK_PROPERTY_OWNER_UNRESOLVED",
+      "CF_EVENT_EMBEDDED_REFERENCE_DUAL_TRUTH",
+      "CF_CAUSAL_DATA_PATH_HIDDEN",
+      "CF_CAUSAL_GUESSING_REQUIRED"
+    ],
+    "membership_rule": "Direct membership is explicit. No CW rule membership may be inferred from prose, file location, ordering, filename or implementation.",
+    "dependency_closure": {
+      "authority": "DependencyRules",
+      "rule": "Effective Ruleset closure is resolved exclusively using inherited DependencyRules semantics."
+    }
+  },
+  "property_rulesets": [
+    {
+      "id": "RULESET_LINK",
+      "name": "Universal Directed Link Property Ruleset",
+      "applies_to_property_type_ref": "link",
+      "status": "locked",
+      "value_shape": {
+        "required_fields": [
+          "link_type_ref",
+          "parent_ref",
+          "child_ref",
+          "properties"
+        ]
+      },
+      "endpoint_model": {
+        "parent_ref": "EntityRef | PropertyRef",
+        "child_ref": "EntityRef | PropertyRef",
+        "resolution": "single_canonical_identity_namespace"
+      },
+      "property_owner": {
+        "authority": "applicable_link_ruleset",
+        "rule": "Concrete Link owner/placement semantics are defined by the applicable Link Ruleset composition."
+      },
+      "constraints": [
+        "parent_ref resolves deterministically",
+        "child_ref resolves deterministically",
+        "link_type_ref resolves deterministically",
+        "no reverse Link is implied",
+        "a more-specific Link Ruleset defines endpoint semantic roles"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_ARCHITECTURE_PARENT",
+      "name": "Architecture Parent Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "architecture_parent",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "architecture_parent",
+        "child_ref": "architecture_child"
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are defined by this Ruleset composition and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = architecture_parent",
+        "architecture placement does not imply ownership, authority, containment, dependency or causality",
+        "parent_ref and child_ref resolve deterministically",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_CONTAINMENT",
+      "name": "Containment Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "containment",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "container",
+        "child_ref": "contained"
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are defined by this Ruleset composition and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = containment",
+        "containment does not imply ownership",
+        "parent_ref and child_ref resolve deterministically",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_OWNERSHIP",
+      "name": "Ownership Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "ownership",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "owner",
+        "child_ref": "owned"
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are defined by this Ruleset composition and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = ownership",
+        "ownership does not imply authority",
+        "parent_ref and child_ref resolve deterministically",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_AUTHORITY",
+      "name": "Authority Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "authority",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "authority",
+        "child_ref": "governed"
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are defined by this Ruleset composition and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = authority",
+        "authority does not imply dependency",
+        "parent_ref and child_ref resolve deterministically",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_DEPENDENCY",
+      "name": "Dependency Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "dependency",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "dependency",
+        "child_ref": "dependent"
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are defined by this Ruleset composition and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = dependency",
+        "dependency does not imply execution order or causality",
+        "parent_ref and child_ref resolve deterministically",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_TOPIC_PARENT",
+      "name": "Topic Parent Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "topic_parent",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "parent_topic",
+        "child_ref": "child_topic"
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are defined by this Ruleset composition and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = topic_parent",
+        "Topic hierarchy does not imply architecture placement",
+        "parent_ref and child_ref resolve deterministically",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_TOPIC_MEMBER",
+      "name": "Topic Member Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "topic_member",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "topic",
+        "child_ref": "member"
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are defined by this Ruleset composition and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = topic_member",
+        "Topic membership does not imply architecture placement",
+        "parent_ref and child_ref resolve deterministically",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_TOPIC_COMPOSITION",
+      "name": "Topic Composition Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "topic_composition",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "composing_topic",
+        "child_ref": "composed_topic"
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are defined by this Ruleset composition and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = topic_composition",
+        "parent_ref and child_ref resolve deterministically",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_SURFACE",
+      "name": "Surface Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "surface",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "component_or_owner",
+        "child_ref": "surface"
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are defined by this Ruleset composition and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = surface",
+        "surface does not imply ownership or authority",
+        "parent_ref and child_ref resolve deterministically",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_IMPLEMENTATION_BINDING",
+      "name": "Implementation Binding Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "implementation_binding",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "canonical_semantic_identity",
+        "child_ref": "implementation_identity"
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are defined by this Ruleset composition and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = implementation_binding",
+        "binding does not replace canonical semantic identity",
+        "parent_ref and child_ref resolve deterministically",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_RELATION",
+      "name": "Generic Relation Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "relation",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "relation_parent",
+        "child_ref": "relation_child"
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are defined by this Ruleset composition and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = relation",
+        "properties.direction MUST NOT become a second endpoint-orientation authority",
+        "parent_ref and child_ref resolve deterministically",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_EVENT",
+      "name": "Canonical Event Property Ruleset",
+      "applies_to_property_type_ref": "event",
+      "status": "locked",
+      "value_shape": {
+        "required_fields": [
+          "event_type_ref",
+          "properties"
+        ],
+        "optional_fields": [
+          "state",
+          "metadata"
+        ]
+      },
+      "constraints": [
+        "Directed Event references are explicit Link Properties.",
+        "Embedded directed Event reference arrays MUST NOT become a parallel canonical authority.",
+        "Unknown Ruleset-required Event semantics remain explicit Gaps."
+      ]
+    },
+    {
+      "id": "RULESET_EFFECT",
+      "name": "Canonical Effect Property Ruleset",
+      "applies_to_property_type_ref": "effect",
+      "status": "locked",
+      "value_shape": {
+        "required_fields": [
+          "effect_type_ref",
+          "properties"
+        ],
+        "optional_fields": [
+          "operation_ref",
+          "value",
+          "reason",
+          "metadata"
+        ]
+      },
+      "constraints": [
+        "Effect targets are explicit effect_target Link Properties.",
+        "Required change semantics are explicit under the applicable more-specific Ruleset.",
+        "Unknown required Effect semantics remain explicit Gaps."
+      ]
+    },
+    {
+      "id": "RULESET_LINK_EVENT_READ",
+      "name": "Event Read Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "event_read",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "observed_data_or_state",
+        "child_ref": "event"
+      },
+      "allowed_endpoint_kinds": {
+        "parent_ref": [
+          "Property"
+        ],
+        "child_ref": [
+          "Property:event"
+        ]
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are Ruleset-defined and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = event_read",
+        "parent_ref and child_ref resolve deterministically",
+        "endpoint kinds satisfy this Ruleset",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_EVENT_INPUT",
+      "name": "Event Input Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "event_input",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "input_data_or_state",
+        "child_ref": "event"
+      },
+      "allowed_endpoint_kinds": {
+        "parent_ref": [
+          "Entity",
+          "Property"
+        ],
+        "child_ref": [
+          "Property:event"
+        ]
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are Ruleset-defined and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = event_input",
+        "parent_ref and child_ref resolve deterministically",
+        "endpoint kinds satisfy this Ruleset",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_EVENT_OUTPUT",
+      "name": "Event Output Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "event_output",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "event",
+        "child_ref": "output_data_or_state"
+      },
+      "allowed_endpoint_kinds": {
+        "parent_ref": [
+          "Property:event"
+        ],
+        "child_ref": [
+          "Entity",
+          "Property"
+        ]
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are Ruleset-defined and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = event_output",
+        "parent_ref and child_ref resolve deterministically",
+        "endpoint kinds satisfy this Ruleset",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_EVENT_EFFECT",
+      "name": "Event Effect Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "event_effect",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "event",
+        "child_ref": "effect"
+      },
+      "allowed_endpoint_kinds": {
+        "parent_ref": [
+          "Property:event"
+        ],
+        "child_ref": [
+          "Property:effect"
+        ]
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are Ruleset-defined and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = event_effect",
+        "parent_ref and child_ref resolve deterministically",
+        "endpoint kinds satisfy this Ruleset",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_EVENT_CAUSE",
+      "name": "Event Cause Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "event_cause",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "cause",
+        "child_ref": "event"
+      },
+      "allowed_endpoint_kinds": {
+        "parent_ref": [
+          "Entity",
+          "Property"
+        ],
+        "child_ref": [
+          "Property:event"
+        ]
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are Ruleset-defined and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = event_cause",
+        "parent_ref and child_ref resolve deterministically",
+        "endpoint kinds satisfy this Ruleset",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_EVENT_CONDITION",
+      "name": "Event Condition Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "event_condition",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "condition",
+        "child_ref": "event"
+      },
+      "allowed_endpoint_kinds": {
+        "parent_ref": [
+          "Entity",
+          "Property"
+        ],
+        "child_ref": [
+          "Property:event"
+        ]
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are Ruleset-defined and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = event_condition",
+        "parent_ref and child_ref resolve deterministically",
+        "endpoint kinds satisfy this Ruleset",
+        "no reverse Link is implied"
+      ]
+    },
+    {
+      "id": "RULESET_LINK_EFFECT_TARGET",
+      "name": "Effect Target Link Ruleset",
+      "applies_to_property_type_ref": "link",
+      "extends_ruleset_refs": [
+        "RULESET_LINK"
+      ],
+      "status": "locked",
+      "link_type_ref": "effect_target",
+      "topology": "parent_ref -> child_ref",
+      "semantic_roles": {
+        "parent_ref": "effect",
+        "child_ref": "affected_data_or_state"
+      },
+      "allowed_endpoint_kinds": {
+        "parent_ref": [
+          "Property:effect"
+        ],
+        "child_ref": [
+          "Entity",
+          "Property"
+        ]
+      },
+      "property_owner": {
+        "authority": "this_ruleset",
+        "resolution": "ruleset_defined",
+        "rule": "Owner/placement semantics are Ruleset-defined and are never inferred from topology."
+      },
+      "constraints": [
+        "link_type_ref = effect_target",
+        "parent_ref and child_ref resolve deterministically",
+        "endpoint kinds satisfy this Ruleset",
+        "no reverse Link is implied"
+      ]
+    }
+  ],
+  "property_ruleset_policy": {
+    "open_vocabulary": true,
+    "maximum_rulesets": null,
+    "rule": "CW standardizes only the Property Rulesets required by the CCF core/candidate. Domains may add further DR Rulesets without changing CCF.",
+    "ccf_ownership_boundary": "CCF references ruleset_ref but does not own Ruleset composition or closure semantics."
+  },
+  "scope": {
+    "owns": [
+      "CW CCF 2.0 direct Ruleset membership",
+      "CW normative Property Rulesets",
+      "CW Link specialization endpoint roles",
+      "CW Event/Effect causal Link Rulesets"
+    ],
+    "does_not_own": [
+      "base DependencyRules semantics",
+      "DependencyRules closure/conflict/exclusion/cycle mechanics",
+      "CCF Entity/Property serialization",
+      "domain-specific Property Types and Rulesets",
+      "runtime-vs-design-state policy",
+      "AIGMos-specific semantics"
+    ]
+  },
+  "validation": {
+    "required_checks": [
+      "every direct_rule_ref resolves exactly once in locked CCF 2.0",
+      "every Property Ruleset has a stable unique id",
+      "every Property Ruleset identifies its Property Type",
+      "every Link specialization extends RULESET_LINK",
+      "every Link specialization defines parent_ref and child_ref semantic roles",
+      "every locked Link Property resolves deterministic owner/placement semantics from its applicable Ruleset composition",
+      "Event directed references are Link Properties",
+      "Effect targets are effect_target Link Properties",
+      "Entity and Property refs resolve through one canonical identity namespace",
+      "base DependencyRules semantics are inherited unchanged",
+      "causal traversal requires no heuristic edge invention"
+    ],
+    "lock_rule": "All required checks and inherited DependencyRules lock requirements MUST pass."
+  },
+  "causal_traceability": {
+    "status": "locked",
+    "canonical_pattern": [
+      "DATA_OR_STATE_PROPERTY",
+      "event_condition/event_input/event_read Link",
+      "EVENT_PROPERTY",
+      "event_effect Link",
+      "EFFECT_PROPERTY",
+      "effect_target Link",
+      "DATA_OR_STATE_PROPERTY"
+    ],
+    "forward_trace": "follow explicit Link + Property semantics recursively",
+    "backward_trace": "follow explicit Link + Property semantics recursively",
+    "cycle_rule": "Cycles are detected and reported; validity is applicable-Ruleset-defined.",
+    "no_guessing": true
+  },
+  "extension_points": [
+    {
+      "id": "CWDR_OPERATION_FLOW",
+      "status": "extension_point",
+      "rule": "Operation and flow semantics may be added as Property Types / Link specializations / Rulesets without changing CCF or base DR."
+    },
+    {
+      "id": "CWDR_REPRESENTATION_BINDING",
+      "status": "extension_point",
+      "rule": "Representation binding may be added by a later CW Ruleset and is not required by CCF 2.0 core."
+    }
+  ]
+}

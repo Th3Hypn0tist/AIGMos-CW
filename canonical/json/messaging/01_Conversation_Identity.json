@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define one-to-one and group conversations as stable application identities separate from connection/session and message identities.",
   "scope": {
     "owns": [
@@ -22,84 +21,237 @@
       "application operation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT",
+      "name": "Conversation Identity",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "identity_rule": "Each conversation has an explicit identity.",
+            "type_values": [
+              "direct",
+              "group"
+            ],
+            "participant_rule": "Participants/membership refs are explicit.",
+            "message_rule": "Messages reference conversation identity; conversation is not derived from message order.",
+            "transport_rule": "Conversation survives connection replacement according to application policy.",
+            "owner_rule": "Group owner semantics are explicit and immutable where declared.",
+            "authority_rule": "Conversation membership only grants messaging rights declared by messaging policy."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_CONVERSATION_IDENTITY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_MESSAGING",
+            "child_ref": "TOPIC_CONVERSATION_IDENTITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_CONVERSATION_IDENTITY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_P2P",
+            "child_ref": "TOPIC_CONVERSATION_IDENTITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CONVERSATION_IDENTITY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CONVERSATION_IDENTITY",
+            "child_ref": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CONVERSATION_IDENTITY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CONVERSATION_IDENTITY",
+            "child_ref": "TRANSPORT_NONAUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CONVERSATION_IDENTITY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CONVERSATION_IDENTITY",
+            "child_ref": "INGRESS_EFFECT_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CONVERSATION_IDENTITY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CONVERSATION_IDENTITY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CONVERSATION_IDENTITY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CONVERSATION_IDENTITY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CONVERSATION_IDENTITY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CONVERSATION_IDENTITY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CONVERSATION_IDENTITY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CONVERSATION_IDENTITY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CONVERSATION_IDENTITY_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CONVERSATION_IDENTITY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/messaging/01_Conversation_Identity.json"
+      }
+    },
     {
       "id": "TOPIC_CONVERSATION_IDENTITY",
       "name": "Conversation Identity",
-      "purpose": "Define one-to-one and group conversations as stable application identities separate from connection/session and message identities.",
-      "parent_topic_refs": [
-        "TOPIC_MESSAGING",
-        "TOPIC_P2P"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_CONVERSATION_IDENTITY_CONTRACT",
-        "TRANSPORT_NONAUTHORITY",
-        "INGRESS_EFFECT_BOUNDARY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_CONVERSATION_IDENTITY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define one-to-one and group conversations as stable application identities separate from connection/session and message identities.",
+            "metadata": {}
+          }
+        }
+      ]
     },
     {
       "id": "TOPIC_P2P",
       "name": "P2P",
-      "purpose": "Define grouping-only parent Topic identity TOPIC_P2P already referenced by 2 existing canonical child Topic reference occurrence(s).",
-      "parent_topic_refs": [],
-      "composed_topic_refs": [],
-      "member_refs": [],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {
-        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
-        "referencing_child_occurrences": 2,
-        "distinct_child_topics": 2,
-        "host_contract_ref": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT",
-        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
-        "placement_nonsemantic": true,
-        "ownership_nontransfer": true,
-        "new_parent_edges_added": 0
-      }
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_P2P::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define grouping-only parent Topic identity TOPIC_P2P already referenced by 2 existing canonical child Topic reference occurrence(s).",
+            "metadata": {
+              "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+              "referencing_child_occurrences": 2,
+              "distinct_child_topics": 2,
+              "host_contract_ref": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT",
+              "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+              "placement_nonsemantic": true,
+              "ownership_nontransfer": true,
+              "new_parent_edges_added": 0
+            }
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "identity_rule": "Each conversation has an explicit identity.",
-    "type_values": [
-      "direct",
-      "group"
-    ],
-    "participant_rule": "Participants/membership refs are explicit.",
-    "message_rule": "Messages reference conversation identity; conversation is not derived from message order.",
-    "transport_rule": "Conversation survives connection replacement according to application policy.",
-    "owner_rule": "Group owner semantics are explicit and immutable where declared.",
-    "authority_rule": "Conversation membership only grants messaging rights declared by messaging policy."
-  },
   "constraints": {
     "invariants": [
       {
@@ -146,11 +298,101 @@
       "purpose": "Messages belong to exact conversations."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define one-to-one and group conversations as stable application identities separate from connection/session and message identities.",
     "notes": [
       "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
       "Pass 6 hosts grouping-only Topic TOPIC_P2P solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_CONVERSATION_IDENTITY",
+          "name": "Conversation Identity",
+          "purpose": "Define one-to-one and group conversations as stable application identities separate from connection/session and message identities.",
+          "parent_topic_refs": [
+            "TOPIC_MESSAGING",
+            "TOPIC_P2P"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_CONVERSATION_IDENTITY_CONTRACT",
+            "TRANSPORT_NONAUTHORITY",
+            "INGRESS_EFFECT_BOUNDARY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        },
+        {
+          "id": "TOPIC_P2P",
+          "name": "P2P",
+          "purpose": "Define grouping-only parent Topic identity TOPIC_P2P already referenced by 2 existing canonical child Topic reference occurrence(s).",
+          "parent_topic_refs": [],
+          "composed_topic_refs": [],
+          "member_refs": [],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {
+            "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+            "referencing_child_occurrences": 2,
+            "distinct_child_topics": 2,
+            "host_contract_ref": "AIGMOS_CONVERSATION_IDENTITY_CONTRACT",
+            "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+            "placement_nonsemantic": true,
+            "ownership_nontransfer": true,
+            "new_parent_edges_added": 0
+          }
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "identity_rule": "Each conversation has an explicit identity.",
+        "type_values": [
+          "direct",
+          "group"
+        ],
+        "participant_rule": "Participants/membership refs are explicit.",
+        "message_rule": "Messages reference conversation identity; conversation is not derived from message order.",
+        "transport_rule": "Conversation survives connection replacement according to application policy.",
+        "owner_rule": "Group owner semantics are explicit and immutable where declared.",
+        "authority_rule": "Conversation membership only grants messaging rights declared by messaging policy."
+      }
+    }
   }
 }

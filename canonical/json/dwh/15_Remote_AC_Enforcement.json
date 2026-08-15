@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define remote DWH authorization so identity originates at the caller/origin while rights are evaluated by the remote target's AccessCore policy.",
   "scope": {
     "owns": [
@@ -22,57 +21,206 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT",
+      "name": "DWH Remote AccessCore Enforcement",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "identity_rule": "Caller identity/assurance context is propagated from origin according to IAM semantics.",
+            "rights_rule": "Remote target evaluates rights using its own AccessCore policy.",
+            "nonexpansion_rule": "Delegated remote path cannot expand rights beyond what the remote policy grants.",
+            "local_rule": "Local owner authority and delegated remote authority remain distinct.",
+            "transport_rule": "Authenticated/encrypted transport does not itself grant DWH rights.",
+            "failure_rule": "Denied remote operation returns explicit authorization failure without fallback to direct EXT access."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_REMOTE_AC_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH_EXT_ADDRESSING",
+            "child_ref": "TOPIC_DWH_REMOTE_AC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_REMOTE_AC_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_ACCESSCORE_AUTHORIZATION",
+            "child_ref": "TOPIC_DWH_REMOTE_AC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_REMOTE_AC_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_IAM_IDENTITY_PROPAGATION",
+            "child_ref": "TOPIC_DWH_REMOTE_AC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_AC_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_AC",
+            "child_ref": "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_AC_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_AC",
+            "child_ref": "DWH_POLICY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_AC_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_AC",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_AC_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_AC",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_AC_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_AC",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_AC_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_AC",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_AC_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_AC",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/15_Remote_AC_Enforcement.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_REMOTE_AC",
       "name": "DWH Remote AccessCore Enforcement",
-      "purpose": "Define remote DWH authorization so identity originates at the caller/origin while rights are evaluated by the remote target's AccessCore policy.",
-      "parent_topic_refs": [
-        "TOPIC_DWH_EXT_ADDRESSING",
-        "TOPIC_ACCESSCORE_AUTHORIZATION",
-        "TOPIC_IAM_IDENTITY_PROPAGATION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT",
-        "DWH_POLICY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_REMOTE_AC::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define remote DWH authorization so identity originates at the caller/origin while rights are evaluated by the remote target's AccessCore policy.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "identity_rule": "Caller identity/assurance context is propagated from origin according to IAM semantics.",
-    "rights_rule": "Remote target evaluates rights using its own AccessCore policy.",
-    "nonexpansion_rule": "Delegated remote path cannot expand rights beyond what the remote policy grants.",
-    "local_rule": "Local owner authority and delegated remote authority remain distinct.",
-    "transport_rule": "Authenticated/encrypted transport does not itself grant DWH rights.",
-    "failure_rule": "Denied remote operation returns explicit authorization failure without fallback to direct EXT access."
-  },
   "constraints": {
     "invariants": [
       {
@@ -120,10 +268,73 @@
       "purpose": "Origin identity remains traceable."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define remote DWH authorization so identity originates at the caller/origin while rights are evaluated by the remote target's AccessCore policy.",
     "notes": [
       "Unlocked pending reconciliation against DWH local/remote, AC/IAM and lineage contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_REMOTE_AC",
+          "name": "DWH Remote AccessCore Enforcement",
+          "purpose": "Define remote DWH authorization so identity originates at the caller/origin while rights are evaluated by the remote target's AccessCore policy.",
+          "parent_topic_refs": [
+            "TOPIC_DWH_EXT_ADDRESSING",
+            "TOPIC_ACCESSCORE_AUTHORIZATION",
+            "TOPIC_IAM_IDENTITY_PROPAGATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_REMOTE_AC_ENFORCEMENT_CONTRACT",
+            "DWH_POLICY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "identity_rule": "Caller identity/assurance context is propagated from origin according to IAM semantics.",
+        "rights_rule": "Remote target evaluates rights using its own AccessCore policy.",
+        "nonexpansion_rule": "Delegated remote path cannot expand rights beyond what the remote policy grants.",
+        "local_rule": "Local owner authority and delegated remote authority remain distinct.",
+        "transport_rule": "Authenticated/encrypted transport does not itself grant DWH rights.",
+        "failure_rule": "Denied remote operation returns explicit authorization failure without fallback to direct EXT access."
+      }
+    }
   }
 }

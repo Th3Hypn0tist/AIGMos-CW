@@ -1,11 +1,852 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
+    "name": "Protocol Route Binding",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define explicit mapping from listener/protocol instance to application route/address/handler identities without inferring application semantics from URL/path/topic names. [2] Define explicit bindings from REST routes, OSC addresses, WebSocket channels/topics or other protocol selectors to exact canonical operations/resources. [3] Define exact bindings from protocol-facing routes/addresses/channels to canonical operations, resources, events or views without encoding ownership in the external route.",
+  "scope": {
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "application operation semantics",
+      "domain business semantics",
+      "listener binding ownership",
+      "domain semantics",
+      "caller authorization policy",
+      "UI presentation"
+    ],
+    "owns": [
+      "Protocol Route Binding semantics",
+      "Protocol Route and Address Binding semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
+      "name": "Protocol Route Binding",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "ambiguity_rule": "Overlapping routes resolve through explicit precedence/specificity semantics.",
+            "authority_rule": "Reconciled source clauses: [1] Route existence never grants operation authority. [2] Binding existence does not grant caller access; AccessCore is still evaluated.",
+            "binding_kinds": [
+              "REST route",
+              "OSC address",
+              "WebSocket channel",
+              "other installed protocol address"
+            ],
+            "binding_types": [
+              "REST route",
+              "OSC address",
+              "WebSocket channel/topic",
+              "other declared protocol selector"
+            ],
+            "change_rule": "Binding edits are canonical configuration changes and may require listener reload.",
+            "collision_rule": "Conflicting active bindings hard-fail unless multiplexing semantics are explicit.",
+            "conflict_rule": "Ambiguous duplicate active selectors hard-fail unless explicit precedence semantics exist.",
+            "direction_rule": "Reconciled source clauses: [1] Read/write/invoke/subscribe/publish direction is explicit where applicable. [2] Binding declares read/write/invoke/subscribe/publish semantics as applicable.",
+            "identity_rule": "Reconciled source clauses: [1] Route binding identity is distinct from underlying operation/resource identity. [2] Selector string is a binding, not the semantic identity of the target.",
+            "listener_rule": "Route references exact listener/protocol instance.",
+            "method_rule": "Protocol method/message/address class is explicit.",
+            "ownership_rule": "Route/address/channel never becomes owner of target semantics.",
+            "route_rule": "Route/path/address/topic pattern is explicit binding metadata.",
+            "schema_rule": "Reconciled source clauses: [1] Input/output payload schema/profile is explicit. [2] Protocol input/output mapping is explicit and validated.",
+            "selector_rule": "Protocol selector is explicit and exact within its protocol-instance scope.",
+            "target_rule": "Reconciled source clauses: [1] Target application handler/operation surface is exact. [2] Binding target resolves exact canonical operation/resource identity. [3] Every binding targets an explicit canonical identity."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROTOCOL_ROUTE_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_NETWORK",
+            "child_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROTOCOL_ROUTE_BINDING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_ROUTING",
+            "child_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROTOCOL_ROUTE_BINDING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_PROTOCOL_BINDINGS",
+            "child_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROTOCOL_ROUTE_BINDING_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "TRANSPORT_NONAUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "INGRESS_EFFECT_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "PROTOCOL_BINDING_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "PROTOCOL_ADAPTER_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "GATE_9E6D4EFFA2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "GATE_A0AC8708B8",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "GATE_6E721563C7",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "GATE_57A1938ECB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "GATE_AF46CAF353",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "GATE_EE8D0317DB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "GATE_2DC5F24923",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "GATE_8096049067",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "GATE_344BBF3B6C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_14",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "GATE_3F97930B05",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[14]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_15",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "GATE_BE078A225C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[15]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_16",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "GATE_463715D867",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[16]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_17",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "GATE_7EDFA1E8B2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[17]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_18",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "GATE_AD3D3F7C0C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[18]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_ROUTE_BINDING_19",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_ROUTE_BINDING",
+            "child_ref": "GATE_90F5049D7D",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[19]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROTOCOL_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_PROTOCOL_ADAPTER",
+            "child_ref": "TOPIC_PROTOCOL_BINDING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROTOCOL_BINDING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RELATIONS",
+            "child_ref": "TOPIC_PROTOCOL_BINDING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROTOCOL_BINDING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_INSTANCE_RELOAD",
+            "child_ref": "TOPIC_PROTOCOL_BINDING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "TRANSPORT_NONAUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "INGRESS_EFFECT_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "PROTOCOL_BINDING_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "PROTOCOL_ADAPTER_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "GATE_9E6D4EFFA2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "GATE_A0AC8708B8",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "GATE_6E721563C7",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "GATE_57A1938ECB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "GATE_AF46CAF353",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "GATE_EE8D0317DB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "GATE_2DC5F24923",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "GATE_8096049067",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "GATE_344BBF3B6C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_14",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "GATE_3F97930B05",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[14]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_15",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "GATE_BE078A225C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[15]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_16",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "GATE_463715D867",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[16]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_17",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "GATE_7EDFA1E8B2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[17]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_18",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "GATE_AD3D3F7C0C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[18]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_BINDING_19",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_BINDING",
+            "child_ref": "GATE_90F5049D7D",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[19]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_PROTOCOL_ROUTE_BINDING",
+      "name": "Protocol Route Binding",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_PROTOCOL_ROUTE_BINDING::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Reconciled source clauses: [1] Define explicit mapping from listener/protocol instance to application route/address/handler identities without inferring application semantics from URL/path/topic names. [2] Define explicit bindings from REST routes, OSC addresses, WebSocket channels/topics or other protocol selectors to exact canonical operations/resources.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_PROTOCOL_BINDING",
+      "name": "Protocol Route Binding",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_PROTOCOL_BINDING::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define exact bindings from protocol-facing routes/addresses/channels to canonical operations, resources, events or views without encoding ownership in the external route.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_ROUTING",
+      "name": "Routing",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_ROUTING::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define grouping-only parent Topic identity TOPIC_ROUTING already referenced by 1 existing canonical child Topic reference occurrence(s).",
+            "metadata": {
+              "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+              "referencing_child_occurrences": 1,
+              "distinct_child_topics": 1,
+              "host_contract_ref": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
+              "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+              "placement_nonsemantic": true,
+              "ownership_nontransfer": true,
+              "new_parent_edges_added": 0
+            }
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -103,31 +944,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
-    "name": "Protocol Route Binding",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
-      "Unlocked pending reconciliation against listener, REST/OSC/WebSocket and Expose contracts.",
-      "Unlocked pending reconciliation against REST/OSC/WebSocket/Expose protocol contracts and whole-tree Contract Format 1.4 validation.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: network/listener/03_Route_Binding.json, protocol/01_Protocol_Route_Binding.json, protocol/04_Protocol_Route_Binding.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses.",
-      "Pass 6 hosts grouping-only Topic TOPIC_ROUTING solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
-    ],
-    "summary": "Reconciled source purposes: [1] Define explicit mapping from listener/protocol instance to application route/address/handler identities without inferring application semantics from URL/path/topic names. [2] Define explicit bindings from REST routes, OSC addresses, WebSocket channels/topics or other protocol selectors to exact canonical operations/resources. [3] Define exact bindings from protocol-facing routes/addresses/channels to canonical operations, resources, events or views without encoding ownership in the external route."
-  },
-  "purpose": "Reconciled source purposes: [1] Define explicit mapping from listener/protocol instance to application route/address/handler identities without inferring application semantics from URL/path/topic names. [2] Define explicit bindings from REST routes, OSC addresses, WebSocket channels/topics or other protocol selectors to exact canonical operations/resources. [3] Define exact bindings from protocol-facing routes/addresses/channels to canonical operations, resources, events or views without encoding ownership in the external route.",
   "references": [
     {
       "id": "REF_OP",
@@ -145,161 +961,176 @@
       "purpose": "Changed bindings activate through explicit reload/lifecycle."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "domain semantic ownership",
-      "AccessCore policy ownership",
-      "application operation semantics",
-      "domain business semantics",
-      "listener binding ownership",
-      "domain semantics",
-      "caller authorization policy",
-      "UI presentation"
+  "gaps": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against listener, REST/OSC/WebSocket and Expose contracts.",
+      "Unlocked pending reconciliation against REST/OSC/WebSocket/Expose protocol contracts and whole-tree Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: network/listener/03_Route_Binding.json, protocol/01_Protocol_Route_Binding.json, protocol/04_Protocol_Route_Binding.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses.",
+      "Pass 6 hosts grouping-only Topic TOPIC_ROUTING solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
     ],
-    "owns": [
-      "Protocol Route Binding semantics",
-      "Protocol Route and Address Binding semantics"
-    ]
+    "summary": "Reconciled source purposes: [1] Define explicit mapping from listener/protocol instance to application route/address/handler identities without inferring application semantics from URL/path/topic names. [2] Define explicit bindings from REST routes, OSC addresses, WebSocket channels/topics or other protocol selectors to exact canonical operations/resources. [3] Define exact bindings from protocol-facing routes/addresses/channels to canonical operations, resources, events or views without encoding ownership in the external route."
   },
-  "semantics": {
-    "ambiguity_rule": "Overlapping routes resolve through explicit precedence/specificity semantics.",
-    "authority_rule": "Reconciled source clauses: [1] Route existence never grants operation authority. [2] Binding existence does not grant caller access; AccessCore is still evaluated.",
-    "binding_kinds": [
-      "REST route",
-      "OSC address",
-      "WebSocket channel",
-      "other installed protocol address"
-    ],
-    "binding_types": [
-      "REST route",
-      "OSC address",
-      "WebSocket channel/topic",
-      "other declared protocol selector"
-    ],
-    "change_rule": "Binding edits are canonical configuration changes and may require listener reload.",
-    "collision_rule": "Conflicting active bindings hard-fail unless multiplexing semantics are explicit.",
-    "conflict_rule": "Ambiguous duplicate active selectors hard-fail unless explicit precedence semantics exist.",
-    "direction_rule": "Reconciled source clauses: [1] Read/write/invoke/subscribe/publish direction is explicit where applicable. [2] Binding declares read/write/invoke/subscribe/publish semantics as applicable.",
-    "identity_rule": "Reconciled source clauses: [1] Route binding identity is distinct from underlying operation/resource identity. [2] Selector string is a binding, not the semantic identity of the target.",
-    "listener_rule": "Route references exact listener/protocol instance.",
-    "method_rule": "Protocol method/message/address class is explicit.",
-    "ownership_rule": "Route/address/channel never becomes owner of target semantics.",
-    "route_rule": "Route/path/address/topic pattern is explicit binding metadata.",
-    "schema_rule": "Reconciled source clauses: [1] Input/output payload schema/profile is explicit. [2] Protocol input/output mapping is explicit and validated.",
-    "selector_rule": "Protocol selector is explicit and exact within its protocol-instance scope.",
-    "target_rule": "Reconciled source clauses: [1] Target application handler/operation surface is exact. [2] Binding target resolves exact canonical operation/resource identity. [3] Every binding targets an explicit canonical identity."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
-    {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_PROTOCOL_ROUTE_BINDING",
-      "member_refs": [
-        "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
-        "TRANSPORT_NONAUTHORITY",
-        "INGRESS_EFFECT_BOUNDARY",
-        "PROTOCOL_BINDING_SEPARATION",
-        "PROTOCOL_ADAPTER_BOUNDARY",
-        "GATE_9E6D4EFFA2",
-        "GATE_A0AC8708B8",
-        "GATE_6E721563C7",
-        "GATE_57A1938ECB",
-        "GATE_AF46CAF353",
-        "GATE_EE8D0317DB",
-        "GATE_2DC5F24923",
-        "GATE_8096049067",
-        "GATE_344BBF3B6C",
-        "GATE_3F97930B05",
-        "GATE_BE078A225C",
-        "GATE_463715D867",
-        "GATE_7EDFA1E8B2",
-        "GATE_AD3D3F7C0C",
-        "GATE_90F5049D7D"
-      ],
-      "metadata": {},
-      "name": "Protocol Route Binding",
-      "operation_refs": [],
-      "parent_topic_refs": [
-        "TOPIC_NETWORK",
-        "TOPIC_ROUTING",
-        "TOPIC_PROTOCOL_BINDINGS",
-        "TOPIC_EXPOSE"
-      ],
-      "purpose": "Reconciled source clauses: [1] Define explicit mapping from listener/protocol instance to application route/address/handler identities without inferring application semantics from URL/path/topic names. [2] Define explicit bindings from REST routes, OSC addresses, WebSocket channels/topics or other protocol selectors to exact canonical operations/resources.",
-      "relation_refs": []
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
     },
-    {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_PROTOCOL_BINDING",
-      "member_refs": [
-        "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
-        "TRANSPORT_NONAUTHORITY",
-        "INGRESS_EFFECT_BOUNDARY",
-        "PROTOCOL_BINDING_SEPARATION",
-        "PROTOCOL_ADAPTER_BOUNDARY",
-        "GATE_9E6D4EFFA2",
-        "GATE_A0AC8708B8",
-        "GATE_6E721563C7",
-        "GATE_57A1938ECB",
-        "GATE_AF46CAF353",
-        "GATE_EE8D0317DB",
-        "GATE_2DC5F24923",
-        "GATE_8096049067",
-        "GATE_344BBF3B6C",
-        "GATE_3F97930B05",
-        "GATE_BE078A225C",
-        "GATE_463715D867",
-        "GATE_7EDFA1E8B2",
-        "GATE_AD3D3F7C0C",
-        "GATE_90F5049D7D"
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_PROTOCOL_ROUTE_BINDING",
+          "member_refs": [
+            "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
+            "TRANSPORT_NONAUTHORITY",
+            "INGRESS_EFFECT_BOUNDARY",
+            "PROTOCOL_BINDING_SEPARATION",
+            "PROTOCOL_ADAPTER_BOUNDARY",
+            "GATE_9E6D4EFFA2",
+            "GATE_A0AC8708B8",
+            "GATE_6E721563C7",
+            "GATE_57A1938ECB",
+            "GATE_AF46CAF353",
+            "GATE_EE8D0317DB",
+            "GATE_2DC5F24923",
+            "GATE_8096049067",
+            "GATE_344BBF3B6C",
+            "GATE_3F97930B05",
+            "GATE_BE078A225C",
+            "GATE_463715D867",
+            "GATE_7EDFA1E8B2",
+            "GATE_AD3D3F7C0C",
+            "GATE_90F5049D7D"
+          ],
+          "metadata": {},
+          "name": "Protocol Route Binding",
+          "operation_refs": [],
+          "parent_topic_refs": [
+            "TOPIC_NETWORK",
+            "TOPIC_ROUTING",
+            "TOPIC_PROTOCOL_BINDINGS",
+            "TOPIC_EXPOSE"
+          ],
+          "purpose": "Reconciled source clauses: [1] Define explicit mapping from listener/protocol instance to application route/address/handler identities without inferring application semantics from URL/path/topic names. [2] Define explicit bindings from REST routes, OSC addresses, WebSocket channels/topics or other protocol selectors to exact canonical operations/resources.",
+          "relation_refs": []
+        },
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_PROTOCOL_BINDING",
+          "member_refs": [
+            "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
+            "TRANSPORT_NONAUTHORITY",
+            "INGRESS_EFFECT_BOUNDARY",
+            "PROTOCOL_BINDING_SEPARATION",
+            "PROTOCOL_ADAPTER_BOUNDARY",
+            "GATE_9E6D4EFFA2",
+            "GATE_A0AC8708B8",
+            "GATE_6E721563C7",
+            "GATE_57A1938ECB",
+            "GATE_AF46CAF353",
+            "GATE_EE8D0317DB",
+            "GATE_2DC5F24923",
+            "GATE_8096049067",
+            "GATE_344BBF3B6C",
+            "GATE_3F97930B05",
+            "GATE_BE078A225C",
+            "GATE_463715D867",
+            "GATE_7EDFA1E8B2",
+            "GATE_AD3D3F7C0C",
+            "GATE_90F5049D7D"
+          ],
+          "metadata": {},
+          "name": "Protocol Route Binding",
+          "operation_refs": [],
+          "parent_topic_refs": [
+            "TOPIC_PROTOCOL_ADAPTER",
+            "TOPIC_CORE_RELATIONS",
+            "TOPIC_INSTANCE_RELOAD"
+          ],
+          "purpose": "Define exact bindings from protocol-facing routes/addresses/channels to canonical operations, resources, events or views without encoding ownership in the external route.",
+          "relation_refs": []
+        },
+        {
+          "id": "TOPIC_ROUTING",
+          "name": "Routing",
+          "purpose": "Define grouping-only parent Topic identity TOPIC_ROUTING already referenced by 1 existing canonical child Topic reference occurrence(s).",
+          "parent_topic_refs": [],
+          "composed_topic_refs": [],
+          "member_refs": [],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {
+            "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+            "referencing_child_occurrences": 1,
+            "distinct_child_topics": 1,
+            "host_contract_ref": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
+            "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+            "placement_nonsemantic": true,
+            "ownership_nontransfer": true,
+            "new_parent_edges_added": 0
+          }
+        }
       ],
-      "metadata": {},
-      "name": "Protocol Route Binding",
-      "operation_refs": [],
-      "parent_topic_refs": [
-        "TOPIC_PROTOCOL_ADAPTER",
-        "TOPIC_CORE_RELATIONS",
-        "TOPIC_INSTANCE_RELOAD"
-      ],
-      "purpose": "Define exact bindings from protocol-facing routes/addresses/channels to canonical operations, resources, events or views without encoding ownership in the external route.",
-      "relation_refs": []
-    },
-    {
-      "id": "TOPIC_ROUTING",
-      "name": "Routing",
-      "purpose": "Define grouping-only parent Topic identity TOPIC_ROUTING already referenced by 1 existing canonical child Topic reference occurrence(s).",
-      "parent_topic_refs": [],
-      "composed_topic_refs": [],
-      "member_refs": [],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {
-        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
-        "referencing_child_occurrences": 1,
-        "distinct_child_topics": 1,
-        "host_contract_ref": "AIGMOS_PROTOCOL_ROUTE_BINDING_CONTRACT",
-        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
-        "placement_nonsemantic": true,
-        "ownership_nontransfer": true,
-        "new_parent_edges_added": 0
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [],
+        "states": []
+      },
+      "semantics": {
+        "ambiguity_rule": "Overlapping routes resolve through explicit precedence/specificity semantics.",
+        "authority_rule": "Reconciled source clauses: [1] Route existence never grants operation authority. [2] Binding existence does not grant caller access; AccessCore is still evaluated.",
+        "binding_kinds": [
+          "REST route",
+          "OSC address",
+          "WebSocket channel",
+          "other installed protocol address"
+        ],
+        "binding_types": [
+          "REST route",
+          "OSC address",
+          "WebSocket channel/topic",
+          "other declared protocol selector"
+        ],
+        "change_rule": "Binding edits are canonical configuration changes and may require listener reload.",
+        "collision_rule": "Conflicting active bindings hard-fail unless multiplexing semantics are explicit.",
+        "conflict_rule": "Ambiguous duplicate active selectors hard-fail unless explicit precedence semantics exist.",
+        "direction_rule": "Reconciled source clauses: [1] Read/write/invoke/subscribe/publish direction is explicit where applicable. [2] Binding declares read/write/invoke/subscribe/publish semantics as applicable.",
+        "identity_rule": "Reconciled source clauses: [1] Route binding identity is distinct from underlying operation/resource identity. [2] Selector string is a binding, not the semantic identity of the target.",
+        "listener_rule": "Route references exact listener/protocol instance.",
+        "method_rule": "Protocol method/message/address class is explicit.",
+        "ownership_rule": "Route/address/channel never becomes owner of target semantics.",
+        "route_rule": "Route/path/address/topic pattern is explicit binding metadata.",
+        "schema_rule": "Reconciled source clauses: [1] Input/output payload schema/profile is explicit. [2] Protocol input/output mapping is explicit and validated.",
+        "selector_rule": "Protocol selector is explicit and exact within its protocol-instance scope.",
+        "target_rule": "Reconciled source clauses: [1] Target application handler/operation surface is exact. [2] Binding target resolves exact canonical operation/resource identity. [3] Every binding targets an explicit canonical identity."
       }
     }
-  ]
+  }
 }

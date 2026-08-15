@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define cancellation, timeout and cleanup as explicit tracked runtime lifecycle semantics across runners, tools, routines, queues and external calls.",
   "scope": {
     "owns": [
@@ -21,128 +20,340 @@
       "projection semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT",
+      "name": "Runtime Cancellation and Cleanup",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::OPERATIONS::OP_CANCEL_REQUEST",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_CANCEL_REQUEST",
+            "name": "Request cancellation",
+            "inputs": [
+              "tracked runtime identity",
+              "cause"
+            ],
+            "outputs": [
+              "cancel request accepted/rejected"
+            ],
+            "errors": [
+              "target unresolved"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::OPERATIONS::OP_CANCEL_PROPAGATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_CANCEL_PROPAGATE",
+            "name": "Propagate cancellation",
+            "inputs": [
+              "cancel request",
+              "tracked child operations"
+            ],
+            "outputs": [
+              "bounded cancellation propagation"
+            ],
+            "errors": [
+              "child cancellation failed"
+            ],
+            "side_effects": [
+              "tracked runtime state updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::OPERATIONS::OP_CLEANUP_FINALIZE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_CLEANUP_FINALIZE",
+            "name": "Finalize cleanup",
+            "inputs": [
+              "runtime context",
+              "completion/error/timeout/cancel"
+            ],
+            "outputs": [
+              "resources released",
+              "final state"
+            ],
+            "errors": [
+              "cleanup failure"
+            ],
+            "side_effects": [
+              "resources/gates/slots released"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "tracked_rule": "Cancellation addresses tracked runtime identities only.",
+            "propagation_rule": "Cancellation propagation to child work is explicit and bounded.",
+            "cleanup_reasons": [
+              "success",
+              "error",
+              "timeout",
+              "cancel"
+            ],
+            "cleanup_targets": [
+              "inflight gates",
+              "runner slots",
+              "queue reservations",
+              "temporary resources",
+              "external call contexts"
+            ],
+            "idempotence_rule": "Cleanup should be safe against repeated invocation where applicable.",
+            "visibility_rule": "Final cleanup state and cleanup failures are visible.",
+            "definition_rule": "Cancellation/cleanup state is runtime state, not authored definition."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_CANCELLATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME",
+            "child_ref": "TOPIC_RUNTIME_CANCELLATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_CANCELLATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_CANCELLATION",
+            "child_ref": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_CANCELLATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_CANCELLATION",
+            "child_ref": "RUNTIME_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_CANCELLATION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_CANCELLATION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_CANCELLATION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_CANCELLATION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_CANCELLATION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_CANCELLATION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_CANCELLATION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_CANCELLATION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_CANCELLATION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_CANCELLATION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_CANCELLATION_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_CANCELLATION",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_CANCELLATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_CANCELLATION",
+            "child_ref": "TOPIC_RUNNER",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_CANCELLATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_CANCELLATION",
+            "child_ref": "TOPIC_RUNTIME_INFLIGHT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_CANCELLATION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_CANCELLATION",
+            "child_ref": "TOPIC_CORE_ERRORS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_CANCELLATION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_CANCELLATION",
+            "child_ref": "TOPIC_CORE_BOUNDED_OPERATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[3]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/lifecycle/00_Runtime_Cancellation_Cleanup.json"
+      }
+    },
     {
       "id": "TOPIC_RUNTIME_CANCELLATION",
       "name": "Cancellation and Cleanup",
-      "purpose": "Define cancellation, timeout and cleanup as explicit tracked runtime lifecycle semantics across runners, tools, routines, queues and external calls.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_RUNNER",
-        "TOPIC_RUNTIME_INFLIGHT",
-        "TOPIC_CORE_ERRORS",
-        "TOPIC_CORE_BOUNDED_OPERATION"
-      ],
-      "member_refs": [
-        "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT",
-        "RUNTIME_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_CANCEL_REQUEST",
-        "OP_CANCEL_PROPAGATE",
-        "OP_CLEANUP_FINALIZE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_CANCELLATION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define cancellation, timeout and cleanup as explicit tracked runtime lifecycle semantics across runners, tools, routines, queues and external calls.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_CANCEL_REQUEST",
-        "name": "Request cancellation",
-        "inputs": [
-          "tracked runtime identity",
-          "cause"
-        ],
-        "outputs": [
-          "cancel request accepted/rejected"
-        ],
-        "errors": [
-          "target unresolved"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_CANCEL_PROPAGATE",
-        "name": "Propagate cancellation",
-        "inputs": [
-          "cancel request",
-          "tracked child operations"
-        ],
-        "outputs": [
-          "bounded cancellation propagation"
-        ],
-        "errors": [
-          "child cancellation failed"
-        ],
-        "side_effects": [
-          "tracked runtime state updated"
-        ]
-      },
-      {
-        "id": "OP_CLEANUP_FINALIZE",
-        "name": "Finalize cleanup",
-        "inputs": [
-          "runtime context",
-          "completion/error/timeout/cancel"
-        ],
-        "outputs": [
-          "resources released",
-          "final state"
-        ],
-        "errors": [
-          "cleanup failure"
-        ],
-        "side_effects": [
-          "resources/gates/slots released"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "tracked_rule": "Cancellation addresses tracked runtime identities only.",
-    "propagation_rule": "Cancellation propagation to child work is explicit and bounded.",
-    "cleanup_reasons": [
-      "success",
-      "error",
-      "timeout",
-      "cancel"
-    ],
-    "cleanup_targets": [
-      "inflight gates",
-      "runner slots",
-      "queue reservations",
-      "temporary resources",
-      "external call contexts"
-    ],
-    "idempotence_rule": "Cleanup should be safe against repeated invocation where applicable.",
-    "visibility_rule": "Final cleanup state and cleanup failures are visible.",
-    "definition_rule": "Cancellation/cleanup state is runtime state, not authored definition."
-  },
   "constraints": {
     "invariants": [
       {
@@ -195,10 +406,154 @@
       "purpose": "Inflight gates must release on all terminal paths."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_CANCELLATION",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_CANCELLATION",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define cancellation, timeout and cleanup as explicit tracked runtime lifecycle semantics across runners, tools, routines, queues and external calls.",
     "notes": [
       "Unlocked until reconciled against existing runtime contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RUNTIME_CANCELLATION",
+          "name": "Cancellation and Cleanup",
+          "purpose": "Define cancellation, timeout and cleanup as explicit tracked runtime lifecycle semantics across runners, tools, routines, queues and external calls.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_RUNNER",
+            "TOPIC_RUNTIME_INFLIGHT",
+            "TOPIC_CORE_ERRORS",
+            "TOPIC_CORE_BOUNDED_OPERATION"
+          ],
+          "member_refs": [
+            "AIGMOS_RUNTIME_CANCELLATION_CLEANUP_CONTRACT",
+            "RUNTIME_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_CANCEL_REQUEST",
+            "OP_CANCEL_PROPAGATE",
+            "OP_CLEANUP_FINALIZE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_CANCEL_REQUEST",
+            "name": "Request cancellation",
+            "inputs": [
+              "tracked runtime identity",
+              "cause"
+            ],
+            "outputs": [
+              "cancel request accepted/rejected"
+            ],
+            "errors": [
+              "target unresolved"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_CANCEL_PROPAGATE",
+            "name": "Propagate cancellation",
+            "inputs": [
+              "cancel request",
+              "tracked child operations"
+            ],
+            "outputs": [
+              "bounded cancellation propagation"
+            ],
+            "errors": [
+              "child cancellation failed"
+            ],
+            "side_effects": [
+              "tracked runtime state updated"
+            ]
+          },
+          {
+            "id": "OP_CLEANUP_FINALIZE",
+            "name": "Finalize cleanup",
+            "inputs": [
+              "runtime context",
+              "completion/error/timeout/cancel"
+            ],
+            "outputs": [
+              "resources released",
+              "final state"
+            ],
+            "errors": [
+              "cleanup failure"
+            ],
+            "side_effects": [
+              "resources/gates/slots released"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "tracked_rule": "Cancellation addresses tracked runtime identities only.",
+        "propagation_rule": "Cancellation propagation to child work is explicit and bounded.",
+        "cleanup_reasons": [
+          "success",
+          "error",
+          "timeout",
+          "cancel"
+        ],
+        "cleanup_targets": [
+          "inflight gates",
+          "runner slots",
+          "queue reservations",
+          "temporary resources",
+          "external call contexts"
+        ],
+        "idempotence_rule": "Cleanup should be safe against repeated invocation where applicable.",
+        "visibility_rule": "Final cleanup state and cleanup failures are visible.",
+        "definition_rule": "Cancellation/cleanup state is runtime state, not authored definition."
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_CANARY_ROLLOUT_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define canary rollout to an exact bounded subset with explicit observation window, metrics, acceptance criteria and promotion/rollback decision.",
   "scope": {
     "owns": [
@@ -22,64 +21,213 @@
       "canonical documentation ownership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_CANARY_ROLLOUT_CONTRACT",
+      "name": "Canary Rollout",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_CANARY_ROLLOUT_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "subset_rule": "Canary targets are exact or deterministically selected by declared policy.",
+            "size_rule": "Canary size/count/percentage is explicit.",
+            "window_rule": "Observation duration/criteria are explicit.",
+            "metric_rule": "Required health/performance/error/security signals are exact.",
+            "decision_states": [
+              "promote",
+              "hold",
+              "rollback",
+              "fail",
+              "unknown"
+            ],
+            "promotion_rule": "Promotion uses explicit evidence and does not infer success from elapsed time alone.",
+            "authority_rule": "Canary success grants only deployment progression eligibility."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_CANARY_ROLLOUT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_CANARY_ROLLOUT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DEPLOYMENT",
+            "child_ref": "TOPIC_CANARY_ROLLOUT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANARY_ROLLOUT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_CANARY_ROLLOUT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_ROLLOUT",
+            "child_ref": "TOPIC_CANARY_ROLLOUT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANARY_ROLLOUT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CANARY_ROLLOUT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CANARY_ROLLOUT",
+            "child_ref": "AIGMOS_CANARY_ROLLOUT_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANARY_ROLLOUT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CANARY_ROLLOUT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CANARY_ROLLOUT",
+            "child_ref": "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANARY_ROLLOUT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CANARY_ROLLOUT_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CANARY_ROLLOUT",
+            "child_ref": "OPERATIONS_FAIL_SAFE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANARY_ROLLOUT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CANARY_ROLLOUT_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CANARY_ROLLOUT",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANARY_ROLLOUT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CANARY_ROLLOUT_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CANARY_ROLLOUT",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANARY_ROLLOUT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CANARY_ROLLOUT_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CANARY_ROLLOUT",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANARY_ROLLOUT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CANARY_ROLLOUT_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CANARY_ROLLOUT",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANARY_ROLLOUT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CANARY_ROLLOUT_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CANARY_ROLLOUT",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/deployment/rollout/02_Canary_Rollout.json"
+      }
+    },
     {
       "id": "TOPIC_CANARY_ROLLOUT",
       "name": "Canary Rollout",
-      "purpose": "Define canary rollout to an exact bounded subset with explicit observation window, metrics, acceptance criteria and promotion/rollback decision.",
-      "parent_topic_refs": [
-        "TOPIC_DEPLOYMENT",
-        "TOPIC_ROLLOUT"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_CANARY_ROLLOUT_CONTRACT",
-        "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
-        "OPERATIONS_FAIL_SAFE",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_CANARY_ROLLOUT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define canary rollout to an exact bounded subset with explicit observation window, metrics, acceptance criteria and promotion/rollback decision.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "subset_rule": "Canary targets are exact or deterministically selected by declared policy.",
-    "size_rule": "Canary size/count/percentage is explicit.",
-    "window_rule": "Observation duration/criteria are explicit.",
-    "metric_rule": "Required health/performance/error/security signals are exact.",
-    "decision_states": [
-      "promote",
-      "hold",
-      "rollback",
-      "fail",
-      "unknown"
-    ],
-    "promotion_rule": "Promotion uses explicit evidence and does not infer success from elapsed time alone.",
-    "authority_rule": "Canary success grants only deployment progression eligibility."
-  },
   "constraints": {
     "invariants": [
       {
@@ -126,10 +274,80 @@
       "purpose": "Canary uses exact rollout profile."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define canary rollout to an exact bounded subset with explicit observation window, metrics, acceptance criteria and promotion/rollback decision.",
     "notes": [
       "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_CANARY_ROLLOUT",
+          "name": "Canary Rollout",
+          "purpose": "Define canary rollout to an exact bounded subset with explicit observation window, metrics, acceptance criteria and promotion/rollback decision.",
+          "parent_topic_refs": [
+            "TOPIC_DEPLOYMENT",
+            "TOPIC_ROLLOUT"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_CANARY_ROLLOUT_CONTRACT",
+            "RELEASE_DEPLOYMENT_RUNTIME_SEPARATION",
+            "OPERATIONS_FAIL_SAFE",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "subset_rule": "Canary targets are exact or deterministically selected by declared policy.",
+        "size_rule": "Canary size/count/percentage is explicit.",
+        "window_rule": "Observation duration/criteria are explicit.",
+        "metric_rule": "Required health/performance/error/security signals are exact.",
+        "decision_states": [
+          "promote",
+          "hold",
+          "rollback",
+          "fail",
+          "unknown"
+        ],
+        "promotion_rule": "Promotion uses explicit evidence and does not infer success from elapsed time alone.",
+        "authority_rule": "Canary success grants only deployment progression eligibility."
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define stable logical backend aliases separately from concrete provider/model bindings so q/qc/qt and other runtime callers bind to explicit aliases rather than embedding provider-specific semantics.",
   "scope": {
     "owns": [
@@ -21,116 +20,300 @@
       "projection semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT",
+      "name": "Runtime Backend Aliases",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT::OPERATIONS::OP_BACKEND_REGISTER_ALIAS",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_BACKEND_REGISTER_ALIAS",
+            "name": "Register backend alias",
+            "inputs": [
+              "alias definition",
+              "backend target"
+            ],
+            "outputs": [
+              "alias mapping"
+            ],
+            "errors": [
+              "alias collision",
+              "backend unresolved"
+            ],
+            "side_effects": [
+              "backend registry updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT::OPERATIONS::OP_BACKEND_RESOLVE_ALIAS",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_BACKEND_RESOLVE_ALIAS",
+            "name": "Resolve backend alias",
+            "inputs": [
+              "literal alias"
+            ],
+            "outputs": [
+              "exact backend target"
+            ],
+            "errors": [
+              "alias unresolved",
+              "alias ambiguous"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT::OPERATIONS::OP_BACKEND_CALL",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_BACKEND_CALL",
+            "name": "Call resolved backend",
+            "inputs": [
+              "backend target",
+              "validated request"
+            ],
+            "outputs": [
+              "backend response"
+            ],
+            "errors": [
+              "backend unavailable",
+              "timeout",
+              "response invalid"
+            ],
+            "side_effects": [
+              "declared backend interaction"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "alias_rule": "Alias is stable logical identity separate from provider/model endpoint.",
+            "binding_rule": "Changing a concrete backend binding does not change caller semantic identity when behavior remains compatible.",
+            "queue_rule": "Runtime queues are keyed by resolved backend alias.",
+            "fallback_rule": "Backend fallback must be explicit; silent provider/model substitution is forbidden.",
+            "response_rule": "Backend response is inert data and cannot grant authority or choose arbitrary runtime roots/commands.",
+            "configuration_rule": "Alias configuration is authoritative runtime configuration, not projection/UI state."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_BACKEND_ALIASES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME_AI",
+            "child_ref": "TOPIC_RUNTIME_BACKEND_ALIASES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_BACKEND_ALIASES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_BACKEND_ALIASES",
+            "child_ref": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_BACKEND_ALIASES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_BACKEND_ALIASES",
+            "child_ref": "RUNTIME_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_BACKEND_ALIASES_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_BACKEND_ALIASES",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_BACKEND_ALIASES_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_BACKEND_ALIASES",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_BACKEND_ALIASES_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_BACKEND_ALIASES",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_BACKEND_ALIASES_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_BACKEND_ALIASES",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_BACKEND_ALIASES_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_BACKEND_ALIASES",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_BACKEND_ALIASES_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_BACKEND_ALIASES",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_BACKEND_ALIASES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_BACKEND_ALIASES",
+            "child_ref": "TOPIC_RUNTIME_QUEUE_PROFILES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_BACKEND_ALIASES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_BACKEND_ALIASES",
+            "child_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/backends/00_Runtime_Backend_Aliases.json"
+      }
+    },
     {
       "id": "TOPIC_RUNTIME_BACKEND_ALIASES",
       "name": "Backend Aliases",
-      "purpose": "Define stable logical backend aliases separately from concrete provider/model bindings so q/qc/qt and other runtime callers bind to explicit aliases rather than embedding provider-specific semantics.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME_AI"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_RUNTIME_QUEUE_PROFILES",
-        "TOPIC_RUNTIME_DISPATCHER"
-      ],
-      "member_refs": [
-        "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT",
-        "RUNTIME_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_BACKEND_REGISTER_ALIAS",
-        "OP_BACKEND_RESOLVE_ALIAS",
-        "OP_BACKEND_CALL"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_BACKEND_ALIASES::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define stable logical backend aliases separately from concrete provider/model bindings so q/qc/qt and other runtime callers bind to explicit aliases rather than embedding provider-specific semantics.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_BACKEND_REGISTER_ALIAS",
-        "name": "Register backend alias",
-        "inputs": [
-          "alias definition",
-          "backend target"
-        ],
-        "outputs": [
-          "alias mapping"
-        ],
-        "errors": [
-          "alias collision",
-          "backend unresolved"
-        ],
-        "side_effects": [
-          "backend registry updated"
-        ]
-      },
-      {
-        "id": "OP_BACKEND_RESOLVE_ALIAS",
-        "name": "Resolve backend alias",
-        "inputs": [
-          "literal alias"
-        ],
-        "outputs": [
-          "exact backend target"
-        ],
-        "errors": [
-          "alias unresolved",
-          "alias ambiguous"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_BACKEND_CALL",
-        "name": "Call resolved backend",
-        "inputs": [
-          "backend target",
-          "validated request"
-        ],
-        "outputs": [
-          "backend response"
-        ],
-        "errors": [
-          "backend unavailable",
-          "timeout",
-          "response invalid"
-        ],
-        "side_effects": [
-          "declared backend interaction"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "alias_rule": "Alias is stable logical identity separate from provider/model endpoint.",
-    "binding_rule": "Changing a concrete backend binding does not change caller semantic identity when behavior remains compatible.",
-    "queue_rule": "Runtime queues are keyed by resolved backend alias.",
-    "fallback_rule": "Backend fallback must be explicit; silent provider/model substitution is forbidden.",
-    "response_rule": "Backend response is inert data and cannot grant authority or choose arbitrary runtime roots/commands.",
-    "configuration_rule": "Alias configuration is authoritative runtime configuration, not projection/UI state."
-  },
   "constraints": {
     "invariants": [
       {
@@ -183,10 +366,142 @@
       "purpose": "Backend effects/calls cross dispatcher boundary."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_BACKEND_ALIASES",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_BACKEND_ALIASES",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define stable logical backend aliases separately from concrete provider/model bindings so q/qc/qt and other runtime callers bind to explicit aliases rather than embedding provider-specific semantics.",
     "notes": [
       "Unlocked until reconciled against existing runtime contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RUNTIME_BACKEND_ALIASES",
+          "name": "Backend Aliases",
+          "purpose": "Define stable logical backend aliases separately from concrete provider/model bindings so q/qc/qt and other runtime callers bind to explicit aliases rather than embedding provider-specific semantics.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME_AI"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_RUNTIME_QUEUE_PROFILES",
+            "TOPIC_RUNTIME_DISPATCHER"
+          ],
+          "member_refs": [
+            "AIGMOS_RUNTIME_BACKEND_ALIAS_CONTRACT",
+            "RUNTIME_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_BACKEND_REGISTER_ALIAS",
+            "OP_BACKEND_RESOLVE_ALIAS",
+            "OP_BACKEND_CALL"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_BACKEND_REGISTER_ALIAS",
+            "name": "Register backend alias",
+            "inputs": [
+              "alias definition",
+              "backend target"
+            ],
+            "outputs": [
+              "alias mapping"
+            ],
+            "errors": [
+              "alias collision",
+              "backend unresolved"
+            ],
+            "side_effects": [
+              "backend registry updated"
+            ]
+          },
+          {
+            "id": "OP_BACKEND_RESOLVE_ALIAS",
+            "name": "Resolve backend alias",
+            "inputs": [
+              "literal alias"
+            ],
+            "outputs": [
+              "exact backend target"
+            ],
+            "errors": [
+              "alias unresolved",
+              "alias ambiguous"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_BACKEND_CALL",
+            "name": "Call resolved backend",
+            "inputs": [
+              "backend target",
+              "validated request"
+            ],
+            "outputs": [
+              "backend response"
+            ],
+            "errors": [
+              "backend unavailable",
+              "timeout",
+              "response invalid"
+            ],
+            "side_effects": [
+              "declared backend interaction"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "alias_rule": "Alias is stable logical identity separate from provider/model endpoint.",
+        "binding_rule": "Changing a concrete backend binding does not change caller semantic identity when behavior remains compatible.",
+        "queue_rule": "Runtime queues are keyed by resolved backend alias.",
+        "fallback_rule": "Backend fallback must be explicit; silent provider/model substitution is forbidden.",
+        "response_rule": "Backend response is inert data and cannot grant authority or choose arbitrary runtime roots/commands.",
+        "configuration_rule": "Alias configuration is authoritative runtime configuration, not projection/UI state."
+      }
+    }
   }
 }

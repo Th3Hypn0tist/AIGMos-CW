@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_LISTEN_BINDING_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define explicit network binding tuples for listeners, including port and where applicable transport/address, with validation independent from logical service identity.",
   "scope": {
     "owns": [
@@ -22,65 +21,200 @@
       "presentation-only state"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_LISTEN_BINDING_CONTRACT",
+      "name": "Listen Binding",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_LISTEN_BINDING_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "binding_fields": [
+              "listen_address",
+              "port",
+              "transport"
+            ],
+            "transport_examples": [
+              "TCP",
+              "UDP"
+            ],
+            "port_rule": "Port is an integer binding within valid platform/protocol limits.",
+            "address_rule": "Listen address/interface is explicit where machine-significant.",
+            "transport_rule": "TCP/UDP or other transport is explicit where the protocol allows alternatives.",
+            "identity_rule": "Changing binding does not change listener semantic identity.",
+            "reservation_rule": "Reserved/default bindings such as nanoCMS `public` port 80 are explicit configuration semantics.",
+            "validation_rule": "Binding validates platform range, protocol compatibility and conflicts before activation."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTEN_BINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_LISTEN_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_INSTANCE_CONFIG",
+            "child_ref": "TOPIC_LISTEN_BINDING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTEN_BINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_LISTEN_BINDING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_NETWORK",
+            "child_ref": "TOPIC_LISTEN_BINDING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTEN_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LISTEN_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LISTEN_BINDING",
+            "child_ref": "AIGMOS_LISTEN_BINDING_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTEN_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LISTEN_BINDING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LISTEN_BINDING",
+            "child_ref": "LISTENER_IDENTITY_BINDING_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTEN_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LISTEN_BINDING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LISTEN_BINDING",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTEN_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LISTEN_BINDING_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LISTEN_BINDING",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTEN_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LISTEN_BINDING_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LISTEN_BINDING",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTEN_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LISTEN_BINDING_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LISTEN_BINDING",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTEN_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LISTEN_BINDING_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LISTEN_BINDING",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/listener/01_Listen_Binding.json"
+      }
+    },
     {
       "id": "TOPIC_LISTEN_BINDING",
       "name": "Listen Binding",
-      "purpose": "Define explicit network binding tuples for listeners, including port and where applicable transport/address, with validation independent from logical service identity.",
-      "parent_topic_refs": [
-        "TOPIC_INSTANCE_CONFIG",
-        "TOPIC_RUNTIME_NETWORK"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_LISTEN_BINDING_CONTRACT",
-        "LISTENER_IDENTITY_BINDING_SEPARATION",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_LISTEN_BINDING::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define explicit network binding tuples for listeners, including port and where applicable transport/address, with validation independent from logical service identity.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "binding_fields": [
-      "listen_address",
-      "port",
-      "transport"
-    ],
-    "transport_examples": [
-      "TCP",
-      "UDP"
-    ],
-    "port_rule": "Port is an integer binding within valid platform/protocol limits.",
-    "address_rule": "Listen address/interface is explicit where machine-significant.",
-    "transport_rule": "TCP/UDP or other transport is explicit where the protocol allows alternatives.",
-    "identity_rule": "Changing binding does not change listener semantic identity.",
-    "reservation_rule": "Reserved/default bindings such as nanoCMS `public` port 80 are explicit configuration semantics.",
-    "validation_rule": "Binding validates platform range, protocol compatibility and conflicts before activation."
-  },
   "constraints": {
     "invariants": [
       {
@@ -123,10 +257,81 @@
       "purpose": "Bindings belong to named listener identities."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define explicit network binding tuples for listeners, including port and where applicable transport/address, with validation independent from logical service identity.",
     "notes": [
       "Unlocked pending reconciliation against existing Port Editor/listener/protocol contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_LISTEN_BINDING",
+          "name": "Listen Binding",
+          "purpose": "Define explicit network binding tuples for listeners, including port and where applicable transport/address, with validation independent from logical service identity.",
+          "parent_topic_refs": [
+            "TOPIC_INSTANCE_CONFIG",
+            "TOPIC_RUNTIME_NETWORK"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_LISTEN_BINDING_CONTRACT",
+            "LISTENER_IDENTITY_BINDING_SEPARATION",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "binding_fields": [
+          "listen_address",
+          "port",
+          "transport"
+        ],
+        "transport_examples": [
+          "TCP",
+          "UDP"
+        ],
+        "port_rule": "Port is an integer binding within valid platform/protocol limits.",
+        "address_rule": "Listen address/interface is explicit where machine-significant.",
+        "transport_rule": "TCP/UDP or other transport is explicit where the protocol allows alternatives.",
+        "identity_rule": "Changing binding does not change listener semantic identity.",
+        "reservation_rule": "Reserved/default bindings such as nanoCMS `public` port 80 are explicit configuration semantics.",
+        "validation_rule": "Binding validates platform range, protocol compatibility and conflicts before activation."
+      }
+    }
   }
 }

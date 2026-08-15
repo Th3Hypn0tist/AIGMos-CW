@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define P2P message delivery over established peer transport with explicit sender, conversation, payload and delivery state while keeping payload separate from rendezvous/signaling.",
   "scope": {
     "owns": [
@@ -22,61 +21,196 @@
       "transport cryptographic implementation"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT",
+      "name": "Messaging Message Delivery",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "payload_types": [
+              "text",
+              "binary_file"
+            ],
+            "message_rule": "Each message has an explicit message identity, sender identity and conversation ref.",
+            "transport_rule": "Payload is delivered over established WebRTC/other approved P2P transport.",
+            "hello_rule": "Hello/rendezvous carries bootstrap metadata only and does not store/deliver normal application message payload.",
+            "state_rule": "Queued/sent/delivered/failed states are explicit where supported.",
+            "file_rule": "Binary file payload retains file identity/metadata separately from message envelope.",
+            "inert_rule": "Received text/file payload is inert and does not directly execute commands.",
+            "failure_rule": "Transport failure is explicit and does not silently reroute payload through rendezvous."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_MSG_MESSAGE_DELIVERY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_MESSAGING",
+            "child_ref": "TOPIC_MSG_MESSAGE_DELIVERY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_MSG_MESSAGE_DELIVERY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_HELLO",
+            "child_ref": "TOPIC_MSG_MESSAGE_DELIVERY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MSG_MESSAGE_DELIVERY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MSG_MESSAGE_DELIVERY",
+            "child_ref": "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MSG_MESSAGE_DELIVERY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MSG_MESSAGE_DELIVERY",
+            "child_ref": "MESSAGING_PEER_GOVERNED",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MSG_MESSAGE_DELIVERY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MSG_MESSAGE_DELIVERY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MSG_MESSAGE_DELIVERY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MSG_MESSAGE_DELIVERY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MSG_MESSAGE_DELIVERY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MSG_MESSAGE_DELIVERY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MSG_MESSAGE_DELIVERY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MSG_MESSAGE_DELIVERY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MSG_MESSAGE_DELIVERY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MSG_MESSAGE_DELIVERY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/messaging/03_Message_Delivery.json"
+      }
+    },
     {
       "id": "TOPIC_MSG_MESSAGE_DELIVERY",
       "name": "Messaging Message Delivery",
-      "purpose": "Define P2P message delivery over established peer transport with explicit sender, conversation, payload and delivery state while keeping payload separate from rendezvous/signaling.",
-      "parent_topic_refs": [
-        "TOPIC_MESSAGING",
-        "TOPIC_HELLO"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT",
-        "MESSAGING_PEER_GOVERNED",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_MSG_MESSAGE_DELIVERY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define P2P message delivery over established peer transport with explicit sender, conversation, payload and delivery state while keeping payload separate from rendezvous/signaling.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "payload_types": [
-      "text",
-      "binary_file"
-    ],
-    "message_rule": "Each message has an explicit message identity, sender identity and conversation ref.",
-    "transport_rule": "Payload is delivered over established WebRTC/other approved P2P transport.",
-    "hello_rule": "Hello/rendezvous carries bootstrap metadata only and does not store/deliver normal application message payload.",
-    "state_rule": "Queued/sent/delivered/failed states are explicit where supported.",
-    "file_rule": "Binary file payload retains file identity/metadata separately from message envelope.",
-    "inert_rule": "Received text/file payload is inert and does not directly execute commands.",
-    "failure_rule": "Transport failure is explicit and does not silently reroute payload through rendezvous."
-  },
   "constraints": {
     "invariants": [
       {
@@ -124,10 +258,77 @@
       "purpose": "Rendezvous remains bootstrap-only."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define P2P message delivery over established peer transport with explicit sender, conversation, payload and delivery state while keeping payload separate from rendezvous/signaling.",
     "notes": [
       "Unlocked pending reconciliation against existing msg/WebRTC/Hello contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_MSG_MESSAGE_DELIVERY",
+          "name": "Messaging Message Delivery",
+          "purpose": "Define P2P message delivery over established peer transport with explicit sender, conversation, payload and delivery state while keeping payload separate from rendezvous/signaling.",
+          "parent_topic_refs": [
+            "TOPIC_MESSAGING",
+            "TOPIC_HELLO"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_MSG_MESSAGE_DELIVERY_CONTRACT",
+            "MESSAGING_PEER_GOVERNED",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "payload_types": [
+          "text",
+          "binary_file"
+        ],
+        "message_rule": "Each message has an explicit message identity, sender identity and conversation ref.",
+        "transport_rule": "Payload is delivered over established WebRTC/other approved P2P transport.",
+        "hello_rule": "Hello/rendezvous carries bootstrap metadata only and does not store/deliver normal application message payload.",
+        "state_rule": "Queued/sent/delivered/failed states are explicit where supported.",
+        "file_rule": "Binary file payload retains file identity/metadata separately from message envelope.",
+        "inert_rule": "Received text/file payload is inert and does not directly execute commands.",
+        "failure_rule": "Transport failure is explicit and does not silently reroute payload through rendezvous."
+      }
+    }
   }
 }

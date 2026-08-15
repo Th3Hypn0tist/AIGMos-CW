@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define explicit migration from legacy repository artifacts into Contract Format 1.4 identities, including move, split, merge-by-reference, retire and supersede actions without silently discarding semantics.",
   "scope": {
     "owns": [
@@ -21,106 +20,255 @@
       "filesystem authority"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT",
+      "name": "Canonical Migration Map",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT::OPERATIONS::OP_MIGRATION_MAP",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_MIGRATION_MAP",
+            "name": "Map legacy artifact to 1.4 target",
+            "inputs": [
+              "legacy identity/path",
+              "target canonical identity",
+              "migration action"
+            ],
+            "outputs": [
+              "migration mapping"
+            ],
+            "errors": [
+              "target unresolved",
+              "mapping ambiguous"
+            ],
+            "side_effects": [
+              "migration map updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT::OPERATIONS::OP_MIGRATION_VALIDATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_MIGRATION_VALIDATE",
+            "name": "Validate migration coverage",
+            "inputs": [
+              "legacy inventory",
+              "migration map",
+              "new tree"
+            ],
+            "outputs": [
+              "covered | intentionally retired | unresolved"
+            ],
+            "errors": [
+              "legacy semantic orphan",
+              "duplicate target mapping"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "actions": [
+              "move",
+              "reformat",
+              "split",
+              "merge_by_reference",
+              "retire",
+              "supersede",
+              "replace_with_registry",
+              "replace_with_composition"
+            ],
+            "source_rule": "Legacy source identity/path is recorded as migration provenance only.",
+            "target_rule": "Every retained semantic surface maps to an explicit 1.4 canonical identity.",
+            "retire_rule": "Retired semantics require explicit reason and evidence that they are obsolete/duplicated/non-canonical.",
+            "merge_rule": "Merge-by-reference removes duplication while preserving original semantic owners.",
+            "split_rule": "One legacy artifact may map to multiple 1.4 contracts when it mixed distinct semantic owners/dimensions.",
+            "gap_rule": "Unresolved legacy semantics remain visible migration gaps."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT::LINK::TOPIC_PARENT_TOPIC_CANONICAL_MIGRATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CANONICAL_MASTER",
+            "child_ref": "TOPIC_CANONICAL_MIGRATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT::LINK::TOPIC_PARENT_TOPIC_CANONICAL_MIGRATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_PROVENANCE",
+            "child_ref": "TOPIC_CANONICAL_MIGRATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CANONICAL_MIGRATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CANONICAL_MIGRATION",
+            "child_ref": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CANONICAL_MIGRATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CANONICAL_MIGRATION",
+            "child_ref": "MIGRATION_STATE_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CANONICAL_MIGRATION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CANONICAL_MIGRATION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CANONICAL_MIGRATION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CANONICAL_MIGRATION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CANONICAL_MIGRATION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CANONICAL_MIGRATION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CANONICAL_MIGRATION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CANONICAL_MIGRATION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CANONICAL_MIGRATION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CANONICAL_MIGRATION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/migration/00_Migration_Map.json"
+      }
+    },
     {
       "id": "TOPIC_CANONICAL_MIGRATION",
       "name": "Migration Map",
-      "purpose": "Define explicit migration from legacy repository artifacts into Contract Format 1.4 identities, including move, split, merge-by-reference, retire and supersede actions without silently discarding semantics.",
-      "parent_topic_refs": [
-        "TOPIC_CANONICAL_MASTER",
-        "TOPIC_CORE_PROVENANCE"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT",
-        "MIGRATION_STATE_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_MIGRATION_MAP",
-        "OP_MIGRATION_VALIDATE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_CANONICAL_MIGRATION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define explicit migration from legacy repository artifacts into Contract Format 1.4 identities, including move, split, merge-by-reference, retire and supersede actions without silently discarding semantics.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_MIGRATION_MAP",
-        "name": "Map legacy artifact to 1.4 target",
-        "inputs": [
-          "legacy identity/path",
-          "target canonical identity",
-          "migration action"
-        ],
-        "outputs": [
-          "migration mapping"
-        ],
-        "errors": [
-          "target unresolved",
-          "mapping ambiguous"
-        ],
-        "side_effects": [
-          "migration map updated"
-        ]
-      },
-      {
-        "id": "OP_MIGRATION_VALIDATE",
-        "name": "Validate migration coverage",
-        "inputs": [
-          "legacy inventory",
-          "migration map",
-          "new tree"
-        ],
-        "outputs": [
-          "covered | intentionally retired | unresolved"
-        ],
-        "errors": [
-          "legacy semantic orphan",
-          "duplicate target mapping"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "actions": [
-      "move",
-      "reformat",
-      "split",
-      "merge_by_reference",
-      "retire",
-      "supersede",
-      "replace_with_registry",
-      "replace_with_composition"
-    ],
-    "source_rule": "Legacy source identity/path is recorded as migration provenance only.",
-    "target_rule": "Every retained semantic surface maps to an explicit 1.4 canonical identity.",
-    "retire_rule": "Retired semantics require explicit reason and evidence that they are obsolete/duplicated/non-canonical.",
-    "merge_rule": "Merge-by-reference removes duplication while preserving original semantic owners.",
-    "split_rule": "One legacy artifact may map to multiple 1.4 contracts when it mixed distinct semantic owners/dimensions.",
-    "gap_rule": "Unresolved legacy semantics remain visible migration gaps."
-  },
   "constraints": {
     "invariants": [
       {
@@ -163,10 +311,132 @@
       "purpose": "Migration maps legacy sources into the new assembled repository inventory."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_CANONICAL_MIGRATION",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_CANONICAL_MIGRATION",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define explicit migration from legacy repository artifacts into Contract Format 1.4 identities, including move, split, merge-by-reference, retire and supersede actions without silently discarding semantics.",
     "notes": [
       "Unlocked until the complete clean Contract Format 1.4 tree is assembled and validated."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_CANONICAL_MIGRATION",
+          "name": "Migration Map",
+          "purpose": "Define explicit migration from legacy repository artifacts into Contract Format 1.4 identities, including move, split, merge-by-reference, retire and supersede actions without silently discarding semantics.",
+          "parent_topic_refs": [
+            "TOPIC_CANONICAL_MASTER",
+            "TOPIC_CORE_PROVENANCE"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_CANONICAL_MIGRATION_MAP_CONTRACT",
+            "MIGRATION_STATE_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_MIGRATION_MAP",
+            "OP_MIGRATION_VALIDATE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_MIGRATION_MAP",
+            "name": "Map legacy artifact to 1.4 target",
+            "inputs": [
+              "legacy identity/path",
+              "target canonical identity",
+              "migration action"
+            ],
+            "outputs": [
+              "migration mapping"
+            ],
+            "errors": [
+              "target unresolved",
+              "mapping ambiguous"
+            ],
+            "side_effects": [
+              "migration map updated"
+            ]
+          },
+          {
+            "id": "OP_MIGRATION_VALIDATE",
+            "name": "Validate migration coverage",
+            "inputs": [
+              "legacy inventory",
+              "migration map",
+              "new tree"
+            ],
+            "outputs": [
+              "covered | intentionally retired | unresolved"
+            ],
+            "errors": [
+              "legacy semantic orphan",
+              "duplicate target mapping"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "actions": [
+          "move",
+          "reformat",
+          "split",
+          "merge_by_reference",
+          "retire",
+          "supersede",
+          "replace_with_registry",
+          "replace_with_composition"
+        ],
+        "source_rule": "Legacy source identity/path is recorded as migration provenance only.",
+        "target_rule": "Every retained semantic surface maps to an explicit 1.4 canonical identity.",
+        "retire_rule": "Retired semantics require explicit reason and evidence that they are obsolete/duplicated/non-canonical.",
+        "merge_rule": "Merge-by-reference removes duplication while preserving original semantic owners.",
+        "split_rule": "One legacy artifact may map to multiple 1.4 contracts when it mixed distinct semantic owners/dimensions.",
+        "gap_rule": "Unresolved legacy semantics remain visible migration gaps."
+      }
+    }
   }
 }

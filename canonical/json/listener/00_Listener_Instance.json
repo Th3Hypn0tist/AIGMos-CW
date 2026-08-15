@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_LISTENER_INSTANCE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define a generic named network/service listener instance used by web, REST, OSC, WebSocket and other port-bound services, with stable logical identity separate from binding and runtime state.",
   "scope": {
     "owns": [
@@ -22,57 +21,192 @@
       "presentation-only state"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_LISTENER_INSTANCE_CONTRACT",
+      "name": "Listener Instance",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_LISTENER_INSTANCE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "identity_rule": "Each listener instance has an explicit stable logical name/identity.",
+            "protocol_rule": "Listener declares protocol/service type explicitly.",
+            "binding_rule": "Listen address, port and transport are mutable bindings rather than semantic identity.",
+            "state_rule": "Declared, enabled, starting, running, stopped and failed states remain separate.",
+            "multi_rule": "Multiple instances of the same protocol type may exist concurrently if bindings are valid/non-conflicting.",
+            "owner_rule": "Listener owns binding/lifecycle semantics, not higher-level protocol/domain semantics.",
+            "authority_rule": "Listener existence/running state does not grant operation/data authority."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTENER_INSTANCE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_LISTENER_INSTANCE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_INSTANCE_CONFIG",
+            "child_ref": "TOPIC_LISTENER_INSTANCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTENER_INSTANCE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_LISTENER_INSTANCE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_NETWORK",
+            "child_ref": "TOPIC_LISTENER_INSTANCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTENER_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LISTENER_INSTANCE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LISTENER_INSTANCE",
+            "child_ref": "AIGMOS_LISTENER_INSTANCE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTENER_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LISTENER_INSTANCE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LISTENER_INSTANCE",
+            "child_ref": "LISTENER_IDENTITY_BINDING_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTENER_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LISTENER_INSTANCE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LISTENER_INSTANCE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTENER_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LISTENER_INSTANCE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LISTENER_INSTANCE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTENER_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LISTENER_INSTANCE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LISTENER_INSTANCE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTENER_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LISTENER_INSTANCE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LISTENER_INSTANCE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_LISTENER_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LISTENER_INSTANCE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LISTENER_INSTANCE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/listener/00_Listener_Instance.json"
+      }
+    },
     {
       "id": "TOPIC_LISTENER_INSTANCE",
       "name": "Listener Instance",
-      "purpose": "Define a generic named network/service listener instance used by web, REST, OSC, WebSocket and other port-bound services, with stable logical identity separate from binding and runtime state.",
-      "parent_topic_refs": [
-        "TOPIC_INSTANCE_CONFIG",
-        "TOPIC_RUNTIME_NETWORK"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_LISTENER_INSTANCE_CONTRACT",
-        "LISTENER_IDENTITY_BINDING_SEPARATION",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_LISTENER_INSTANCE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define a generic named network/service listener instance used by web, REST, OSC, WebSocket and other port-bound services, with stable logical identity separate from binding and runtime state.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "identity_rule": "Each listener instance has an explicit stable logical name/identity.",
-    "protocol_rule": "Listener declares protocol/service type explicitly.",
-    "binding_rule": "Listen address, port and transport are mutable bindings rather than semantic identity.",
-    "state_rule": "Declared, enabled, starting, running, stopped and failed states remain separate.",
-    "multi_rule": "Multiple instances of the same protocol type may exist concurrently if bindings are valid/non-conflicting.",
-    "owner_rule": "Listener owns binding/lifecycle semantics, not higher-level protocol/domain semantics.",
-    "authority_rule": "Listener existence/running state does not grant operation/data authority."
-  },
   "constraints": {
     "invariants": [
       {
@@ -115,10 +249,73 @@
       "purpose": "Listener belongs to explicit AIGMos instance/configuration."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define a generic named network/service listener instance used by web, REST, OSC, WebSocket and other port-bound services, with stable logical identity separate from binding and runtime state.",
     "notes": [
       "Unlocked pending reconciliation against existing Port Editor/listener/protocol contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_LISTENER_INSTANCE",
+          "name": "Listener Instance",
+          "purpose": "Define a generic named network/service listener instance used by web, REST, OSC, WebSocket and other port-bound services, with stable logical identity separate from binding and runtime state.",
+          "parent_topic_refs": [
+            "TOPIC_INSTANCE_CONFIG",
+            "TOPIC_RUNTIME_NETWORK"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_LISTENER_INSTANCE_CONTRACT",
+            "LISTENER_IDENTITY_BINDING_SEPARATION",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "identity_rule": "Each listener instance has an explicit stable logical name/identity.",
+        "protocol_rule": "Listener declares protocol/service type explicitly.",
+        "binding_rule": "Listen address, port and transport are mutable bindings rather than semantic identity.",
+        "state_rule": "Declared, enabled, starting, running, stopped and failed states remain separate.",
+        "multi_rule": "Multiple instances of the same protocol type may exist concurrently if bindings are valid/non-conflicting.",
+        "owner_rule": "Listener owns binding/lifecycle semantics, not higher-level protocol/domain semantics.",
+        "authority_rule": "Listener existence/running state does not grant operation/data authority."
+      }
+    }
   }
 }

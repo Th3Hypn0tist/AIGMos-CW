@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define remote output as a governed read-only projection over exact resolved schema/fields unless an explicit delegated write operation is separately authorized.",
   "scope": {
     "owns": [
@@ -22,58 +21,193 @@
       "transport cryptography"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT",
+      "name": "DWH Remote Output Projection",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "resolve_rule": "Output resolves exact instance/schema/resource/field identities before projection.",
+            "schema_rule": "Field-level output follows resolved schema/classification governance.",
+            "projection_rule": "Remote output is a projection and does not create new source ownership.",
+            "readonly_rule": "Remote projection is read-only by default.",
+            "redaction_rule": "Fields/values may be redacted/omitted according to source policy without changing internal canonical identity.",
+            "lineage_rule": "Where exposed, derived/remote results retain appropriate source lineage/provenance.",
+            "materialize_rule": "Remote consumer materialization/copy creates separate destination identity under its own explicit write boundary.",
+            "authority_rule": "Successful remote read never implies remote write authority."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_REMOTE_OUTPUT_PROJECTION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_REMOTE_OUTPUT_PROJECTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_REMOTE_OUTPUT_PROJECTION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_REMOTE_SHARING",
+            "child_ref": "TOPIC_DWH_REMOTE_OUTPUT_PROJECTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_OUTPUT_PROJECTION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_OUTPUT_PROJECTION",
+            "child_ref": "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_OUTPUT_PROJECTION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_OUTPUT_PROJECTION",
+            "child_ref": "REMOTE_SHARING_NONEXPANSION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_OUTPUT_PROJECTION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_OUTPUT_PROJECTION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_OUTPUT_PROJECTION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_OUTPUT_PROJECTION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_OUTPUT_PROJECTION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_OUTPUT_PROJECTION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_OUTPUT_PROJECTION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_OUTPUT_PROJECTION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_OUTPUT_PROJECTION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_OUTPUT_PROJECTION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/remote/02_Remote_Output_Projection.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_REMOTE_OUTPUT_PROJECTION",
       "name": "DWH Remote Output Projection",
-      "purpose": "Define remote output as a governed read-only projection over exact resolved schema/fields unless an explicit delegated write operation is separately authorized.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_REMOTE_SHARING"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT",
-        "REMOTE_SHARING_NONEXPANSION",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_REMOTE_OUTPUT_PROJECTION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define remote output as a governed read-only projection over exact resolved schema/fields unless an explicit delegated write operation is separately authorized.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "resolve_rule": "Output resolves exact instance/schema/resource/field identities before projection.",
-    "schema_rule": "Field-level output follows resolved schema/classification governance.",
-    "projection_rule": "Remote output is a projection and does not create new source ownership.",
-    "readonly_rule": "Remote projection is read-only by default.",
-    "redaction_rule": "Fields/values may be redacted/omitted according to source policy without changing internal canonical identity.",
-    "lineage_rule": "Where exposed, derived/remote results retain appropriate source lineage/provenance.",
-    "materialize_rule": "Remote consumer materialization/copy creates separate destination identity under its own explicit write boundary.",
-    "authority_rule": "Successful remote read never implies remote write authority."
-  },
   "constraints": {
     "invariants": [
       {
@@ -121,10 +255,74 @@
       "purpose": "Consumer materialization remains explicit."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define remote output as a governed read-only projection over exact resolved schema/fields unless an explicit delegated write operation is separately authorized.",
     "notes": [
       "Unlocked pending reconciliation against DWH access governance, EXT addressing, AccessCore and remote transport contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_REMOTE_OUTPUT_PROJECTION",
+          "name": "DWH Remote Output Projection",
+          "purpose": "Define remote output as a governed read-only projection over exact resolved schema/fields unless an explicit delegated write operation is separately authorized.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_REMOTE_SHARING"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_REMOTE_OUTPUT_PROJECTION_CONTRACT",
+            "REMOTE_SHARING_NONEXPANSION",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "resolve_rule": "Output resolves exact instance/schema/resource/field identities before projection.",
+        "schema_rule": "Field-level output follows resolved schema/classification governance.",
+        "projection_rule": "Remote output is a projection and does not create new source ownership.",
+        "readonly_rule": "Remote projection is read-only by default.",
+        "redaction_rule": "Fields/values may be redacted/omitted according to source policy without changing internal canonical identity.",
+        "lineage_rule": "Where exposed, derived/remote results retain appropriate source lineage/provenance.",
+        "materialize_rule": "Remote consumer materialization/copy creates separate destination identity under its own explicit write boundary.",
+        "authority_rule": "Successful remote read never implies remote write authority."
+      }
+    }
   }
 }

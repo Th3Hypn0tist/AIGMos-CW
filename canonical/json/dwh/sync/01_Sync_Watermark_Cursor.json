@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define synchronization position using explicit source revision/watermark/cursor evidence, never local wall-clock or file modification time as source-of-truth ordering.",
   "scope": {
     "owns": [
@@ -22,64 +21,199 @@
       "transport implementation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT",
+      "name": "DWH Sync Watermark and Cursor",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "position_types": [
+              "source_revision",
+              "transaction_sequence",
+              "change_sequence",
+              "explicit cursor",
+              "other declared monotonic profile"
+            ],
+            "source_rule": "Sync position is defined in the authoritative source's declared ordering/profile.",
+            "cursor_rule": "Cursor/watermark identity is synchronization state, not record semantic identity.",
+            "time_rule": "Wall-clock timestamps may be metadata but never authoritative ordering unless the source profile explicitly defines them so.",
+            "persist_rule": "Last accepted sync position is persisted explicitly.",
+            "resume_rule": "Resume starts from exact accepted watermark/cursor evidence.",
+            "gap_rule": "Detected missing/gapped sequence hard-fails or triggers explicit resync policy.",
+            "reset_rule": "Cursor reset/full resync is an explicit operation with provenance."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_SYNC_WATERMARK_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_SYNC_WATERMARK",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_SYNC_WATERMARK_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_REPLICATION_SYNC",
+            "child_ref": "TOPIC_DWH_SYNC_WATERMARK",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_SYNC_WATERMARK_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_SYNC_WATERMARK",
+            "child_ref": "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_SYNC_WATERMARK_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_SYNC_WATERMARK",
+            "child_ref": "REPLICA_NONOWNERSHIP",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_SYNC_WATERMARK_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_SYNC_WATERMARK",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_SYNC_WATERMARK_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_SYNC_WATERMARK",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_SYNC_WATERMARK_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_SYNC_WATERMARK",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_SYNC_WATERMARK_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_SYNC_WATERMARK",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_SYNC_WATERMARK_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_SYNC_WATERMARK",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/sync/01_Sync_Watermark_Cursor.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_SYNC_WATERMARK",
       "name": "DWH Sync Watermark and Cursor",
-      "purpose": "Define synchronization position using explicit source revision/watermark/cursor evidence, never local wall-clock or file modification time as source-of-truth ordering.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_REPLICATION_SYNC"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT",
-        "REPLICA_NONOWNERSHIP",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_SYNC_WATERMARK::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define synchronization position using explicit source revision/watermark/cursor evidence, never local wall-clock or file modification time as source-of-truth ordering.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "position_types": [
-      "source_revision",
-      "transaction_sequence",
-      "change_sequence",
-      "explicit cursor",
-      "other declared monotonic profile"
-    ],
-    "source_rule": "Sync position is defined in the authoritative source's declared ordering/profile.",
-    "cursor_rule": "Cursor/watermark identity is synchronization state, not record semantic identity.",
-    "time_rule": "Wall-clock timestamps may be metadata but never authoritative ordering unless the source profile explicitly defines them so.",
-    "persist_rule": "Last accepted sync position is persisted explicitly.",
-    "resume_rule": "Resume starts from exact accepted watermark/cursor evidence.",
-    "gap_rule": "Detected missing/gapped sequence hard-fails or triggers explicit resync policy.",
-    "reset_rule": "Cursor reset/full resync is an explicit operation with provenance."
-  },
   "constraints": {
     "invariants": [
       {
@@ -122,10 +256,80 @@
       "purpose": "Sync position may bind to exact revisions."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define synchronization position using explicit source revision/watermark/cursor evidence, never local wall-clock or file modification time as source-of-truth ordering.",
     "notes": [
       "Unlocked pending reconciliation against DWH persistence, remote addressing, mutation and reconciliation contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_SYNC_WATERMARK",
+          "name": "DWH Sync Watermark and Cursor",
+          "purpose": "Define synchronization position using explicit source revision/watermark/cursor evidence, never local wall-clock or file modification time as source-of-truth ordering.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_REPLICATION_SYNC"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_SYNC_WATERMARK_CONTRACT",
+            "REPLICA_NONOWNERSHIP",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "position_types": [
+          "source_revision",
+          "transaction_sequence",
+          "change_sequence",
+          "explicit cursor",
+          "other declared monotonic profile"
+        ],
+        "source_rule": "Sync position is defined in the authoritative source's declared ordering/profile.",
+        "cursor_rule": "Cursor/watermark identity is synchronization state, not record semantic identity.",
+        "time_rule": "Wall-clock timestamps may be metadata but never authoritative ordering unless the source profile explicitly defines them so.",
+        "persist_rule": "Last accepted sync position is persisted explicitly.",
+        "resume_rule": "Resume starts from exact accepted watermark/cursor evidence.",
+        "gap_rule": "Detected missing/gapped sequence hard-fails or triggers explicit resync policy.",
+        "reset_rule": "Cursor reset/full resync is an explicit operation with provenance."
+      }
+    }
   }
 }

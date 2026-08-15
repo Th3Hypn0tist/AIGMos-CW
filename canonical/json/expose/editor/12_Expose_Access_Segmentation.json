@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define independently AC-addressable Expose/Editor subareas so access to one editor or monitor does not implicitly grant access to all other human-facing configuration surfaces.",
   "scope": {
     "owns": [
@@ -21,102 +20,264 @@
       "unrelated domain semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT",
+      "name": "Expose Access Segmentation",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT::OPERATIONS::OP_EXPOSE_ACCESS_RESOLVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_EXPOSE_ACCESS_RESOLVE",
+            "name": "Resolve Expose subarea authorization",
+            "inputs": [
+              "identity",
+              "Expose subarea",
+              "requested operation"
+            ],
+            "outputs": [
+              "allow/deny"
+            ],
+            "errors": [
+              "policy unresolved"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT::OPERATIONS::OP_EXPOSE_ACCESS_PROJECT",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_EXPOSE_ACCESS_PROJECT",
+            "name": "Project authorized Editor surface",
+            "inputs": [
+              "subarea rights",
+              "Editor/nanoCMS structure"
+            ],
+            "outputs": [
+              "authorized UI projection"
+            ],
+            "errors": [],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "addressable_areas": [
+              "MetaModule Editor",
+              "Site/#WEB",
+              "Instance",
+              "q",
+              "GUI",
+              "Form",
+              "Style",
+              "Monitors",
+              "Port Editor"
+            ],
+            "segmentation_rule": "Each subarea may have independent read/write/operation authorization.",
+            "inheritance_rule": "Access inheritance occurs only through explicit AccessCore policy.",
+            "ui_rule": "Hidden/disabled UI is presentation of authorization result, not the authorization mechanism itself.",
+            "backend_rule": "Canonical operation enforcement remains authoritative even if a client bypasses UI presentation.",
+            "ac_off_rule": "When AC is off, AccessCore restrictions do not apply.",
+            "ac_on_rule": "When AC is on, each governed subarea follows its resolved policy."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_ACCESS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_EXPOSE_ACCESS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_ACCESS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_ACCESS",
+            "child_ref": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_ACCESS_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_ACCESS",
+            "child_ref": "EXPOSE_RUNTIME_BINDING_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_ACCESS_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_ACCESS",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_ACCESS_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_ACCESS",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_ACCESS_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_ACCESS",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_ACCESS_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_ACCESS",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_ACCESS_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_ACCESS",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_ACCESS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_ACCESS",
+            "child_ref": "TOPIC_ACCESSCORE_AUTHORIZATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_ACCESS_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_ACCESS",
+            "child_ref": "TOPIC_EXPOSE_EDITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/editor/12_Expose_Access_Segmentation.json"
+      }
+    },
     {
       "id": "TOPIC_EXPOSE_ACCESS",
       "name": "Expose Access",
-      "purpose": "Define independently AC-addressable Expose/Editor subareas so access to one editor or monitor does not implicitly grant access to all other human-facing configuration surfaces.",
-      "parent_topic_refs": [
-        "TOPIC_EXPOSE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_ACCESSCORE_AUTHORIZATION",
-        "TOPIC_EXPOSE_EDITOR"
-      ],
-      "member_refs": [
-        "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT",
-        "EXPOSE_RUNTIME_BINDING_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_EXPOSE_ACCESS_RESOLVE",
-        "OP_EXPOSE_ACCESS_PROJECT"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_ACCESS::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define independently AC-addressable Expose/Editor subareas so access to one editor or monitor does not implicitly grant access to all other human-facing configuration surfaces.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_EXPOSE_ACCESS_RESOLVE",
-        "name": "Resolve Expose subarea authorization",
-        "inputs": [
-          "identity",
-          "Expose subarea",
-          "requested operation"
-        ],
-        "outputs": [
-          "allow/deny"
-        ],
-        "errors": [
-          "policy unresolved"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_EXPOSE_ACCESS_PROJECT",
-        "name": "Project authorized Editor surface",
-        "inputs": [
-          "subarea rights",
-          "Editor/nanoCMS structure"
-        ],
-        "outputs": [
-          "authorized UI projection"
-        ],
-        "errors": [],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "addressable_areas": [
-      "MetaModule Editor",
-      "Site/#WEB",
-      "Instance",
-      "q",
-      "GUI",
-      "Form",
-      "Style",
-      "Monitors",
-      "Port Editor"
-    ],
-    "segmentation_rule": "Each subarea may have independent read/write/operation authorization.",
-    "inheritance_rule": "Access inheritance occurs only through explicit AccessCore policy.",
-    "ui_rule": "Hidden/disabled UI is presentation of authorization result, not the authorization mechanism itself.",
-    "backend_rule": "Canonical operation enforcement remains authoritative even if a client bypasses UI presentation.",
-    "ac_off_rule": "When AC is off, AccessCore restrictions do not apply.",
-    "ac_on_rule": "When AC is on, each governed subarea follows its resolved policy."
-  },
   "constraints": {
     "invariants": [
       {
@@ -164,10 +325,128 @@
       "purpose": "Editor has no privileged bypass."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_EXPOSE_ACCESS",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_EXPOSE_ACCESS",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define independently AC-addressable Expose/Editor subareas so access to one editor or monitor does not implicitly grant access to all other human-facing configuration surfaces.",
     "notes": [
       "Unlocked until reconciled against existing Expose/runtime contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXPOSE_ACCESS",
+          "name": "Expose Access",
+          "purpose": "Define independently AC-addressable Expose/Editor subareas so access to one editor or monitor does not implicitly grant access to all other human-facing configuration surfaces.",
+          "parent_topic_refs": [
+            "TOPIC_EXPOSE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_ACCESSCORE_AUTHORIZATION",
+            "TOPIC_EXPOSE_EDITOR"
+          ],
+          "member_refs": [
+            "AIGMOS_EXPOSE_ACCESS_SEGMENTATION_CONTRACT",
+            "EXPOSE_RUNTIME_BINDING_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_EXPOSE_ACCESS_RESOLVE",
+            "OP_EXPOSE_ACCESS_PROJECT"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_EXPOSE_ACCESS_RESOLVE",
+            "name": "Resolve Expose subarea authorization",
+            "inputs": [
+              "identity",
+              "Expose subarea",
+              "requested operation"
+            ],
+            "outputs": [
+              "allow/deny"
+            ],
+            "errors": [
+              "policy unresolved"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_EXPOSE_ACCESS_PROJECT",
+            "name": "Project authorized Editor surface",
+            "inputs": [
+              "subarea rights",
+              "Editor/nanoCMS structure"
+            ],
+            "outputs": [
+              "authorized UI projection"
+            ],
+            "errors": [],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "addressable_areas": [
+          "MetaModule Editor",
+          "Site/#WEB",
+          "Instance",
+          "q",
+          "GUI",
+          "Form",
+          "Style",
+          "Monitors",
+          "Port Editor"
+        ],
+        "segmentation_rule": "Each subarea may have independent read/write/operation authorization.",
+        "inheritance_rule": "Access inheritance occurs only through explicit AccessCore policy.",
+        "ui_rule": "Hidden/disabled UI is presentation of authorization result, not the authorization mechanism itself.",
+        "backend_rule": "Canonical operation enforcement remains authoritative even if a client bypasses UI presentation.",
+        "ac_off_rule": "When AC is off, AccessCore restrictions do not apply.",
+        "ac_on_rule": "When AC is on, each governed subarea follows its resolved policy."
+      }
+    }
   }
 }

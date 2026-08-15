@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define propagation of origin identity/assurance context to remote governed resources while requiring the remote instance to evaluate its own AccessCore policy and preventing delegated rights expansion.",
   "scope": {
     "owns": [
@@ -22,58 +21,193 @@
       "domain business semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT",
+      "name": "Remote Authorization Propagation",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "origin_rule": "Remote request carries exact origin identity/session/assurance provenance according to protocol policy.",
+            "remote_rule": "Remote target evaluates its own AccessCore authorization policy.",
+            "nonexpansion_rule": "Delegated remote path cannot expand rights beyond explicit delegation.",
+            "local_rule": "A local owner may hold broader local rights where local policy permits; this does not imply those rights remotely.",
+            "dwh_rule": "With AccessCore active, governed DWH remote access uses the DWH remote path rather than direct `$EXT` dereference.",
+            "assurance_rule": "Remote target may impose its own minimum assurance requirement.",
+            "transport_rule": "Secure transport/peer reachability does not grant remote authorization.",
+            "trace_rule": "Remote decision retains origin identity plus remote policy/rule evidence."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_ACCESSCORE_AUTHORIZATION",
+            "child_ref": "TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_ACTIVATION",
+            "child_ref": "TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION",
+            "child_ref": "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION",
+            "child_ref": "ACCESSCORE_ACTIVATION_GOVERNED",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/accesscore/10_Remote_Authorization_Propagation.json"
+      }
+    },
     {
       "id": "TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION",
       "name": "Remote Authorization Propagation",
-      "purpose": "Define propagation of origin identity/assurance context to remote governed resources while requiring the remote instance to evaluate its own AccessCore policy and preventing delegated rights expansion.",
-      "parent_topic_refs": [
-        "TOPIC_ACCESSCORE_AUTHORIZATION",
-        "TOPIC_RUNTIME_ACTIVATION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT",
-        "ACCESSCORE_ACTIVATION_GOVERNED",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define propagation of origin identity/assurance context to remote governed resources while requiring the remote instance to evaluate its own AccessCore policy and preventing delegated rights expansion.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "origin_rule": "Remote request carries exact origin identity/session/assurance provenance according to protocol policy.",
-    "remote_rule": "Remote target evaluates its own AccessCore authorization policy.",
-    "nonexpansion_rule": "Delegated remote path cannot expand rights beyond explicit delegation.",
-    "local_rule": "A local owner may hold broader local rights where local policy permits; this does not imply those rights remotely.",
-    "dwh_rule": "With AccessCore active, governed DWH remote access uses the DWH remote path rather than direct `$EXT` dereference.",
-    "assurance_rule": "Remote target may impose its own minimum assurance requirement.",
-    "transport_rule": "Secure transport/peer reachability does not grant remote authorization.",
-    "trace_rule": "Remote decision retains origin identity plus remote policy/rule evidence."
-  },
   "constraints": {
     "invariants": [
       {
@@ -121,10 +255,74 @@
       "purpose": "Origin identity context propagates explicitly."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define propagation of origin identity/assurance context to remote governed resources while requiring the remote instance to evaluate its own AccessCore policy and preventing delegated rights expansion.",
     "notes": [
       "Unlocked pending reconciliation against existing AccessCore/IAM/runtime activation contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION",
+          "name": "Remote Authorization Propagation",
+          "purpose": "Define propagation of origin identity/assurance context to remote governed resources while requiring the remote instance to evaluate its own AccessCore policy and preventing delegated rights expansion.",
+          "parent_topic_refs": [
+            "TOPIC_ACCESSCORE_AUTHORIZATION",
+            "TOPIC_RUNTIME_ACTIVATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_ACCESSCORE_REMOTE_AUTHORIZATION_PROPAGATION_CONTRACT",
+            "ACCESSCORE_ACTIVATION_GOVERNED",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "origin_rule": "Remote request carries exact origin identity/session/assurance provenance according to protocol policy.",
+        "remote_rule": "Remote target evaluates its own AccessCore authorization policy.",
+        "nonexpansion_rule": "Delegated remote path cannot expand rights beyond explicit delegation.",
+        "local_rule": "A local owner may hold broader local rights where local policy permits; this does not imply those rights remotely.",
+        "dwh_rule": "With AccessCore active, governed DWH remote access uses the DWH remote path rather than direct `$EXT` dereference.",
+        "assurance_rule": "Remote target may impose its own minimum assurance requirement.",
+        "transport_rule": "Secure transport/peer reachability does not grant remote authorization.",
+        "trace_rule": "Remote decision retains origin identity plus remote policy/rule evidence."
+      }
+    }
   }
 }

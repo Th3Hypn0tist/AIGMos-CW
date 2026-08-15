@@ -1,11 +1,367 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT",
+    "name": "DWH Remote Input Scope",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define explicit remote DWH input scopes `all`, `ext` and `id` at the origin so remote exposure is selected before transfer rather than inferred by the receiver. [2] Define the canonical remote input scope modes `all`, `ext` and `id` as explicit origin-side ingestion boundaries rather than heuristic filters.",
+  "scope": {
+    "does_not_own": [
+      "domain payload semantics",
+      "transport implementation",
+      "presentation semantics",
+      "source domain ownership",
+      "AccessCore policy ownership",
+      "transport cryptography"
+    ],
+    "owns": [
+      "DWH Remote Input Scope semantics",
+      "DWH Remote Input Scopes semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT",
+      "name": "DWH Remote Input Scope",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "all_rule": "`all` accepts the full explicitly permitted remote input set within the owning origin/schema policy.",
+            "authority_rule": "Input scope describes admissible data class/scope and is not authorization by itself.",
+            "authorization_rule": "Scope limits candidate data but does not replace IAM/AC authorization.",
+            "default_rule": "No broader scope is inferred from transport connectivity.",
+            "explicit_rule": "Remote scope is explicit configuration/policy data.",
+            "ext_rule": "`ext` accepts only data classified/identified as external according to the owning origin/schema contract.",
+            "id_rule": "`id` accepts only explicitly identity-scoped/identity-classified data according to the owning contract.",
+            "identity_rule": "Scope token is policy mode, not data/resource identity.",
+            "lineage_rule": "Released data retains origin, scope and lineage provenance.",
+            "origin_rule": "Reconciled source clauses: [1] Scope is evaluated at the data origin before remote transfer. [2] Remote input scope is evaluated at the receiving/origin ingestion boundary.",
+            "receiver_rule": "Receiver cannot widen the origin-selected scope.",
+            "schema_rule": "Scope selection does not bypass schema validation/classification.",
+            "scope_modes": [
+              "all",
+              "ext",
+              "id"
+            ],
+            "scopes": {
+              "all": "all data permitted by the owning DWH policy",
+              "ext": "externally releasable data only",
+              "id": "identity-scoped data only"
+            },
+            "unknown_rule": "Unknown scope mode hard-fails rather than falling back to `all`."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_REMOTE_INPUT_SCOPE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH_LOCAL_REMOTE",
+            "child_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_REMOTE_INPUT_SCOPE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH_LINEAGE",
+            "child_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_REMOTE_INPUT_SCOPE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_ACCESSCORE_AUTHORIZATION",
+            "child_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_REMOTE_INPUT_SCOPE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_REMOTE_INPUT_SCOPE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_REMOTE_SHARING",
+            "child_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_INPUT_SCOPE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "child_ref": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_INPUT_SCOPE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "child_ref": "DWH_POLICY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_INPUT_SCOPE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "child_ref": "REMOTE_SHARING_NONEXPANSION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_INPUT_SCOPE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "child_ref": "GATE_29224E19AF",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_INPUT_SCOPE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "child_ref": "GATE_67DEAAFE90",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_INPUT_SCOPE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "child_ref": "GATE_DE5FD60016",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_INPUT_SCOPE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "child_ref": "GATE_A5BE55E155",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_INPUT_SCOPE_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "child_ref": "GATE_9775B01318",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_INPUT_SCOPE_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "child_ref": "GATE_DE58B65390",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_INPUT_SCOPE_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "child_ref": "GATE_42F1652AD6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_INPUT_SCOPE_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "child_ref": "GATE_156D597A9B",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_INPUT_SCOPE_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "child_ref": "GATE_8E61E875B0",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_INPUT_SCOPE_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+            "child_ref": "GATE_4E11086D85",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+      "name": "DWH Remote Input Scope",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_REMOTE_INPUT_SCOPE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Reconciled source clauses: [1] Define explicit remote DWH input scopes `all`, `ext` and `id` at the origin so remote exposure is selected before transfer rather than inferred by the receiver. [2] Define the canonical remote input scope modes `all`, `ext` and `id` as explicit origin-side ingestion boundaries rather than heuristic filters.",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -70,29 +426,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT",
-    "name": "DWH Remote Input Scope",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked pending reconciliation against DWH local/remote, AC/IAM and lineage contracts and whole-tree Contract Format 1.4 validation.",
-      "Unlocked pending reconciliation against DWH access governance, EXT addressing, AccessCore and remote transport contracts.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: dwh/12_Remote_Input_Scope.json, dwh/remote/01_Remote_Input_Scopes.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
-    ],
-    "summary": "Reconciled source purposes: [1] Define explicit remote DWH input scopes `all`, `ext` and `id` at the origin so remote exposure is selected before transfer rather than inferred by the receiver. [2] Define the canonical remote input scope modes `all`, `ext` and `id` as explicit origin-side ingestion boundaries rather than heuristic filters."
-  },
-  "purpose": "Reconciled source purposes: [1] Define explicit remote DWH input scopes `all`, `ext` and `id` at the origin so remote exposure is selected before transfer rather than inferred by the receiver. [2] Define the canonical remote input scope modes `all`, `ext` and `id` as explicit origin-side ingestion boundaries rather than heuristic filters.",
   "references": [
     {
       "id": "REF_LINEAGE",
@@ -105,88 +438,103 @@
       "purpose": "Remote input scope is enforced at origin."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "domain payload semantics",
-      "transport implementation",
-      "presentation semantics",
-      "source domain ownership",
-      "AccessCore policy ownership",
-      "transport cryptography"
+  "gaps": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending reconciliation against DWH local/remote, AC/IAM and lineage contracts and whole-tree Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against DWH access governance, EXT addressing, AccessCore and remote transport contracts.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: dwh/12_Remote_Input_Scope.json, dwh/remote/01_Remote_Input_Scopes.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
     ],
-    "owns": [
-      "DWH Remote Input Scope semantics",
-      "DWH Remote Input Scopes semantics"
-    ]
+    "summary": "Reconciled source purposes: [1] Define explicit remote DWH input scopes `all`, `ext` and `id` at the origin so remote exposure is selected before transfer rather than inferred by the receiver. [2] Define the canonical remote input scope modes `all`, `ext` and `id` as explicit origin-side ingestion boundaries rather than heuristic filters."
   },
-  "semantics": {
-    "all_rule": "`all` accepts the full explicitly permitted remote input set within the owning origin/schema policy.",
-    "authority_rule": "Input scope describes admissible data class/scope and is not authorization by itself.",
-    "authorization_rule": "Scope limits candidate data but does not replace IAM/AC authorization.",
-    "default_rule": "No broader scope is inferred from transport connectivity.",
-    "explicit_rule": "Remote scope is explicit configuration/policy data.",
-    "ext_rule": "`ext` accepts only data classified/identified as external according to the owning origin/schema contract.",
-    "id_rule": "`id` accepts only explicitly identity-scoped/identity-classified data according to the owning contract.",
-    "identity_rule": "Scope token is policy mode, not data/resource identity.",
-    "lineage_rule": "Released data retains origin, scope and lineage provenance.",
-    "origin_rule": "Reconciled source clauses: [1] Scope is evaluated at the data origin before remote transfer. [2] Remote input scope is evaluated at the receiving/origin ingestion boundary.",
-    "receiver_rule": "Receiver cannot widen the origin-selected scope.",
-    "schema_rule": "Scope selection does not bypass schema validation/classification.",
-    "scope_modes": [
-      "all",
-      "ext",
-      "id"
-    ],
-    "scopes": {
-      "all": "all data permitted by the owning DWH policy",
-      "ext": "externally releasable data only",
-      "id": "identity-scoped data only"
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
     },
-    "unknown_rule": "Unknown scope mode hard-fails rather than falling back to `all`."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
-    {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
-      "member_refs": [
-        "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT",
-        "DWH_POLICY_EXPLICIT",
-        "REMOTE_SHARING_NONEXPANSION",
-        "GATE_29224E19AF",
-        "GATE_67DEAAFE90",
-        "GATE_DE5FD60016",
-        "GATE_A5BE55E155",
-        "GATE_9775B01318",
-        "GATE_DE58B65390",
-        "GATE_42F1652AD6",
-        "GATE_156D597A9B",
-        "GATE_8E61E875B0",
-        "GATE_4E11086D85"
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_DWH_REMOTE_INPUT_SCOPE",
+          "member_refs": [
+            "AIGMOS_DWH_REMOTE_INPUT_SCOPE_CONTRACT",
+            "DWH_POLICY_EXPLICIT",
+            "REMOTE_SHARING_NONEXPANSION",
+            "GATE_29224E19AF",
+            "GATE_67DEAAFE90",
+            "GATE_DE5FD60016",
+            "GATE_A5BE55E155",
+            "GATE_9775B01318",
+            "GATE_DE58B65390",
+            "GATE_42F1652AD6",
+            "GATE_156D597A9B",
+            "GATE_8E61E875B0",
+            "GATE_4E11086D85"
+          ],
+          "metadata": {},
+          "name": "DWH Remote Input Scope",
+          "operation_refs": [],
+          "parent_topic_refs": [
+            "TOPIC_DWH_LOCAL_REMOTE",
+            "TOPIC_DWH_LINEAGE",
+            "TOPIC_ACCESSCORE_AUTHORIZATION",
+            "TOPIC_DWH",
+            "TOPIC_REMOTE_SHARING"
+          ],
+          "purpose": "Reconciled source clauses: [1] Define explicit remote DWH input scopes `all`, `ext` and `id` at the origin so remote exposure is selected before transfer rather than inferred by the receiver. [2] Define the canonical remote input scope modes `all`, `ext` and `id` as explicit origin-side ingestion boundaries rather than heuristic filters.",
+          "relation_refs": []
+        }
       ],
-      "metadata": {},
-      "name": "DWH Remote Input Scope",
-      "operation_refs": [],
-      "parent_topic_refs": [
-        "TOPIC_DWH_LOCAL_REMOTE",
-        "TOPIC_DWH_LINEAGE",
-        "TOPIC_ACCESSCORE_AUTHORIZATION",
-        "TOPIC_DWH",
-        "TOPIC_REMOTE_SHARING"
-      ],
-      "purpose": "Reconciled source clauses: [1] Define explicit remote DWH input scopes `all`, `ext` and `id` at the origin so remote exposure is selected before transfer rather than inferred by the receiver. [2] Define the canonical remote input scope modes `all`, `ext` and `id` as explicit origin-side ingestion boundaries rather than heuristic filters.",
-      "relation_refs": []
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [],
+        "states": []
+      },
+      "semantics": {
+        "all_rule": "`all` accepts the full explicitly permitted remote input set within the owning origin/schema policy.",
+        "authority_rule": "Input scope describes admissible data class/scope and is not authorization by itself.",
+        "authorization_rule": "Scope limits candidate data but does not replace IAM/AC authorization.",
+        "default_rule": "No broader scope is inferred from transport connectivity.",
+        "explicit_rule": "Remote scope is explicit configuration/policy data.",
+        "ext_rule": "`ext` accepts only data classified/identified as external according to the owning origin/schema contract.",
+        "id_rule": "`id` accepts only explicitly identity-scoped/identity-classified data according to the owning contract.",
+        "identity_rule": "Scope token is policy mode, not data/resource identity.",
+        "lineage_rule": "Released data retains origin, scope and lineage provenance.",
+        "origin_rule": "Reconciled source clauses: [1] Scope is evaluated at the data origin before remote transfer. [2] Remote input scope is evaluated at the receiving/origin ingestion boundary.",
+        "receiver_rule": "Receiver cannot widen the origin-selected scope.",
+        "schema_rule": "Scope selection does not bypass schema validation/classification.",
+        "scope_modes": [
+          "all",
+          "ext",
+          "id"
+        ],
+        "scopes": {
+          "all": "all data permitted by the owning DWH policy",
+          "ext": "externally releasable data only",
+          "id": "identity-scoped data only"
+        },
+        "unknown_rule": "Unknown scope mode hard-fails rather than falling back to `all`."
+      }
     }
-  ]
+  }
 }

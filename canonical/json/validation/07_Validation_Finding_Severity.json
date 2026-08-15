@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_VALIDATION_FINDING_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define deterministic machine-readable validation findings with explicit severity, rule identity, source location, semantic target and remediation context.",
   "scope": {
     "owns": [
@@ -22,70 +21,205 @@
       "presentation-only reporting"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_VALIDATION_FINDING_CONTRACT",
+      "name": "Validation Finding and Severity",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_VALIDATION_FINDING_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "severities": [
+              "info",
+              "warning",
+              "error",
+              "fatal"
+            ],
+            "required": [
+              "finding_id",
+              "rule_ref",
+              "severity",
+              "target_ref",
+              "message",
+              "evidence_refs"
+            ],
+            "location_rule": "Where a physical artifact is involved, finding may include source artifact/path and machine-readable field/ref location without making that path semantic identity.",
+            "fatal_rule": "fatal prevents continued trustworthy validation of the affected scope.",
+            "error_rule": "error prevents pass/lock eligibility unless an explicit permitted exception applies.",
+            "warning_rule": "warning remains visible but does not fail by default unless an owning policy upgrades it.",
+            "info_rule": "info is non-failing diagnostic evidence.",
+            "dedupe_rule": "Equivalent repeated findings may be deduplicated by explicit key while preserving occurrence provenance."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_VALIDATION_FINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_VALIDATION_FINDINGS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_VALIDATION_RESULTS",
+            "child_ref": "TOPIC_VALIDATION_FINDINGS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_VALIDATION_FINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_VALIDATION_FINDINGS_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_ERRORS",
+            "child_ref": "TOPIC_VALIDATION_FINDINGS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_VALIDATION_FINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_VALIDATION_FINDINGS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_VALIDATION_FINDINGS",
+            "child_ref": "AIGMOS_VALIDATION_FINDING_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_VALIDATION_FINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_VALIDATION_FINDINGS_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_VALIDATION_FINDINGS",
+            "child_ref": "VALIDATION_EVIDENCE_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_VALIDATION_FINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_VALIDATION_FINDINGS_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_VALIDATION_FINDINGS",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_VALIDATION_FINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_VALIDATION_FINDINGS_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_VALIDATION_FINDINGS",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_VALIDATION_FINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_VALIDATION_FINDINGS_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_VALIDATION_FINDINGS",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_VALIDATION_FINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_VALIDATION_FINDINGS_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_VALIDATION_FINDINGS",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_VALIDATION_FINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_VALIDATION_FINDINGS_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_VALIDATION_FINDINGS",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/validation/07_Validation_Finding_Severity.json"
+      }
+    },
     {
       "id": "TOPIC_VALIDATION_FINDINGS",
       "name": "Validation Finding and Severity",
-      "purpose": "Define deterministic machine-readable validation findings with explicit severity, rule identity, source location, semantic target and remediation context.",
-      "parent_topic_refs": [
-        "TOPIC_VALIDATION_RESULTS",
-        "TOPIC_CORE_ERRORS"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_VALIDATION_FINDING_CONTRACT",
-        "VALIDATION_EVIDENCE_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_VALIDATION_FINDINGS::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define deterministic machine-readable validation findings with explicit severity, rule identity, source location, semantic target and remediation context.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "severities": [
-      "info",
-      "warning",
-      "error",
-      "fatal"
-    ],
-    "required": [
-      "finding_id",
-      "rule_ref",
-      "severity",
-      "target_ref",
-      "message",
-      "evidence_refs"
-    ],
-    "location_rule": "Where a physical artifact is involved, finding may include source artifact/path and machine-readable field/ref location without making that path semantic identity.",
-    "fatal_rule": "fatal prevents continued trustworthy validation of the affected scope.",
-    "error_rule": "error prevents pass/lock eligibility unless an explicit permitted exception applies.",
-    "warning_rule": "warning remains visible but does not fail by default unless an owning policy upgrades it.",
-    "info_rule": "info is non-failing diagnostic evidence.",
-    "dedupe_rule": "Equivalent repeated findings may be deduplicated by explicit key while preserving occurrence provenance."
-  },
   "constraints": {
     "invariants": [
       {
@@ -128,10 +262,86 @@
       "purpose": "Findings populate validation results."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define deterministic machine-readable validation findings with explicit severity, rule identity, source location, semantic target and remediation context.",
     "notes": [
       "Unlocked until exercised against the complete clean Contract Format 1.4 candidate tree."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_VALIDATION_FINDINGS",
+          "name": "Validation Finding and Severity",
+          "purpose": "Define deterministic machine-readable validation findings with explicit severity, rule identity, source location, semantic target and remediation context.",
+          "parent_topic_refs": [
+            "TOPIC_VALIDATION_RESULTS",
+            "TOPIC_CORE_ERRORS"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_VALIDATION_FINDING_CONTRACT",
+            "VALIDATION_EVIDENCE_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "severities": [
+          "info",
+          "warning",
+          "error",
+          "fatal"
+        ],
+        "required": [
+          "finding_id",
+          "rule_ref",
+          "severity",
+          "target_ref",
+          "message",
+          "evidence_refs"
+        ],
+        "location_rule": "Where a physical artifact is involved, finding may include source artifact/path and machine-readable field/ref location without making that path semantic identity.",
+        "fatal_rule": "fatal prevents continued trustworthy validation of the affected scope.",
+        "error_rule": "error prevents pass/lock eligibility unless an explicit permitted exception applies.",
+        "warning_rule": "warning remains visible but does not fail by default unless an owning policy upgrades it.",
+        "info_rule": "info is non-failing diagnostic evidence.",
+        "dedupe_rule": "Equivalent repeated findings may be deduplicated by explicit key while preserving occurrence provenance."
+      }
+    }
   }
 }

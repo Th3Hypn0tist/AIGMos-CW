@@ -1,28 +1,654 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "errors": [
-          "unknown module type",
-          "type semantics violated"
-        ],
-        "id": "OP_UM_TYPE_VALIDATE",
-        "inputs": [
-          "module definition",
-          "declared module type"
-        ],
-        "name": "Validate UserModule type",
-        "outputs": [
-          "validated type contract"
-        ],
-        "side_effects": []
-      }
-    ],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT",
+    "name": "UserModule Type",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define the canonical UserModule type set command, input, adapter and view, with non-overlapping responsibilities and no implicit authority transfer between types. [2] Define the four primary UserModule types `command`, `input`, `adapter` and `view`, each with a narrow canonical responsibility and no implicit cross-type authority.",
+  "scope": {
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics",
+      "domain semantics not declared by the module",
+      "AccessCore policy",
+      "presentation-only placement"
+    ],
+    "owns": [
+      "Runtime UserModule Types semantics",
+      "UserModule Type semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT",
+      "name": "UserModule Type",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::OPERATIONS::OP_UM_TYPE_VALIDATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "unknown module type",
+              "type semantics violated"
+            ],
+            "id": "OP_UM_TYPE_VALIDATE",
+            "inputs": [
+              "module definition",
+              "declared module type"
+            ],
+            "name": "Validate UserModule type",
+            "outputs": [
+              "validated type contract"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "adapter_rule": "Reconciled source clauses: [1] Adapter type is a symbol mount/translation boundary. [2] Adapter translates/mounts but does not own source/target semantics.",
+            "command_rule": "Reconciled source clauses: [1] Command type executes only through Core dispatch. [2] Command type does not become a persistent input source.",
+            "composition_rule": "Reconciled source clauses: [1] Combining capabilities uses explicit composition rather than silently widening one module type. [2] Higher-level compositions reference these type semantics instead of weakening their boundaries.",
+            "input_rule": "Reconciled source clauses: [1] Input type writes only owned validated data. [2] Input payload remains inert until another explicit operation consumes it.",
+            "single_primary_rule": "Every UserModule declares one primary type unless an explicit composition contract permits a multi-surface Meta composition.",
+            "single_primary_type_rule": "A module declares one primary runtime type unless an explicit composition contract defines otherwise.",
+            "types": {
+              "adapter": "Reconciled source clauses: [1] Mounts/translates symbols only; it is not an independent command authority. [2] mounts/translates symbols/protocol/data shape and has no hidden execution authority",
+              "command": "Reconciled source clauses: [1] One-shot invokable module capability resolved through canonical command/operation dispatch. [2] one-shot explicit operation surface executed through normal dispatch",
+              "input": "Reconciled source clauses: [1] Receives/validates data and writes its owned #UM module surface. [2] acquires/receives data and writes validated inert data into its declared #UM/#INPUT surface",
+              "view": "Reconciled source clauses: [1] UI/read projection only; it owns no backend semantics or write authority. [2] UI/projection only and owns no backend/runtime mutation semantics"
+            },
+            "view_rule": "Reconciled source clauses: [1] View type is read-only/projection-only unless it explicitly invokes canonical write operations owned elsewhere. [2] View does not become an execution/backend authority."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_USERMODULE_TYPES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME_USER_MODULES",
+            "child_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "USERMODULE_SEMANTICS_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPES_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPES_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "GATE_F63F581685",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPES_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "GATE_C7263412EC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPES_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "GATE_6C770702C0",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPES_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "GATE_65EB50E9A9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPES_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "GATE_506705FA19",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPES_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPES_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "GATE_2E51AD82E3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPES_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "GATE_91163AE28F",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPES_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "GATE_F3B66B059C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPES_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "GATE_CF44C0BE5B",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPES_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "GATE_74482390DE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_USERMODULE_TYPES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_USERMODULE_TYPES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "TOPIC_RUNTIME_INPUT_ADAPTERS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_USERMODULE_TYPES_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "TOPIC_CORE_PROJECTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_USERMODULE_TYPES_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+            "child_ref": "TOPIC_RUNTIME_COMMAND_REGISTRY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_USERMODULE_TYPE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "child_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_USERMODULE_TYPE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_NAMESPACE_UM",
+            "child_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+            "child_ref": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+            "child_ref": "USERMODULE_SEMANTICS_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+            "child_ref": "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+            "child_ref": "GATE_F63F581685",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+            "child_ref": "GATE_C7263412EC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+            "child_ref": "GATE_6C770702C0",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+            "child_ref": "GATE_65EB50E9A9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPE_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+            "child_ref": "GATE_506705FA19",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPE_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPE_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+            "child_ref": "GATE_2E51AD82E3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPE_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+            "child_ref": "GATE_91163AE28F",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPE_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+            "child_ref": "GATE_F3B66B059C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPE_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+            "child_ref": "GATE_CF44C0BE5B",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_TYPE_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+            "child_ref": "GATE_74482390DE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[13]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_RUNTIME_USERMODULE_TYPES",
+      "name": "UserModule Types",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_USERMODULE_TYPES::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define the canonical UserModule type set command, input, adapter and view, with non-overlapping responsibilities and no implicit authority transfer between types.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_RUNTIME_USERMODULE_TYPE",
+      "name": "UserModule Type",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_USERMODULE_TYPE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define the four primary UserModule types `command`, `input`, `adapter` and `view`, each with a narrow canonical responsibility and no implicit cross-type authority.",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -92,29 +718,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT",
-    "name": "UserModule Type",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked until reconciled against existing UserModule contracts and repository-wide Contract Format 1.4 validation.",
-      "Unlocked pending reconciliation against existing UserModule runtime contracts and whole-tree Contract Format 1.4 validation.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: runtime/usermodule/01_Runtime_UserModule_Types.json, usermodule/01_UserModule_Type.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
-    ],
-    "summary": "Reconciled source purposes: [1] Define the canonical UserModule type set command, input, adapter and view, with non-overlapping responsibilities and no implicit authority transfer between types. [2] Define the four primary UserModule types `command`, `input`, `adapter` and `view`, each with a narrow canonical responsibility and no implicit cross-type authority."
-  },
-  "purpose": "Reconciled source purposes: [1] Define the canonical UserModule type set command, input, adapter and view, with non-overlapping responsibilities and no implicit authority transfer between types. [2] Define the four primary UserModule types `command`, `input`, `adapter` and `view`, each with a narrow canonical responsibility and no implicit cross-type authority.",
   "references": [
     {
       "id": "REF_REGISTRY",
@@ -142,115 +745,167 @@
       "purpose": "Adapter type remains non-authoritative."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "domain semantics",
-      "projection semantics",
-      "domain semantics not declared by the module",
-      "AccessCore policy",
-      "presentation-only placement"
-    ],
-    "owns": [
-      "Runtime UserModule Types semantics",
-      "UserModule Type semantics"
-    ]
-  },
-  "semantics": {
-    "adapter_rule": "Reconciled source clauses: [1] Adapter type is a symbol mount/translation boundary. [2] Adapter translates/mounts but does not own source/target semantics.",
-    "command_rule": "Reconciled source clauses: [1] Command type executes only through Core dispatch. [2] Command type does not become a persistent input source.",
-    "composition_rule": "Reconciled source clauses: [1] Combining capabilities uses explicit composition rather than silently widening one module type. [2] Higher-level compositions reference these type semantics instead of weakening their boundaries.",
-    "input_rule": "Reconciled source clauses: [1] Input type writes only owned validated data. [2] Input payload remains inert until another explicit operation consumes it.",
-    "single_primary_rule": "Every UserModule declares one primary type unless an explicit composition contract permits a multi-surface Meta composition.",
-    "single_primary_type_rule": "A module declares one primary runtime type unless an explicit composition contract defines otherwise.",
-    "types": {
-      "adapter": "Reconciled source clauses: [1] Mounts/translates symbols only; it is not an independent command authority. [2] mounts/translates symbols/protocol/data shape and has no hidden execution authority",
-      "command": "Reconciled source clauses: [1] One-shot invokable module capability resolved through canonical command/operation dispatch. [2] one-shot explicit operation surface executed through normal dispatch",
-      "input": "Reconciled source clauses: [1] Receives/validates data and writes its owned #UM module surface. [2] acquires/receives data and writes validated inert data into its declared #UM/#INPUT surface",
-      "view": "Reconciled source clauses: [1] UI/read projection only; it owns no backend semantics or write authority. [2] UI/projection only and owns no backend/runtime mutation semantics"
-    },
-    "view_rule": "Reconciled source clauses: [1] View type is read-only/projection-only unless it explicitly invokes canonical write operations owned elsewhere. [2] View does not become an execution/backend authority."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
+  "gaps": [
     {
-      "child_topics": [],
-      "composed_topic_refs": [
-        "TOPIC_RUNTIME_USERMODULE_REGISTRY",
-        "TOPIC_RUNTIME_INPUT_ADAPTERS",
-        "TOPIC_CORE_PROJECTION",
-        "TOPIC_RUNTIME_COMMAND_REGISTRY"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_RUNTIME_USERMODULE_TYPES",
-      "member_refs": [
-        "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT",
-        "USERMODULE_SEMANTICS_EXPLICIT",
-        "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
-        "GATE_F63F581685",
-        "GATE_C7263412EC",
-        "GATE_6C770702C0",
-        "GATE_65EB50E9A9",
-        "GATE_506705FA19",
-        "GATE_6",
-        "GATE_2E51AD82E3",
-        "GATE_91163AE28F",
-        "GATE_F3B66B059C",
-        "GATE_CF44C0BE5B",
-        "GATE_74482390DE"
-      ],
-      "metadata": {},
-      "name": "UserModule Types",
-      "operation_refs": [
-        "OP_UM_TYPE_VALIDATE"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME_USER_MODULES"
-      ],
-      "purpose": "Define the canonical UserModule type set command, input, adapter and view, with non-overlapping responsibilities and no implicit authority transfer between types.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_USERMODULE_TYPES",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_USERMODULE_TYPES",
+      "field_path": "topics[0].operation_refs"
     },
     {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_RUNTIME_USERMODULE_TYPE",
-      "member_refs": [
-        "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT",
-        "USERMODULE_SEMANTICS_EXPLICIT",
-        "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
-        "GATE_F63F581685",
-        "GATE_C7263412EC",
-        "GATE_6C770702C0",
-        "GATE_65EB50E9A9",
-        "GATE_506705FA19",
-        "GATE_6",
-        "GATE_2E51AD82E3",
-        "GATE_91163AE28F",
-        "GATE_F3B66B059C",
-        "GATE_CF44C0BE5B",
-        "GATE_74482390DE"
-      ],
-      "metadata": {},
-      "name": "UserModule Type",
-      "operation_refs": [
-        "OP_UM_TYPE_VALIDATE"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_RUNTIME_USERMODULE_REGISTRY",
-        "TOPIC_NAMESPACE_UM"
-      ],
-      "purpose": "Define the four primary UserModule types `command`, `input`, `adapter` and `view`, each with a narrow canonical responsibility and no implicit cross-type authority.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_USERMODULE_TYPE",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_USERMODULE_TYPE",
+      "field_path": "topics[1].operation_refs"
     }
-  ]
+  ],
+  "prose": {
+    "notes": [
+      "Unlocked until reconciled against existing UserModule contracts and repository-wide Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against existing UserModule runtime contracts and whole-tree Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: runtime/usermodule/01_Runtime_UserModule_Types.json, usermodule/01_UserModule_Type.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define the canonical UserModule type set command, input, adapter and view, with non-overlapping responsibilities and no implicit authority transfer between types. [2] Define the four primary UserModule types `command`, `input`, `adapter` and `view`, each with a narrow canonical responsibility and no implicit cross-type authority."
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [
+            "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "TOPIC_RUNTIME_INPUT_ADAPTERS",
+            "TOPIC_CORE_PROJECTION",
+            "TOPIC_RUNTIME_COMMAND_REGISTRY"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_RUNTIME_USERMODULE_TYPES",
+          "member_refs": [
+            "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT",
+            "USERMODULE_SEMANTICS_EXPLICIT",
+            "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
+            "GATE_F63F581685",
+            "GATE_C7263412EC",
+            "GATE_6C770702C0",
+            "GATE_65EB50E9A9",
+            "GATE_506705FA19",
+            "GATE_6",
+            "GATE_2E51AD82E3",
+            "GATE_91163AE28F",
+            "GATE_F3B66B059C",
+            "GATE_CF44C0BE5B",
+            "GATE_74482390DE"
+          ],
+          "metadata": {},
+          "name": "UserModule Types",
+          "operation_refs": [
+            "OP_UM_TYPE_VALIDATE"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME_USER_MODULES"
+          ],
+          "purpose": "Define the canonical UserModule type set command, input, adapter and view, with non-overlapping responsibilities and no implicit authority transfer between types.",
+          "relation_refs": []
+        },
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_RUNTIME_USERMODULE_TYPE",
+          "member_refs": [
+            "AIGMOS_RUNTIME_USERMODULE_TYPE_CONTRACT",
+            "USERMODULE_SEMANTICS_EXPLICIT",
+            "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
+            "GATE_F63F581685",
+            "GATE_C7263412EC",
+            "GATE_6C770702C0",
+            "GATE_65EB50E9A9",
+            "GATE_506705FA19",
+            "GATE_6",
+            "GATE_2E51AD82E3",
+            "GATE_91163AE28F",
+            "GATE_F3B66B059C",
+            "GATE_CF44C0BE5B",
+            "GATE_74482390DE"
+          ],
+          "metadata": {},
+          "name": "UserModule Type",
+          "operation_refs": [
+            "OP_UM_TYPE_VALIDATE"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "TOPIC_NAMESPACE_UM"
+          ],
+          "purpose": "Define the four primary UserModule types `command`, `input`, `adapter` and `view`, each with a narrow canonical responsibility and no implicit cross-type authority.",
+          "relation_refs": []
+        }
+      ],
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "errors": [
+              "unknown module type",
+              "type semantics violated"
+            ],
+            "id": "OP_UM_TYPE_VALIDATE",
+            "inputs": [
+              "module definition",
+              "declared module type"
+            ],
+            "name": "Validate UserModule type",
+            "outputs": [
+              "validated type contract"
+            ],
+            "side_effects": []
+          }
+        ],
+        "states": []
+      },
+      "semantics": {
+        "adapter_rule": "Reconciled source clauses: [1] Adapter type is a symbol mount/translation boundary. [2] Adapter translates/mounts but does not own source/target semantics.",
+        "command_rule": "Reconciled source clauses: [1] Command type executes only through Core dispatch. [2] Command type does not become a persistent input source.",
+        "composition_rule": "Reconciled source clauses: [1] Combining capabilities uses explicit composition rather than silently widening one module type. [2] Higher-level compositions reference these type semantics instead of weakening their boundaries.",
+        "input_rule": "Reconciled source clauses: [1] Input type writes only owned validated data. [2] Input payload remains inert until another explicit operation consumes it.",
+        "single_primary_rule": "Every UserModule declares one primary type unless an explicit composition contract permits a multi-surface Meta composition.",
+        "single_primary_type_rule": "A module declares one primary runtime type unless an explicit composition contract defines otherwise.",
+        "types": {
+          "adapter": "Reconciled source clauses: [1] Mounts/translates symbols only; it is not an independent command authority. [2] mounts/translates symbols/protocol/data shape and has no hidden execution authority",
+          "command": "Reconciled source clauses: [1] One-shot invokable module capability resolved through canonical command/operation dispatch. [2] one-shot explicit operation surface executed through normal dispatch",
+          "input": "Reconciled source clauses: [1] Receives/validates data and writes its owned #UM module surface. [2] acquires/receives data and writes validated inert data into its declared #UM/#INPUT surface",
+          "view": "Reconciled source clauses: [1] UI/read projection only; it owns no backend semantics or write authority. [2] UI/projection only and owns no backend/runtime mutation semantics"
+        },
+        "view_rule": "Reconciled source clauses: [1] View type is read-only/projection-only unless it explicitly invokes canonical write operations owned elsewhere. [2] View does not become an execution/backend authority."
+      }
+    }
+  }
 }

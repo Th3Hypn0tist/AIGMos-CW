@@ -1,41 +1,431 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "errors": [
-          "package unavailable"
-        ],
-        "id": "OP_EXPORT_BYTES",
-        "inputs": [
-          "stored package identity"
-        ],
-        "name": "Export package bytes",
-        "outputs": [
-          "exported package bytes"
-        ],
-        "side_effects": []
-      },
-      {
-        "errors": [
-          "comparison unavailable"
-        ],
-        "id": "OP_EXPORT_COMPARE",
-        "inputs": [
-          "stored package",
-          "exported package"
-        ],
-        "name": "Verify byte-identical export",
-        "outputs": [
-          "byte_identical | mismatch"
-        ],
-        "side_effects": []
-      }
-    ],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT",
+    "name": "Byte-Identical Package Export",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define byte-identical export for stored distributable packages so repository export can reproduce the exact package artifact rather than silently rebuilding or normalizing it. [2] Define byte-identical export for repository/module artifacts when preservation semantics require exporting the exact validated original bytes.",
+  "scope": {
+    "does_not_own": [
+      "source semantic ownership",
+      "runtime authority",
+      "presentation semantics",
+      "runtime execution authority",
+      "AccessCore policy ownership",
+      "domain semantic ownership"
+    ],
+    "owns": [
+      "Byte-Identical Package Export semantics",
+      "Byte-Identical Artifact Export semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT",
+      "name": "Byte-Identical Package Export",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::OPERATIONS::OP_EXPORT_BYTES",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "package unavailable"
+            ],
+            "id": "OP_EXPORT_BYTES",
+            "inputs": [
+              "stored package identity"
+            ],
+            "name": "Export package bytes",
+            "outputs": [
+              "exported package bytes"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::OPERATIONS::OP_EXPORT_COMPARE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "comparison unavailable"
+            ],
+            "id": "OP_EXPORT_COMPARE",
+            "inputs": [
+              "stored package",
+              "exported package"
+            ],
+            "name": "Verify byte-identical export",
+            "outputs": [
+              "byte_identical | mismatch"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "authority_rule": "Export permission is separately authorized.",
+            "byte_rule": "Byte-identical mode emits the exact source bytes without normalization/reformatting.",
+            "canonical_export_rule": "Other semantic exports may legitimately reserialize canonical data, but must not be labeled byte-identical package export.",
+            "fallback_rule": "If exact source bytes are unavailable, byte-identical export hard-fails rather than regenerating approximately.",
+            "hash_rule": "Reconciled source clauses: [1] Stored and exported package hashes must match. [2] Exported bytes must reproduce the exact expected content hash.",
+            "identity_rule": "Export operation/result identity is separate from artifact identity.",
+            "metadata_rule": "Transport/archive metadata may be external to preserved artifact bytes.",
+            "no_rebuild_rule": "Export does not reserialize, normalize or rebuild the package under a byte-identical claim.",
+            "provenance_rule": "Export result identifies source package identity/hash.",
+            "rule": "When byte-identical export is claimed, exported bytes exactly match the stored package bytes.",
+            "scope": "stored immutable distributable package artifact",
+            "semantic_rule": "Byte identity is a distribution-integrity property, not semantic identity.",
+            "source_rule": "Export source is exact validated artifact revision/bytes."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_BYTE_IDENTICAL_EXPORT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DISTRIBUTION_HASH",
+            "child_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_BYTE_IDENTICAL_EXPORT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_USERMODULE_REPOSITORY",
+            "child_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_BYTE_IDENTICAL_EXPORT_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DISTRIBUTION",
+            "child_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_BYTE_IDENTICAL_EXPORT_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPORT",
+            "child_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BYTE_IDENTICAL_EXPORT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "child_ref": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BYTE_IDENTICAL_EXPORT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "child_ref": "DISTRIBUTION_NONAUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BYTE_IDENTICAL_EXPORT_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "child_ref": "PACKAGE_IDENTITY_INTEGRITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BYTE_IDENTICAL_EXPORT_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "child_ref": "ENTITLEMENT_NONAUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BYTE_IDENTICAL_EXPORT_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "child_ref": "GATE_5842A4377C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BYTE_IDENTICAL_EXPORT_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "child_ref": "GATE_246629B7D5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BYTE_IDENTICAL_EXPORT_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "child_ref": "GATE_85E3570899",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BYTE_IDENTICAL_EXPORT_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "child_ref": "GATE_4AADDC0B1C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BYTE_IDENTICAL_EXPORT_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "child_ref": "GATE_155DD1BE9F",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BYTE_IDENTICAL_EXPORT_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "child_ref": "GATE_6A7A0AC826",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BYTE_IDENTICAL_EXPORT_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "child_ref": "GATE_DC20BE66D8",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BYTE_IDENTICAL_EXPORT_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "child_ref": "GATE_B600A108ED",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BYTE_IDENTICAL_EXPORT_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "child_ref": "GATE_BB8CC4D3B0",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BYTE_IDENTICAL_EXPORT_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+            "child_ref": "GATE_F67747CB07",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[13]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_BYTE_IDENTICAL_EXPORT",
+      "name": "Byte-Identical Export",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_BYTE_IDENTICAL_EXPORT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Reconciled source clauses: [1] Define byte-identical export for stored distributable packages so repository export can reproduce the exact package artifact rather than silently rebuilding or normalizing it. [2] Define byte-identical export for repository/module artifacts when preservation semantics require exporting the exact validated original bytes.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_EXPORT",
+      "name": "Export",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPORT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define grouping-only parent Topic identity TOPIC_EXPORT already referenced by 4 existing canonical child Topic reference occurrence(s).",
+            "metadata": {
+              "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+              "referencing_child_occurrences": 4,
+              "distinct_child_topics": 4,
+              "host_contract_ref": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT",
+              "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+              "placement_nonsemantic": true,
+              "ownership_nontransfer": true,
+              "new_parent_edges_added": 0
+            }
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -104,30 +494,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT",
-    "name": "Byte-Identical Package Export",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked until reconciled against the assembled 1.4 tree and distribution/certification validation.",
-      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: distribution/05_Byte_Identical_Export.json, distribution/reproducibility/00_Byte_Identical_Export.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses.",
-      "Pass 6 hosts grouping-only Topic TOPIC_EXPORT solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
-    ],
-    "summary": "Reconciled source purposes: [1] Define byte-identical export for stored distributable packages so repository export can reproduce the exact package artifact rather than silently rebuilding or normalizing it. [2] Define byte-identical export for repository/module artifacts when preservation semantics require exporting the exact validated original bytes."
-  },
-  "purpose": "Reconciled source purposes: [1] Define byte-identical export for stored distributable packages so repository export can reproduce the exact package artifact rather than silently rebuilding or normalizing it. [2] Define byte-identical export for repository/module artifacts when preservation semantics require exporting the exact validated original bytes.",
   "references": [
     {
       "id": "REF_1744EEC6B2",
@@ -140,104 +506,160 @@
       "purpose": "Byte-identical export preserves validated module hash."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "source semantic ownership",
-      "runtime authority",
-      "presentation semantics",
-      "runtime execution authority",
-      "AccessCore policy ownership",
-      "domain semantic ownership"
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_BYTE_IDENTICAL_EXPORT",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_BYTE_IDENTICAL_EXPORT",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
+  "prose": {
+    "notes": [
+      "Unlocked until reconciled against the assembled 1.4 tree and distribution/certification validation.",
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: distribution/05_Byte_Identical_Export.json, distribution/reproducibility/00_Byte_Identical_Export.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses.",
+      "Pass 6 hosts grouping-only Topic TOPIC_EXPORT solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
     ],
-    "owns": [
-      "Byte-Identical Package Export semantics",
-      "Byte-Identical Artifact Export semantics"
-    ]
+    "summary": "Reconciled source purposes: [1] Define byte-identical export for stored distributable packages so repository export can reproduce the exact package artifact rather than silently rebuilding or normalizing it. [2] Define byte-identical export for repository/module artifacts when preservation semantics require exporting the exact validated original bytes."
   },
-  "semantics": {
-    "authority_rule": "Export permission is separately authorized.",
-    "byte_rule": "Byte-identical mode emits the exact source bytes without normalization/reformatting.",
-    "canonical_export_rule": "Other semantic exports may legitimately reserialize canonical data, but must not be labeled byte-identical package export.",
-    "fallback_rule": "If exact source bytes are unavailable, byte-identical export hard-fails rather than regenerating approximately.",
-    "hash_rule": "Reconciled source clauses: [1] Stored and exported package hashes must match. [2] Exported bytes must reproduce the exact expected content hash.",
-    "identity_rule": "Export operation/result identity is separate from artifact identity.",
-    "metadata_rule": "Transport/archive metadata may be external to preserved artifact bytes.",
-    "no_rebuild_rule": "Export does not reserialize, normalize or rebuild the package under a byte-identical claim.",
-    "provenance_rule": "Export result identifies source package identity/hash.",
-    "rule": "When byte-identical export is claimed, exported bytes exactly match the stored package bytes.",
-    "scope": "stored immutable distributable package artifact",
-    "semantic_rule": "Byte identity is a distribution-integrity property, not semantic identity.",
-    "source_rule": "Export source is exact validated artifact revision/bytes."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
-    {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_BYTE_IDENTICAL_EXPORT",
-      "member_refs": [
-        "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT",
-        "DISTRIBUTION_NONAUTHORITY",
-        "PACKAGE_IDENTITY_INTEGRITY",
-        "ENTITLEMENT_NONAUTHORITY",
-        "GATE_5842A4377C",
-        "GATE_246629B7D5",
-        "GATE_85E3570899",
-        "GATE_4AADDC0B1C",
-        "GATE_155DD1BE9F",
-        "GATE_6A7A0AC826",
-        "GATE_DC20BE66D8",
-        "GATE_B600A108ED",
-        "GATE_BB8CC4D3B0",
-        "GATE_F67747CB07"
-      ],
-      "metadata": {},
-      "name": "Byte-Identical Export",
-      "operation_refs": [
-        "OP_EXPORT_BYTES",
-        "OP_EXPORT_COMPARE"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_DISTRIBUTION_HASH",
-        "TOPIC_USERMODULE_REPOSITORY",
-        "TOPIC_DISTRIBUTION",
-        "TOPIC_EXPORT"
-      ],
-      "purpose": "Reconciled source clauses: [1] Define byte-identical export for stored distributable packages so repository export can reproduce the exact package artifact rather than silently rebuilding or normalizing it. [2] Define byte-identical export for repository/module artifacts when preservation semantics require exporting the exact validated original bytes.",
-      "relation_refs": []
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
     },
-    {
-      "id": "TOPIC_EXPORT",
-      "name": "Export",
-      "purpose": "Define grouping-only parent Topic identity TOPIC_EXPORT already referenced by 4 existing canonical child Topic reference occurrence(s).",
-      "parent_topic_refs": [],
-      "composed_topic_refs": [],
-      "member_refs": [],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {
-        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
-        "referencing_child_occurrences": 4,
-        "distinct_child_topics": 4,
-        "host_contract_ref": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT",
-        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
-        "placement_nonsemantic": true,
-        "ownership_nontransfer": true,
-        "new_parent_edges_added": 0
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_BYTE_IDENTICAL_EXPORT",
+          "member_refs": [
+            "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT",
+            "DISTRIBUTION_NONAUTHORITY",
+            "PACKAGE_IDENTITY_INTEGRITY",
+            "ENTITLEMENT_NONAUTHORITY",
+            "GATE_5842A4377C",
+            "GATE_246629B7D5",
+            "GATE_85E3570899",
+            "GATE_4AADDC0B1C",
+            "GATE_155DD1BE9F",
+            "GATE_6A7A0AC826",
+            "GATE_DC20BE66D8",
+            "GATE_B600A108ED",
+            "GATE_BB8CC4D3B0",
+            "GATE_F67747CB07"
+          ],
+          "metadata": {},
+          "name": "Byte-Identical Export",
+          "operation_refs": [
+            "OP_EXPORT_BYTES",
+            "OP_EXPORT_COMPARE"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_DISTRIBUTION_HASH",
+            "TOPIC_USERMODULE_REPOSITORY",
+            "TOPIC_DISTRIBUTION",
+            "TOPIC_EXPORT"
+          ],
+          "purpose": "Reconciled source clauses: [1] Define byte-identical export for stored distributable packages so repository export can reproduce the exact package artifact rather than silently rebuilding or normalizing it. [2] Define byte-identical export for repository/module artifacts when preservation semantics require exporting the exact validated original bytes.",
+          "relation_refs": []
+        },
+        {
+          "id": "TOPIC_EXPORT",
+          "name": "Export",
+          "purpose": "Define grouping-only parent Topic identity TOPIC_EXPORT already referenced by 4 existing canonical child Topic reference occurrence(s).",
+          "parent_topic_refs": [],
+          "composed_topic_refs": [],
+          "member_refs": [],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {
+            "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+            "referencing_child_occurrences": 4,
+            "distinct_child_topics": 4,
+            "host_contract_ref": "AIGMOS_BYTE_IDENTICAL_EXPORT_CONTRACT",
+            "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+            "placement_nonsemantic": true,
+            "ownership_nontransfer": true,
+            "new_parent_edges_added": 0
+          }
+        }
+      ],
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "errors": [
+              "package unavailable"
+            ],
+            "id": "OP_EXPORT_BYTES",
+            "inputs": [
+              "stored package identity"
+            ],
+            "name": "Export package bytes",
+            "outputs": [
+              "exported package bytes"
+            ],
+            "side_effects": []
+          },
+          {
+            "errors": [
+              "comparison unavailable"
+            ],
+            "id": "OP_EXPORT_COMPARE",
+            "inputs": [
+              "stored package",
+              "exported package"
+            ],
+            "name": "Verify byte-identical export",
+            "outputs": [
+              "byte_identical | mismatch"
+            ],
+            "side_effects": []
+          }
+        ],
+        "states": []
+      },
+      "semantics": {
+        "authority_rule": "Export permission is separately authorized.",
+        "byte_rule": "Byte-identical mode emits the exact source bytes without normalization/reformatting.",
+        "canonical_export_rule": "Other semantic exports may legitimately reserialize canonical data, but must not be labeled byte-identical package export.",
+        "fallback_rule": "If exact source bytes are unavailable, byte-identical export hard-fails rather than regenerating approximately.",
+        "hash_rule": "Reconciled source clauses: [1] Stored and exported package hashes must match. [2] Exported bytes must reproduce the exact expected content hash.",
+        "identity_rule": "Export operation/result identity is separate from artifact identity.",
+        "metadata_rule": "Transport/archive metadata may be external to preserved artifact bytes.",
+        "no_rebuild_rule": "Export does not reserialize, normalize or rebuild the package under a byte-identical claim.",
+        "provenance_rule": "Export result identifies source package identity/hash.",
+        "rule": "When byte-identical export is claimed, exported bytes exactly match the stored package bytes.",
+        "scope": "stored immutable distributable package artifact",
+        "semantic_rule": "Byte identity is a distribution-integrity property, not semantic identity.",
+        "source_rule": "Export source is exact validated artifact revision/bytes."
       }
     }
-  ]
+  }
 }

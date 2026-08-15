@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define a machine-readable manifest connecting active canonical identities to their physical source artifacts for packaging, review and replacement without making file paths semantic authority.",
   "scope": {
     "owns": [
@@ -21,101 +20,250 @@
       "filesystem authority"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT",
+      "name": "Canonical Repository Manifest",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT::OPERATIONS::OP_REPO_MANIFEST_BUILD",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_REPO_MANIFEST_BUILD",
+            "name": "Build canonical repository manifest",
+            "inputs": [
+              "active canonical graph",
+              "file/source mapping"
+            ],
+            "outputs": [
+              "repository manifest"
+            ],
+            "errors": [
+              "source unresolved",
+              "duplicate active source"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT::OPERATIONS::OP_REPO_MANIFEST_VALIDATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_REPO_MANIFEST_VALIDATE",
+            "name": "Validate repository manifest",
+            "inputs": [
+              "manifest",
+              "Master",
+              "active identity graph"
+            ],
+            "outputs": [
+              "manifest validation result"
+            ],
+            "errors": [
+              "orphan active source",
+              "missing active source",
+              "source-role mismatch"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "role": "physical-source inventory",
+            "required_fields": [
+              "canonical_identity",
+              "source_artifact",
+              "source_role",
+              "active_state"
+            ],
+            "identity_rule": "Manifest maps identity to file/source; file/source does not define identity.",
+            "active_rule": "Every active canonical definition has an explicit manifest/source mapping.",
+            "orphan_rule": "Unreferenced physical files may exist but are not active solely by presence.",
+            "duplicate_rule": "One active identity cannot silently map to conflicting active source artifacts.",
+            "package_rule": "Review ZIPs may include PATCH_MANIFEST files, but repository manifest is the assembled-tree inventory.",
+            "trace_rule": "Manifest supports source provenance without becoming semantic owner."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT::LINK::TOPIC_PARENT_TOPIC_REPOSITORY_MANIFEST_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CANONICAL_MASTER",
+            "child_ref": "TOPIC_REPOSITORY_MANIFEST",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT::LINK::TOPIC_PARENT_TOPIC_REPOSITORY_MANIFEST_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_PROVENANCE",
+            "child_ref": "TOPIC_REPOSITORY_MANIFEST",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REPOSITORY_MANIFEST_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REPOSITORY_MANIFEST",
+            "child_ref": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REPOSITORY_MANIFEST_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REPOSITORY_MANIFEST",
+            "child_ref": "MIGRATION_STATE_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REPOSITORY_MANIFEST_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REPOSITORY_MANIFEST",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REPOSITORY_MANIFEST_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REPOSITORY_MANIFEST",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REPOSITORY_MANIFEST_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REPOSITORY_MANIFEST",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REPOSITORY_MANIFEST_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REPOSITORY_MANIFEST",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REPOSITORY_MANIFEST_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REPOSITORY_MANIFEST",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/master/01_Repository_Manifest.json"
+      }
+    },
     {
       "id": "TOPIC_REPOSITORY_MANIFEST",
       "name": "Repository Manifest",
-      "purpose": "Define a machine-readable manifest connecting active canonical identities to their physical source artifacts for packaging, review and replacement without making file paths semantic authority.",
-      "parent_topic_refs": [
-        "TOPIC_CANONICAL_MASTER",
-        "TOPIC_CORE_PROVENANCE"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT",
-        "MIGRATION_STATE_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_REPO_MANIFEST_BUILD",
-        "OP_REPO_MANIFEST_VALIDATE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_REPOSITORY_MANIFEST::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define a machine-readable manifest connecting active canonical identities to their physical source artifacts for packaging, review and replacement without making file paths semantic authority.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_REPO_MANIFEST_BUILD",
-        "name": "Build canonical repository manifest",
-        "inputs": [
-          "active canonical graph",
-          "file/source mapping"
-        ],
-        "outputs": [
-          "repository manifest"
-        ],
-        "errors": [
-          "source unresolved",
-          "duplicate active source"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_REPO_MANIFEST_VALIDATE",
-        "name": "Validate repository manifest",
-        "inputs": [
-          "manifest",
-          "Master",
-          "active identity graph"
-        ],
-        "outputs": [
-          "manifest validation result"
-        ],
-        "errors": [
-          "orphan active source",
-          "missing active source",
-          "source-role mismatch"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "role": "physical-source inventory",
-    "required_fields": [
-      "canonical_identity",
-      "source_artifact",
-      "source_role",
-      "active_state"
-    ],
-    "identity_rule": "Manifest maps identity to file/source; file/source does not define identity.",
-    "active_rule": "Every active canonical definition has an explicit manifest/source mapping.",
-    "orphan_rule": "Unreferenced physical files may exist but are not active solely by presence.",
-    "duplicate_rule": "One active identity cannot silently map to conflicting active source artifacts.",
-    "package_rule": "Review ZIPs may include PATCH_MANIFEST files, but repository manifest is the assembled-tree inventory.",
-    "trace_rule": "Manifest supports source provenance without becoming semantic owner."
-  },
   "constraints": {
     "invariants": [
       {
@@ -158,10 +306,127 @@
       "purpose": "Manifest inventory is validated against active Master roots."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_REPOSITORY_MANIFEST",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_REPOSITORY_MANIFEST",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define a machine-readable manifest connecting active canonical identities to their physical source artifacts for packaging, review and replacement without making file paths semantic authority.",
     "notes": [
       "Unlocked until the complete clean Contract Format 1.4 tree is assembled and validated."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_REPOSITORY_MANIFEST",
+          "name": "Repository Manifest",
+          "purpose": "Define a machine-readable manifest connecting active canonical identities to their physical source artifacts for packaging, review and replacement without making file paths semantic authority.",
+          "parent_topic_refs": [
+            "TOPIC_CANONICAL_MASTER",
+            "TOPIC_CORE_PROVENANCE"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_CANONICAL_REPOSITORY_MANIFEST_CONTRACT",
+            "MIGRATION_STATE_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_REPO_MANIFEST_BUILD",
+            "OP_REPO_MANIFEST_VALIDATE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_REPO_MANIFEST_BUILD",
+            "name": "Build canonical repository manifest",
+            "inputs": [
+              "active canonical graph",
+              "file/source mapping"
+            ],
+            "outputs": [
+              "repository manifest"
+            ],
+            "errors": [
+              "source unresolved",
+              "duplicate active source"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_REPO_MANIFEST_VALIDATE",
+            "name": "Validate repository manifest",
+            "inputs": [
+              "manifest",
+              "Master",
+              "active identity graph"
+            ],
+            "outputs": [
+              "manifest validation result"
+            ],
+            "errors": [
+              "orphan active source",
+              "missing active source",
+              "source-role mismatch"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "role": "physical-source inventory",
+        "required_fields": [
+          "canonical_identity",
+          "source_artifact",
+          "source_role",
+          "active_state"
+        ],
+        "identity_rule": "Manifest maps identity to file/source; file/source does not define identity.",
+        "active_rule": "Every active canonical definition has an explicit manifest/source mapping.",
+        "orphan_rule": "Unreferenced physical files may exist but are not active solely by presence.",
+        "duplicate_rule": "One active identity cannot silently map to conflicting active source artifacts.",
+        "package_rule": "Review ZIPs may include PATCH_MANIFEST files, but repository manifest is the assembled-tree inventory.",
+        "trace_rule": "Manifest supports source provenance without becoming semantic owner."
+      }
+    }
   }
 }

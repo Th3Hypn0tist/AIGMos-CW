@@ -1,11 +1,558 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_REST_INSTANCE_CONTRACT",
+    "name": "REST Instance",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define REST services as named listener instances with stable logical identity separate from configurable port/listen binding and runtime state. [2] Define REST services using the same named-instance model as other listeners, with stable logical identity separate from configurable port/listener binding and explicit route-to-operation mappings.",
+  "scope": {
+    "does_not_own": [
+      "domain semantics",
+      "caller authorization policy",
+      "UI presentation",
+      "domain business semantics",
+      "AccessCore policy ownership",
+      "listener binding ownership"
+    ],
+    "owns": [
+      "REST Instance semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_REST_INSTANCE_CONTRACT",
+      "name": "REST Instance",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "authority_rule": "Reconciled source clauses: [1] REST route existence never bypasses AccessCore/IAM/operation authority. [2] HTTP reachability never substitutes for AccessCore authorization.",
+            "binding_rule": "Listen address/port/transport are mutable bindings.",
+            "examples": [
+              "?UM-facing semantics where declared",
+              "/ac",
+              "/iam"
+            ],
+            "identity_rule": "Each REST service has an explicit stable logical instance identity.",
+            "instance_rule": "Each REST instance has an explicit stable logical name/identity.",
+            "listener_rule": "REST instance binds to an exact named listener.",
+            "method_rule": "HTTP method semantics are explicit per route.",
+            "payload_rule": "Request/response schema and content profile are explicit.",
+            "port_rule": "Reconciled source clauses: [1] REST port is configurable; no universal default REST port is locked. [2] No universal default REST port is assumed unless explicitly configured.",
+            "protocol": "REST",
+            "route_rule": "REST routes map to exact canonical resources/operations.",
+            "runtime_rule": "Reconciled source clauses: [1] declared, enabled and running states remain separate. [2] Start/stop/reload changes runtime state without changing REST instance identity.",
+            "surface_rule": "REST routes expose explicitly bound canonical operations/resources."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROTOCOL_REST_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_PROTOCOL_ADAPTER",
+            "child_ref": "TOPIC_PROTOCOL_REST",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROTOCOL_REST_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_INSTANCE_LISTENER",
+            "child_ref": "TOPIC_PROTOCOL_REST",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_REST_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_REST",
+            "child_ref": "AIGMOS_REST_INSTANCE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_REST_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_REST",
+            "child_ref": "PROTOCOL_ADAPTER_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_REST_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_REST",
+            "child_ref": "PROTOCOL_BINDING_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_REST_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_REST",
+            "child_ref": "GATE_8F4AC71B4E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_REST_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_REST",
+            "child_ref": "GATE_D215A8EC9A",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_REST_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_REST",
+            "child_ref": "GATE_5E53809645",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_REST_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_REST",
+            "child_ref": "GATE_2DBE9BA8AC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_REST_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_REST",
+            "child_ref": "GATE_935F92B399",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_REST_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_REST",
+            "child_ref": "GATE_AB1F46B2BA",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_REST_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_REST",
+            "child_ref": "GATE_0CBAAF9411",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_REST_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_REST",
+            "child_ref": "GATE_F87B05BC52",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_REST_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_REST",
+            "child_ref": "GATE_7C3E22C7CF",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_REST_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_REST",
+            "child_ref": "GATE_FEBB432DAD",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_REST_INSTANCE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_PROTOCOL_BINDINGS",
+            "child_ref": "TOPIC_REST_INSTANCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_REST_INSTANCE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_REST_INSTANCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REST_INSTANCE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REST_INSTANCE",
+            "child_ref": "AIGMOS_REST_INSTANCE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REST_INSTANCE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REST_INSTANCE",
+            "child_ref": "PROTOCOL_ADAPTER_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REST_INSTANCE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REST_INSTANCE",
+            "child_ref": "PROTOCOL_BINDING_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REST_INSTANCE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REST_INSTANCE",
+            "child_ref": "GATE_8F4AC71B4E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REST_INSTANCE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REST_INSTANCE",
+            "child_ref": "GATE_D215A8EC9A",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REST_INSTANCE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REST_INSTANCE",
+            "child_ref": "GATE_5E53809645",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REST_INSTANCE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REST_INSTANCE",
+            "child_ref": "GATE_2DBE9BA8AC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REST_INSTANCE_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REST_INSTANCE",
+            "child_ref": "GATE_935F92B399",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REST_INSTANCE_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REST_INSTANCE",
+            "child_ref": "GATE_AB1F46B2BA",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REST_INSTANCE_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REST_INSTANCE",
+            "child_ref": "GATE_0CBAAF9411",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REST_INSTANCE_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REST_INSTANCE",
+            "child_ref": "GATE_F87B05BC52",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REST_INSTANCE_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REST_INSTANCE",
+            "child_ref": "GATE_7C3E22C7CF",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_REST_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_REST_INSTANCE_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_REST_INSTANCE",
+            "child_ref": "GATE_FEBB432DAD",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[12]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_REST_INSTANCE_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_PROTOCOL_REST",
+      "name": "REST Instance",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_PROTOCOL_REST::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define REST services as named listener instances with stable logical identity separate from configurable port/listen binding and runtime state.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_REST_INSTANCE",
+      "name": "REST Instance",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_REST_INSTANCE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define REST services using the same named-instance model as other listeners, with stable logical identity separate from configurable port/listener binding and explicit route-to-operation mappings.",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -70,29 +617,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_REST_INSTANCE_CONTRACT",
-    "name": "REST Instance",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked pending reconciliation against REST/OSC/WebSocket/Expose protocol contracts and whole-tree Contract Format 1.4 validation.",
-      "Unlocked pending reconciliation against listener, REST/OSC/WebSocket and Expose contracts.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: protocol/01_REST_Instance.json, protocol/02_REST_Instance.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
-    ],
-    "summary": "Reconciled source purposes: [1] Define REST services as named listener instances with stable logical identity separate from configurable port/listen binding and runtime state. [2] Define REST services using the same named-instance model as other listeners, with stable logical identity separate from configurable port/listener binding and explicit route-to-operation mappings."
-  },
-  "purpose": "Reconciled source purposes: [1] Define REST services as named listener instances with stable logical identity separate from configurable port/listen binding and runtime state. [2] Define REST services using the same named-instance model as other listeners, with stable logical identity separate from configurable port/listener binding and explicit route-to-operation mappings.",
   "references": [
     {
       "id": "REF_LISTENER",
@@ -110,109 +634,125 @@
       "purpose": "REST routes bind exact targets."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "domain semantics",
-      "caller authorization policy",
-      "UI presentation",
-      "domain business semantics",
-      "AccessCore policy ownership",
-      "listener binding ownership"
+  "gaps": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending reconciliation against REST/OSC/WebSocket/Expose protocol contracts and whole-tree Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against listener, REST/OSC/WebSocket and Expose contracts.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: protocol/01_REST_Instance.json, protocol/02_REST_Instance.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
     ],
-    "owns": [
-      "REST Instance semantics"
-    ]
+    "summary": "Reconciled source purposes: [1] Define REST services as named listener instances with stable logical identity separate from configurable port/listen binding and runtime state. [2] Define REST services using the same named-instance model as other listeners, with stable logical identity separate from configurable port/listener binding and explicit route-to-operation mappings."
   },
-  "semantics": {
-    "authority_rule": "Reconciled source clauses: [1] REST route existence never bypasses AccessCore/IAM/operation authority. [2] HTTP reachability never substitutes for AccessCore authorization.",
-    "binding_rule": "Listen address/port/transport are mutable bindings.",
-    "examples": [
-      "?UM-facing semantics where declared",
-      "/ac",
-      "/iam"
-    ],
-    "identity_rule": "Each REST service has an explicit stable logical instance identity.",
-    "instance_rule": "Each REST instance has an explicit stable logical name/identity.",
-    "listener_rule": "REST instance binds to an exact named listener.",
-    "method_rule": "HTTP method semantics are explicit per route.",
-    "payload_rule": "Request/response schema and content profile are explicit.",
-    "port_rule": "Reconciled source clauses: [1] REST port is configurable; no universal default REST port is locked. [2] No universal default REST port is assumed unless explicitly configured.",
-    "protocol": "REST",
-    "route_rule": "REST routes map to exact canonical resources/operations.",
-    "runtime_rule": "Reconciled source clauses: [1] declared, enabled and running states remain separate. [2] Start/stop/reload changes runtime state without changing REST instance identity.",
-    "surface_rule": "REST routes expose explicitly bound canonical operations/resources."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
-    {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_PROTOCOL_REST",
-      "member_refs": [
-        "AIGMOS_REST_INSTANCE_CONTRACT",
-        "PROTOCOL_ADAPTER_BOUNDARY",
-        "PROTOCOL_BINDING_SEPARATION",
-        "GATE_8F4AC71B4E",
-        "GATE_D215A8EC9A",
-        "GATE_5E53809645",
-        "GATE_2DBE9BA8AC",
-        "GATE_935F92B399",
-        "GATE_AB1F46B2BA",
-        "GATE_0CBAAF9411",
-        "GATE_F87B05BC52",
-        "GATE_7C3E22C7CF",
-        "GATE_FEBB432DAD"
-      ],
-      "metadata": {},
-      "name": "REST Instance",
-      "operation_refs": [],
-      "parent_topic_refs": [
-        "TOPIC_PROTOCOL_ADAPTER",
-        "TOPIC_INSTANCE_LISTENER"
-      ],
-      "purpose": "Define REST services as named listener instances with stable logical identity separate from configurable port/listen binding and runtime state.",
-      "relation_refs": []
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
     },
-    {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_REST_INSTANCE",
-      "member_refs": [
-        "AIGMOS_REST_INSTANCE_CONTRACT",
-        "PROTOCOL_ADAPTER_BOUNDARY",
-        "PROTOCOL_BINDING_SEPARATION",
-        "GATE_8F4AC71B4E",
-        "GATE_D215A8EC9A",
-        "GATE_5E53809645",
-        "GATE_2DBE9BA8AC",
-        "GATE_935F92B399",
-        "GATE_AB1F46B2BA",
-        "GATE_0CBAAF9411",
-        "GATE_F87B05BC52",
-        "GATE_7C3E22C7CF",
-        "GATE_FEBB432DAD"
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_PROTOCOL_REST",
+          "member_refs": [
+            "AIGMOS_REST_INSTANCE_CONTRACT",
+            "PROTOCOL_ADAPTER_BOUNDARY",
+            "PROTOCOL_BINDING_SEPARATION",
+            "GATE_8F4AC71B4E",
+            "GATE_D215A8EC9A",
+            "GATE_5E53809645",
+            "GATE_2DBE9BA8AC",
+            "GATE_935F92B399",
+            "GATE_AB1F46B2BA",
+            "GATE_0CBAAF9411",
+            "GATE_F87B05BC52",
+            "GATE_7C3E22C7CF",
+            "GATE_FEBB432DAD"
+          ],
+          "metadata": {},
+          "name": "REST Instance",
+          "operation_refs": [],
+          "parent_topic_refs": [
+            "TOPIC_PROTOCOL_ADAPTER",
+            "TOPIC_INSTANCE_LISTENER"
+          ],
+          "purpose": "Define REST services as named listener instances with stable logical identity separate from configurable port/listen binding and runtime state.",
+          "relation_refs": []
+        },
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_REST_INSTANCE",
+          "member_refs": [
+            "AIGMOS_REST_INSTANCE_CONTRACT",
+            "PROTOCOL_ADAPTER_BOUNDARY",
+            "PROTOCOL_BINDING_SEPARATION",
+            "GATE_8F4AC71B4E",
+            "GATE_D215A8EC9A",
+            "GATE_5E53809645",
+            "GATE_2DBE9BA8AC",
+            "GATE_935F92B399",
+            "GATE_AB1F46B2BA",
+            "GATE_0CBAAF9411",
+            "GATE_F87B05BC52",
+            "GATE_7C3E22C7CF",
+            "GATE_FEBB432DAD"
+          ],
+          "metadata": {},
+          "name": "REST Instance",
+          "operation_refs": [],
+          "parent_topic_refs": [
+            "TOPIC_PROTOCOL_BINDINGS",
+            "TOPIC_EXPOSE"
+          ],
+          "purpose": "Define REST services using the same named-instance model as other listeners, with stable logical identity separate from configurable port/listener binding and explicit route-to-operation mappings.",
+          "relation_refs": []
+        }
       ],
-      "metadata": {},
-      "name": "REST Instance",
-      "operation_refs": [],
-      "parent_topic_refs": [
-        "TOPIC_PROTOCOL_BINDINGS",
-        "TOPIC_EXPOSE"
-      ],
-      "purpose": "Define REST services using the same named-instance model as other listeners, with stable logical identity separate from configurable port/listener binding and explicit route-to-operation mappings.",
-      "relation_refs": []
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [],
+        "states": []
+      },
+      "semantics": {
+        "authority_rule": "Reconciled source clauses: [1] REST route existence never bypasses AccessCore/IAM/operation authority. [2] HTTP reachability never substitutes for AccessCore authorization.",
+        "binding_rule": "Listen address/port/transport are mutable bindings.",
+        "examples": [
+          "?UM-facing semantics where declared",
+          "/ac",
+          "/iam"
+        ],
+        "identity_rule": "Each REST service has an explicit stable logical instance identity.",
+        "instance_rule": "Each REST instance has an explicit stable logical name/identity.",
+        "listener_rule": "REST instance binds to an exact named listener.",
+        "method_rule": "HTTP method semantics are explicit per route.",
+        "payload_rule": "Request/response schema and content profile are explicit.",
+        "port_rule": "Reconciled source clauses: [1] REST port is configurable; no universal default REST port is locked. [2] No universal default REST port is assumed unless explicitly configured.",
+        "protocol": "REST",
+        "route_rule": "REST routes map to exact canonical resources/operations.",
+        "runtime_rule": "Reconciled source clauses: [1] declared, enabled and running states remain separate. [2] Start/stop/reload changes runtime state without changing REST instance identity.",
+        "surface_rule": "REST routes expose explicitly bound canonical operations/resources."
+      }
     }
-  ]
+  }
 }

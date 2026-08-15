@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define Project as the universal recursive task/work primitive: task, subtask, phase, milestone and work package are represented as Projects rather than separate task entities.",
   "scope": {
     "owns": [
@@ -22,98 +21,232 @@
       "unrelated identity semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT",
+      "name": "Universal Project Primitive",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT::OPERATIONS::OP_PROJECT_CREATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_PROJECT_CREATE",
+            "name": "Create Project",
+            "inputs": [
+              "project identity",
+              "purpose",
+              "parent_project_ref optional",
+              "participants/context"
+            ],
+            "outputs": [
+              "Project definition"
+            ],
+            "errors": [
+              "identity collision",
+              "invalid parent"
+            ],
+            "side_effects": [
+              "Project registry updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT::OPERATIONS::OP_PROJECT_LINK_PARENT",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_PROJECT_LINK_PARENT",
+            "name": "Link Project parent",
+            "inputs": [
+              "child Project",
+              "parent Project"
+            ],
+            "outputs": [
+              "explicit recursive Project relation"
+            ],
+            "errors": [
+              "parent unresolved",
+              "invalid cycle if owning rule forbids"
+            ],
+            "side_effects": [
+              "Project structure updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "universal_rule": "Every task-like work unit is represented as a Project.",
+            "recursive_rule": "A Project may contain child Projects recursively.",
+            "no_task_entity_rule": "There is no separate canonical Task entity duplicating Project semantics.",
+            "meaning_rule": "Labels such as task, subtask, phase, milestone or work package are role/view semantics over Project where needed.",
+            "identity_rule": "Each Project has explicit stable identity.",
+            "composition_rule": "Higher-level work is composed from child Projects rather than duplicated into parallel work primitives."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROJECT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "TOPIC_PROJECT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT",
+            "child_ref": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT",
+            "child_ref": "PROJECT_MODEL_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_PROJECT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_PROJECT",
+            "child_ref": "TOPIC_CORE_STRUCTURAL_CLOSURE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/freemarket/project/00_Universal_Project_Primitive.json"
+      }
+    },
     {
       "id": "TOPIC_PROJECT",
       "name": "Project",
-      "purpose": "Define Project as the universal recursive task/work primitive: task, subtask, phase, milestone and work package are represented as Projects rather than separate task entities.",
-      "parent_topic_refs": [
-        "TOPIC_CORE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_STRUCTURAL_CLOSURE"
-      ],
-      "member_refs": [
-        "AIGMOS_UNIVERSAL_PROJECT_CONTRACT",
-        "PROJECT_MODEL_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_PROJECT_CREATE",
-        "OP_PROJECT_LINK_PARENT"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_PROJECT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define Project as the universal recursive task/work primitive: task, subtask, phase, milestone and work package are represented as Projects rather than separate task entities.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_PROJECT_CREATE",
-        "name": "Create Project",
-        "inputs": [
-          "project identity",
-          "purpose",
-          "parent_project_ref optional",
-          "participants/context"
-        ],
-        "outputs": [
-          "Project definition"
-        ],
-        "errors": [
-          "identity collision",
-          "invalid parent"
-        ],
-        "side_effects": [
-          "Project registry updated"
-        ]
-      },
-      {
-        "id": "OP_PROJECT_LINK_PARENT",
-        "name": "Link Project parent",
-        "inputs": [
-          "child Project",
-          "parent Project"
-        ],
-        "outputs": [
-          "explicit recursive Project relation"
-        ],
-        "errors": [
-          "parent unresolved",
-          "invalid cycle if owning rule forbids"
-        ],
-        "side_effects": [
-          "Project structure updated"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "universal_rule": "Every task-like work unit is represented as a Project.",
-    "recursive_rule": "A Project may contain child Projects recursively.",
-    "no_task_entity_rule": "There is no separate canonical Task entity duplicating Project semantics.",
-    "meaning_rule": "Labels such as task, subtask, phase, milestone or work package are role/view semantics over Project where needed.",
-    "identity_rule": "Each Project has explicit stable identity.",
-    "composition_rule": "Higher-level work is composed from child Projects rather than duplicated into parallel work primitives."
-  },
   "constraints": {
     "invariants": [
       {
@@ -151,10 +284,124 @@
       "purpose": "Reuse one recursive Project primitive instead of parallel task concepts."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_UNIVERSAL_PROJECT_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_PROJECT",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_PROJECT",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define Project as the universal recursive task/work primitive: task, subtask, phase, milestone and work package are represented as Projects rather than separate task entities.",
     "notes": [
       "Unlocked until reconciled against existing FreeMarket/Project/Merit contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_PROJECT",
+          "name": "Project",
+          "purpose": "Define Project as the universal recursive task/work primitive: task, subtask, phase, milestone and work package are represented as Projects rather than separate task entities.",
+          "parent_topic_refs": [
+            "TOPIC_CORE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_STRUCTURAL_CLOSURE"
+          ],
+          "member_refs": [
+            "AIGMOS_UNIVERSAL_PROJECT_CONTRACT",
+            "PROJECT_MODEL_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_PROJECT_CREATE",
+            "OP_PROJECT_LINK_PARENT"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_PROJECT_CREATE",
+            "name": "Create Project",
+            "inputs": [
+              "project identity",
+              "purpose",
+              "parent_project_ref optional",
+              "participants/context"
+            ],
+            "outputs": [
+              "Project definition"
+            ],
+            "errors": [
+              "identity collision",
+              "invalid parent"
+            ],
+            "side_effects": [
+              "Project registry updated"
+            ]
+          },
+          {
+            "id": "OP_PROJECT_LINK_PARENT",
+            "name": "Link Project parent",
+            "inputs": [
+              "child Project",
+              "parent Project"
+            ],
+            "outputs": [
+              "explicit recursive Project relation"
+            ],
+            "errors": [
+              "parent unresolved",
+              "invalid cycle if owning rule forbids"
+            ],
+            "side_effects": [
+              "Project structure updated"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "universal_rule": "Every task-like work unit is represented as a Project.",
+        "recursive_rule": "A Project may contain child Projects recursively.",
+        "no_task_entity_rule": "There is no separate canonical Task entity duplicating Project semantics.",
+        "meaning_rule": "Labels such as task, subtask, phase, milestone or work package are role/view semantics over Project where needed.",
+        "identity_rule": "Each Project has explicit stable identity.",
+        "composition_rule": "Higher-level work is composed from child Projects rather than duplicated into parallel work primitives."
+      }
+    }
   }
 }

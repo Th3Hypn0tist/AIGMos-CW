@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_PORT_EDITOR_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define Port Editor as the AC-governed Expose editor for named listener instances across web/nanoCMS, REST, OSC, WebSocket and other installed port-bound services.",
   "scope": {
     "owns": [
@@ -22,67 +21,216 @@
       "presentation-only state"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_PORT_EDITOR_CONTRACT",
+      "name": "Port Editor",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_PORT_EDITOR_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "targets": [
+              "listener identity",
+              "protocol/type",
+              "listen address",
+              "port",
+              "transport",
+              "enabled state",
+              "lifecycle operation"
+            ],
+            "scope_rule": "Port Editor owns listener/binding configuration across protocols, not protocol route/address business semantics.",
+            "name_rule": "Named listener identity is edited separately from port binding.",
+            "validation_rule": "Candidate binding/conflict/protocol compatibility validates before apply/start.",
+            "state_rule": "Declared config and current runtime listener state are displayed separately.",
+            "action_rule": "Start/stop/reload invoke explicit canonical lifecycle operations.",
+            "authority_rule": "Editor obeys normal AccessCore authorization and has no privileged bypass.",
+            "protocol_rule": "Protocol-specific route/address/channel configuration remains owned by protocol binding editors/contracts."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_PORT_EDITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PORT_EDITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_INSTANCE_CONFIG",
+            "child_ref": "TOPIC_PORT_EDITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PORT_EDITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PORT_EDITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_NETWORK",
+            "child_ref": "TOPIC_PORT_EDITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PORT_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PORT_EDITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PORT_EDITOR",
+            "child_ref": "AIGMOS_PORT_EDITOR_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PORT_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PORT_EDITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PORT_EDITOR",
+            "child_ref": "LISTENER_IDENTITY_BINDING_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PORT_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PORT_EDITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PORT_EDITOR",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_PORT_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PORT_EDITOR_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PORT_EDITOR",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_PORT_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PORT_EDITOR_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PORT_EDITOR",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_PORT_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PORT_EDITOR_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PORT_EDITOR",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_PORT_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PORT_EDITOR_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PORT_EDITOR",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_PORT_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PORT_EDITOR_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PORT_EDITOR",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/editor/26_Port_Editor.json"
+      }
+    },
     {
       "id": "TOPIC_PORT_EDITOR",
       "name": "Port Editor",
-      "purpose": "Define Port Editor as the AC-governed Expose editor for named listener instances across web/nanoCMS, REST, OSC, WebSocket and other installed port-bound services.",
-      "parent_topic_refs": [
-        "TOPIC_INSTANCE_CONFIG",
-        "TOPIC_RUNTIME_NETWORK"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_PORT_EDITOR_CONTRACT",
-        "LISTENER_IDENTITY_BINDING_SEPARATION",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_PORT_EDITOR::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define Port Editor as the AC-governed Expose editor for named listener instances across web/nanoCMS, REST, OSC, WebSocket and other installed port-bound services.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "targets": [
-      "listener identity",
-      "protocol/type",
-      "listen address",
-      "port",
-      "transport",
-      "enabled state",
-      "lifecycle operation"
-    ],
-    "scope_rule": "Port Editor owns listener/binding configuration across protocols, not protocol route/address business semantics.",
-    "name_rule": "Named listener identity is edited separately from port binding.",
-    "validation_rule": "Candidate binding/conflict/protocol compatibility validates before apply/start.",
-    "state_rule": "Declared config and current runtime listener state are displayed separately.",
-    "action_rule": "Start/stop/reload invoke explicit canonical lifecycle operations.",
-    "authority_rule": "Editor obeys normal AccessCore authorization and has no privileged bypass.",
-    "protocol_rule": "Protocol-specific route/address/channel configuration remains owned by protocol binding editors/contracts."
-  },
   "constraints": {
     "invariants": [
       {
@@ -135,10 +283,83 @@
       "purpose": "Bindings validate before activation."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define Port Editor as the AC-governed Expose editor for named listener instances across web/nanoCMS, REST, OSC, WebSocket and other installed port-bound services.",
     "notes": [
       "Unlocked pending reconciliation against existing Port Editor/listener/protocol contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_PORT_EDITOR",
+          "name": "Port Editor",
+          "purpose": "Define Port Editor as the AC-governed Expose editor for named listener instances across web/nanoCMS, REST, OSC, WebSocket and other installed port-bound services.",
+          "parent_topic_refs": [
+            "TOPIC_INSTANCE_CONFIG",
+            "TOPIC_RUNTIME_NETWORK"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_PORT_EDITOR_CONTRACT",
+            "LISTENER_IDENTITY_BINDING_SEPARATION",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "targets": [
+          "listener identity",
+          "protocol/type",
+          "listen address",
+          "port",
+          "transport",
+          "enabled state",
+          "lifecycle operation"
+        ],
+        "scope_rule": "Port Editor owns listener/binding configuration across protocols, not protocol route/address business semantics.",
+        "name_rule": "Named listener identity is edited separately from port binding.",
+        "validation_rule": "Candidate binding/conflict/protocol compatibility validates before apply/start.",
+        "state_rule": "Declared config and current runtime listener state are displayed separately.",
+        "action_rule": "Start/stop/reload invoke explicit canonical lifecycle operations.",
+        "authority_rule": "Editor obeys normal AccessCore authorization and has no privileged bypass.",
+        "protocol_rule": "Protocol-specific route/address/channel configuration remains owned by protocol binding editors/contracts."
+      }
+    }
   }
 }

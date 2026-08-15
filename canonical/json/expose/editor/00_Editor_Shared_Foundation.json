@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define the shared editor substrate used by Expose editors for identity resolution, schema-driven fields, validation, change staging, authorization, apply/reload and error reporting.",
   "scope": {
     "owns": [
@@ -22,68 +21,203 @@
       "unrelated persistence semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT",
+      "name": "Expose Editor Shared Foundation",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "role": "shared editor substrate",
+            "shared_capabilities": [
+              "canonical target resolution",
+              "schema rendering",
+              "candidate staging",
+              "validation",
+              "diff preview",
+              "AccessCore checks",
+              "apply/reload dispatch",
+              "error reporting"
+            ],
+            "identity_rule": "Editor target resolves by exact canonical identity.",
+            "schema_rule": "Editor fields/ports/controls derive from explicit target schema/contract metadata.",
+            "candidate_rule": "Edits are staged as candidate changes before authoritative apply where applicable.",
+            "validation_rule": "Candidate changes validate before apply.",
+            "authority_rule": "Every mutation uses normal AccessCore/runtime authority checks.",
+            "reuse_rule": "Specialized editors reuse this foundation rather than reimplementing parallel change pipelines.",
+            "state_rule": "UI-local state is distinct from canonical definition and runtime state."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_EDITOR_FOUNDATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "TOPIC_EXPOSE_EDITOR_FOUNDATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_EDITOR_FOUNDATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_EXPOSE_EDITOR_FOUNDATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_FOUNDATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_FOUNDATION",
+            "child_ref": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_FOUNDATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_FOUNDATION",
+            "child_ref": "EDITOR_NONAUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_FOUNDATION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_FOUNDATION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_FOUNDATION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_FOUNDATION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_FOUNDATION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_FOUNDATION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_FOUNDATION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_FOUNDATION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_FOUNDATION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_FOUNDATION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/editor/00_Editor_Shared_Foundation.json"
+      }
+    },
     {
       "id": "TOPIC_EXPOSE_EDITOR_FOUNDATION",
       "name": "Expose Editor Shared Foundation",
-      "purpose": "Define the shared editor substrate used by Expose editors for identity resolution, schema-driven fields, validation, change staging, authorization, apply/reload and error reporting.",
-      "parent_topic_refs": [
-        "TOPIC_EXPOSE_EDITOR",
-        "TOPIC_EXPOSE"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT",
-        "EDITOR_NONAUTHORITY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_EDITOR_FOUNDATION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define the shared editor substrate used by Expose editors for identity resolution, schema-driven fields, validation, change staging, authorization, apply/reload and error reporting.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "role": "shared editor substrate",
-    "shared_capabilities": [
-      "canonical target resolution",
-      "schema rendering",
-      "candidate staging",
-      "validation",
-      "diff preview",
-      "AccessCore checks",
-      "apply/reload dispatch",
-      "error reporting"
-    ],
-    "identity_rule": "Editor target resolves by exact canonical identity.",
-    "schema_rule": "Editor fields/ports/controls derive from explicit target schema/contract metadata.",
-    "candidate_rule": "Edits are staged as candidate changes before authoritative apply where applicable.",
-    "validation_rule": "Candidate changes validate before apply.",
-    "authority_rule": "Every mutation uses normal AccessCore/runtime authority checks.",
-    "reuse_rule": "Specialized editors reuse this foundation rather than reimplementing parallel change pipelines.",
-    "state_rule": "UI-local state is distinct from canonical definition and runtime state."
-  },
   "constraints": {
     "invariants": [
       {
@@ -131,10 +265,84 @@
       "purpose": "Editor writes cross explicit change boundary."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define the shared editor substrate used by Expose editors for identity resolution, schema-driven fields, validation, change staging, authorization, apply/reload and error reporting.",
     "notes": [
       "Unlocked pending reconciliation against existing Expose/editor contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXPOSE_EDITOR_FOUNDATION",
+          "name": "Expose Editor Shared Foundation",
+          "purpose": "Define the shared editor substrate used by Expose editors for identity resolution, schema-driven fields, validation, change staging, authorization, apply/reload and error reporting.",
+          "parent_topic_refs": [
+            "TOPIC_EXPOSE_EDITOR",
+            "TOPIC_EXPOSE"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_EXPOSE_EDITOR_FOUNDATION_CONTRACT",
+            "EDITOR_NONAUTHORITY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "role": "shared editor substrate",
+        "shared_capabilities": [
+          "canonical target resolution",
+          "schema rendering",
+          "candidate staging",
+          "validation",
+          "diff preview",
+          "AccessCore checks",
+          "apply/reload dispatch",
+          "error reporting"
+        ],
+        "identity_rule": "Editor target resolves by exact canonical identity.",
+        "schema_rule": "Editor fields/ports/controls derive from explicit target schema/contract metadata.",
+        "candidate_rule": "Edits are staged as candidate changes before authoritative apply where applicable.",
+        "validation_rule": "Candidate changes validate before apply.",
+        "authority_rule": "Every mutation uses normal AccessCore/runtime authority checks.",
+        "reuse_rule": "Specialized editors reuse this foundation rather than reimplementing parallel change pipelines.",
+        "state_rule": "UI-local state is distinct from canonical definition and runtime state."
+      }
+    }
   }
 }

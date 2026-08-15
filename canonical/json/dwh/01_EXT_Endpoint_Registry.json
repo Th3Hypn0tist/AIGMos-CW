@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define `$EXT` as the explicit registry for external DWH endpoints/instances with unique logical identity, lifecycle operations and read-only-by-default semantics.",
   "scope": {
     "owns": [
@@ -22,86 +21,225 @@
       "transport identity"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT",
+      "name": "DWH EXT Endpoint Registry",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "root": "$EXT",
+            "operations": [
+              "add",
+              "edit",
+              "remove",
+              "ping"
+            ],
+            "identity_rule": "External endpoint has explicit unique logical identity independent from network address.",
+            "uniqueness_rule": "Endpoint identities are unique in their governing registry.",
+            "default_rule": "External access is read-only by default unless explicit policy permits mutation.",
+            "transport_rule": "Network locator/WebRTC/session is binding state, not endpoint semantic identity.",
+            "lifecycle_rule": "Configured, reachable and active/session-connected states remain distinct.",
+            "ac_rule": "When AccessCore is active, direct `$EXT` dereference is not the governed remote data path."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_EXT_ENDPOINT_REGISTRY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_EXT_ENDPOINT_REGISTRY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_EXT_ENDPOINT_REGISTRY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_REMOTE_DATA",
+            "child_ref": "TOPIC_DWH_EXT_ENDPOINT_REGISTRY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_EXT_ENDPOINT_REGISTRY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_EXT_ENDPOINT_REGISTRY",
+            "child_ref": "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_EXT_ENDPOINT_REGISTRY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_EXT_ENDPOINT_REGISTRY",
+            "child_ref": "DWH_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_EXT_ENDPOINT_REGISTRY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_EXT_ENDPOINT_REGISTRY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_EXT_ENDPOINT_REGISTRY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_EXT_ENDPOINT_REGISTRY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_EXT_ENDPOINT_REGISTRY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_EXT_ENDPOINT_REGISTRY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_EXT_ENDPOINT_REGISTRY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_EXT_ENDPOINT_REGISTRY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_EXT_ENDPOINT_REGISTRY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_EXT_ENDPOINT_REGISTRY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/01_EXT_Endpoint_Registry.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_EXT_ENDPOINT_REGISTRY",
       "name": "DWH EXT Endpoint Registry",
-      "purpose": "Define `$EXT` as the explicit registry for external DWH endpoints/instances with unique logical identity, lifecycle operations and read-only-by-default semantics.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_REMOTE_DATA"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT",
-        "DWH_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_EXT_ENDPOINT_REGISTRY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define `$EXT` as the explicit registry for external DWH endpoints/instances with unique logical identity, lifecycle operations and read-only-by-default semantics.",
+            "metadata": {}
+          }
+        }
+      ]
     },
     {
       "id": "TOPIC_REMOTE_DATA",
       "name": "Remote DATA",
-      "purpose": "Define grouping-only parent Topic identity TOPIC_REMOTE_DATA already referenced by 6 existing canonical child Topic reference occurrence(s).",
-      "parent_topic_refs": [],
-      "composed_topic_refs": [],
-      "member_refs": [],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {
-        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
-        "referencing_child_occurrences": 6,
-        "distinct_child_topics": 6,
-        "host_contract_ref": "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT",
-        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
-        "placement_nonsemantic": true,
-        "ownership_nontransfer": true,
-        "new_parent_edges_added": 0
-      }
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_REMOTE_DATA::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define grouping-only parent Topic identity TOPIC_REMOTE_DATA already referenced by 6 existing canonical child Topic reference occurrence(s).",
+            "metadata": {
+              "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+              "referencing_child_occurrences": 6,
+              "distinct_child_topics": 6,
+              "host_contract_ref": "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT",
+              "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+              "placement_nonsemantic": true,
+              "ownership_nontransfer": true,
+              "new_parent_edges_added": 0
+            }
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "root": "$EXT",
-    "operations": [
-      "add",
-      "edit",
-      "remove",
-      "ping"
-    ],
-    "identity_rule": "External endpoint has explicit unique logical identity independent from network address.",
-    "uniqueness_rule": "Endpoint identities are unique in their governing registry.",
-    "default_rule": "External access is read-only by default unless explicit policy permits mutation.",
-    "transport_rule": "Network locator/WebRTC/session is binding state, not endpoint semantic identity.",
-    "lifecycle_rule": "Configured, reachable and active/session-connected states remain distinct.",
-    "ac_rule": "When AccessCore is active, direct `$EXT` dereference is not the governed remote data path."
-  },
   "constraints": {
     "invariants": [
       {
@@ -144,11 +282,103 @@
       "purpose": "External endpoint identities are explicit addresses."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define `$EXT` as the explicit registry for external DWH endpoints/instances with unique logical identity, lifecycle operations and read-only-by-default semantics.",
     "notes": [
       "Unlocked pending reconciliation against existing DWH/EXT/WebRTC/AccessCore contracts and whole-tree Contract Format 1.4 validation.",
       "Pass 6 hosts grouping-only Topic TOPIC_REMOTE_DATA solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_EXT_ENDPOINT_REGISTRY",
+          "name": "DWH EXT Endpoint Registry",
+          "purpose": "Define `$EXT` as the explicit registry for external DWH endpoints/instances with unique logical identity, lifecycle operations and read-only-by-default semantics.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_REMOTE_DATA"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT",
+            "DWH_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        },
+        {
+          "id": "TOPIC_REMOTE_DATA",
+          "name": "Remote DATA",
+          "purpose": "Define grouping-only parent Topic identity TOPIC_REMOTE_DATA already referenced by 6 existing canonical child Topic reference occurrence(s).",
+          "parent_topic_refs": [],
+          "composed_topic_refs": [],
+          "member_refs": [],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {
+            "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+            "referencing_child_occurrences": 6,
+            "distinct_child_topics": 6,
+            "host_contract_ref": "AIGMOS_DWH_EXT_ENDPOINT_REGISTRY_CONTRACT",
+            "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+            "placement_nonsemantic": true,
+            "ownership_nontransfer": true,
+            "new_parent_edges_added": 0
+          }
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "root": "$EXT",
+        "operations": [
+          "add",
+          "edit",
+          "remove",
+          "ping"
+        ],
+        "identity_rule": "External endpoint has explicit unique logical identity independent from network address.",
+        "uniqueness_rule": "Endpoint identities are unique in their governing registry.",
+        "default_rule": "External access is read-only by default unless explicit policy permits mutation.",
+        "transport_rule": "Network locator/WebRTC/session is binding state, not endpoint semantic identity.",
+        "lifecycle_rule": "Configured, reachable and active/session-connected states remain distinct.",
+        "ac_rule": "When AccessCore is active, direct `$EXT` dereference is not the governed remote data path."
+      }
+    }
   }
 }

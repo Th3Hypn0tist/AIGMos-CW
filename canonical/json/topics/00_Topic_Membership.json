@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define Topic membership as explicit semantic classification/grouping: every canonical tree node belongs to one or more Topics or is explicitly classified as outsider.",
   "scope": {
     "owns": [
@@ -21,92 +20,227 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT",
+      "name": "Topic Membership",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT::OPERATIONS::OP_TOPIC_ASSIGN",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_TOPIC_ASSIGN",
+            "name": "Assign node to Topic",
+            "inputs": [
+              "node_ref",
+              "topic_ref"
+            ],
+            "outputs": [
+              "Topic membership"
+            ],
+            "errors": [
+              "node unresolved",
+              "Topic unresolved"
+            ],
+            "side_effects": [
+              "Topic graph updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT::OPERATIONS::OP_TOPIC_RESOLVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_TOPIC_RESOLVE",
+            "name": "Resolve node Topics",
+            "inputs": [
+              "node_ref"
+            ],
+            "outputs": [
+              "all direct/inherited/composed Topic memberships"
+            ],
+            "errors": [
+              "node unresolved"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "classification_rule": "Every machine-significant canonical node has at least one Topic membership unless explicitly outsider.",
+            "multiplicity_rule": "A node may belong to multiple Topics simultaneously.",
+            "grouping_rule": "Topic membership groups semantics for recursive reading and traversal; it does not imply containment, ownership or authority.",
+            "locality_rule": "Topic declarations belong with the semantic node/subtree whose material they group rather than in a mandatory separate Topic directory.",
+            "question_rule": "When adding semantics, first ask whether it belongs under an existing Topic; create a new Topic when no existing Topic expresses the grouping cleanly.",
+            "abundance_rule": "Topic count is not artificially minimized; semantic readability takes precedence.",
+            "recursive_rule": "A generic reader can recursively discover Topic membership from canonical nodes."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT::LINK::TOPIC_PARENT_TOPIC_TOPIC_SYSTEM_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "TOPIC_TOPIC_SYSTEM",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_SYSTEM_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_SYSTEM",
+            "child_ref": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_SYSTEM_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_SYSTEM",
+            "child_ref": "TOPIC_GRAPH_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_SYSTEM_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_SYSTEM",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_SYSTEM_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_SYSTEM",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_SYSTEM_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_SYSTEM",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_SYSTEM_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_SYSTEM",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_SYSTEM_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_SYSTEM",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/topics/00_Topic_Membership.json"
+      }
+    },
     {
       "id": "TOPIC_TOPIC_SYSTEM",
       "name": "Topic System",
-      "purpose": "Define Topic membership as explicit semantic classification/grouping: every canonical tree node belongs to one or more Topics or is explicitly classified as outsider.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_STRUCTURE"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT",
-        "TOPIC_GRAPH_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_TOPIC_ASSIGN",
-        "OP_TOPIC_RESOLVE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_TOPIC_SYSTEM::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define Topic membership as explicit semantic classification/grouping: every canonical tree node belongs to one or more Topics or is explicitly classified as outsider.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_TOPIC_ASSIGN",
-        "name": "Assign node to Topic",
-        "inputs": [
-          "node_ref",
-          "topic_ref"
-        ],
-        "outputs": [
-          "Topic membership"
-        ],
-        "errors": [
-          "node unresolved",
-          "Topic unresolved"
-        ],
-        "side_effects": [
-          "Topic graph updated"
-        ]
-      },
-      {
-        "id": "OP_TOPIC_RESOLVE",
-        "name": "Resolve node Topics",
-        "inputs": [
-          "node_ref"
-        ],
-        "outputs": [
-          "all direct/inherited/composed Topic memberships"
-        ],
-        "errors": [
-          "node unresolved"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "classification_rule": "Every machine-significant canonical node has at least one Topic membership unless explicitly outsider.",
-    "multiplicity_rule": "A node may belong to multiple Topics simultaneously.",
-    "grouping_rule": "Topic membership groups semantics for recursive reading and traversal; it does not imply containment, ownership or authority.",
-    "locality_rule": "Topic declarations belong with the semantic node/subtree whose material they group rather than in a mandatory separate Topic directory.",
-    "question_rule": "When adding semantics, first ask whether it belongs under an existing Topic; create a new Topic when no existing Topic expresses the grouping cleanly.",
-    "abundance_rule": "Topic count is not artificially minimized; semantic readability takes precedence.",
-    "recursive_rule": "A generic reader can recursively discover Topic membership from canonical nodes."
-  },
   "constraints": {
     "invariants": [
       {
@@ -149,10 +283,118 @@
       "purpose": "Topic grouping is distinct from containment."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_TOPIC_SYSTEM",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_TOPIC_SYSTEM",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define Topic membership as explicit semantic classification/grouping: every canonical tree node belongs to one or more Topics or is explicitly classified as outsider.",
     "notes": [
       "Unlocked until reconciled against the assembled 1.4 Topic graph and repository-wide validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_TOPIC_SYSTEM",
+          "name": "Topic System",
+          "purpose": "Define Topic membership as explicit semantic classification/grouping: every canonical tree node belongs to one or more Topics or is explicitly classified as outsider.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_STRUCTURE"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_TOPIC_MEMBERSHIP_CONTRACT",
+            "TOPIC_GRAPH_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_TOPIC_ASSIGN",
+            "OP_TOPIC_RESOLVE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_TOPIC_ASSIGN",
+            "name": "Assign node to Topic",
+            "inputs": [
+              "node_ref",
+              "topic_ref"
+            ],
+            "outputs": [
+              "Topic membership"
+            ],
+            "errors": [
+              "node unresolved",
+              "Topic unresolved"
+            ],
+            "side_effects": [
+              "Topic graph updated"
+            ]
+          },
+          {
+            "id": "OP_TOPIC_RESOLVE",
+            "name": "Resolve node Topics",
+            "inputs": [
+              "node_ref"
+            ],
+            "outputs": [
+              "all direct/inherited/composed Topic memberships"
+            ],
+            "errors": [
+              "node unresolved"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "classification_rule": "Every machine-significant canonical node has at least one Topic membership unless explicitly outsider.",
+        "multiplicity_rule": "A node may belong to multiple Topics simultaneously.",
+        "grouping_rule": "Topic membership groups semantics for recursive reading and traversal; it does not imply containment, ownership or authority.",
+        "locality_rule": "Topic declarations belong with the semantic node/subtree whose material they group rather than in a mandatory separate Topic directory.",
+        "question_rule": "When adding semantics, first ask whether it belongs under an existing Topic; create a new Topic when no existing Topic expresses the grouping cleanly.",
+        "abundance_rule": "Topic count is not artificially minimized; semantic readability takes precedence.",
+        "recursive_rule": "A generic reader can recursively discover Topic membership from canonical nodes."
+      }
+    }
   }
 }

@@ -1,11 +1,352 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT",
+    "name": "Messaging Monitor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define a read-only Expose monitor for conversations, participants, request throttles, group governance and message delivery evidence. [2] Define a read-only Expose monitor for conversations, request throttling, group governance, P2P delivery state and privacy-layer boundaries.",
+  "scope": {
+    "does_not_own": [
+      "domain semantic ownership",
+      "AccessCore policy ownership",
+      "application operation semantics",
+      "Hello rendezvous identity",
+      "IdentityCore identity ownership",
+      "transport cryptographic implementation"
+    ],
+    "owns": [
+      "Messaging Governance Monitor semantics",
+      "Messaging Monitor semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT",
+      "name": "Messaging Monitor",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "action_rule": "Reconciled source clauses: [1] invite/remove/block/unblock/retry-message operations invoke separate authorized workflows. [2] Accept/block/invite/remove/send/retry actions invoke separate authorized canonical operations.",
+            "authority_rule": "Reconciled source clauses: [1] Viewing conversation grants no membership/admin authority. [2] Viewing messaging state grants no conversation/governance/send authority.",
+            "failure_rule": "blocked/throttled/failed/unknown delivery states remain explicit.",
+            "graph_rule": "Conversation/membership edges correspond only to explicit refs.",
+            "identity_rule": "Reconciled source clauses: [1] Peer, conversation, membership, message, delivery and transport identities remain distinct. [2] Peer, conversation, message, transport and rendezvous identities remain distinct.",
+            "payload_rule": "Payload/content is hidden/redacted by default unless an explicitly authorized view permits it.",
+            "readonly_rule": "Monitor is read-only by default.",
+            "trace_rule": "Delivery failures retain exact message/conversation/transport refs.",
+            "views": [
+              "conversation registry",
+              "participant/membership refs",
+              "group owner/delegated levels",
+              "invite policy",
+              "request throttle/block state",
+              "message delivery state",
+              "offline/replay evidence",
+              "conversation identities",
+              "pending/throttled/blocked requests",
+              "group owner/delegation/membership",
+              "peer transport refs",
+              "Hello handoff refs",
+              "privacy/retention state"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_MESSAGING_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_MESSAGING_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_MESSAGING",
+            "child_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_MESSAGING_MONITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_HELLO",
+            "child_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MESSAGING_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "child_ref": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MESSAGING_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "child_ref": "TRANSPORT_NONAUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MESSAGING_MONITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "child_ref": "INGRESS_EFFECT_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MESSAGING_MONITOR_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "child_ref": "MESSAGING_PEER_GOVERNED",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MESSAGING_MONITOR_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "child_ref": "GATE_1FA31C1DB4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MESSAGING_MONITOR_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "child_ref": "GATE_A7EBF98136",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MESSAGING_MONITOR_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "child_ref": "GATE_1E6C0482CF",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MESSAGING_MONITOR_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "child_ref": "GATE_3EDD512291",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MESSAGING_MONITOR_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "child_ref": "GATE_301AF0F046",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MESSAGING_MONITOR_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "child_ref": "GATE_2957DEA2DB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MESSAGING_MONITOR_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "child_ref": "GATE_5DF3E660E1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MESSAGING_MONITOR_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "child_ref": "GATE_28AF098228",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MESSAGING_MONITOR_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "child_ref": "GATE_950980A6E4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MESSAGING_MONITOR_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+            "child_ref": "GATE_0F0F81D2FC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[13]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+      "name": "Messaging Monitor",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_MESSAGING_MONITOR::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Reconciled source clauses: [1] Define a read-only Expose monitor for conversations, participants, request throttles, group governance and message delivery evidence. [2] Define a read-only Expose monitor for conversations, request throttling, group governance, P2P delivery state and privacy-layer boundaries.",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -74,29 +415,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT",
-    "name": "Messaging Monitor",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
-      "Unlocked pending reconciliation against existing msg/WebRTC/Hello contracts and whole-tree Contract Format 1.4 validation.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: expose/editor/103_Messaging_Monitor.json, expose/editor/40_Messaging_Monitor.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
-    ],
-    "summary": "Reconciled source purposes: [1] Define a read-only Expose monitor for conversations, participants, request throttles, group governance and message delivery evidence. [2] Define a read-only Expose monitor for conversations, request throttling, group governance, P2P delivery state and privacy-layer boundaries."
-  },
-  "purpose": "Reconciled source purposes: [1] Define a read-only Expose monitor for conversations, participants, request throttles, group governance and message delivery evidence. [2] Define a read-only Expose monitor for conversations, request throttling, group governance, P2P delivery state and privacy-layer boundaries.",
   "references": [
     {
       "id": "REF_GROUP",
@@ -114,87 +432,102 @@
       "purpose": "Monitor respects privacy boundaries."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "domain semantic ownership",
-      "AccessCore policy ownership",
-      "application operation semantics",
-      "Hello rendezvous identity",
-      "IdentityCore identity ownership",
-      "transport cryptographic implementation"
+  "gaps": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against existing msg/WebRTC/Hello contracts and whole-tree Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: expose/editor/103_Messaging_Monitor.json, expose/editor/40_Messaging_Monitor.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
     ],
-    "owns": [
-      "Messaging Governance Monitor semantics",
-      "Messaging Monitor semantics"
-    ]
+    "summary": "Reconciled source purposes: [1] Define a read-only Expose monitor for conversations, participants, request throttles, group governance and message delivery evidence. [2] Define a read-only Expose monitor for conversations, request throttling, group governance, P2P delivery state and privacy-layer boundaries."
   },
-  "semantics": {
-    "action_rule": "Reconciled source clauses: [1] invite/remove/block/unblock/retry-message operations invoke separate authorized workflows. [2] Accept/block/invite/remove/send/retry actions invoke separate authorized canonical operations.",
-    "authority_rule": "Reconciled source clauses: [1] Viewing conversation grants no membership/admin authority. [2] Viewing messaging state grants no conversation/governance/send authority.",
-    "failure_rule": "blocked/throttled/failed/unknown delivery states remain explicit.",
-    "graph_rule": "Conversation/membership edges correspond only to explicit refs.",
-    "identity_rule": "Reconciled source clauses: [1] Peer, conversation, membership, message, delivery and transport identities remain distinct. [2] Peer, conversation, message, transport and rendezvous identities remain distinct.",
-    "payload_rule": "Payload/content is hidden/redacted by default unless an explicitly authorized view permits it.",
-    "readonly_rule": "Monitor is read-only by default.",
-    "trace_rule": "Delivery failures retain exact message/conversation/transport refs.",
-    "views": [
-      "conversation registry",
-      "participant/membership refs",
-      "group owner/delegated levels",
-      "invite policy",
-      "request throttle/block state",
-      "message delivery state",
-      "offline/replay evidence",
-      "conversation identities",
-      "pending/throttled/blocked requests",
-      "group owner/delegation/membership",
-      "peer transport refs",
-      "Hello handoff refs",
-      "privacy/retention state"
-    ]
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
-    {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_EXPOSE_MESSAGING_MONITOR",
-      "member_refs": [
-        "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT",
-        "TRANSPORT_NONAUTHORITY",
-        "INGRESS_EFFECT_BOUNDARY",
-        "MESSAGING_PEER_GOVERNED",
-        "GATE_1FA31C1DB4",
-        "GATE_A7EBF98136",
-        "GATE_1E6C0482CF",
-        "GATE_3EDD512291",
-        "GATE_301AF0F046",
-        "GATE_2957DEA2DB",
-        "GATE_5DF3E660E1",
-        "GATE_28AF098228",
-        "GATE_950980A6E4",
-        "GATE_0F0F81D2FC"
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_EXPOSE_MESSAGING_MONITOR",
+          "member_refs": [
+            "AIGMOS_EXPOSE_MESSAGING_MONITOR_CONTRACT",
+            "TRANSPORT_NONAUTHORITY",
+            "INGRESS_EFFECT_BOUNDARY",
+            "MESSAGING_PEER_GOVERNED",
+            "GATE_1FA31C1DB4",
+            "GATE_A7EBF98136",
+            "GATE_1E6C0482CF",
+            "GATE_3EDD512291",
+            "GATE_301AF0F046",
+            "GATE_2957DEA2DB",
+            "GATE_5DF3E660E1",
+            "GATE_28AF098228",
+            "GATE_950980A6E4",
+            "GATE_0F0F81D2FC"
+          ],
+          "metadata": {},
+          "name": "Messaging Monitor",
+          "operation_refs": [],
+          "parent_topic_refs": [
+            "TOPIC_EXPOSE",
+            "TOPIC_MESSAGING",
+            "TOPIC_HELLO"
+          ],
+          "purpose": "Reconciled source clauses: [1] Define a read-only Expose monitor for conversations, participants, request throttles, group governance and message delivery evidence. [2] Define a read-only Expose monitor for conversations, request throttling, group governance, P2P delivery state and privacy-layer boundaries.",
+          "relation_refs": []
+        }
       ],
-      "metadata": {},
-      "name": "Messaging Monitor",
-      "operation_refs": [],
-      "parent_topic_refs": [
-        "TOPIC_EXPOSE",
-        "TOPIC_MESSAGING",
-        "TOPIC_HELLO"
-      ],
-      "purpose": "Reconciled source clauses: [1] Define a read-only Expose monitor for conversations, participants, request throttles, group governance and message delivery evidence. [2] Define a read-only Expose monitor for conversations, request throttling, group governance, P2P delivery state and privacy-layer boundaries.",
-      "relation_refs": []
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [],
+        "states": []
+      },
+      "semantics": {
+        "action_rule": "Reconciled source clauses: [1] invite/remove/block/unblock/retry-message operations invoke separate authorized workflows. [2] Accept/block/invite/remove/send/retry actions invoke separate authorized canonical operations.",
+        "authority_rule": "Reconciled source clauses: [1] Viewing conversation grants no membership/admin authority. [2] Viewing messaging state grants no conversation/governance/send authority.",
+        "failure_rule": "blocked/throttled/failed/unknown delivery states remain explicit.",
+        "graph_rule": "Conversation/membership edges correspond only to explicit refs.",
+        "identity_rule": "Reconciled source clauses: [1] Peer, conversation, membership, message, delivery and transport identities remain distinct. [2] Peer, conversation, message, transport and rendezvous identities remain distinct.",
+        "payload_rule": "Payload/content is hidden/redacted by default unless an explicitly authorized view permits it.",
+        "readonly_rule": "Monitor is read-only by default.",
+        "trace_rule": "Delivery failures retain exact message/conversation/transport refs.",
+        "views": [
+          "conversation registry",
+          "participant/membership refs",
+          "group owner/delegated levels",
+          "invite policy",
+          "request throttle/block state",
+          "message delivery state",
+          "offline/replay evidence",
+          "conversation identities",
+          "pending/throttled/blocked requests",
+          "group owner/delegation/membership",
+          "peer transport refs",
+          "Hello handoff refs",
+          "privacy/retention state"
+        ]
+      }
     }
-  ]
+  }
 }

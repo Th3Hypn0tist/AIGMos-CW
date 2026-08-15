@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define the boundary between canonical internal references and explicitly declared external references so external linkage never masquerades as unresolved internal canonical identity.",
   "scope": {
     "owns": [
@@ -21,94 +20,228 @@
       "runtime implementation details"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT",
+      "name": "Core External Reference Boundary",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT::OPERATIONS::OP_EXTERNAL_CLASSIFY_REF",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_EXTERNAL_CLASSIFY_REF",
+            "name": "Classify external reference",
+            "inputs": [
+              "reference occurrence",
+              "owning contract rules"
+            ],
+            "outputs": [
+              "internal | external | unresolved"
+            ],
+            "errors": [
+              "reference kind ambiguous"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT::OPERATIONS::OP_EXTERNAL_VALIDATE_BOUNDARY",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_EXTERNAL_VALIDATE_BOUNDARY",
+            "name": "Validate external boundary",
+            "inputs": [
+              "external reference",
+              "declared external resolution semantics"
+            ],
+            "outputs": [
+              "valid external boundary"
+            ],
+            "errors": [
+              "undeclared external reference form"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "reference_classes": [
+              "internal",
+              "external",
+              "unresolved"
+            ],
+            "internal_rule": "Required internal references resolve exactly once inside the active canonical graph.",
+            "external_rule": "External references are valid only when their owning contract explicitly declares the external reference form, resolution semantics and authority boundary.",
+            "unresolved_rule": "A reference that is neither a valid internal ref nor a declared external ref is unresolved and becomes a gap.",
+            "authority_rule": "External existence does not grant canonical or runtime authority.",
+            "trace_rule": "External boundaries preserve provenance and remain visibly external in traces and projections."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_CORE_EXTERNAL_BOUNDARY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "TOPIC_CORE_EXTERNAL_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_EXTERNAL_BOUNDARY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_EXTERNAL_BOUNDARY",
+            "child_ref": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_EXTERNAL_BOUNDARY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_EXTERNAL_BOUNDARY",
+            "child_ref": "EXPLICIT_MACHINE_SEMANTICS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_EXTERNAL_BOUNDARY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_EXTERNAL_BOUNDARY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_EXTERNAL_BOUNDARY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_EXTERNAL_BOUNDARY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_EXTERNAL_BOUNDARY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_EXTERNAL_BOUNDARY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_EXTERNAL_BOUNDARY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_EXTERNAL_BOUNDARY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_CORE_EXTERNAL_BOUNDARY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_CORE_EXTERNAL_BOUNDARY",
+            "child_ref": "TOPIC_CORE_REFERENCE_CLOSURE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/core/external/00_Core_External_Reference_Boundary.json"
+      }
+    },
     {
       "id": "TOPIC_CORE_EXTERNAL_BOUNDARY",
       "name": "External Boundary",
-      "purpose": "Define the boundary between canonical internal references and explicitly declared external references so external linkage never masquerades as unresolved internal canonical identity.",
-      "parent_topic_refs": [
-        "TOPIC_CORE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_REFERENCE_CLOSURE"
-      ],
-      "member_refs": [
-        "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT",
-        "EXPLICIT_MACHINE_SEMANTICS",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_EXTERNAL_CLASSIFY_REF",
-        "OP_EXTERNAL_VALIDATE_BOUNDARY"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_CORE_EXTERNAL_BOUNDARY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define the boundary between canonical internal references and explicitly declared external references so external linkage never masquerades as unresolved internal canonical identity.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_EXTERNAL_CLASSIFY_REF",
-        "name": "Classify external reference",
-        "inputs": [
-          "reference occurrence",
-          "owning contract rules"
-        ],
-        "outputs": [
-          "internal | external | unresolved"
-        ],
-        "errors": [
-          "reference kind ambiguous"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_EXTERNAL_VALIDATE_BOUNDARY",
-        "name": "Validate external boundary",
-        "inputs": [
-          "external reference",
-          "declared external resolution semantics"
-        ],
-        "outputs": [
-          "valid external boundary"
-        ],
-        "errors": [
-          "undeclared external reference form"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "reference_classes": [
-      "internal",
-      "external",
-      "unresolved"
-    ],
-    "internal_rule": "Required internal references resolve exactly once inside the active canonical graph.",
-    "external_rule": "External references are valid only when their owning contract explicitly declares the external reference form, resolution semantics and authority boundary.",
-    "unresolved_rule": "A reference that is neither a valid internal ref nor a declared external ref is unresolved and becomes a gap.",
-    "authority_rule": "External existence does not grant canonical or runtime authority.",
-    "trace_rule": "External boundaries preserve provenance and remain visibly external in traces and projections."
-  },
   "constraints": {
     "invariants": [
       {
@@ -151,10 +284,120 @@
       "purpose": "Undeclared or unresolved references become explicit gaps."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_CORE_EXTERNAL_BOUNDARY",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_CORE_EXTERNAL_BOUNDARY",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define the boundary between canonical internal references and explicitly declared external references so external linkage never masquerades as unresolved internal canonical identity.",
     "notes": [
       "Unlocked until repository-wide 1.4 migration validates this boundary against the assembled active canonical graph."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_CORE_EXTERNAL_BOUNDARY",
+          "name": "External Boundary",
+          "purpose": "Define the boundary between canonical internal references and explicitly declared external references so external linkage never masquerades as unresolved internal canonical identity.",
+          "parent_topic_refs": [
+            "TOPIC_CORE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_REFERENCE_CLOSURE"
+          ],
+          "member_refs": [
+            "AIGMOS_CORE_EXTERNAL_REFERENCE_BOUNDARY_CONTRACT",
+            "EXPLICIT_MACHINE_SEMANTICS",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_EXTERNAL_CLASSIFY_REF",
+            "OP_EXTERNAL_VALIDATE_BOUNDARY"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_EXTERNAL_CLASSIFY_REF",
+            "name": "Classify external reference",
+            "inputs": [
+              "reference occurrence",
+              "owning contract rules"
+            ],
+            "outputs": [
+              "internal | external | unresolved"
+            ],
+            "errors": [
+              "reference kind ambiguous"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_EXTERNAL_VALIDATE_BOUNDARY",
+            "name": "Validate external boundary",
+            "inputs": [
+              "external reference",
+              "declared external resolution semantics"
+            ],
+            "outputs": [
+              "valid external boundary"
+            ],
+            "errors": [
+              "undeclared external reference form"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "reference_classes": [
+          "internal",
+          "external",
+          "unresolved"
+        ],
+        "internal_rule": "Required internal references resolve exactly once inside the active canonical graph.",
+        "external_rule": "External references are valid only when their owning contract explicitly declares the external reference form, resolution semantics and authority boundary.",
+        "unresolved_rule": "A reference that is neither a valid internal ref nor a declared external ref is unresolved and becomes a gap.",
+        "authority_rule": "External existence does not grant canonical or runtime authority.",
+        "trace_rule": "External boundaries preserve provenance and remain visibly external in traces and projections."
+      }
+    }
   }
 }

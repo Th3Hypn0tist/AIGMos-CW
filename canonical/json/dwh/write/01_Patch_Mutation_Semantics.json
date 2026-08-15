@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_PATCH_MUTATION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define field-level mutation as an explicit semantic delta over exact target identities, distinguishing absent, unchanged, null, set, remove and replace operations.",
   "scope": {
     "owns": [
@@ -22,65 +21,200 @@
       "storage-engine implementation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_PATCH_MUTATION_CONTRACT",
+      "name": "DWH Patch and Mutation Semantics",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_PATCH_MUTATION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "delta_states": [
+              "unchanged",
+              "set",
+              "set_null",
+              "remove",
+              "replace_explicit"
+            ],
+            "target_rule": "Each mutation entry references exact record/resource and field identity.",
+            "absence_rule": "Field absence in a patch means unchanged unless the exact patch profile explicitly defines otherwise.",
+            "null_rule": "Null is a value/state distinct from absent/unchanged.",
+            "remove_rule": "Field removal is explicit and schema-valid.",
+            "replace_rule": "Whole-record replacement is an explicit operation/profile and never inferred from partial payload.",
+            "diff_rule": "Pre-apply semantic diff is machine-computable.",
+            "validation_rule": "Unknown/non-writable fields hard-fail or follow an explicit extension policy.",
+            "authority_rule": "Authorization may be evaluated per target/resource/field according to policy."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_PATCH_MUTATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_PATCH_MUTATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_PATCH_MUTATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_PATCH_MUTATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_PATCH_MUTATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_MUTATION",
+            "child_ref": "TOPIC_DWH_PATCH_MUTATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_PATCH_MUTATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_PATCH_MUTATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_PATCH_MUTATION",
+            "child_ref": "AIGMOS_DWH_PATCH_MUTATION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_PATCH_MUTATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_PATCH_MUTATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_PATCH_MUTATION",
+            "child_ref": "DWH_MUTATION_EXACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_PATCH_MUTATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_PATCH_MUTATION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_PATCH_MUTATION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_PATCH_MUTATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_PATCH_MUTATION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_PATCH_MUTATION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_PATCH_MUTATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_PATCH_MUTATION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_PATCH_MUTATION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_PATCH_MUTATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_PATCH_MUTATION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_PATCH_MUTATION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_PATCH_MUTATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_PATCH_MUTATION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_PATCH_MUTATION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/write/01_Patch_Mutation_Semantics.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_PATCH_MUTATION",
       "name": "DWH Patch and Mutation Semantics",
-      "purpose": "Define field-level mutation as an explicit semantic delta over exact target identities, distinguishing absent, unchanged, null, set, remove and replace operations.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_MUTATION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_PATCH_MUTATION_CONTRACT",
-        "DWH_MUTATION_EXACT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_PATCH_MUTATION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define field-level mutation as an explicit semantic delta over exact target identities, distinguishing absent, unchanged, null, set, remove and replace operations.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "delta_states": [
-      "unchanged",
-      "set",
-      "set_null",
-      "remove",
-      "replace_explicit"
-    ],
-    "target_rule": "Each mutation entry references exact record/resource and field identity.",
-    "absence_rule": "Field absence in a patch means unchanged unless the exact patch profile explicitly defines otherwise.",
-    "null_rule": "Null is a value/state distinct from absent/unchanged.",
-    "remove_rule": "Field removal is explicit and schema-valid.",
-    "replace_rule": "Whole-record replacement is an explicit operation/profile and never inferred from partial payload.",
-    "diff_rule": "Pre-apply semantic diff is machine-computable.",
-    "validation_rule": "Unknown/non-writable fields hard-fail or follow an explicit extension policy.",
-    "authority_rule": "Authorization may be evaluated per target/resource/field according to policy."
-  },
   "constraints": {
     "invariants": [
       {
@@ -128,10 +262,81 @@
       "purpose": "Mutation delta can be reviewed before apply."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define field-level mutation as an explicit semantic delta over exact target identities, distinguishing absent, unchanged, null, set, remove and replace operations.",
     "notes": [
       "Unlocked pending reconciliation against DWH schema binding, lineage, AccessCore and canonical change-boundary contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_PATCH_MUTATION",
+          "name": "DWH Patch and Mutation Semantics",
+          "purpose": "Define field-level mutation as an explicit semantic delta over exact target identities, distinguishing absent, unchanged, null, set, remove and replace operations.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_MUTATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_PATCH_MUTATION_CONTRACT",
+            "DWH_MUTATION_EXACT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "delta_states": [
+          "unchanged",
+          "set",
+          "set_null",
+          "remove",
+          "replace_explicit"
+        ],
+        "target_rule": "Each mutation entry references exact record/resource and field identity.",
+        "absence_rule": "Field absence in a patch means unchanged unless the exact patch profile explicitly defines otherwise.",
+        "null_rule": "Null is a value/state distinct from absent/unchanged.",
+        "remove_rule": "Field removal is explicit and schema-valid.",
+        "replace_rule": "Whole-record replacement is an explicit operation/profile and never inferred from partial payload.",
+        "diff_rule": "Pre-apply semantic diff is machine-computable.",
+        "validation_rule": "Unknown/non-writable fields hard-fail or follow an explicit extension policy.",
+        "authority_rule": "Authorization may be evaluated per target/resource/field according to policy."
+      }
+    }
   }
 }

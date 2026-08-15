@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define validated instance-configuration reload that reconciles instance-owned configuration and referenced subsystem bindings without replacing unrelated semantic data.",
   "scope": {
     "owns": [
@@ -22,60 +21,209 @@
       "runtime business-domain semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT",
+      "name": "Instance Configuration Reload",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "target_rule": "Reload targets an exact AIGMos instance identity.",
+            "candidate_rule": "Candidate instance config is parsed/validated before affecting runtime.",
+            "owner_rule": "Reload applies instance-owned fields and invokes referenced owner-specific reconciliation where required.",
+            "iam_rule": "IAM parent changes route through explicit IAM binding semantics.",
+            "ac_rule": "AccessCore activation/reload follows explicit AC lifecycle semantics; when AC is active it cannot be disabled through an unauthorized runtime mutation.",
+            "listener_rule": "Listener binding changes use listener lifecycle/conflict validation.",
+            "module_rule": "UserModule changes use UserModule lifecycle/reload semantics.",
+            "failure_rule": "Failed reconciliation leaves a deterministic previous or safe stopped state.",
+            "trace_rule": "Reload records old/new config refs, subsystem actions and result."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT::LINK::TOPIC_PARENT_TOPIC_INSTANCE_CONFIG_RELOAD_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_INSTANCE_CONFIG",
+            "child_ref": "TOPIC_INSTANCE_CONFIG_RELOAD",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT::LINK::TOPIC_PARENT_TOPIC_INSTANCE_CONFIG_RELOAD_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_ACTIVATION",
+            "child_ref": "TOPIC_INSTANCE_CONFIG_RELOAD",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INSTANCE_CONFIG_RELOAD_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INSTANCE_CONFIG_RELOAD",
+            "child_ref": "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INSTANCE_CONFIG_RELOAD_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INSTANCE_CONFIG_RELOAD",
+            "child_ref": "INSTANCE_CONFIG_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INSTANCE_CONFIG_RELOAD_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INSTANCE_CONFIG_RELOAD",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INSTANCE_CONFIG_RELOAD_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INSTANCE_CONFIG_RELOAD",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INSTANCE_CONFIG_RELOAD_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INSTANCE_CONFIG_RELOAD",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INSTANCE_CONFIG_RELOAD_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INSTANCE_CONFIG_RELOAD",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INSTANCE_CONFIG_RELOAD_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INSTANCE_CONFIG_RELOAD",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_INSTANCE_CONFIG_RELOAD_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_INSTANCE_CONFIG_RELOAD",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/instance/04_Instance_Config_Reload.json"
+      }
+    },
     {
       "id": "TOPIC_INSTANCE_CONFIG_RELOAD",
       "name": "Instance Configuration Reload",
-      "purpose": "Define validated instance-configuration reload that reconciles instance-owned configuration and referenced subsystem bindings without replacing unrelated semantic data.",
-      "parent_topic_refs": [
-        "TOPIC_INSTANCE_CONFIG",
-        "TOPIC_RUNTIME_ACTIVATION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT",
-        "INSTANCE_CONFIG_SEPARATION",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_INSTANCE_CONFIG_RELOAD::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define validated instance-configuration reload that reconciles instance-owned configuration and referenced subsystem bindings without replacing unrelated semantic data.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "target_rule": "Reload targets an exact AIGMos instance identity.",
-    "candidate_rule": "Candidate instance config is parsed/validated before affecting runtime.",
-    "owner_rule": "Reload applies instance-owned fields and invokes referenced owner-specific reconciliation where required.",
-    "iam_rule": "IAM parent changes route through explicit IAM binding semantics.",
-    "ac_rule": "AccessCore activation/reload follows explicit AC lifecycle semantics; when AC is active it cannot be disabled through an unauthorized runtime mutation.",
-    "listener_rule": "Listener binding changes use listener lifecycle/conflict validation.",
-    "module_rule": "UserModule changes use UserModule lifecycle/reload semantics.",
-    "failure_rule": "Failed reconciliation leaves a deterministic previous or safe stopped state.",
-    "trace_rule": "Reload records old/new config refs, subsystem actions and result."
-  },
   "constraints": {
     "invariants": [
       {
@@ -128,10 +276,76 @@
       "purpose": "AC changes remain governed/audited."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define validated instance-configuration reload that reconciles instance-owned configuration and referenced subsystem bindings without replacing unrelated semantic data.",
     "notes": [
       "Unlocked pending reconciliation against existing instance-config/IAM/AccessCore/runtime contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_INSTANCE_CONFIG_RELOAD",
+          "name": "Instance Configuration Reload",
+          "purpose": "Define validated instance-configuration reload that reconciles instance-owned configuration and referenced subsystem bindings without replacing unrelated semantic data.",
+          "parent_topic_refs": [
+            "TOPIC_INSTANCE_CONFIG",
+            "TOPIC_RUNTIME_ACTIVATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_INSTANCE_CONFIG_RELOAD_CONTRACT",
+            "INSTANCE_CONFIG_SEPARATION",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "target_rule": "Reload targets an exact AIGMos instance identity.",
+        "candidate_rule": "Candidate instance config is parsed/validated before affecting runtime.",
+        "owner_rule": "Reload applies instance-owned fields and invokes referenced owner-specific reconciliation where required.",
+        "iam_rule": "IAM parent changes route through explicit IAM binding semantics.",
+        "ac_rule": "AccessCore activation/reload follows explicit AC lifecycle semantics; when AC is active it cannot be disabled through an unauthorized runtime mutation.",
+        "listener_rule": "Listener binding changes use listener lifecycle/conflict validation.",
+        "module_rule": "UserModule changes use UserModule lifecycle/reload semantics.",
+        "failure_rule": "Failed reconciliation leaves a deterministic previous or safe stopped state.",
+        "trace_rule": "Reload records old/new config refs, subsystem actions and result."
+      }
+    }
   }
 }

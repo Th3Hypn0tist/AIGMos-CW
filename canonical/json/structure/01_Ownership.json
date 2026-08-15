@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define ownership as the explicit structural dimension that identifies which canonical identity owns a semantic fact or surface, separate from containment, authority and visibility.",
   "scope": {
     "owns": [
@@ -21,97 +20,259 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT",
+      "name": "Canonical Ownership",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT::OPERATIONS::OP_OWNERSHIP_DEFINE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_OWNERSHIP_DEFINE",
+            "name": "Define semantic ownership",
+            "inputs": [
+              "owner_ref",
+              "owned_ref",
+              "owned semantic surface"
+            ],
+            "outputs": [
+              "ownership edge"
+            ],
+            "errors": [
+              "owner unresolved",
+              "surface ambiguous"
+            ],
+            "side_effects": [
+              "ownership graph updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT::OPERATIONS::OP_OWNERSHIP_RESOLVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_OWNERSHIP_RESOLVE",
+            "name": "Resolve semantic owner",
+            "inputs": [
+              "semantic fact/surface"
+            ],
+            "outputs": [
+              "authoritative owner"
+            ],
+            "errors": [
+              "owner missing",
+              "conflicting owners"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "dimension": "ownership",
+            "single_owner_rule": "A machine-significant semantic fact has one authoritative owner unless explicit reconciliation defines otherwise.",
+            "containment_rule": "Containing an identity does not make the container semantic owner.",
+            "authority_rule": "Semantic ownership does not automatically grant runtime/AccessCore authority.",
+            "projection_rule": "Projection/view does not become owner of projected facts.",
+            "composition_rule": "Consumer composition references owner semantics rather than copying them.",
+            "trace_rule": "Ownership is preserved in provenance and reverse traces."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT::LINK::TOPIC_PARENT_TOPIC_STRUCTURE_OWNERSHIP_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "TOPIC_STRUCTURE_OWNERSHIP",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_OWNERSHIP_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_OWNERSHIP",
+            "child_ref": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_OWNERSHIP_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_OWNERSHIP",
+            "child_ref": "STRUCTURAL_DIMENSION_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_OWNERSHIP_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_OWNERSHIP",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_OWNERSHIP_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_OWNERSHIP",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_OWNERSHIP_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_OWNERSHIP",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_OWNERSHIP_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_OWNERSHIP",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_OWNERSHIP_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_OWNERSHIP",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_STRUCTURE_OWNERSHIP_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_STRUCTURE_OWNERSHIP",
+            "child_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_STRUCTURE_OWNERSHIP_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_STRUCTURE_OWNERSHIP",
+            "child_ref": "TOPIC_CORE_PROVENANCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/structure/01_Ownership.json"
+      }
+    },
     {
       "id": "TOPIC_STRUCTURE_OWNERSHIP",
       "name": "Ownership",
-      "purpose": "Define ownership as the explicit structural dimension that identifies which canonical identity owns a semantic fact or surface, separate from containment, authority and visibility.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_STRUCTURE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_SOURCE_ROLES",
-        "TOPIC_CORE_PROVENANCE"
-      ],
-      "member_refs": [
-        "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT",
-        "STRUCTURAL_DIMENSION_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_OWNERSHIP_DEFINE",
-        "OP_OWNERSHIP_RESOLVE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_STRUCTURE_OWNERSHIP::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define ownership as the explicit structural dimension that identifies which canonical identity owns a semantic fact or surface, separate from containment, authority and visibility.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_OWNERSHIP_DEFINE",
-        "name": "Define semantic ownership",
-        "inputs": [
-          "owner_ref",
-          "owned_ref",
-          "owned semantic surface"
-        ],
-        "outputs": [
-          "ownership edge"
-        ],
-        "errors": [
-          "owner unresolved",
-          "surface ambiguous"
-        ],
-        "side_effects": [
-          "ownership graph updated"
-        ]
-      },
-      {
-        "id": "OP_OWNERSHIP_RESOLVE",
-        "name": "Resolve semantic owner",
-        "inputs": [
-          "semantic fact/surface"
-        ],
-        "outputs": [
-          "authoritative owner"
-        ],
-        "errors": [
-          "owner missing",
-          "conflicting owners"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "dimension": "ownership",
-    "single_owner_rule": "A machine-significant semantic fact has one authoritative owner unless explicit reconciliation defines otherwise.",
-    "containment_rule": "Containing an identity does not make the container semantic owner.",
-    "authority_rule": "Semantic ownership does not automatically grant runtime/AccessCore authority.",
-    "projection_rule": "Projection/view does not become owner of projected facts.",
-    "composition_rule": "Consumer composition references owner semantics rather than copying them.",
-    "trace_rule": "Ownership is preserved in provenance and reverse traces."
-  },
   "constraints": {
     "invariants": [
       {
@@ -159,10 +320,123 @@
       "purpose": "Ownership provenance is retained."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_STRUCTURE_OWNERSHIP",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_STRUCTURE_OWNERSHIP",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define ownership as the explicit structural dimension that identifies which canonical identity owns a semantic fact or surface, separate from containment, authority and visibility.",
     "notes": [
       "Unlocked until reconciled against the assembled 1.4 architecture tree and reference/trace closure."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_STRUCTURE_OWNERSHIP",
+          "name": "Ownership",
+          "purpose": "Define ownership as the explicit structural dimension that identifies which canonical identity owns a semantic fact or surface, separate from containment, authority and visibility.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_STRUCTURE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_SOURCE_ROLES",
+            "TOPIC_CORE_PROVENANCE"
+          ],
+          "member_refs": [
+            "AIGMOS_STRUCTURE_OWNERSHIP_CONTRACT",
+            "STRUCTURAL_DIMENSION_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_OWNERSHIP_DEFINE",
+            "OP_OWNERSHIP_RESOLVE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_OWNERSHIP_DEFINE",
+            "name": "Define semantic ownership",
+            "inputs": [
+              "owner_ref",
+              "owned_ref",
+              "owned semantic surface"
+            ],
+            "outputs": [
+              "ownership edge"
+            ],
+            "errors": [
+              "owner unresolved",
+              "surface ambiguous"
+            ],
+            "side_effects": [
+              "ownership graph updated"
+            ]
+          },
+          {
+            "id": "OP_OWNERSHIP_RESOLVE",
+            "name": "Resolve semantic owner",
+            "inputs": [
+              "semantic fact/surface"
+            ],
+            "outputs": [
+              "authoritative owner"
+            ],
+            "errors": [
+              "owner missing",
+              "conflicting owners"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "dimension": "ownership",
+        "single_owner_rule": "A machine-significant semantic fact has one authoritative owner unless explicit reconciliation defines otherwise.",
+        "containment_rule": "Containing an identity does not make the container semantic owner.",
+        "authority_rule": "Semantic ownership does not automatically grant runtime/AccessCore authority.",
+        "projection_rule": "Projection/view does not become owner of projected facts.",
+        "composition_rule": "Consumer composition references owner semantics rather than copying them.",
+        "trace_rule": "Ownership is preserved in provenance and reverse traces."
+      }
+    }
   }
 }

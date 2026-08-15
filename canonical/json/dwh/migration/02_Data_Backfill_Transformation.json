@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_DATA_BACKFILL_TRANSFORMATION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define explicit transformation/backfill of existing records into a target schema version with exact source revisions, destination writes, lineage, classification and quality validation.",
   "scope": {
     "owns": [
@@ -22,59 +21,194 @@
       "storage-engine implementation details"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_DATA_BACKFILL_TRANSFORMATION_CONTRACT",
+      "name": "DWH Data Migration and Backfill",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_DATA_BACKFILL_TRANSFORMATION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "source_rule": "Backfill reads exact source schema/version/record revisions.",
+            "target_rule": "Writes target exact target schema/version/instance identities.",
+            "transform_rule": "Transformation rule/profile/version is explicit.",
+            "lineage_rule": "Migrated values retain source record/revision and transformation provenance.",
+            "classification_rule": "Classification/taint propagates through migration.",
+            "quality_rule": "Target validation/quality rules run before migrated data is accepted.",
+            "batch_rule": "Batching/chunking is execution strategy and does not alter migration semantics.",
+            "idempotency_rule": "Re-running an accepted migration batch is idempotent or explicitly conflict-detected.",
+            "authority_rule": "Backfill uses normal DWH write/transaction authorization."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_DATA_BACKFILL_TRANSFORMATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_DATA_BACKFILL_TRANSFORMATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_SCHEMA_EVOLUTION",
+            "child_ref": "TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_DATA_BACKFILL_TRANSFORMATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION",
+            "child_ref": "AIGMOS_DWH_DATA_BACKFILL_TRANSFORMATION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_DATA_BACKFILL_TRANSFORMATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION",
+            "child_ref": "SCHEMA_EVOLUTION_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_DATA_BACKFILL_TRANSFORMATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_DATA_BACKFILL_TRANSFORMATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_DATA_BACKFILL_TRANSFORMATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_DATA_BACKFILL_TRANSFORMATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_DATA_BACKFILL_TRANSFORMATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/migration/02_Data_Backfill_Transformation.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION",
       "name": "DWH Data Migration and Backfill",
-      "purpose": "Define explicit transformation/backfill of existing records into a target schema version with exact source revisions, destination writes, lineage, classification and quality validation.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_SCHEMA_EVOLUTION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_DATA_BACKFILL_TRANSFORMATION_CONTRACT",
-        "SCHEMA_EVOLUTION_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define explicit transformation/backfill of existing records into a target schema version with exact source revisions, destination writes, lineage, classification and quality validation.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "source_rule": "Backfill reads exact source schema/version/record revisions.",
-    "target_rule": "Writes target exact target schema/version/instance identities.",
-    "transform_rule": "Transformation rule/profile/version is explicit.",
-    "lineage_rule": "Migrated values retain source record/revision and transformation provenance.",
-    "classification_rule": "Classification/taint propagates through migration.",
-    "quality_rule": "Target validation/quality rules run before migrated data is accepted.",
-    "batch_rule": "Batching/chunking is execution strategy and does not alter migration semantics.",
-    "idempotency_rule": "Re-running an accepted migration batch is idempotent or explicitly conflict-detected.",
-    "authority_rule": "Backfill uses normal DWH write/transaction authorization."
-  },
   "constraints": {
     "invariants": [
       {
@@ -127,10 +261,75 @@
       "purpose": "Migrated target data is revalidated."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define explicit transformation/backfill of existing records into a target schema version with exact source revisions, destination writes, lineage, classification and quality validation.",
     "notes": [
       "Unlocked pending reconciliation against Schema Evolution, DWH mutation, persistence and runtime activation contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_DATA_BACKFILL_TRANSFORMATION",
+          "name": "DWH Data Migration and Backfill",
+          "purpose": "Define explicit transformation/backfill of existing records into a target schema version with exact source revisions, destination writes, lineage, classification and quality validation.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_SCHEMA_EVOLUTION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_DATA_BACKFILL_TRANSFORMATION_CONTRACT",
+            "SCHEMA_EVOLUTION_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "source_rule": "Backfill reads exact source schema/version/record revisions.",
+        "target_rule": "Writes target exact target schema/version/instance identities.",
+        "transform_rule": "Transformation rule/profile/version is explicit.",
+        "lineage_rule": "Migrated values retain source record/revision and transformation provenance.",
+        "classification_rule": "Classification/taint propagates through migration.",
+        "quality_rule": "Target validation/quality rules run before migrated data is accepted.",
+        "batch_rule": "Batching/chunking is execution strategy and does not alter migration semantics.",
+        "idempotency_rule": "Re-running an accepted migration batch is idempotent or explicitly conflict-detected.",
+        "authority_rule": "Backfill uses normal DWH write/transaction authorization."
+      }
+    }
   }
 }

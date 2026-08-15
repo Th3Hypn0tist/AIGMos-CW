@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define OSC as an optional explicit protocol binding from OSC addresses/messages to canonical values and operations, with message validation and no protocol-owned domain semantics.",
   "scope": {
     "owns": [
@@ -21,100 +20,276 @@
       "unrelated domain semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT",
+      "name": "Expose OSC Binding",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT::OPERATIONS::OP_OSC_BIND",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_OSC_BIND",
+            "name": "Bind OSC address to canonical surface",
+            "inputs": [
+              "OSC address",
+              "canonical operation/value ref"
+            ],
+            "outputs": [
+              "OSC binding"
+            ],
+            "errors": [
+              "address collision",
+              "source unresolved"
+            ],
+            "side_effects": [
+              "OSC binding config updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT::OPERATIONS::OP_OSC_DISPATCH",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_OSC_DISPATCH",
+            "name": "Dispatch OSC input",
+            "inputs": [
+              "validated OSC message",
+              "binding"
+            ],
+            "outputs": [
+              "canonical operation/result"
+            ],
+            "errors": [
+              "validation failure",
+              "authority denied"
+            ],
+            "side_effects": [
+              "only canonical operation effects"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "protocol": "OSC",
+            "optional_rule": "OSC capability may be installed/removed explicitly.",
+            "address_rule": "OSC address is binding identity, not source semantic identity.",
+            "validation_rule": "Incoming OSC data is validated before canonical dispatch.",
+            "authority_rule": "Receiving an OSC message does not grant authorization.",
+            "semantic_rule": "OSC transport does not redefine operation/value semantics.",
+            "editor_rule": "GUI/Port Editor may configure OSC surfaces only through canonical binding/listener operations."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_OSC_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_EXPOSE_OSC_BINDING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_OSC_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_OSC_BINDING",
+            "child_ref": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_OSC_BINDING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_OSC_BINDING",
+            "child_ref": "EXPOSE_RUNTIME_BINDING_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_OSC_BINDING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_OSC_BINDING",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_OSC_BINDING_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_OSC_BINDING",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_OSC_BINDING_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_OSC_BINDING",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_OSC_BINDING_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_OSC_BINDING",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_OSC_BINDING_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_OSC_BINDING",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_OSC_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_OSC_BINDING",
+            "child_ref": "TOPIC_RUNTIME_PROTOCOL_OPTIONALITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_OSC_BINDING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_OSC_BINDING",
+            "child_ref": "TOPIC_EXPOSE_GUI_EDITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_OSC_BINDING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_OSC_BINDING",
+            "child_ref": "TOPIC_EXPOSE_PORT_EDITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/runtime/03_OSC_Binding.json"
+      }
+    },
     {
       "id": "TOPIC_EXPOSE_OSC_BINDING",
       "name": "OSC Binding",
-      "purpose": "Define OSC as an optional explicit protocol binding from OSC addresses/messages to canonical values and operations, with message validation and no protocol-owned domain semantics.",
-      "parent_topic_refs": [
-        "TOPIC_EXPOSE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_RUNTIME_PROTOCOL_OPTIONALITY",
-        "TOPIC_EXPOSE_GUI_EDITOR",
-        "TOPIC_EXPOSE_PORT_EDITOR"
-      ],
-      "member_refs": [
-        "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT",
-        "EXPOSE_RUNTIME_BINDING_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_OSC_BIND",
-        "OP_OSC_DISPATCH"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_OSC_BINDING::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define OSC as an optional explicit protocol binding from OSC addresses/messages to canonical values and operations, with message validation and no protocol-owned domain semantics.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_OSC_BIND",
-        "name": "Bind OSC address to canonical surface",
-        "inputs": [
-          "OSC address",
-          "canonical operation/value ref"
-        ],
-        "outputs": [
-          "OSC binding"
-        ],
-        "errors": [
-          "address collision",
-          "source unresolved"
-        ],
-        "side_effects": [
-          "OSC binding config updated"
-        ]
-      },
-      {
-        "id": "OP_OSC_DISPATCH",
-        "name": "Dispatch OSC input",
-        "inputs": [
-          "validated OSC message",
-          "binding"
-        ],
-        "outputs": [
-          "canonical operation/result"
-        ],
-        "errors": [
-          "validation failure",
-          "authority denied"
-        ],
-        "side_effects": [
-          "only canonical operation effects"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "protocol": "OSC",
-    "optional_rule": "OSC capability may be installed/removed explicitly.",
-    "address_rule": "OSC address is binding identity, not source semantic identity.",
-    "validation_rule": "Incoming OSC data is validated before canonical dispatch.",
-    "authority_rule": "Receiving an OSC message does not grant authorization.",
-    "semantic_rule": "OSC transport does not redefine operation/value semantics.",
-    "editor_rule": "GUI/Port Editor may configure OSC surfaces only through canonical binding/listener operations."
-  },
   "constraints": {
     "invariants": [
       {
@@ -157,10 +332,126 @@
       "purpose": "OSC is optional capability."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_EXPOSE_OSC_BINDING",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_EXPOSE_OSC_BINDING",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define OSC as an optional explicit protocol binding from OSC addresses/messages to canonical values and operations, with message validation and no protocol-owned domain semantics.",
     "notes": [
       "Unlocked until reconciled against existing Expose/runtime contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXPOSE_OSC_BINDING",
+          "name": "OSC Binding",
+          "purpose": "Define OSC as an optional explicit protocol binding from OSC addresses/messages to canonical values and operations, with message validation and no protocol-owned domain semantics.",
+          "parent_topic_refs": [
+            "TOPIC_EXPOSE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_RUNTIME_PROTOCOL_OPTIONALITY",
+            "TOPIC_EXPOSE_GUI_EDITOR",
+            "TOPIC_EXPOSE_PORT_EDITOR"
+          ],
+          "member_refs": [
+            "AIGMOS_EXPOSE_OSC_BINDING_CONTRACT",
+            "EXPOSE_RUNTIME_BINDING_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_OSC_BIND",
+            "OP_OSC_DISPATCH"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_OSC_BIND",
+            "name": "Bind OSC address to canonical surface",
+            "inputs": [
+              "OSC address",
+              "canonical operation/value ref"
+            ],
+            "outputs": [
+              "OSC binding"
+            ],
+            "errors": [
+              "address collision",
+              "source unresolved"
+            ],
+            "side_effects": [
+              "OSC binding config updated"
+            ]
+          },
+          {
+            "id": "OP_OSC_DISPATCH",
+            "name": "Dispatch OSC input",
+            "inputs": [
+              "validated OSC message",
+              "binding"
+            ],
+            "outputs": [
+              "canonical operation/result"
+            ],
+            "errors": [
+              "validation failure",
+              "authority denied"
+            ],
+            "side_effects": [
+              "only canonical operation effects"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "protocol": "OSC",
+        "optional_rule": "OSC capability may be installed/removed explicitly.",
+        "address_rule": "OSC address is binding identity, not source semantic identity.",
+        "validation_rule": "Incoming OSC data is validated before canonical dispatch.",
+        "authority_rule": "Receiving an OSC message does not grant authorization.",
+        "semantic_rule": "OSC transport does not redefine operation/value semantics.",
+        "editor_rule": "GUI/Port Editor may configure OSC surfaces only through canonical binding/listener operations."
+      }
+    }
   }
 }

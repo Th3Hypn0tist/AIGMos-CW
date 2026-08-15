@@ -1,11 +1,342 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT",
+    "name": "DWH Taint Propagation",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define deterministic taint propagation through DWH transformations so derived data inherits all relevant source restrictions unless an explicit authorized sanitization/declassification rule removes or transforms them. [2] Define formal propagation of source classification/taint metadata through DWH transformations so derived data cannot silently become less restricted than its governed inputs.",
+  "scope": {
+    "does_not_own": [
+      "domain value semantics",
+      "transport implementation",
+      "presentation semantics",
+      "AccessCore authorization policy",
+      "source domain semantics",
+      "transport cryptography"
+    ],
+    "owns": [
+      "DWH Taint Propagation semantics",
+      "DWH Taint and Classification Propagation semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT",
+      "name": "DWH Taint Propagation",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "aggregation_rule": "Aggregation does not automatically clear taint merely because individual values are no longer directly visible.",
+            "authorization_rule": "Classification influences governance inputs but is not itself an AccessCore authorization decision.",
+            "classification_rule": "Input data may carry explicit classification/taint labels according to owning schema/policy.",
+            "default_rule": "Reconciled source clauses: [1] Relevant taint propagates monotonically from inputs to outputs. [2] Absent an explicit safe declassification rule, derived output must not be less restrictive than the most restrictive contributing input according to the active lattice/policy.",
+            "identity_rule": "Classification metadata is attached to exact data/schema/field lineage refs.",
+            "join_rule": "Multi-source derivation uses an explicit classification join/merge rule.",
+            "multi_input_rule": "For joins/compositions, output receives the union/composition of applicable input taint states.",
+            "no_guess_rule": "Runtime never guesses that data is safe because a transformation name appears benign.",
+            "operation_rule": "Transformation operation declares any taint-specific propagation semantics beyond the default monotonic rule.",
+            "projection_rule": "Selecting a field retains taint derived from that field and any transformation dependencies.",
+            "propagation_rule": "Derived output classification is computed from explicit propagation rules over all contributing inputs.",
+            "remote_rule": "Remote transport preserves taint metadata required by the governed receiving policy.",
+            "unknown_rule": "Unknown/unclassified governed input does not silently downgrade output classification."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_TAINT_PROPAGATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH_TAINT",
+            "child_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_TAINT_PROPAGATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH_LINEAGE",
+            "child_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_TAINT_PROPAGATION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_TAINT_PROPAGATION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_PROVENANCE_LINEAGE",
+            "child_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TAINT_PROPAGATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "child_ref": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TAINT_PROPAGATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "child_ref": "DWH_LINEAGE_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TAINT_PROPAGATION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "child_ref": "LINEAGE_PROVENANCE_PRESERVED",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TAINT_PROPAGATION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "child_ref": "GATE_B4AD7DBB96",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TAINT_PROPAGATION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "child_ref": "GATE_569843987A",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TAINT_PROPAGATION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "child_ref": "GATE_4E54476359",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TAINT_PROPAGATION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "child_ref": "GATE_5E2B35D8E5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TAINT_PROPAGATION_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "child_ref": "GATE_DE12F89F91",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TAINT_PROPAGATION_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "child_ref": "GATE_7802AB613F",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TAINT_PROPAGATION_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "child_ref": "GATE_B48C8D1E31",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TAINT_PROPAGATION_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "child_ref": "GATE_273EF7C06F",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TAINT_PROPAGATION_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "child_ref": "GATE_DD1E2CEB1A",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TAINT_PROPAGATION_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TAINT_PROPAGATION",
+            "child_ref": "GATE_A5C4BF3851",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_DWH_TAINT_PROPAGATION",
+      "name": "DWH Taint Propagation",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_TAINT_PROPAGATION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Reconciled source clauses: [1] Define deterministic taint propagation through DWH transformations so derived data inherits all relevant source restrictions unless an explicit authorized sanitization/declassification rule removes or transforms them. [2] Define formal propagation of source classification/taint metadata through DWH transformations so derived data cannot silently become less restricted than its governed inputs.",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -70,29 +401,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT",
-    "name": "DWH Taint Propagation",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked pending reconciliation against existing DWH/provenance/security semantics and whole-tree Contract Format 1.4 validation.",
-      "Unlocked pending reconciliation against DWH schema, provenance, AccessCore and remote-data contracts.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: dwh/09_Taint_Propagation.json, dwh/16_Taint_Classification_Propagation.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
-    ],
-    "summary": "Reconciled source purposes: [1] Define deterministic taint propagation through DWH transformations so derived data inherits all relevant source restrictions unless an explicit authorized sanitization/declassification rule removes or transforms them. [2] Define formal propagation of source classification/taint metadata through DWH transformations so derived data cannot silently become less restricted than its governed inputs."
-  },
-  "purpose": "Reconciled source purposes: [1] Define deterministic taint propagation through DWH transformations so derived data inherits all relevant source restrictions unless an explicit authorized sanitization/declassification rule removes or transforms them. [2] Define formal propagation of source classification/taint metadata through DWH transformations so derived data cannot silently become less restricted than its governed inputs.",
   "references": [
     {
       "id": "REF_TAINT",
@@ -115,77 +423,92 @@
       "purpose": "Classification remains an input to governed policy, not authorization itself."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "domain value semantics",
-      "transport implementation",
-      "presentation semantics",
-      "AccessCore authorization policy",
-      "source domain semantics",
-      "transport cryptography"
+  "gaps": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending reconciliation against existing DWH/provenance/security semantics and whole-tree Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against DWH schema, provenance, AccessCore and remote-data contracts.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: dwh/09_Taint_Propagation.json, dwh/16_Taint_Classification_Propagation.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
     ],
-    "owns": [
-      "DWH Taint Propagation semantics",
-      "DWH Taint and Classification Propagation semantics"
-    ]
+    "summary": "Reconciled source purposes: [1] Define deterministic taint propagation through DWH transformations so derived data inherits all relevant source restrictions unless an explicit authorized sanitization/declassification rule removes or transforms them. [2] Define formal propagation of source classification/taint metadata through DWH transformations so derived data cannot silently become less restricted than its governed inputs."
   },
-  "semantics": {
-    "aggregation_rule": "Aggregation does not automatically clear taint merely because individual values are no longer directly visible.",
-    "authorization_rule": "Classification influences governance inputs but is not itself an AccessCore authorization decision.",
-    "classification_rule": "Input data may carry explicit classification/taint labels according to owning schema/policy.",
-    "default_rule": "Reconciled source clauses: [1] Relevant taint propagates monotonically from inputs to outputs. [2] Absent an explicit safe declassification rule, derived output must not be less restrictive than the most restrictive contributing input according to the active lattice/policy.",
-    "identity_rule": "Classification metadata is attached to exact data/schema/field lineage refs.",
-    "join_rule": "Multi-source derivation uses an explicit classification join/merge rule.",
-    "multi_input_rule": "For joins/compositions, output receives the union/composition of applicable input taint states.",
-    "no_guess_rule": "Runtime never guesses that data is safe because a transformation name appears benign.",
-    "operation_rule": "Transformation operation declares any taint-specific propagation semantics beyond the default monotonic rule.",
-    "projection_rule": "Selecting a field retains taint derived from that field and any transformation dependencies.",
-    "propagation_rule": "Derived output classification is computed from explicit propagation rules over all contributing inputs.",
-    "remote_rule": "Remote transport preserves taint metadata required by the governed receiving policy.",
-    "unknown_rule": "Unknown/unclassified governed input does not silently downgrade output classification."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
-    {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_DWH_TAINT_PROPAGATION",
-      "member_refs": [
-        "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT",
-        "DWH_LINEAGE_EXPLICIT",
-        "LINEAGE_PROVENANCE_PRESERVED",
-        "GATE_B4AD7DBB96",
-        "GATE_569843987A",
-        "GATE_4E54476359",
-        "GATE_5E2B35D8E5",
-        "GATE_DE12F89F91",
-        "GATE_7802AB613F",
-        "GATE_B48C8D1E31",
-        "GATE_273EF7C06F",
-        "GATE_DD1E2CEB1A",
-        "GATE_A5C4BF3851"
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_DWH_TAINT_PROPAGATION",
+          "member_refs": [
+            "AIGMOS_DWH_TAINT_PROPAGATION_CONTRACT",
+            "DWH_LINEAGE_EXPLICIT",
+            "LINEAGE_PROVENANCE_PRESERVED",
+            "GATE_B4AD7DBB96",
+            "GATE_569843987A",
+            "GATE_4E54476359",
+            "GATE_5E2B35D8E5",
+            "GATE_DE12F89F91",
+            "GATE_7802AB613F",
+            "GATE_B48C8D1E31",
+            "GATE_273EF7C06F",
+            "GATE_DD1E2CEB1A",
+            "GATE_A5C4BF3851"
+          ],
+          "metadata": {},
+          "name": "DWH Taint Propagation",
+          "operation_refs": [],
+          "parent_topic_refs": [
+            "TOPIC_DWH_TAINT",
+            "TOPIC_DWH_LINEAGE",
+            "TOPIC_DWH",
+            "TOPIC_PROVENANCE_LINEAGE"
+          ],
+          "purpose": "Reconciled source clauses: [1] Define deterministic taint propagation through DWH transformations so derived data inherits all relevant source restrictions unless an explicit authorized sanitization/declassification rule removes or transforms them. [2] Define formal propagation of source classification/taint metadata through DWH transformations so derived data cannot silently become less restricted than its governed inputs.",
+          "relation_refs": []
+        }
       ],
-      "metadata": {},
-      "name": "DWH Taint Propagation",
-      "operation_refs": [],
-      "parent_topic_refs": [
-        "TOPIC_DWH_TAINT",
-        "TOPIC_DWH_LINEAGE",
-        "TOPIC_DWH",
-        "TOPIC_PROVENANCE_LINEAGE"
-      ],
-      "purpose": "Reconciled source clauses: [1] Define deterministic taint propagation through DWH transformations so derived data inherits all relevant source restrictions unless an explicit authorized sanitization/declassification rule removes or transforms them. [2] Define formal propagation of source classification/taint metadata through DWH transformations so derived data cannot silently become less restricted than its governed inputs.",
-      "relation_refs": []
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [],
+        "states": []
+      },
+      "semantics": {
+        "aggregation_rule": "Aggregation does not automatically clear taint merely because individual values are no longer directly visible.",
+        "authorization_rule": "Classification influences governance inputs but is not itself an AccessCore authorization decision.",
+        "classification_rule": "Input data may carry explicit classification/taint labels according to owning schema/policy.",
+        "default_rule": "Reconciled source clauses: [1] Relevant taint propagates monotonically from inputs to outputs. [2] Absent an explicit safe declassification rule, derived output must not be less restrictive than the most restrictive contributing input according to the active lattice/policy.",
+        "identity_rule": "Classification metadata is attached to exact data/schema/field lineage refs.",
+        "join_rule": "Multi-source derivation uses an explicit classification join/merge rule.",
+        "multi_input_rule": "For joins/compositions, output receives the union/composition of applicable input taint states.",
+        "no_guess_rule": "Runtime never guesses that data is safe because a transformation name appears benign.",
+        "operation_rule": "Transformation operation declares any taint-specific propagation semantics beyond the default monotonic rule.",
+        "projection_rule": "Selecting a field retains taint derived from that field and any transformation dependencies.",
+        "propagation_rule": "Derived output classification is computed from explicit propagation rules over all contributing inputs.",
+        "remote_rule": "Remote transport preserves taint metadata required by the governed receiving policy.",
+        "unknown_rule": "Unknown/unclassified governed input does not silently downgrade output classification."
+      }
     }
-  ]
+  }
 }

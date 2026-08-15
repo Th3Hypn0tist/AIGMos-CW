@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define stable logical service-instance identity separately from protocol, port/listen binding and runtime state so multiple named instances can coexist deterministically.",
   "scope": {
     "owns": [
@@ -21,139 +20,331 @@
       "presentation layout unless explicitly stated"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT",
+      "name": "Runtime Named Service Instances",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::OPERATIONS::OP_SERVICE_INSTANCE_REGISTER",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_SERVICE_INSTANCE_REGISTER",
+            "name": "Register named service instance",
+            "inputs": [
+              "service type",
+              "logical name",
+              "declared config"
+            ],
+            "outputs": [
+              "registered instance identity"
+            ],
+            "errors": [
+              "name collision",
+              "invalid service type"
+            ],
+            "side_effects": [
+              "service instance registry updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::OPERATIONS::OP_SERVICE_INSTANCE_RESOLVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_SERVICE_INSTANCE_RESOLVE",
+            "name": "Resolve named service instance",
+            "inputs": [
+              "logical instance name"
+            ],
+            "outputs": [
+              "exact instance definition"
+            ],
+            "errors": [
+              "instance unresolved",
+              "instance ambiguous"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::OPERATIONS::OP_SERVICE_INSTANCE_START",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_SERVICE_INSTANCE_START",
+            "name": "Start named service instance",
+            "inputs": [
+              "instance definition",
+              "validated binding"
+            ],
+            "outputs": [
+              "running instance"
+            ],
+            "errors": [
+              "binding unavailable",
+              "start failure"
+            ],
+            "side_effects": [
+              "runtime service state created"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::OPERATIONS::OP_SERVICE_INSTANCE_STOP",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_SERVICE_INSTANCE_STOP",
+            "name": "Stop named service instance",
+            "inputs": [
+              "running instance"
+            ],
+            "outputs": [
+              "stopped instance"
+            ],
+            "errors": [
+              "stop failure"
+            ],
+            "side_effects": [
+              "runtime service state removed"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "identity_rule": "Logical service instance name is stable identity separate from port/bind address.",
+            "multiple_instances_rule": "Multiple instances of the same service type may coexist when the owning service contract permits it.",
+            "binding_rule": "Changing port/listen binding does not redefine logical instance identity.",
+            "state_rule": "definition/configuration and runtime running/stopped state remain separate.",
+            "lifecycle": [
+              "registered",
+              "stopped",
+              "running",
+              "error"
+            ],
+            "authority_rule": "Starting a service instance requires explicit capability and applicable authority.",
+            "collision_rule": "Logical instance names are unique within their owning service namespace."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_SERVICE_INSTANCES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME_IO",
+            "child_ref": "TOPIC_RUNTIME_SERVICE_INSTANCES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SERVICE_INSTANCES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SERVICE_INSTANCES",
+            "child_ref": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SERVICE_INSTANCES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SERVICE_INSTANCES",
+            "child_ref": "SERVICE_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SERVICE_INSTANCES_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SERVICE_INSTANCES",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SERVICE_INSTANCES_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SERVICE_INSTANCES",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SERVICE_INSTANCES_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SERVICE_INSTANCES",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SERVICE_INSTANCES_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SERVICE_INSTANCES",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SERVICE_INSTANCES_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SERVICE_INSTANCES",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_SERVICE_INSTANCES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_SERVICE_INSTANCES",
+            "child_ref": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_SERVICE_INSTANCES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_SERVICE_INSTANCES",
+            "child_ref": "TOPIC_RUNTIME_DEFINITION_STATE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_SERVICE_INSTANCES_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_SERVICE_INSTANCES",
+            "child_ref": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/services/00_Runtime_Named_Service_Instances.json"
+      }
+    },
     {
       "id": "TOPIC_RUNTIME_SERVICE_INSTANCES",
       "name": "Service Instances",
-      "purpose": "Define stable logical service-instance identity separately from protocol, port/listen binding and runtime state so multiple named instances can coexist deterministically.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME_IO"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_RUNTIME_EXTERNAL_SERVICES",
-        "TOPIC_RUNTIME_DEFINITION_STATE",
-        "TOPIC_CORE_CAPABILITY_AUTHORITY"
-      ],
-      "member_refs": [
-        "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT",
-        "SERVICE_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_SERVICE_INSTANCE_REGISTER",
-        "OP_SERVICE_INSTANCE_RESOLVE",
-        "OP_SERVICE_INSTANCE_START",
-        "OP_SERVICE_INSTANCE_STOP"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_SERVICE_INSTANCES::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define stable logical service-instance identity separately from protocol, port/listen binding and runtime state so multiple named instances can coexist deterministically.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_SERVICE_INSTANCE_REGISTER",
-        "name": "Register named service instance",
-        "inputs": [
-          "service type",
-          "logical name",
-          "declared config"
-        ],
-        "outputs": [
-          "registered instance identity"
-        ],
-        "errors": [
-          "name collision",
-          "invalid service type"
-        ],
-        "side_effects": [
-          "service instance registry updated"
-        ]
-      },
-      {
-        "id": "OP_SERVICE_INSTANCE_RESOLVE",
-        "name": "Resolve named service instance",
-        "inputs": [
-          "logical instance name"
-        ],
-        "outputs": [
-          "exact instance definition"
-        ],
-        "errors": [
-          "instance unresolved",
-          "instance ambiguous"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_SERVICE_INSTANCE_START",
-        "name": "Start named service instance",
-        "inputs": [
-          "instance definition",
-          "validated binding"
-        ],
-        "outputs": [
-          "running instance"
-        ],
-        "errors": [
-          "binding unavailable",
-          "start failure"
-        ],
-        "side_effects": [
-          "runtime service state created"
-        ]
-      },
-      {
-        "id": "OP_SERVICE_INSTANCE_STOP",
-        "name": "Stop named service instance",
-        "inputs": [
-          "running instance"
-        ],
-        "outputs": [
-          "stopped instance"
-        ],
-        "errors": [
-          "stop failure"
-        ],
-        "side_effects": [
-          "runtime service state removed"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "identity_rule": "Logical service instance name is stable identity separate from port/bind address.",
-    "multiple_instances_rule": "Multiple instances of the same service type may coexist when the owning service contract permits it.",
-    "binding_rule": "Changing port/listen binding does not redefine logical instance identity.",
-    "state_rule": "definition/configuration and runtime running/stopped state remain separate.",
-    "lifecycle": [
-      "registered",
-      "stopped",
-      "running",
-      "error"
-    ],
-    "authority_rule": "Starting a service instance requires explicit capability and applicable authority.",
-    "collision_rule": "Logical instance names are unique within their owning service namespace."
-  },
   "constraints": {
     "invariants": [
       {
@@ -201,10 +392,165 @@
       "purpose": "Definition/config and runtime state remain separate."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_SERVICE_INSTANCES",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_SERVICE_INSTANCES",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define stable logical service-instance identity separately from protocol, port/listen binding and runtime state so multiple named instances can coexist deterministically.",
     "notes": [
       "Unlocked until reconciled against existing Expose/REST/web contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RUNTIME_SERVICE_INSTANCES",
+          "name": "Service Instances",
+          "purpose": "Define stable logical service-instance identity separately from protocol, port/listen binding and runtime state so multiple named instances can coexist deterministically.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME_IO"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "TOPIC_RUNTIME_DEFINITION_STATE",
+            "TOPIC_CORE_CAPABILITY_AUTHORITY"
+          ],
+          "member_refs": [
+            "AIGMOS_RUNTIME_NAMED_SERVICE_INSTANCE_CONTRACT",
+            "SERVICE_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_SERVICE_INSTANCE_REGISTER",
+            "OP_SERVICE_INSTANCE_RESOLVE",
+            "OP_SERVICE_INSTANCE_START",
+            "OP_SERVICE_INSTANCE_STOP"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_SERVICE_INSTANCE_REGISTER",
+            "name": "Register named service instance",
+            "inputs": [
+              "service type",
+              "logical name",
+              "declared config"
+            ],
+            "outputs": [
+              "registered instance identity"
+            ],
+            "errors": [
+              "name collision",
+              "invalid service type"
+            ],
+            "side_effects": [
+              "service instance registry updated"
+            ]
+          },
+          {
+            "id": "OP_SERVICE_INSTANCE_RESOLVE",
+            "name": "Resolve named service instance",
+            "inputs": [
+              "logical instance name"
+            ],
+            "outputs": [
+              "exact instance definition"
+            ],
+            "errors": [
+              "instance unresolved",
+              "instance ambiguous"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_SERVICE_INSTANCE_START",
+            "name": "Start named service instance",
+            "inputs": [
+              "instance definition",
+              "validated binding"
+            ],
+            "outputs": [
+              "running instance"
+            ],
+            "errors": [
+              "binding unavailable",
+              "start failure"
+            ],
+            "side_effects": [
+              "runtime service state created"
+            ]
+          },
+          {
+            "id": "OP_SERVICE_INSTANCE_STOP",
+            "name": "Stop named service instance",
+            "inputs": [
+              "running instance"
+            ],
+            "outputs": [
+              "stopped instance"
+            ],
+            "errors": [
+              "stop failure"
+            ],
+            "side_effects": [
+              "runtime service state removed"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "identity_rule": "Logical service instance name is stable identity separate from port/bind address.",
+        "multiple_instances_rule": "Multiple instances of the same service type may coexist when the owning service contract permits it.",
+        "binding_rule": "Changing port/listen binding does not redefine logical instance identity.",
+        "state_rule": "definition/configuration and runtime running/stopped state remain separate.",
+        "lifecycle": [
+          "registered",
+          "stopped",
+          "running",
+          "error"
+        ],
+        "authority_rule": "Starting a service instance requires explicit capability and applicable authority.",
+        "collision_rule": "Logical instance names are unique within their owning service namespace."
+      }
+    }
   }
 }

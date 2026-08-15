@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define governed remote DWH access as an explicit semantic/authorization path, including the rule that direct raw external dereference is not an alternate bypass path when AccessCore governance is active.",
   "scope": {
     "owns": [
@@ -22,101 +21,291 @@
       "remote policy owned elsewhere"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT",
+      "name": "DWH Governed Remote Access",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT::OPERATIONS::OP_DWH_REMOTE_AUTHORIZE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_DWH_REMOTE_AUTHORIZE",
+            "name": "Authorize governed remote DWH access",
+            "inputs": [
+              "origin identity",
+              "remote target",
+              "requested operation",
+              "authority context"
+            ],
+            "outputs": [
+              "allowed/denied"
+            ],
+            "errors": [
+              "authority unresolved"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT::OPERATIONS::OP_DWH_REMOTE_ACCESS",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_DWH_REMOTE_ACCESS",
+            "name": "Perform governed remote DWH access",
+            "inputs": [
+              "authorized remote request",
+              "resolved remote ref"
+            ],
+            "outputs": [
+              "remote result"
+            ],
+            "errors": [
+              "remote denied",
+              "transport failure"
+            ],
+            "side_effects": [
+              "declared remote interaction"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "remote_marker": ">",
+            "governed_path": "DWH remote semantic dereference",
+            "ac_on_rule": "When AccessCore governance is active, direct raw $EXT dereference is disallowed as an authorization bypass; governed remote access uses the declared DWH remote path.",
+            "authority_rule": "Remote authority is evaluated at the remote target according to remote policy and assurance/authorization rules.",
+            "local_owner_rule": "Local ownership does not expand delegated remote rights.",
+            "read_only_rule": "Remote surfaces remain read-only by default unless explicit remote write authority exists.",
+            "identity_rule": "Origin identity remains the identity established at the origin; remote transport does not invent a new identity.",
+            "non_expansion_rule": "Delegated remote access cannot silently expand rights beyond the explicitly delegated remote path."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_GOVERNED_REMOTE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME_IO",
+            "child_ref": "TOPIC_DWH_GOVERNED_REMOTE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_GOVERNED_REMOTE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_GOVERNED_REMOTE",
+            "child_ref": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_GOVERNED_REMOTE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_GOVERNED_REMOTE",
+            "child_ref": "DWH_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_GOVERNED_REMOTE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_GOVERNED_REMOTE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_GOVERNED_REMOTE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_GOVERNED_REMOTE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_GOVERNED_REMOTE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_GOVERNED_REMOTE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_GOVERNED_REMOTE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_GOVERNED_REMOTE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_GOVERNED_REMOTE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_GOVERNED_REMOTE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_GOVERNED_REMOTE_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_GOVERNED_REMOTE",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_DWH_GOVERNED_REMOTE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_DWH_GOVERNED_REMOTE",
+            "child_ref": "TOPIC_DWH_EXT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_DWH_GOVERNED_REMOTE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_DWH_GOVERNED_REMOTE",
+            "child_ref": "TOPIC_RUNTIME_REMOTE_DEREFERENCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_DWH_GOVERNED_REMOTE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_DWH_GOVERNED_REMOTE",
+            "child_ref": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/dwh/05_DWH_Governed_Remote_Access.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_GOVERNED_REMOTE",
       "name": "DWH Governed Remote",
-      "purpose": "Define governed remote DWH access as an explicit semantic/authorization path, including the rule that direct raw external dereference is not an alternate bypass path when AccessCore governance is active.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME_IO"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_DWH_EXT",
-        "TOPIC_RUNTIME_REMOTE_DEREFERENCE",
-        "TOPIC_CORE_CAPABILITY_AUTHORITY"
-      ],
-      "member_refs": [
-        "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT",
-        "DWH_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_DWH_REMOTE_AUTHORIZE",
-        "OP_DWH_REMOTE_ACCESS"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_GOVERNED_REMOTE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define governed remote DWH access as an explicit semantic/authorization path, including the rule that direct raw external dereference is not an alternate bypass path when AccessCore governance is active.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_DWH_REMOTE_AUTHORIZE",
-        "name": "Authorize governed remote DWH access",
-        "inputs": [
-          "origin identity",
-          "remote target",
-          "requested operation",
-          "authority context"
-        ],
-        "outputs": [
-          "allowed/denied"
-        ],
-        "errors": [
-          "authority unresolved"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_DWH_REMOTE_ACCESS",
-        "name": "Perform governed remote DWH access",
-        "inputs": [
-          "authorized remote request",
-          "resolved remote ref"
-        ],
-        "outputs": [
-          "remote result"
-        ],
-        "errors": [
-          "remote denied",
-          "transport failure"
-        ],
-        "side_effects": [
-          "declared remote interaction"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "remote_marker": ">",
-    "governed_path": "DWH remote semantic dereference",
-    "ac_on_rule": "When AccessCore governance is active, direct raw $EXT dereference is disallowed as an authorization bypass; governed remote access uses the declared DWH remote path.",
-    "authority_rule": "Remote authority is evaluated at the remote target according to remote policy and assurance/authorization rules.",
-    "local_owner_rule": "Local ownership does not expand delegated remote rights.",
-    "read_only_rule": "Remote surfaces remain read-only by default unless explicit remote write authority exists.",
-    "identity_rule": "Origin identity remains the identity established at the origin; remote transport does not invent a new identity.",
-    "non_expansion_rule": "Delegated remote access cannot silently expand rights beyond the explicitly delegated remote path."
-  },
   "constraints": {
     "invariants": [
       {
@@ -174,10 +363,127 @@
       "purpose": "Remote capability and remote authority remain separate."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_DWH_GOVERNED_REMOTE",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_DWH_GOVERNED_REMOTE",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define governed remote DWH access as an explicit semantic/authorization path, including the rule that direct raw external dereference is not an alternate bypass path when AccessCore governance is active.",
     "notes": [
       "Unlocked until reconciled against existing DWH/IAM/AC contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_GOVERNED_REMOTE",
+          "name": "DWH Governed Remote",
+          "purpose": "Define governed remote DWH access as an explicit semantic/authorization path, including the rule that direct raw external dereference is not an alternate bypass path when AccessCore governance is active.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME_IO"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_DWH_EXT",
+            "TOPIC_RUNTIME_REMOTE_DEREFERENCE",
+            "TOPIC_CORE_CAPABILITY_AUTHORITY"
+          ],
+          "member_refs": [
+            "AIGMOS_DWH_GOVERNED_REMOTE_ACCESS_CONTRACT",
+            "DWH_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_DWH_REMOTE_AUTHORIZE",
+            "OP_DWH_REMOTE_ACCESS"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_DWH_REMOTE_AUTHORIZE",
+            "name": "Authorize governed remote DWH access",
+            "inputs": [
+              "origin identity",
+              "remote target",
+              "requested operation",
+              "authority context"
+            ],
+            "outputs": [
+              "allowed/denied"
+            ],
+            "errors": [
+              "authority unresolved"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_DWH_REMOTE_ACCESS",
+            "name": "Perform governed remote DWH access",
+            "inputs": [
+              "authorized remote request",
+              "resolved remote ref"
+            ],
+            "outputs": [
+              "remote result"
+            ],
+            "errors": [
+              "remote denied",
+              "transport failure"
+            ],
+            "side_effects": [
+              "declared remote interaction"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "remote_marker": ">",
+        "governed_path": "DWH remote semantic dereference",
+        "ac_on_rule": "When AccessCore governance is active, direct raw $EXT dereference is disallowed as an authorization bypass; governed remote access uses the declared DWH remote path.",
+        "authority_rule": "Remote authority is evaluated at the remote target according to remote policy and assurance/authorization rules.",
+        "local_owner_rule": "Local ownership does not expand delegated remote rights.",
+        "read_only_rule": "Remote surfaces remain read-only by default unless explicit remote write authority exists.",
+        "identity_rule": "Origin identity remains the identity established at the origin; remote transport does not invent a new identity.",
+        "non_expansion_rule": "Delegated remote access cannot silently expand rights beyond the explicitly delegated remote path."
+      }
+    }
   }
 }

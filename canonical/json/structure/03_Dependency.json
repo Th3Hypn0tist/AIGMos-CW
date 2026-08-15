@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define dependency as the explicit structural dimension expressing required semantic/capability prerequisites without auto-enabling or implying ownership, containment or execution order.",
   "scope": {
     "owns": [
@@ -21,100 +20,276 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT",
+      "name": "Canonical Dependency",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT::OPERATIONS::OP_DEPENDENCY_DEFINE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_DEPENDENCY_DEFINE",
+            "name": "Define dependency edge",
+            "inputs": [
+              "consumer_ref",
+              "required_ref",
+              "dependency_type",
+              "required flag"
+            ],
+            "outputs": [
+              "dependency edge"
+            ],
+            "errors": [
+              "endpoint unresolved"
+            ],
+            "side_effects": [
+              "dependency graph updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT::OPERATIONS::OP_DEPENDENCY_VALIDATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_DEPENDENCY_VALIDATE",
+            "name": "Validate dependency graph",
+            "inputs": [
+              "active definitions",
+              "dependency edges",
+              "boot/profile state"
+            ],
+            "outputs": [
+              "satisfied/unsatisfied dependencies"
+            ],
+            "errors": [
+              "required dependency missing",
+              "forbidden cycle"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "dimension": "dependency",
+            "required_rule": "Required dependencies must resolve in the active graph.",
+            "optional_rule": "Optional dependencies are explicit and may remain absent.",
+            "boot_rule": "Missing runtime capability dependencies hard-fail when required; they are never silently auto-enabled.",
+            "ownership_rule": "Depending on a semantic owner does not transfer ownership.",
+            "ordering_rule": "Dependency does not automatically define execution order unless an owning causal contract says so.",
+            "cycle_rule": "Dependency cycles are validated according to the owning dependency semantics and cannot be silently broken."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_STRUCTURE_DEPENDENCY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "TOPIC_STRUCTURE_DEPENDENCY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_DEPENDENCY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_DEPENDENCY",
+            "child_ref": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_DEPENDENCY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_DEPENDENCY",
+            "child_ref": "STRUCTURAL_DIMENSION_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_DEPENDENCY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_DEPENDENCY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_DEPENDENCY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_DEPENDENCY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_DEPENDENCY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_DEPENDENCY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_DEPENDENCY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_DEPENDENCY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_DEPENDENCY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_DEPENDENCY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_DEPENDENCY_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_DEPENDENCY",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_STRUCTURE_DEPENDENCY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_STRUCTURE_DEPENDENCY",
+            "child_ref": "TOPIC_RUNTIME_BOOT_PROFILE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_STRUCTURE_DEPENDENCY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_STRUCTURE_DEPENDENCY",
+            "child_ref": "TOPIC_CORE_CAUSALITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/structure/03_Dependency.json"
+      }
+    },
     {
       "id": "TOPIC_STRUCTURE_DEPENDENCY",
       "name": "Dependency",
-      "purpose": "Define dependency as the explicit structural dimension expressing required semantic/capability prerequisites without auto-enabling or implying ownership, containment or execution order.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_STRUCTURE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_RUNTIME_BOOT_PROFILE",
-        "TOPIC_CORE_CAUSALITY"
-      ],
-      "member_refs": [
-        "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT",
-        "STRUCTURAL_DIMENSION_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_DEPENDENCY_DEFINE",
-        "OP_DEPENDENCY_VALIDATE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_STRUCTURE_DEPENDENCY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define dependency as the explicit structural dimension expressing required semantic/capability prerequisites without auto-enabling or implying ownership, containment or execution order.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_DEPENDENCY_DEFINE",
-        "name": "Define dependency edge",
-        "inputs": [
-          "consumer_ref",
-          "required_ref",
-          "dependency_type",
-          "required flag"
-        ],
-        "outputs": [
-          "dependency edge"
-        ],
-        "errors": [
-          "endpoint unresolved"
-        ],
-        "side_effects": [
-          "dependency graph updated"
-        ]
-      },
-      {
-        "id": "OP_DEPENDENCY_VALIDATE",
-        "name": "Validate dependency graph",
-        "inputs": [
-          "active definitions",
-          "dependency edges",
-          "boot/profile state"
-        ],
-        "outputs": [
-          "satisfied/unsatisfied dependencies"
-        ],
-        "errors": [
-          "required dependency missing",
-          "forbidden cycle"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "dimension": "dependency",
-    "required_rule": "Required dependencies must resolve in the active graph.",
-    "optional_rule": "Optional dependencies are explicit and may remain absent.",
-    "boot_rule": "Missing runtime capability dependencies hard-fail when required; they are never silently auto-enabled.",
-    "ownership_rule": "Depending on a semantic owner does not transfer ownership.",
-    "ordering_rule": "Dependency does not automatically define execution order unless an owning causal contract says so.",
-    "cycle_rule": "Dependency cycles are validated according to the owning dependency semantics and cannot be silently broken."
-  },
   "constraints": {
     "invariants": [
       {
@@ -167,10 +342,126 @@
       "purpose": "Dependency does not substitute for execution causality."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_STRUCTURE_DEPENDENCY",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_STRUCTURE_DEPENDENCY",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define dependency as the explicit structural dimension expressing required semantic/capability prerequisites without auto-enabling or implying ownership, containment or execution order.",
     "notes": [
       "Unlocked until reconciled against the assembled 1.4 architecture tree and reference/trace closure."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_STRUCTURE_DEPENDENCY",
+          "name": "Dependency",
+          "purpose": "Define dependency as the explicit structural dimension expressing required semantic/capability prerequisites without auto-enabling or implying ownership, containment or execution order.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_STRUCTURE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_RUNTIME_BOOT_PROFILE",
+            "TOPIC_CORE_CAUSALITY"
+          ],
+          "member_refs": [
+            "AIGMOS_STRUCTURE_DEPENDENCY_CONTRACT",
+            "STRUCTURAL_DIMENSION_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_DEPENDENCY_DEFINE",
+            "OP_DEPENDENCY_VALIDATE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_DEPENDENCY_DEFINE",
+            "name": "Define dependency edge",
+            "inputs": [
+              "consumer_ref",
+              "required_ref",
+              "dependency_type",
+              "required flag"
+            ],
+            "outputs": [
+              "dependency edge"
+            ],
+            "errors": [
+              "endpoint unresolved"
+            ],
+            "side_effects": [
+              "dependency graph updated"
+            ]
+          },
+          {
+            "id": "OP_DEPENDENCY_VALIDATE",
+            "name": "Validate dependency graph",
+            "inputs": [
+              "active definitions",
+              "dependency edges",
+              "boot/profile state"
+            ],
+            "outputs": [
+              "satisfied/unsatisfied dependencies"
+            ],
+            "errors": [
+              "required dependency missing",
+              "forbidden cycle"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "dimension": "dependency",
+        "required_rule": "Required dependencies must resolve in the active graph.",
+        "optional_rule": "Optional dependencies are explicit and may remain absent.",
+        "boot_rule": "Missing runtime capability dependencies hard-fail when required; they are never silently auto-enabled.",
+        "ownership_rule": "Depending on a semantic owner does not transfer ownership.",
+        "ordering_rule": "Dependency does not automatically define execution order unless an owning causal contract says so.",
+        "cycle_rule": "Dependency cycles are validated according to the owning dependency semantics and cannot be silently broken."
+      }
+    }
   }
 }

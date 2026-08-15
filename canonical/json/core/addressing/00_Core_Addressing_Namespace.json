@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_CORE_ADDRESSING_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define explicit canonical and runtime addressing semantics so roots, paths, namespace separators and property addresses resolve deterministically without path traversal or dynamic root selection.",
   "scope": {
     "owns": [
@@ -21,95 +20,257 @@
       "runtime implementation details"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_CORE_ADDRESSING_CONTRACT",
+      "name": "Core Addressing and Namespace Resolution",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_CORE_ADDRESSING_CONTRACT::OPERATIONS::OP_ADDRESS_PARSE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_ADDRESS_PARSE",
+            "name": "Parse canonical address",
+            "inputs": [
+              "address",
+              "declared grammar"
+            ],
+            "outputs": [
+              "typed address"
+            ],
+            "errors": [
+              "invalid grammar",
+              "dynamic root selection"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_ADDRESSING_CONTRACT::OPERATIONS::OP_ADDRESS_RESOLVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_ADDRESS_RESOLVE",
+            "name": "Resolve canonical address",
+            "inputs": [
+              "typed address",
+              "namespace registry"
+            ],
+            "outputs": [
+              "resolved target"
+            ],
+            "errors": [
+              "unknown root",
+              "unknown segment",
+              "ambiguous target"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_ADDRESSING_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "root_rule": "Address roots are explicit registered semantic roots.",
+            "segment_rule": "Address segments follow the owning grammar and are not arbitrary filesystem path fragments.",
+            "dynamic_root_rule": "Payload-selected or response-selected dynamic root authority is forbidden.",
+            "property_rule": "Property addressing remains typed and is not collapsed into generic hierarchy.",
+            "filesystem_rule": "Canonical/runtime addresses are semantic addresses, not direct filesystem paths.",
+            "resolution_rule": "Address resolution preserves root ownership and namespace semantics."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_ADDRESSING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_CORE_ADDRESSING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "TOPIC_CORE_ADDRESSING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_ADDRESSING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_ADDRESSING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_ADDRESSING",
+            "child_ref": "AIGMOS_CORE_ADDRESSING_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_ADDRESSING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_ADDRESSING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_ADDRESSING",
+            "child_ref": "EXPLICIT_SEMANTIC_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_ADDRESSING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_ADDRESSING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_ADDRESSING",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_ADDRESSING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_ADDRESSING_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_ADDRESSING",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_ADDRESSING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_ADDRESSING_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_ADDRESSING",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_ADDRESSING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_ADDRESSING_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_ADDRESSING",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_ADDRESSING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_ADDRESSING_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_ADDRESSING",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_ADDRESSING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_CORE_ADDRESSING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_CORE_ADDRESSING",
+            "child_ref": "TOPIC_CORE_IDENTITY_RESOLUTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_ADDRESSING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_CORE_ADDRESSING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_CORE_ADDRESSING",
+            "child_ref": "TOPIC_CORE_RUNTIME_SYMBOLS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/core/addressing/00_Core_Addressing_Namespace.json"
+      }
+    },
     {
       "id": "TOPIC_CORE_ADDRESSING",
       "name": "Addressing",
-      "purpose": "Define explicit canonical and runtime addressing semantics so roots, paths, namespace separators and property addresses resolve deterministically without path traversal or dynamic root selection.",
-      "parent_topic_refs": [
-        "TOPIC_CORE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_IDENTITY_RESOLUTION",
-        "TOPIC_CORE_RUNTIME_SYMBOLS"
-      ],
-      "member_refs": [
-        "AIGMOS_CORE_ADDRESSING_CONTRACT",
-        "EXPLICIT_SEMANTIC_BOUNDARY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_ADDRESS_PARSE",
-        "OP_ADDRESS_RESOLVE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_CORE_ADDRESSING::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define explicit canonical and runtime addressing semantics so roots, paths, namespace separators and property addresses resolve deterministically without path traversal or dynamic root selection.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_ADDRESS_PARSE",
-        "name": "Parse canonical address",
-        "inputs": [
-          "address",
-          "declared grammar"
-        ],
-        "outputs": [
-          "typed address"
-        ],
-        "errors": [
-          "invalid grammar",
-          "dynamic root selection"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_ADDRESS_RESOLVE",
-        "name": "Resolve canonical address",
-        "inputs": [
-          "typed address",
-          "namespace registry"
-        ],
-        "outputs": [
-          "resolved target"
-        ],
-        "errors": [
-          "unknown root",
-          "unknown segment",
-          "ambiguous target"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "root_rule": "Address roots are explicit registered semantic roots.",
-    "segment_rule": "Address segments follow the owning grammar and are not arbitrary filesystem path fragments.",
-    "dynamic_root_rule": "Payload-selected or response-selected dynamic root authority is forbidden.",
-    "property_rule": "Property addressing remains typed and is not collapsed into generic hierarchy.",
-    "filesystem_rule": "Canonical/runtime addresses are semantic addresses, not direct filesystem paths.",
-    "resolution_rule": "Address resolution preserves root ownership and namespace semantics."
-  },
   "constraints": {
     "invariants": [
       {
@@ -157,10 +318,121 @@
       "purpose": "Root, path and dynamic-root invariants."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_CORE_ADDRESSING_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_CORE_ADDRESSING",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_CORE_ADDRESSING",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define explicit canonical and runtime addressing semantics so roots, paths, namespace separators and property addresses resolve deterministically without path traversal or dynamic root selection.",
     "notes": [
       "Unlocked until repository-wide Contract Format 1.4 migration validates this boundary."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_CORE_ADDRESSING",
+          "name": "Addressing",
+          "purpose": "Define explicit canonical and runtime addressing semantics so roots, paths, namespace separators and property addresses resolve deterministically without path traversal or dynamic root selection.",
+          "parent_topic_refs": [
+            "TOPIC_CORE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_IDENTITY_RESOLUTION",
+            "TOPIC_CORE_RUNTIME_SYMBOLS"
+          ],
+          "member_refs": [
+            "AIGMOS_CORE_ADDRESSING_CONTRACT",
+            "EXPLICIT_SEMANTIC_BOUNDARY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_ADDRESS_PARSE",
+            "OP_ADDRESS_RESOLVE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_ADDRESS_PARSE",
+            "name": "Parse canonical address",
+            "inputs": [
+              "address",
+              "declared grammar"
+            ],
+            "outputs": [
+              "typed address"
+            ],
+            "errors": [
+              "invalid grammar",
+              "dynamic root selection"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_ADDRESS_RESOLVE",
+            "name": "Resolve canonical address",
+            "inputs": [
+              "typed address",
+              "namespace registry"
+            ],
+            "outputs": [
+              "resolved target"
+            ],
+            "errors": [
+              "unknown root",
+              "unknown segment",
+              "ambiguous target"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "root_rule": "Address roots are explicit registered semantic roots.",
+        "segment_rule": "Address segments follow the owning grammar and are not arbitrary filesystem path fragments.",
+        "dynamic_root_rule": "Payload-selected or response-selected dynamic root authority is forbidden.",
+        "property_rule": "Property addressing remains typed and is not collapsed into generic hierarchy.",
+        "filesystem_rule": "Canonical/runtime addresses are semantic addresses, not direct filesystem paths.",
+        "resolution_rule": "Address resolution preserves root ownership and namespace semantics."
+      }
+    }
   }
 }

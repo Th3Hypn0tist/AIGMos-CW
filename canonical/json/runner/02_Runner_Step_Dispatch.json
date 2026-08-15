@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNNER_STEP_DISPATCH_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define how each executable Routine step crosses the normal command/runtime dispatcher boundary, preserving per-step validation, authorization, result and failure semantics.",
   "scope": {
     "owns": [
@@ -22,57 +21,192 @@
       "arbitrary hidden scheduler state"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_RUNNER_STEP_DISPATCH_CONTRACT",
+      "name": "Runner Step Dispatch",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNNER_STEP_DISPATCH_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "resolve_rule": "Step resolves exact command/operation identity and argument schema.",
+            "dispatch_rule": "Effectful step invokes the normal runtime dispatcher.",
+            "authority_rule": "Authorization/assurance is evaluated for the actual step operation; Routine approval does not silently grant all contained rights.",
+            "result_rule": "Step result is stored as inert runner data unless an explicit later step consumes a declared value.",
+            "failure_rule": "Step failure follows explicit stop/continue/retry policy.",
+            "retry_rule": "Retries are bounded and cannot bypass authorization or capability failures.",
+            "trace_rule": "Runner trace links each step to dispatch execution identity/result."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_DISPATCH_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNNER_STEP_DISPATCH_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_ROUTINE",
+            "child_ref": "TOPIC_RUNNER_STEP_DISPATCH",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_DISPATCH_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNNER_STEP_DISPATCH_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNNER",
+            "child_ref": "TOPIC_RUNNER_STEP_DISPATCH",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_DISPATCH_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_STEP_DISPATCH_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_STEP_DISPATCH",
+            "child_ref": "AIGMOS_RUNNER_STEP_DISPATCH_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_DISPATCH_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_STEP_DISPATCH_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_STEP_DISPATCH",
+            "child_ref": "ROUTINE_RUNNER_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_DISPATCH_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_STEP_DISPATCH_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_STEP_DISPATCH",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_DISPATCH_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_STEP_DISPATCH_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_STEP_DISPATCH",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_DISPATCH_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_STEP_DISPATCH_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_STEP_DISPATCH",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_DISPATCH_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_STEP_DISPATCH_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_STEP_DISPATCH",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_DISPATCH_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_STEP_DISPATCH_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_STEP_DISPATCH",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runner/02_Runner_Step_Dispatch.json"
+      }
+    },
     {
       "id": "TOPIC_RUNNER_STEP_DISPATCH",
       "name": "Runner Step Dispatch",
-      "purpose": "Define how each executable Routine step crosses the normal command/runtime dispatcher boundary, preserving per-step validation, authorization, result and failure semantics.",
-      "parent_topic_refs": [
-        "TOPIC_ROUTINE",
-        "TOPIC_RUNNER"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_RUNNER_STEP_DISPATCH_CONTRACT",
-        "ROUTINE_RUNNER_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNNER_STEP_DISPATCH::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define how each executable Routine step crosses the normal command/runtime dispatcher boundary, preserving per-step validation, authorization, result and failure semantics.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "resolve_rule": "Step resolves exact command/operation identity and argument schema.",
-    "dispatch_rule": "Effectful step invokes the normal runtime dispatcher.",
-    "authority_rule": "Authorization/assurance is evaluated for the actual step operation; Routine approval does not silently grant all contained rights.",
-    "result_rule": "Step result is stored as inert runner data unless an explicit later step consumes a declared value.",
-    "failure_rule": "Step failure follows explicit stop/continue/retry policy.",
-    "retry_rule": "Retries are bounded and cannot bypass authorization or capability failures.",
-    "trace_rule": "Runner trace links each step to dispatch execution identity/result."
-  },
   "constraints": {
     "invariants": [
       {
@@ -120,10 +254,73 @@
       "purpose": "Step failures retain structured error semantics."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define how each executable Routine step crosses the normal command/runtime dispatcher boundary, preserving per-step validation, authorization, result and failure semantics.",
     "notes": [
       "Unlocked pending reconciliation against existing Routine/Runner/Event/Trigger contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RUNNER_STEP_DISPATCH",
+          "name": "Runner Step Dispatch",
+          "purpose": "Define how each executable Routine step crosses the normal command/runtime dispatcher boundary, preserving per-step validation, authorization, result and failure semantics.",
+          "parent_topic_refs": [
+            "TOPIC_ROUTINE",
+            "TOPIC_RUNNER"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_RUNNER_STEP_DISPATCH_CONTRACT",
+            "ROUTINE_RUNNER_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "resolve_rule": "Step resolves exact command/operation identity and argument schema.",
+        "dispatch_rule": "Effectful step invokes the normal runtime dispatcher.",
+        "authority_rule": "Authorization/assurance is evaluated for the actual step operation; Routine approval does not silently grant all contained rights.",
+        "result_rule": "Step result is stored as inert runner data unless an explicit later step consumes a declared value.",
+        "failure_rule": "Step failure follows explicit stop/continue/retry policy.",
+        "retry_rule": "Retries are bounded and cannot bypass authorization or capability failures.",
+        "trace_rule": "Runner trace links each step to dispatch execution identity/result."
+      }
+    }
   }
 }

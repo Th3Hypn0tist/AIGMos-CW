@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define Port Editor as an Expose projection/editor for named network/service listener configuration and lifecycle across web HTTP, REST, OSC, WebSocket and other installed port-bound protocols.",
   "scope": {
     "owns": [
@@ -21,128 +20,312 @@
       "unrelated domain semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT",
+      "name": "Expose Port Editor",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT::OPERATIONS::OP_PORT_EDITOR_READ",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_PORT_EDITOR_READ",
+            "name": "Read listener configuration",
+            "inputs": [
+              "named service refs"
+            ],
+            "outputs": [
+              "listener/binding model"
+            ],
+            "errors": [
+              "service unresolved"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT::OPERATIONS::OP_PORT_EDITOR_UPDATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_PORT_EDITOR_UPDATE",
+            "name": "Update listener binding",
+            "inputs": [
+              "named service",
+              "validated binding delta"
+            ],
+            "outputs": [
+              "updated listener config"
+            ],
+            "errors": [
+              "authority denied",
+              "binding conflict"
+            ],
+            "side_effects": [
+              "listener configuration updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT::OPERATIONS::OP_PORT_EDITOR_LIFECYCLE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_PORT_EDITOR_LIFECYCLE",
+            "name": "Invoke listener lifecycle",
+            "inputs": [
+              "named service",
+              "start/stop/reload operation"
+            ],
+            "outputs": [
+              "runtime lifecycle result"
+            ],
+            "errors": [
+              "operation denied",
+              "lifecycle failure"
+            ],
+            "side_effects": [
+              "only canonical lifecycle effects"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "managed_fields": [
+              "logical instance name",
+              "protocol/type",
+              "listen binding",
+              "port",
+              "transport where applicable",
+              "runtime state"
+            ],
+            "service_identity_rule": "Port Editor edits bindings attached to stable named service identities; it does not use port as identity.",
+            "protocol_scope": [
+              "web/nanoCMS HTTP",
+              "REST",
+              "OSC",
+              "WebSocket",
+              "other installed port-bound services"
+            ],
+            "authority_rule": "Port Editor receives no independent listener/runtime authority.",
+            "write_rule": "Changes invoke canonical listener/service operations.",
+            "state_rule": "Declared configuration and runtime running state remain distinct.",
+            "default_web_rule": "nanoCMS public instance default port 80 remains its canonical default binding."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_PORT_EDITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "TOPIC_EXPOSE_PORT_EDITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_PORT_EDITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_PORT_EDITOR",
+            "child_ref": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_PORT_EDITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_PORT_EDITOR",
+            "child_ref": "EDITOR_TOOL_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_PORT_EDITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_PORT_EDITOR",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_PORT_EDITOR_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_PORT_EDITOR",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_PORT_EDITOR_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_PORT_EDITOR",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_PORT_EDITOR_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_PORT_EDITOR",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_PORT_EDITOR_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_PORT_EDITOR",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_PORT_EDITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_PORT_EDITOR",
+            "child_ref": "TOPIC_RUNTIME_LISTENERS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_PORT_EDITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_PORT_EDITOR",
+            "child_ref": "TOPIC_RUNTIME_SERVICE_INSTANCES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_PORT_EDITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_PORT_EDITOR",
+            "child_ref": "TOPIC_EXPOSE_EDITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/editor/05_Port_Editor.json"
+      }
+    },
     {
       "id": "TOPIC_EXPOSE_PORT_EDITOR",
       "name": "Port Editor",
-      "purpose": "Define Port Editor as an Expose projection/editor for named network/service listener configuration and lifecycle across web HTTP, REST, OSC, WebSocket and other installed port-bound protocols.",
-      "parent_topic_refs": [
-        "TOPIC_EXPOSE_EDITOR"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_RUNTIME_LISTENERS",
-        "TOPIC_RUNTIME_SERVICE_INSTANCES",
-        "TOPIC_EXPOSE_EDITOR"
-      ],
-      "member_refs": [
-        "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT",
-        "EDITOR_TOOL_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_PORT_EDITOR_READ",
-        "OP_PORT_EDITOR_UPDATE",
-        "OP_PORT_EDITOR_LIFECYCLE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_PORT_EDITOR::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define Port Editor as an Expose projection/editor for named network/service listener configuration and lifecycle across web HTTP, REST, OSC, WebSocket and other installed port-bound protocols.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_PORT_EDITOR_READ",
-        "name": "Read listener configuration",
-        "inputs": [
-          "named service refs"
-        ],
-        "outputs": [
-          "listener/binding model"
-        ],
-        "errors": [
-          "service unresolved"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_PORT_EDITOR_UPDATE",
-        "name": "Update listener binding",
-        "inputs": [
-          "named service",
-          "validated binding delta"
-        ],
-        "outputs": [
-          "updated listener config"
-        ],
-        "errors": [
-          "authority denied",
-          "binding conflict"
-        ],
-        "side_effects": [
-          "listener configuration updated"
-        ]
-      },
-      {
-        "id": "OP_PORT_EDITOR_LIFECYCLE",
-        "name": "Invoke listener lifecycle",
-        "inputs": [
-          "named service",
-          "start/stop/reload operation"
-        ],
-        "outputs": [
-          "runtime lifecycle result"
-        ],
-        "errors": [
-          "operation denied",
-          "lifecycle failure"
-        ],
-        "side_effects": [
-          "only canonical lifecycle effects"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "managed_fields": [
-      "logical instance name",
-      "protocol/type",
-      "listen binding",
-      "port",
-      "transport where applicable",
-      "runtime state"
-    ],
-    "service_identity_rule": "Port Editor edits bindings attached to stable named service identities; it does not use port as identity.",
-    "protocol_scope": [
-      "web/nanoCMS HTTP",
-      "REST",
-      "OSC",
-      "WebSocket",
-      "other installed port-bound services"
-    ],
-    "authority_rule": "Port Editor receives no independent listener/runtime authority.",
-    "write_rule": "Changes invoke canonical listener/service operations.",
-    "state_rule": "Declared configuration and runtime running state remain distinct.",
-    "default_web_rule": "nanoCMS public instance default port 80 remains its canonical default binding."
-  },
   "constraints": {
     "invariants": [
       {
@@ -190,10 +373,154 @@
       "purpose": "Bindings attach to named service instances."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_EXPOSE_PORT_EDITOR",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_EXPOSE_PORT_EDITOR",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define Port Editor as an Expose projection/editor for named network/service listener configuration and lifecycle across web HTTP, REST, OSC, WebSocket and other installed port-bound protocols.",
     "notes": [
       "Unlocked until reconciled against existing Expose Editor contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXPOSE_PORT_EDITOR",
+          "name": "Port Editor",
+          "purpose": "Define Port Editor as an Expose projection/editor for named network/service listener configuration and lifecycle across web HTTP, REST, OSC, WebSocket and other installed port-bound protocols.",
+          "parent_topic_refs": [
+            "TOPIC_EXPOSE_EDITOR"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_RUNTIME_LISTENERS",
+            "TOPIC_RUNTIME_SERVICE_INSTANCES",
+            "TOPIC_EXPOSE_EDITOR"
+          ],
+          "member_refs": [
+            "AIGMOS_EXPOSE_PORT_EDITOR_CONTRACT",
+            "EDITOR_TOOL_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_PORT_EDITOR_READ",
+            "OP_PORT_EDITOR_UPDATE",
+            "OP_PORT_EDITOR_LIFECYCLE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_PORT_EDITOR_READ",
+            "name": "Read listener configuration",
+            "inputs": [
+              "named service refs"
+            ],
+            "outputs": [
+              "listener/binding model"
+            ],
+            "errors": [
+              "service unresolved"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_PORT_EDITOR_UPDATE",
+            "name": "Update listener binding",
+            "inputs": [
+              "named service",
+              "validated binding delta"
+            ],
+            "outputs": [
+              "updated listener config"
+            ],
+            "errors": [
+              "authority denied",
+              "binding conflict"
+            ],
+            "side_effects": [
+              "listener configuration updated"
+            ]
+          },
+          {
+            "id": "OP_PORT_EDITOR_LIFECYCLE",
+            "name": "Invoke listener lifecycle",
+            "inputs": [
+              "named service",
+              "start/stop/reload operation"
+            ],
+            "outputs": [
+              "runtime lifecycle result"
+            ],
+            "errors": [
+              "operation denied",
+              "lifecycle failure"
+            ],
+            "side_effects": [
+              "only canonical lifecycle effects"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "managed_fields": [
+          "logical instance name",
+          "protocol/type",
+          "listen binding",
+          "port",
+          "transport where applicable",
+          "runtime state"
+        ],
+        "service_identity_rule": "Port Editor edits bindings attached to stable named service identities; it does not use port as identity.",
+        "protocol_scope": [
+          "web/nanoCMS HTTP",
+          "REST",
+          "OSC",
+          "WebSocket",
+          "other installed port-bound services"
+        ],
+        "authority_rule": "Port Editor receives no independent listener/runtime authority.",
+        "write_rule": "Changes invoke canonical listener/service operations.",
+        "state_rule": "Declared configuration and runtime running state remain distinct.",
+        "default_web_rule": "nanoCMS public instance default port 80 remains its canonical default binding."
+      }
+    }
   }
 }

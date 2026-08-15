@@ -1,11 +1,573 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT",
+    "name": "QC Local / External Mode",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define qc analysis target locality explicitly so quality/code analysis can be run against local or declared external sources without conflating external transport reachability with semantic authority. [2] Define explicit QC analysis locality so local and external analysis backends/sources are selectable without changing the semantic identity of the analysis target.",
+  "scope": {
+    "does_not_own": [
+      "backend provider implementation",
+      "UI presentation",
+      "unrelated runtime authority",
+      "model-provider semantics",
+      "AccessCore policy ownership",
+      "domain source semantics"
+    ],
+    "owns": [
+      "QC Local and External Mode semantics",
+      "QC Local / External Mode semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT",
+      "name": "QC Local / External Mode",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "authorization_rule": "External reachability does not grant target read/write authority.",
+            "external_rule": "Reconciled source clauses: [1] External mode requires an explicit external identity/reference and governed access path. [2] External mode uses an explicitly governed external backend/service/source path.",
+            "fallback_rule": "Local/external fallback is explicit; failure never silently changes locality.",
+            "local_rule": "Reconciled source clauses: [1] Local mode resolves qc target inside the local owned/available semantic or source boundary. [2] Local mode uses configured local backend/resources.",
+            "mode_rule": "QC locality is explicit per invocation/profile.",
+            "modes": [
+              "local",
+              "external"
+            ],
+            "privacy_rule": "External mode requires explicit data/export/privacy policy satisfaction before sending context.",
+            "provenance_rule": "Reconciled source clauses: [1] qc output retains local/external target provenance. [2] Result records mode, backend and source refs.",
+            "read_rule": "External read access does not imply external write authority.",
+            "selection_rule": "Mode is explicit in invocation/configuration; it is not inferred from URL-looking strings or network reachability alone.",
+            "target_rule": "Analysis target identity is independent from local/external execution locality.",
+            "transport_rule": "Transport endpoint is binding only and not external semantic target identity.",
+            "write_rule": "Any external mutation requires an explicit supported write operation and remote authorization."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_QC_MODE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_QC_TARGET",
+            "child_ref": "TOPIC_QC_MODE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_QC_MODE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH_GOVERNED_REMOTE",
+            "child_ref": "TOPIC_QC_MODE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_QC_MODE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_EXTERNAL_BOUNDARY",
+            "child_ref": "TOPIC_QC_MODE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_MODE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_MODE",
+            "child_ref": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_MODE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_MODE",
+            "child_ref": "COMMAND_AI_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_MODE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_MODE",
+            "child_ref": "MODEL_OUTPUT_NONAUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_MODE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_MODE",
+            "child_ref": "GATE_670B84B053",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_MODE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_MODE",
+            "child_ref": "GATE_1CC2CBB1C7",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_MODE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_MODE",
+            "child_ref": "GATE_2C8B1727CA",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_MODE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_MODE",
+            "child_ref": "GATE_9FA1B571BF",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_MODE_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_MODE",
+            "child_ref": "GATE_BD1B78384E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_MODE_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_MODE",
+            "child_ref": "GATE_AB7B4F0DCF",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_MODE_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_MODE",
+            "child_ref": "GATE_AA553971ED",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_MODE_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_MODE",
+            "child_ref": "GATE_1F65359F82",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_MODE_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_MODE",
+            "child_ref": "GATE_2C83E12D2C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_MODE_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_MODE",
+            "child_ref": "GATE_6B654EFC38",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_QC_LOCAL_EXTERNAL_MODE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_Q_FAMILY",
+            "child_ref": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_QC_LOCAL_EXTERNAL_MODE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_AI_EXECUTION",
+            "child_ref": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_LOCAL_EXTERNAL_MODE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+            "child_ref": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_LOCAL_EXTERNAL_MODE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+            "child_ref": "COMMAND_AI_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_LOCAL_EXTERNAL_MODE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+            "child_ref": "MODEL_OUTPUT_NONAUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_LOCAL_EXTERNAL_MODE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+            "child_ref": "GATE_670B84B053",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_LOCAL_EXTERNAL_MODE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+            "child_ref": "GATE_1CC2CBB1C7",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_LOCAL_EXTERNAL_MODE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+            "child_ref": "GATE_2C8B1727CA",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_LOCAL_EXTERNAL_MODE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+            "child_ref": "GATE_9FA1B571BF",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_LOCAL_EXTERNAL_MODE_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+            "child_ref": "GATE_BD1B78384E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_LOCAL_EXTERNAL_MODE_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+            "child_ref": "GATE_AB7B4F0DCF",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_LOCAL_EXTERNAL_MODE_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+            "child_ref": "GATE_AA553971ED",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_LOCAL_EXTERNAL_MODE_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+            "child_ref": "GATE_1F65359F82",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_LOCAL_EXTERNAL_MODE_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+            "child_ref": "GATE_2C83E12D2C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_QC_LOCAL_EXTERNAL_MODE_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+            "child_ref": "GATE_6B654EFC38",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[12]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_QC_MODE",
+      "name": "QC Local and External Mode",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_QC_MODE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define qc analysis target locality explicitly so quality/code analysis can be run against local or declared external sources without conflating external transport reachability with semantic authority.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+      "name": "QC Local / External Mode",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_QC_LOCAL_EXTERNAL_MODE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define explicit QC analysis locality so local and external analysis backends/sources are selectable without changing the semantic identity of the analysis target.",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -70,29 +632,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT",
-    "name": "QC Local / External Mode",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked pending reconciliation against existing q/qc/qt and command-tree contracts and whole-tree Contract Format 1.4 validation.",
-      "Unlocked pending reconciliation against q-family, command runtime, memory and Studio/QC contracts.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: command_ai/03_QC_Local_External_Mode.json, q/03_QC_Local_External_Mode.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
-    ],
-    "summary": "Reconciled source purposes: [1] Define qc analysis target locality explicitly so quality/code analysis can be run against local or declared external sources without conflating external transport reachability with semantic authority. [2] Define explicit QC analysis locality so local and external analysis backends/sources are selectable without changing the semantic identity of the analysis target."
-  },
-  "purpose": "Reconciled source purposes: [1] Define qc analysis target locality explicitly so quality/code analysis can be run against local or declared external sources without conflating external transport reachability with semantic authority. [2] Define explicit QC analysis locality so local and external analysis backends/sources are selectable without changing the semantic identity of the analysis target.",
   "references": [
     {
       "id": "REF_REMOTE",
@@ -115,110 +654,125 @@
       "purpose": "External data projection remains governed."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "backend provider implementation",
-      "UI presentation",
-      "unrelated runtime authority",
-      "model-provider semantics",
-      "AccessCore policy ownership",
-      "domain source semantics"
+  "gaps": [],
+  "prose": {
+    "notes": [
+      "Unlocked pending reconciliation against existing q/qc/qt and command-tree contracts and whole-tree Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against q-family, command runtime, memory and Studio/QC contracts.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: command_ai/03_QC_Local_External_Mode.json, q/03_QC_Local_External_Mode.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
     ],
-    "owns": [
-      "QC Local and External Mode semantics",
-      "QC Local / External Mode semantics"
-    ]
+    "summary": "Reconciled source purposes: [1] Define qc analysis target locality explicitly so quality/code analysis can be run against local or declared external sources without conflating external transport reachability with semantic authority. [2] Define explicit QC analysis locality so local and external analysis backends/sources are selectable without changing the semantic identity of the analysis target."
   },
-  "semantics": {
-    "authorization_rule": "External reachability does not grant target read/write authority.",
-    "external_rule": "Reconciled source clauses: [1] External mode requires an explicit external identity/reference and governed access path. [2] External mode uses an explicitly governed external backend/service/source path.",
-    "fallback_rule": "Local/external fallback is explicit; failure never silently changes locality.",
-    "local_rule": "Reconciled source clauses: [1] Local mode resolves qc target inside the local owned/available semantic or source boundary. [2] Local mode uses configured local backend/resources.",
-    "mode_rule": "QC locality is explicit per invocation/profile.",
-    "modes": [
-      "local",
-      "external"
-    ],
-    "privacy_rule": "External mode requires explicit data/export/privacy policy satisfaction before sending context.",
-    "provenance_rule": "Reconciled source clauses: [1] qc output retains local/external target provenance. [2] Result records mode, backend and source refs.",
-    "read_rule": "External read access does not imply external write authority.",
-    "selection_rule": "Mode is explicit in invocation/configuration; it is not inferred from URL-looking strings or network reachability alone.",
-    "target_rule": "Analysis target identity is independent from local/external execution locality.",
-    "transport_rule": "Transport endpoint is binding only and not external semantic target identity.",
-    "write_rule": "Any external mutation requires an explicit supported write operation and remote authorization."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
-    {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_QC_MODE",
-      "member_refs": [
-        "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT",
-        "COMMAND_AI_BOUNDARY_EXPLICIT",
-        "MODEL_OUTPUT_NONAUTHORITY",
-        "GATE_670B84B053",
-        "GATE_1CC2CBB1C7",
-        "GATE_2C8B1727CA",
-        "GATE_9FA1B571BF",
-        "GATE_BD1B78384E",
-        "GATE_AB7B4F0DCF",
-        "GATE_AA553971ED",
-        "GATE_1F65359F82",
-        "GATE_2C83E12D2C",
-        "GATE_6B654EFC38"
-      ],
-      "metadata": {},
-      "name": "QC Local and External Mode",
-      "operation_refs": [],
-      "parent_topic_refs": [
-        "TOPIC_QC_TARGET",
-        "TOPIC_DWH_GOVERNED_REMOTE",
-        "TOPIC_CORE_EXTERNAL_BOUNDARY"
-      ],
-      "purpose": "Define qc analysis target locality explicitly so quality/code analysis can be run against local or declared external sources without conflating external transport reachability with semantic authority.",
-      "relation_refs": []
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
     },
-    {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
-      "member_refs": [
-        "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT",
-        "COMMAND_AI_BOUNDARY_EXPLICIT",
-        "MODEL_OUTPUT_NONAUTHORITY",
-        "GATE_670B84B053",
-        "GATE_1CC2CBB1C7",
-        "GATE_2C8B1727CA",
-        "GATE_9FA1B571BF",
-        "GATE_BD1B78384E",
-        "GATE_AB7B4F0DCF",
-        "GATE_AA553971ED",
-        "GATE_1F65359F82",
-        "GATE_2C83E12D2C",
-        "GATE_6B654EFC38"
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_QC_MODE",
+          "member_refs": [
+            "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT",
+            "COMMAND_AI_BOUNDARY_EXPLICIT",
+            "MODEL_OUTPUT_NONAUTHORITY",
+            "GATE_670B84B053",
+            "GATE_1CC2CBB1C7",
+            "GATE_2C8B1727CA",
+            "GATE_9FA1B571BF",
+            "GATE_BD1B78384E",
+            "GATE_AB7B4F0DCF",
+            "GATE_AA553971ED",
+            "GATE_1F65359F82",
+            "GATE_2C83E12D2C",
+            "GATE_6B654EFC38"
+          ],
+          "metadata": {},
+          "name": "QC Local and External Mode",
+          "operation_refs": [],
+          "parent_topic_refs": [
+            "TOPIC_QC_TARGET",
+            "TOPIC_DWH_GOVERNED_REMOTE",
+            "TOPIC_CORE_EXTERNAL_BOUNDARY"
+          ],
+          "purpose": "Define qc analysis target locality explicitly so quality/code analysis can be run against local or declared external sources without conflating external transport reachability with semantic authority.",
+          "relation_refs": []
+        },
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_QC_LOCAL_EXTERNAL_MODE",
+          "member_refs": [
+            "AIGMOS_QC_LOCAL_EXTERNAL_MODE_CONTRACT",
+            "COMMAND_AI_BOUNDARY_EXPLICIT",
+            "MODEL_OUTPUT_NONAUTHORITY",
+            "GATE_670B84B053",
+            "GATE_1CC2CBB1C7",
+            "GATE_2C8B1727CA",
+            "GATE_9FA1B571BF",
+            "GATE_BD1B78384E",
+            "GATE_AB7B4F0DCF",
+            "GATE_AA553971ED",
+            "GATE_1F65359F82",
+            "GATE_2C83E12D2C",
+            "GATE_6B654EFC38"
+          ],
+          "metadata": {},
+          "name": "QC Local / External Mode",
+          "operation_refs": [],
+          "parent_topic_refs": [
+            "TOPIC_Q_FAMILY",
+            "TOPIC_AI_EXECUTION"
+          ],
+          "purpose": "Define explicit QC analysis locality so local and external analysis backends/sources are selectable without changing the semantic identity of the analysis target.",
+          "relation_refs": []
+        }
       ],
-      "metadata": {},
-      "name": "QC Local / External Mode",
-      "operation_refs": [],
-      "parent_topic_refs": [
-        "TOPIC_Q_FAMILY",
-        "TOPIC_AI_EXECUTION"
-      ],
-      "purpose": "Define explicit QC analysis locality so local and external analysis backends/sources are selectable without changing the semantic identity of the analysis target.",
-      "relation_refs": []
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [],
+        "states": []
+      },
+      "semantics": {
+        "authorization_rule": "External reachability does not grant target read/write authority.",
+        "external_rule": "Reconciled source clauses: [1] External mode requires an explicit external identity/reference and governed access path. [2] External mode uses an explicitly governed external backend/service/source path.",
+        "fallback_rule": "Local/external fallback is explicit; failure never silently changes locality.",
+        "local_rule": "Reconciled source clauses: [1] Local mode resolves qc target inside the local owned/available semantic or source boundary. [2] Local mode uses configured local backend/resources.",
+        "mode_rule": "QC locality is explicit per invocation/profile.",
+        "modes": [
+          "local",
+          "external"
+        ],
+        "privacy_rule": "External mode requires explicit data/export/privacy policy satisfaction before sending context.",
+        "provenance_rule": "Reconciled source clauses: [1] qc output retains local/external target provenance. [2] Result records mode, backend and source refs.",
+        "read_rule": "External read access does not imply external write authority.",
+        "selection_rule": "Mode is explicit in invocation/configuration; it is not inferred from URL-looking strings or network reachability alone.",
+        "target_rule": "Analysis target identity is independent from local/external execution locality.",
+        "transport_rule": "Transport endpoint is binding only and not external semantic target identity.",
+        "write_rule": "Any external mutation requires an explicit supported write operation and remote authorization."
+      }
     }
-  ]
+  }
 }

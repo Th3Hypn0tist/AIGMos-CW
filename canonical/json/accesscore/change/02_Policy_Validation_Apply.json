@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define validate→authorize policy administration→commit revision→activate evaluator snapshot as explicit separate transitions.",
   "scope": {
     "owns": [
@@ -21,88 +20,241 @@
       "runtime operation implementation"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT",
+      "name": "AccessCore Policy Validation and Apply",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "flow": [
+              "validate candidate",
+              "compute authority-impact diff",
+              "authorize policy administration",
+              "commit accepted revision",
+              "activate evaluator snapshot",
+              "record result"
+            ],
+            "validation_rule": "Structural and semantic policy validation precedes apply.",
+            "self_lockout_rule": "Self-lockout/critical-admin effects may require explicit safeguard profile.",
+            "authority_rule": "Policy changes require policy-administration authority separate from rights being edited.",
+            "activation_rule": "Accepted policy may exist before evaluator activation completes.",
+            "failure_rule": "Activation failure is explicit and never silently falls back to ungoverned mode.",
+            "history_rule": "Previous active/accepted revisions remain traceable."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_ACCESS_POLICY_APPLY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_ACCESSCORE",
+            "child_ref": "TOPIC_ACCESS_POLICY_APPLY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_ACCESS_POLICY_APPLY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_POLICY_CHANGE",
+            "child_ref": "TOPIC_ACCESS_POLICY_APPLY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESS_POLICY_APPLY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESS_POLICY_APPLY",
+            "child_ref": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESS_POLICY_APPLY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESS_POLICY_APPLY",
+            "child_ref": "IDENTITY_AUTHORITY_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESS_POLICY_APPLY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESS_POLICY_APPLY",
+            "child_ref": "FAIL_CLOSED_AUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESS_POLICY_APPLY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESS_POLICY_APPLY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESS_POLICY_APPLY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESS_POLICY_APPLY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESS_POLICY_APPLY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESS_POLICY_APPLY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESS_POLICY_APPLY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESS_POLICY_APPLY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_ACCESS_POLICY_APPLY_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_ACCESS_POLICY_APPLY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/accesscore/change/02_Policy_Validation_Apply.json"
+      }
+    },
     {
       "id": "TOPIC_ACCESS_POLICY_APPLY",
       "name": "AccessCore Policy Validation and Apply",
-      "purpose": "Define validate→authorize policy administration→commit revision→activate evaluator snapshot as explicit separate transitions.",
-      "parent_topic_refs": [
-        "TOPIC_ACCESSCORE",
-        "TOPIC_POLICY_CHANGE"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT",
-        "IDENTITY_AUTHORITY_SEPARATION",
-        "FAIL_CLOSED_AUTHORITY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_ACCESS_POLICY_APPLY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define validate→authorize policy administration→commit revision→activate evaluator snapshot as explicit separate transitions.",
+            "metadata": {}
+          }
+        }
+      ]
     },
     {
       "id": "TOPIC_POLICY_CHANGE",
       "name": "Policy Change",
-      "purpose": "Define grouping-only parent Topic identity TOPIC_POLICY_CHANGE already referenced by 5 existing canonical child Topic reference occurrence(s).",
-      "parent_topic_refs": [],
-      "composed_topic_refs": [],
-      "member_refs": [],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {
-        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
-        "referencing_child_occurrences": 5,
-        "distinct_child_topics": 5,
-        "host_contract_ref": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT",
-        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
-        "placement_nonsemantic": true,
-        "ownership_nontransfer": true,
-        "new_parent_edges_added": 0
-      }
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_POLICY_CHANGE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define grouping-only parent Topic identity TOPIC_POLICY_CHANGE already referenced by 5 existing canonical child Topic reference occurrence(s).",
+            "metadata": {
+              "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+              "referencing_child_occurrences": 5,
+              "distinct_child_topics": 5,
+              "host_contract_ref": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT",
+              "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+              "placement_nonsemantic": true,
+              "ownership_nontransfer": true,
+              "new_parent_edges_added": 0
+            }
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "flow": [
-      "validate candidate",
-      "compute authority-impact diff",
-      "authorize policy administration",
-      "commit accepted revision",
-      "activate evaluator snapshot",
-      "record result"
-    ],
-    "validation_rule": "Structural and semantic policy validation precedes apply.",
-    "self_lockout_rule": "Self-lockout/critical-admin effects may require explicit safeguard profile.",
-    "authority_rule": "Policy changes require policy-administration authority separate from rights being edited.",
-    "activation_rule": "Accepted policy may exist before evaluator activation completes.",
-    "failure_rule": "Activation failure is explicit and never silently falls back to ungoverned mode.",
-    "history_rule": "Previous active/accepted revisions remain traceable."
-  },
   "constraints": {
     "invariants": [
       {
@@ -149,11 +301,105 @@
       "purpose": "Apply consumes validated candidate/diff."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define validate→authorize policy administration→commit revision→activate evaluator snapshot as explicit separate transitions.",
     "notes": [
       "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
       "Pass 6 hosts grouping-only Topic TOPIC_POLICY_CHANGE solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_ACCESS_POLICY_APPLY",
+          "name": "AccessCore Policy Validation and Apply",
+          "purpose": "Define validate→authorize policy administration→commit revision→activate evaluator snapshot as explicit separate transitions.",
+          "parent_topic_refs": [
+            "TOPIC_ACCESSCORE",
+            "TOPIC_POLICY_CHANGE"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT",
+            "IDENTITY_AUTHORITY_SEPARATION",
+            "FAIL_CLOSED_AUTHORITY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        },
+        {
+          "id": "TOPIC_POLICY_CHANGE",
+          "name": "Policy Change",
+          "purpose": "Define grouping-only parent Topic identity TOPIC_POLICY_CHANGE already referenced by 5 existing canonical child Topic reference occurrence(s).",
+          "parent_topic_refs": [],
+          "composed_topic_refs": [],
+          "member_refs": [],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {
+            "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+            "referencing_child_occurrences": 5,
+            "distinct_child_topics": 5,
+            "host_contract_ref": "AIGMOS_ACCESS_POLICY_APPLY_CONTRACT",
+            "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+            "placement_nonsemantic": true,
+            "ownership_nontransfer": true,
+            "new_parent_edges_added": 0
+          }
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "flow": [
+          "validate candidate",
+          "compute authority-impact diff",
+          "authorize policy administration",
+          "commit accepted revision",
+          "activate evaluator snapshot",
+          "record result"
+        ],
+        "validation_rule": "Structural and semantic policy validation precedes apply.",
+        "self_lockout_rule": "Self-lockout/critical-admin effects may require explicit safeguard profile.",
+        "authority_rule": "Policy changes require policy-administration authority separate from rights being edited.",
+        "activation_rule": "Accepted policy may exist before evaluator activation completes.",
+        "failure_rule": "Activation failure is explicit and never silently falls back to ungoverned mode.",
+        "history_rule": "Previous active/accepted revisions remain traceable."
+      }
+    }
   }
 }

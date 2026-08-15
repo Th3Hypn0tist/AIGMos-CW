@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define query-result caching as an explicitly keyed, revision-aware derived projection that never becomes authoritative data or bypasses current governance.",
   "scope": {
     "owns": [
@@ -22,58 +21,193 @@
       "query semantic ownership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT",
+      "name": "DWH Query Result Cache Boundary",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "key_rule": "Cache key includes exact query/profile/parameter identity plus applicable source revision/snapshot/governance context.",
+            "identity_rule": "Cache entry identity is distinct from query definition/execution/result-set/source data identities.",
+            "source_rule": "Cached result retains source query and revision/snapshot provenance.",
+            "authority_rule": "Cache hit does not bypass current applicable authorization/visibility checks.",
+            "classification_rule": "Cached values retain source/output classification and redaction constraints.",
+            "freshness_rule": "Freshness/TTL/invalidation profile is explicit.",
+            "source_truth_rule": "Cache is never the canonical source of truth merely because it is faster/available.",
+            "materialize_rule": "Persistent materialized views follow the separate materialization boundary, not ordinary result-cache semantics."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_QUERY_OPTIMIZATION",
+            "child_ref": "TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY",
+            "child_ref": "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY",
+            "child_ref": "OPTIMIZATION_NONSEMANTIC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/optimization/03_Query_Result_Cache_Boundary.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY",
       "name": "DWH Query Result Cache Boundary",
-      "purpose": "Define query-result caching as an explicitly keyed, revision-aware derived projection that never becomes authoritative data or bypasses current governance.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_QUERY_OPTIMIZATION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT",
-        "OPTIMIZATION_NONSEMANTIC",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define query-result caching as an explicitly keyed, revision-aware derived projection that never becomes authoritative data or bypasses current governance.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "key_rule": "Cache key includes exact query/profile/parameter identity plus applicable source revision/snapshot/governance context.",
-    "identity_rule": "Cache entry identity is distinct from query definition/execution/result-set/source data identities.",
-    "source_rule": "Cached result retains source query and revision/snapshot provenance.",
-    "authority_rule": "Cache hit does not bypass current applicable authorization/visibility checks.",
-    "classification_rule": "Cached values retain source/output classification and redaction constraints.",
-    "freshness_rule": "Freshness/TTL/invalidation profile is explicit.",
-    "source_truth_rule": "Cache is never the canonical source of truth merely because it is faster/available.",
-    "materialize_rule": "Persistent materialized views follow the separate materialization boundary, not ordinary result-cache semantics."
-  },
   "constraints": {
     "invariants": [
       {
@@ -121,10 +255,74 @@
       "purpose": "Cache delivery remains governed."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define query-result caching as an explicitly keyed, revision-aware derived projection that never becomes authoritative data or bypasses current governance.",
     "notes": [
       "Unlocked pending reconciliation against DWH query, persistence, changefeed and schema-migration contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_QUERY_RESULT_CACHE_BOUNDARY",
+          "name": "DWH Query Result Cache Boundary",
+          "purpose": "Define query-result caching as an explicitly keyed, revision-aware derived projection that never becomes authoritative data or bypasses current governance.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_QUERY_OPTIMIZATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_QUERY_RESULT_CACHE_BOUNDARY_CONTRACT",
+            "OPTIMIZATION_NONSEMANTIC",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "key_rule": "Cache key includes exact query/profile/parameter identity plus applicable source revision/snapshot/governance context.",
+        "identity_rule": "Cache entry identity is distinct from query definition/execution/result-set/source data identities.",
+        "source_rule": "Cached result retains source query and revision/snapshot provenance.",
+        "authority_rule": "Cache hit does not bypass current applicable authorization/visibility checks.",
+        "classification_rule": "Cached values retain source/output classification and redaction constraints.",
+        "freshness_rule": "Freshness/TTL/invalidation profile is explicit.",
+        "source_truth_rule": "Cache is never the canonical source of truth merely because it is faster/available.",
+        "materialize_rule": "Persistent materialized views follow the separate materialization boundary, not ordinary result-cache semantics."
+      }
+    }
   }
 }

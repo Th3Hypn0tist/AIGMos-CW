@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define public Project ranking and broker relevance as derived policy views over Project and Merit outcomes rather than new leaderboard or global weighting primitives.",
   "scope": {
     "owns": [
@@ -22,95 +21,271 @@
       "unrelated identity semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT",
+      "name": "Public Project Ranking and Relevance",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT::OPERATIONS::OP_PROJECT_RANK",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_PROJECT_RANK",
+            "name": "Rank public Projects",
+            "inputs": [
+              "public Project evidence",
+              "Merit outcomes",
+              "ranking policy"
+            ],
+            "outputs": [
+              "derived ranking"
+            ],
+            "errors": [
+              "policy unresolved"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT::OPERATIONS::OP_PROJECT_RELEVANCE_FILTER",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_PROJECT_RELEVANCE_FILTER",
+            "name": "Filter Projects by relevance policy",
+            "inputs": [
+              "Projects",
+              "broker/query context",
+              "explicit relevance policy"
+            ],
+            "outputs": [
+              "relevant Project set"
+            ],
+            "errors": [
+              "policy unresolved"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "ranking_rule": "Public Projects may be ranked using AIGM 1337 / explicit ranking policy based on Merit outcomes and Project evidence.",
+            "no_leaderboard_primitive_rule": "There is no separate canonical leaderboard primitive solely for ranking display.",
+            "relevance_rule": "Broker relevance is explicit contextual policy, not a global universal weighting baked into MeritCore.",
+            "projection_rule": "Rankings are derived projections and do not mutate underlying Project/Merit semantics.",
+            "public_rule": "Only explicitly public/eligible Project data participates in public ranking.",
+            "policy_provenance_rule": "Ranking/relevance results retain policy and source provenance."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROJECT_RANKING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "TOPIC_PROJECT_RANKING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_RANKING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_RANKING",
+            "child_ref": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_RANKING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_RANKING",
+            "child_ref": "PROJECT_MODEL_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_RANKING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_RANKING",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_RANKING_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_RANKING",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_RANKING_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_RANKING",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_RANKING_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_RANKING",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROJECT_RANKING_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROJECT_RANKING",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_PROJECT_RANKING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_PROJECT_RANKING",
+            "child_ref": "TOPIC_PROJECT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_PROJECT_RANKING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_PROJECT_RANKING",
+            "child_ref": "TOPIC_MERITCORE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_PROJECT_RANKING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_PROJECT_RANKING",
+            "child_ref": "TOPIC_CORE_PROJECTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/freemarket/project/04_Public_Project_Ranking_Relevance.json"
+      }
+    },
     {
       "id": "TOPIC_PROJECT_RANKING",
       "name": "Project Ranking",
-      "purpose": "Define public Project ranking and broker relevance as derived policy views over Project and Merit outcomes rather than new leaderboard or global weighting primitives.",
-      "parent_topic_refs": [
-        "TOPIC_CORE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_PROJECT",
-        "TOPIC_MERITCORE",
-        "TOPIC_CORE_PROJECTION"
-      ],
-      "member_refs": [
-        "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT",
-        "PROJECT_MODEL_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_PROJECT_RANK",
-        "OP_PROJECT_RELEVANCE_FILTER"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_PROJECT_RANKING::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define public Project ranking and broker relevance as derived policy views over Project and Merit outcomes rather than new leaderboard or global weighting primitives.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_PROJECT_RANK",
-        "name": "Rank public Projects",
-        "inputs": [
-          "public Project evidence",
-          "Merit outcomes",
-          "ranking policy"
-        ],
-        "outputs": [
-          "derived ranking"
-        ],
-        "errors": [
-          "policy unresolved"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_PROJECT_RELEVANCE_FILTER",
-        "name": "Filter Projects by relevance policy",
-        "inputs": [
-          "Projects",
-          "broker/query context",
-          "explicit relevance policy"
-        ],
-        "outputs": [
-          "relevant Project set"
-        ],
-        "errors": [
-          "policy unresolved"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "ranking_rule": "Public Projects may be ranked using AIGM 1337 / explicit ranking policy based on Merit outcomes and Project evidence.",
-    "no_leaderboard_primitive_rule": "There is no separate canonical leaderboard primitive solely for ranking display.",
-    "relevance_rule": "Broker relevance is explicit contextual policy, not a global universal weighting baked into MeritCore.",
-    "projection_rule": "Rankings are derived projections and do not mutate underlying Project/Merit semantics.",
-    "public_rule": "Only explicitly public/eligible Project data participates in public ranking.",
-    "policy_provenance_rule": "Ranking/relevance results retain policy and source provenance."
-  },
   "constraints": {
     "invariants": [
       {
@@ -163,10 +338,121 @@
       "purpose": "Ranking remains derived projection."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_PROJECT_RANKING",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_PROJECT_RANKING",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define public Project ranking and broker relevance as derived policy views over Project and Merit outcomes rather than new leaderboard or global weighting primitives.",
     "notes": [
       "Unlocked until reconciled against existing FreeMarket/Project/Merit contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_PROJECT_RANKING",
+          "name": "Project Ranking",
+          "purpose": "Define public Project ranking and broker relevance as derived policy views over Project and Merit outcomes rather than new leaderboard or global weighting primitives.",
+          "parent_topic_refs": [
+            "TOPIC_CORE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_PROJECT",
+            "TOPIC_MERITCORE",
+            "TOPIC_CORE_PROJECTION"
+          ],
+          "member_refs": [
+            "AIGMOS_PUBLIC_PROJECT_RANKING_RELEVANCE_CONTRACT",
+            "PROJECT_MODEL_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_PROJECT_RANK",
+            "OP_PROJECT_RELEVANCE_FILTER"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_PROJECT_RANK",
+            "name": "Rank public Projects",
+            "inputs": [
+              "public Project evidence",
+              "Merit outcomes",
+              "ranking policy"
+            ],
+            "outputs": [
+              "derived ranking"
+            ],
+            "errors": [
+              "policy unresolved"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_PROJECT_RELEVANCE_FILTER",
+            "name": "Filter Projects by relevance policy",
+            "inputs": [
+              "Projects",
+              "broker/query context",
+              "explicit relevance policy"
+            ],
+            "outputs": [
+              "relevant Project set"
+            ],
+            "errors": [
+              "policy unresolved"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "ranking_rule": "Public Projects may be ranked using AIGM 1337 / explicit ranking policy based on Merit outcomes and Project evidence.",
+        "no_leaderboard_primitive_rule": "There is no separate canonical leaderboard primitive solely for ranking display.",
+        "relevance_rule": "Broker relevance is explicit contextual policy, not a global universal weighting baked into MeritCore.",
+        "projection_rule": "Rankings are derived projections and do not mutate underlying Project/Merit semantics.",
+        "public_rule": "Only explicitly public/eligible Project data participates in public ranking.",
+        "policy_provenance_rule": "Ranking/relevance results retain policy and source provenance."
+      }
+    }
   }
 }

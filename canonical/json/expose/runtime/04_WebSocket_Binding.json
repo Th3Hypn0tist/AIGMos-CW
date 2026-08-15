@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define WebSocket as an optional persistent protocol binding for canonical events, values and operations while keeping session state, semantic identity and authority separate.",
   "scope": {
     "owns": [
@@ -21,117 +20,301 @@
       "unrelated domain semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT",
+      "name": "Expose WebSocket Binding",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT::OPERATIONS::OP_WS_BIND",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_WS_BIND",
+            "name": "Bind WebSocket surface",
+            "inputs": [
+              "named listener/service",
+              "canonical event/value/operation refs"
+            ],
+            "outputs": [
+              "WebSocket binding"
+            ],
+            "errors": [
+              "source unresolved",
+              "binding invalid"
+            ],
+            "side_effects": [
+              "WebSocket config updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT::OPERATIONS::OP_WS_SESSION_OPEN",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_WS_SESSION_OPEN",
+            "name": "Open governed WebSocket session",
+            "inputs": [
+              "binding",
+              "request identity/context"
+            ],
+            "outputs": [
+              "tracked session"
+            ],
+            "errors": [
+              "authority denied",
+              "handshake failure"
+            ],
+            "side_effects": [
+              "runtime session state created"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT::OPERATIONS::OP_WS_SESSION_CLOSE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_WS_SESSION_CLOSE",
+            "name": "Close WebSocket session",
+            "inputs": [
+              "session",
+              "reason"
+            ],
+            "outputs": [
+              "closed session"
+            ],
+            "errors": [],
+            "side_effects": [
+              "runtime session state removed"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "protocol": "WebSocket",
+            "optional_rule": "WebSocket is explicit optional protocol capability.",
+            "session_rule": "Connection/session handle is transient runtime state.",
+            "identity_rule": "WebSocket session is not user/service semantic identity.",
+            "authority_rule": "Handshake/session establishment does not grant canonical operation authority.",
+            "event_rule": "Published/subscribed event/value identities are explicit canonical refs.",
+            "cleanup_rule": "Disconnect/error releases session/subscription runtime state.",
+            "semantic_rule": "WebSocket framing does not own domain/event semantics."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_WEBSOCKET_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_EXPOSE_WEBSOCKET_BINDING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_WEBSOCKET_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_WEBSOCKET_BINDING",
+            "child_ref": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_WEBSOCKET_BINDING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_WEBSOCKET_BINDING",
+            "child_ref": "EXPOSE_RUNTIME_BINDING_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_WEBSOCKET_BINDING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_WEBSOCKET_BINDING",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_WEBSOCKET_BINDING_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_WEBSOCKET_BINDING",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_WEBSOCKET_BINDING_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_WEBSOCKET_BINDING",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_WEBSOCKET_BINDING_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_WEBSOCKET_BINDING",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_WEBSOCKET_BINDING_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_WEBSOCKET_BINDING",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_WEBSOCKET_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_WEBSOCKET_BINDING",
+            "child_ref": "TOPIC_RUNTIME_PROTOCOL_OPTIONALITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_WEBSOCKET_BINDING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_WEBSOCKET_BINDING",
+            "child_ref": "TOPIC_RUNTIME_NETWORK_IDENTITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_WEBSOCKET_BINDING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_WEBSOCKET_BINDING",
+            "child_ref": "TOPIC_EVENT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/runtime/04_WebSocket_Binding.json"
+      }
+    },
     {
       "id": "TOPIC_EXPOSE_WEBSOCKET_BINDING",
       "name": "WebSocket Binding",
-      "purpose": "Define WebSocket as an optional persistent protocol binding for canonical events, values and operations while keeping session state, semantic identity and authority separate.",
-      "parent_topic_refs": [
-        "TOPIC_EXPOSE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_RUNTIME_PROTOCOL_OPTIONALITY",
-        "TOPIC_RUNTIME_NETWORK_IDENTITY",
-        "TOPIC_EVENT"
-      ],
-      "member_refs": [
-        "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT",
-        "EXPOSE_RUNTIME_BINDING_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_WS_BIND",
-        "OP_WS_SESSION_OPEN",
-        "OP_WS_SESSION_CLOSE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_WEBSOCKET_BINDING::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define WebSocket as an optional persistent protocol binding for canonical events, values and operations while keeping session state, semantic identity and authority separate.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_WS_BIND",
-        "name": "Bind WebSocket surface",
-        "inputs": [
-          "named listener/service",
-          "canonical event/value/operation refs"
-        ],
-        "outputs": [
-          "WebSocket binding"
-        ],
-        "errors": [
-          "source unresolved",
-          "binding invalid"
-        ],
-        "side_effects": [
-          "WebSocket config updated"
-        ]
-      },
-      {
-        "id": "OP_WS_SESSION_OPEN",
-        "name": "Open governed WebSocket session",
-        "inputs": [
-          "binding",
-          "request identity/context"
-        ],
-        "outputs": [
-          "tracked session"
-        ],
-        "errors": [
-          "authority denied",
-          "handshake failure"
-        ],
-        "side_effects": [
-          "runtime session state created"
-        ]
-      },
-      {
-        "id": "OP_WS_SESSION_CLOSE",
-        "name": "Close WebSocket session",
-        "inputs": [
-          "session",
-          "reason"
-        ],
-        "outputs": [
-          "closed session"
-        ],
-        "errors": [],
-        "side_effects": [
-          "runtime session state removed"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "protocol": "WebSocket",
-    "optional_rule": "WebSocket is explicit optional protocol capability.",
-    "session_rule": "Connection/session handle is transient runtime state.",
-    "identity_rule": "WebSocket session is not user/service semantic identity.",
-    "authority_rule": "Handshake/session establishment does not grant canonical operation authority.",
-    "event_rule": "Published/subscribed event/value identities are explicit canonical refs.",
-    "cleanup_rule": "Disconnect/error releases session/subscription runtime state.",
-    "semantic_rule": "WebSocket framing does not own domain/event semantics."
-  },
   "constraints": {
     "invariants": [
       {
@@ -179,10 +362,143 @@
       "purpose": "Session binding differs from semantic identity."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_EXPOSE_WEBSOCKET_BINDING",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_EXPOSE_WEBSOCKET_BINDING",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define WebSocket as an optional persistent protocol binding for canonical events, values and operations while keeping session state, semantic identity and authority separate.",
     "notes": [
       "Unlocked until reconciled against existing Expose/runtime contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXPOSE_WEBSOCKET_BINDING",
+          "name": "WebSocket Binding",
+          "purpose": "Define WebSocket as an optional persistent protocol binding for canonical events, values and operations while keeping session state, semantic identity and authority separate.",
+          "parent_topic_refs": [
+            "TOPIC_EXPOSE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_RUNTIME_PROTOCOL_OPTIONALITY",
+            "TOPIC_RUNTIME_NETWORK_IDENTITY",
+            "TOPIC_EVENT"
+          ],
+          "member_refs": [
+            "AIGMOS_EXPOSE_WEBSOCKET_BINDING_CONTRACT",
+            "EXPOSE_RUNTIME_BINDING_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_WS_BIND",
+            "OP_WS_SESSION_OPEN",
+            "OP_WS_SESSION_CLOSE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_WS_BIND",
+            "name": "Bind WebSocket surface",
+            "inputs": [
+              "named listener/service",
+              "canonical event/value/operation refs"
+            ],
+            "outputs": [
+              "WebSocket binding"
+            ],
+            "errors": [
+              "source unresolved",
+              "binding invalid"
+            ],
+            "side_effects": [
+              "WebSocket config updated"
+            ]
+          },
+          {
+            "id": "OP_WS_SESSION_OPEN",
+            "name": "Open governed WebSocket session",
+            "inputs": [
+              "binding",
+              "request identity/context"
+            ],
+            "outputs": [
+              "tracked session"
+            ],
+            "errors": [
+              "authority denied",
+              "handshake failure"
+            ],
+            "side_effects": [
+              "runtime session state created"
+            ]
+          },
+          {
+            "id": "OP_WS_SESSION_CLOSE",
+            "name": "Close WebSocket session",
+            "inputs": [
+              "session",
+              "reason"
+            ],
+            "outputs": [
+              "closed session"
+            ],
+            "errors": [],
+            "side_effects": [
+              "runtime session state removed"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "protocol": "WebSocket",
+        "optional_rule": "WebSocket is explicit optional protocol capability.",
+        "session_rule": "Connection/session handle is transient runtime state.",
+        "identity_rule": "WebSocket session is not user/service semantic identity.",
+        "authority_rule": "Handshake/session establishment does not grant canonical operation authority.",
+        "event_rule": "Published/subscribed event/value identities are explicit canonical refs.",
+        "cleanup_rule": "Disconnect/error releases session/subscription runtime state.",
+        "semantic_rule": "WebSocket framing does not own domain/event semantics."
+      }
+    }
   }
 }

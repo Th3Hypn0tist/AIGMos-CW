@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define explicit holds and conflict resolution when retention, purge, archival or preservation policies disagree, defaulting to fail-closed preservation rather than silent destruction.",
   "scope": {
     "owns": [
@@ -22,58 +21,193 @@
       "storage-engine implementation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT",
+      "name": "DWH Retention Hold and Policy Conflict",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "hold_rule": "A hold is an explicit policy identity bound to exact data/scope and lifecycle actions it blocks.",
+            "effect_rule": "Active hold can block purge/destructive transitions according to its declared scope.",
+            "conflict_rule": "Conflicting retention/hold policies are resolved by explicit policy precedence/combination semantics.",
+            "default_rule": "If destructive eligibility is ambiguous, destructive transition hard-fails/preserves data until policy is resolved.",
+            "history_rule": "Hold creation/removal and conflict decisions retain provenance.",
+            "authority_rule": "Removing/bypassing a hold requires explicit authority according to policy.",
+            "classification_rule": "Hold semantics do not change data classification.",
+            "expiry_rule": "A hold may outlive ordinary retention expiry without changing underlying semantic ownership."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_RETENTION_HOLD_CONFLICT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_RETENTION_HOLD_CONFLICT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_RETENTION_HOLD_CONFLICT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DATA_LIFECYCLE",
+            "child_ref": "TOPIC_DWH_RETENTION_HOLD_CONFLICT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_RETENTION_HOLD_CONFLICT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_RETENTION_HOLD_CONFLICT",
+            "child_ref": "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_RETENTION_HOLD_CONFLICT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_RETENTION_HOLD_CONFLICT",
+            "child_ref": "RETENTION_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_RETENTION_HOLD_CONFLICT_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_RETENTION_HOLD_CONFLICT",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_RETENTION_HOLD_CONFLICT_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_RETENTION_HOLD_CONFLICT",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_RETENTION_HOLD_CONFLICT_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_RETENTION_HOLD_CONFLICT",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_RETENTION_HOLD_CONFLICT_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_RETENTION_HOLD_CONFLICT",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_RETENTION_HOLD_CONFLICT_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_RETENTION_HOLD_CONFLICT",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/lifecycle/04_Retention_Hold_Conflict.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_RETENTION_HOLD_CONFLICT",
       "name": "DWH Retention Hold and Policy Conflict",
-      "purpose": "Define explicit holds and conflict resolution when retention, purge, archival or preservation policies disagree, defaulting to fail-closed preservation rather than silent destruction.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_DATA_LIFECYCLE"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT",
-        "RETENTION_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_RETENTION_HOLD_CONFLICT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define explicit holds and conflict resolution when retention, purge, archival or preservation policies disagree, defaulting to fail-closed preservation rather than silent destruction.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "hold_rule": "A hold is an explicit policy identity bound to exact data/scope and lifecycle actions it blocks.",
-    "effect_rule": "Active hold can block purge/destructive transitions according to its declared scope.",
-    "conflict_rule": "Conflicting retention/hold policies are resolved by explicit policy precedence/combination semantics.",
-    "default_rule": "If destructive eligibility is ambiguous, destructive transition hard-fails/preserves data until policy is resolved.",
-    "history_rule": "Hold creation/removal and conflict decisions retain provenance.",
-    "authority_rule": "Removing/bypassing a hold requires explicit authority according to policy.",
-    "classification_rule": "Hold semantics do not change data classification.",
-    "expiry_rule": "A hold may outlive ordinary retention expiry without changing underlying semantic ownership."
-  },
   "constraints": {
     "invariants": [
       {
@@ -121,10 +255,74 @@
       "purpose": "Active holds can block destructive purge."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define explicit holds and conflict resolution when retention, purge, archival or preservation policies disagree, defaulting to fail-closed preservation rather than silent destruction.",
     "notes": [
       "Unlocked pending reconciliation against DWH persistence, deletion, classification and governance contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_RETENTION_HOLD_CONFLICT",
+          "name": "DWH Retention Hold and Policy Conflict",
+          "purpose": "Define explicit holds and conflict resolution when retention, purge, archival or preservation policies disagree, defaulting to fail-closed preservation rather than silent destruction.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_DATA_LIFECYCLE"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_RETENTION_HOLD_CONFLICT_CONTRACT",
+            "RETENTION_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "hold_rule": "A hold is an explicit policy identity bound to exact data/scope and lifecycle actions it blocks.",
+        "effect_rule": "Active hold can block purge/destructive transitions according to its declared scope.",
+        "conflict_rule": "Conflicting retention/hold policies are resolved by explicit policy precedence/combination semantics.",
+        "default_rule": "If destructive eligibility is ambiguous, destructive transition hard-fails/preserves data until policy is resolved.",
+        "history_rule": "Hold creation/removal and conflict decisions retain provenance.",
+        "authority_rule": "Removing/bypassing a hold requires explicit authority according to policy.",
+        "classification_rule": "Hold semantics do not change data classification.",
+        "expiry_rule": "A hold may outlive ordinary retention expiry without changing underlying semantic ownership."
+      }
+    }
   }
 }

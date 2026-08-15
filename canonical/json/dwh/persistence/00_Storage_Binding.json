@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_STORAGE_BINDING_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define explicit physical persistence bindings for DWH instance/schema data while keeping storage engine, path and file layout separate from canonical data identity and ownership.",
   "scope": {
     "owns": [
@@ -22,58 +21,193 @@
       "storage-engine implementation internals"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_STORAGE_BINDING_CONTRACT",
+      "name": "DWH Storage Binding",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_STORAGE_BINDING_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "binding_rule": "Each persisted DWH scope binds to an explicit storage profile/backend identity.",
+            "scope_rule": "Storage binding references exact owning instance/schema/data scope.",
+            "identity_rule": "File path, table name, bucket, database or engine object is a physical binding and never canonical semantic identity.",
+            "backend_rule": "Backend type/profile/version is explicit where behavior affects semantics.",
+            "migration_rule": "Changing storage backend/binding is an explicit migration operation.",
+            "ownership_rule": "Storage backend never becomes owner of domain semantics by persistence.",
+            "availability_rule": "Storage availability and data authorization remain distinct.",
+            "failure_rule": "Missing/unavailable storage fails explicitly rather than silently switching backend unless a declared failover profile exists."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STORAGE_BINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_STORAGE_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_STORAGE_BINDING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STORAGE_BINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_STORAGE_BINDING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_PERSISTENCE_RECOVERY",
+            "child_ref": "TOPIC_DWH_STORAGE_BINDING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STORAGE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_STORAGE_BINDING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_STORAGE_BINDING",
+            "child_ref": "AIGMOS_DWH_STORAGE_BINDING_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STORAGE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_STORAGE_BINDING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_STORAGE_BINDING",
+            "child_ref": "PERSISTENCE_NONIDENTITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STORAGE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_STORAGE_BINDING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_STORAGE_BINDING",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STORAGE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_STORAGE_BINDING_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_STORAGE_BINDING",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STORAGE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_STORAGE_BINDING_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_STORAGE_BINDING",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STORAGE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_STORAGE_BINDING_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_STORAGE_BINDING",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_STORAGE_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_STORAGE_BINDING_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_STORAGE_BINDING",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/persistence/00_Storage_Binding.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_STORAGE_BINDING",
       "name": "DWH Storage Binding",
-      "purpose": "Define explicit physical persistence bindings for DWH instance/schema data while keeping storage engine, path and file layout separate from canonical data identity and ownership.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_PERSISTENCE_RECOVERY"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_STORAGE_BINDING_CONTRACT",
-        "PERSISTENCE_NONIDENTITY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_STORAGE_BINDING::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define explicit physical persistence bindings for DWH instance/schema data while keeping storage engine, path and file layout separate from canonical data identity and ownership.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "binding_rule": "Each persisted DWH scope binds to an explicit storage profile/backend identity.",
-    "scope_rule": "Storage binding references exact owning instance/schema/data scope.",
-    "identity_rule": "File path, table name, bucket, database or engine object is a physical binding and never canonical semantic identity.",
-    "backend_rule": "Backend type/profile/version is explicit where behavior affects semantics.",
-    "migration_rule": "Changing storage backend/binding is an explicit migration operation.",
-    "ownership_rule": "Storage backend never becomes owner of domain semantics by persistence.",
-    "availability_rule": "Storage availability and data authorization remain distinct.",
-    "failure_rule": "Missing/unavailable storage fails explicitly rather than silently switching backend unless a declared failover profile exists."
-  },
   "constraints": {
     "invariants": [
       {
@@ -116,10 +250,74 @@
       "purpose": "Storage binding preserves exact instance scope."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define explicit physical persistence bindings for DWH instance/schema data while keeping storage engine, path and file layout separate from canonical data identity and ownership.",
     "notes": [
       "Unlocked pending reconciliation against DWH mutation, runtime snapshot, repository acceptance and retention contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_STORAGE_BINDING",
+          "name": "DWH Storage Binding",
+          "purpose": "Define explicit physical persistence bindings for DWH instance/schema data while keeping storage engine, path and file layout separate from canonical data identity and ownership.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_PERSISTENCE_RECOVERY"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_STORAGE_BINDING_CONTRACT",
+            "PERSISTENCE_NONIDENTITY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "binding_rule": "Each persisted DWH scope binds to an explicit storage profile/backend identity.",
+        "scope_rule": "Storage binding references exact owning instance/schema/data scope.",
+        "identity_rule": "File path, table name, bucket, database or engine object is a physical binding and never canonical semantic identity.",
+        "backend_rule": "Backend type/profile/version is explicit where behavior affects semantics.",
+        "migration_rule": "Changing storage backend/binding is an explicit migration operation.",
+        "ownership_rule": "Storage backend never becomes owner of domain semantics by persistence.",
+        "availability_rule": "Storage availability and data authorization remain distinct.",
+        "failure_rule": "Missing/unavailable storage fails explicitly rather than silently switching backend unless a declared failover profile exists."
+      }
+    }
   }
 }

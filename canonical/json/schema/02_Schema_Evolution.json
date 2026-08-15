@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_SCHEMA_EVOLUTION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define additive and breaking schema evolution, migration requirements and compatibility evidence without silently reinterpreting existing stored data or relation semantics.",
   "scope": {
     "owns": [
@@ -22,57 +21,192 @@
       "AccessCore policy"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_SCHEMA_EVOLUTION_CONTRACT",
+      "name": "Schema Evolution",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_SCHEMA_EVOLUTION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "additive_rule": "Compatible additive fields/relations may preserve schema identity/version compatibility according to policy.",
+            "breaking_rule": "Breaking semantic change requires explicit incompatible version/new identity where owning versioning policy requires.",
+            "migration_rule": "Stored/instance data migration is explicit and separate from schema definition change.",
+            "field_rule": "Field rename, split, merge, type change or semantic repurpose is explicitly mapped.",
+            "relation_rule": "Relation/cardinality/FK changes are explicit compatibility/migration events.",
+            "default_rule": "Adding a default does not silently backfill historical data unless migration explicitly does so.",
+            "evidence_rule": "Compatibility/migration decision retains semantic diff and provenance."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEMA_EVOLUTION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_SCHEMA_EVOLUTION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_SCHEMA",
+            "child_ref": "TOPIC_SCHEMA_EVOLUTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEMA_EVOLUTION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_SCHEMA_EVOLUTION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RELATIONS",
+            "child_ref": "TOPIC_SCHEMA_EVOLUTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEMA_EVOLUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SCHEMA_EVOLUTION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SCHEMA_EVOLUTION",
+            "child_ref": "AIGMOS_SCHEMA_EVOLUTION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEMA_EVOLUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SCHEMA_EVOLUTION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SCHEMA_EVOLUTION",
+            "child_ref": "SCHEMA_RELATION_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEMA_EVOLUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SCHEMA_EVOLUTION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SCHEMA_EVOLUTION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEMA_EVOLUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SCHEMA_EVOLUTION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SCHEMA_EVOLUTION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEMA_EVOLUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SCHEMA_EVOLUTION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SCHEMA_EVOLUTION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEMA_EVOLUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SCHEMA_EVOLUTION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SCHEMA_EVOLUTION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEMA_EVOLUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SCHEMA_EVOLUTION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SCHEMA_EVOLUTION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/schema/02_Schema_Evolution.json"
+      }
+    },
     {
       "id": "TOPIC_SCHEMA_EVOLUTION",
       "name": "Schema Evolution",
-      "purpose": "Define additive and breaking schema evolution, migration requirements and compatibility evidence without silently reinterpreting existing stored data or relation semantics.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_SCHEMA",
-        "TOPIC_CORE_RELATIONS"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_SCHEMA_EVOLUTION_CONTRACT",
-        "SCHEMA_RELATION_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_SCHEMA_EVOLUTION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define additive and breaking schema evolution, migration requirements and compatibility evidence without silently reinterpreting existing stored data or relation semantics.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "additive_rule": "Compatible additive fields/relations may preserve schema identity/version compatibility according to policy.",
-    "breaking_rule": "Breaking semantic change requires explicit incompatible version/new identity where owning versioning policy requires.",
-    "migration_rule": "Stored/instance data migration is explicit and separate from schema definition change.",
-    "field_rule": "Field rename, split, merge, type change or semantic repurpose is explicitly mapped.",
-    "relation_rule": "Relation/cardinality/FK changes are explicit compatibility/migration events.",
-    "default_rule": "Adding a default does not silently backfill historical data unless migration explicitly does so.",
-    "evidence_rule": "Compatibility/migration decision retains semantic diff and provenance."
-  },
   "constraints": {
     "invariants": [
       {
@@ -120,10 +254,73 @@
       "purpose": "Compatibility is explicit."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define additive and breaking schema evolution, migration requirements and compatibility evidence without silently reinterpreting existing stored data or relation semantics.",
     "notes": [
       "Unlocked pending reconciliation against existing schema/relation contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_SCHEMA_EVOLUTION",
+          "name": "Schema Evolution",
+          "purpose": "Define additive and breaking schema evolution, migration requirements and compatibility evidence without silently reinterpreting existing stored data or relation semantics.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_SCHEMA",
+            "TOPIC_CORE_RELATIONS"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_SCHEMA_EVOLUTION_CONTRACT",
+            "SCHEMA_RELATION_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "additive_rule": "Compatible additive fields/relations may preserve schema identity/version compatibility according to policy.",
+        "breaking_rule": "Breaking semantic change requires explicit incompatible version/new identity where owning versioning policy requires.",
+        "migration_rule": "Stored/instance data migration is explicit and separate from schema definition change.",
+        "field_rule": "Field rename, split, merge, type change or semantic repurpose is explicitly mapped.",
+        "relation_rule": "Relation/cardinality/FK changes are explicit compatibility/migration events.",
+        "default_rule": "Adding a default does not silently backfill historical data unless migration explicitly does so.",
+        "evidence_rule": "Compatibility/migration decision retains semantic diff and provenance."
+      }
+    }
   }
 }

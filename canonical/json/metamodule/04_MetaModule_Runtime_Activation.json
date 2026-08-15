@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_METAMODULE_RUNTIME_ACTIVATION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define validation and activation of MetaModule definitions into runtime availability while keeping definition, accepted snapshot, placement and runtime state separate.",
   "scope": {
     "owns": [
@@ -22,72 +21,207 @@
       "AccessCore policy ownership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_METAMODULE_RUNTIME_ACTIVATION_CONTRACT",
+      "name": "MetaModule Runtime Activation",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_METAMODULE_RUNTIME_ACTIVATION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "flow": [
+              "resolve exact MetaModule definition",
+              "resolve dependency closure",
+              "validate composition/bindings",
+              "authorize activation",
+              "bind accepted runtime snapshot",
+              "activate runtime availability"
+            ],
+            "definition_rule": "Editing a MetaModule definition does not mutate an already running activation until explicit apply/reload.",
+            "snapshot_rule": "Runtime activation binds to an exact accepted canonical snapshot.",
+            "state_values": [
+              "defined",
+              "validated",
+              "available",
+              "active",
+              "inactive",
+              "error"
+            ],
+            "placement_rule": "UI placement may exist while runtime capability is inactive, and vice versa according to explicit profile.",
+            "reload_rule": "Reload/replacement is explicit and preserves prior activation evidence.",
+            "failure_rule": "Failed activation leaves prior valid active state or explicit inactive/error state according to policy.",
+            "authority_rule": "Activation does not create rights to constituent resources."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_RUNTIME_ACTIVATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_METAMODULE_RUNTIME_ACTIVATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_METAMODULE",
+            "child_ref": "TOPIC_METAMODULE_RUNTIME_ACTIVATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_RUNTIME_ACTIVATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_METAMODULE_RUNTIME_ACTIVATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_COMPOSITION",
+            "child_ref": "TOPIC_METAMODULE_RUNTIME_ACTIVATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_RUNTIME_ACTIVATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_METAMODULE_RUNTIME_ACTIVATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_METAMODULE_RUNTIME_ACTIVATION",
+            "child_ref": "AIGMOS_METAMODULE_RUNTIME_ACTIVATION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_RUNTIME_ACTIVATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_METAMODULE_RUNTIME_ACTIVATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_METAMODULE_RUNTIME_ACTIVATION",
+            "child_ref": "METAMODULE_COMPOSITION_NONOWNERSHIP",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_RUNTIME_ACTIVATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_METAMODULE_RUNTIME_ACTIVATION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_METAMODULE_RUNTIME_ACTIVATION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_RUNTIME_ACTIVATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_METAMODULE_RUNTIME_ACTIVATION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_METAMODULE_RUNTIME_ACTIVATION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_RUNTIME_ACTIVATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_METAMODULE_RUNTIME_ACTIVATION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_METAMODULE_RUNTIME_ACTIVATION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_RUNTIME_ACTIVATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_METAMODULE_RUNTIME_ACTIVATION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_METAMODULE_RUNTIME_ACTIVATION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_RUNTIME_ACTIVATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_METAMODULE_RUNTIME_ACTIVATION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_METAMODULE_RUNTIME_ACTIVATION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/metamodule/04_MetaModule_Runtime_Activation.json"
+      }
+    },
     {
       "id": "TOPIC_METAMODULE_RUNTIME_ACTIVATION",
       "name": "MetaModule Runtime Activation",
-      "purpose": "Define validation and activation of MetaModule definitions into runtime availability while keeping definition, accepted snapshot, placement and runtime state separate.",
-      "parent_topic_refs": [
-        "TOPIC_METAMODULE",
-        "TOPIC_COMPOSITION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_METAMODULE_RUNTIME_ACTIVATION_CONTRACT",
-        "METAMODULE_COMPOSITION_NONOWNERSHIP",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_METAMODULE_RUNTIME_ACTIVATION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define validation and activation of MetaModule definitions into runtime availability while keeping definition, accepted snapshot, placement and runtime state separate.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "flow": [
-      "resolve exact MetaModule definition",
-      "resolve dependency closure",
-      "validate composition/bindings",
-      "authorize activation",
-      "bind accepted runtime snapshot",
-      "activate runtime availability"
-    ],
-    "definition_rule": "Editing a MetaModule definition does not mutate an already running activation until explicit apply/reload.",
-    "snapshot_rule": "Runtime activation binds to an exact accepted canonical snapshot.",
-    "state_values": [
-      "defined",
-      "validated",
-      "available",
-      "active",
-      "inactive",
-      "error"
-    ],
-    "placement_rule": "UI placement may exist while runtime capability is inactive, and vice versa according to explicit profile.",
-    "reload_rule": "Reload/replacement is explicit and preserves prior activation evidence.",
-    "failure_rule": "Failed activation leaves prior valid active state or explicit inactive/error state according to policy.",
-    "authority_rule": "Activation does not create rights to constituent resources."
-  },
   "constraints": {
     "invariants": [
       {
@@ -135,10 +269,88 @@
       "purpose": "Definition changes use candidate/validate/apply boundary."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define validation and activation of MetaModule definitions into runtime availability while keeping definition, accepted snapshot, placement and runtime state separate.",
     "notes": [
       "Unlocked pending reconciliation against composition, nanoCMS, UserModule, Editor and runtime activation contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_METAMODULE_RUNTIME_ACTIVATION",
+          "name": "MetaModule Runtime Activation",
+          "purpose": "Define validation and activation of MetaModule definitions into runtime availability while keeping definition, accepted snapshot, placement and runtime state separate.",
+          "parent_topic_refs": [
+            "TOPIC_METAMODULE",
+            "TOPIC_COMPOSITION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_METAMODULE_RUNTIME_ACTIVATION_CONTRACT",
+            "METAMODULE_COMPOSITION_NONOWNERSHIP",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "flow": [
+          "resolve exact MetaModule definition",
+          "resolve dependency closure",
+          "validate composition/bindings",
+          "authorize activation",
+          "bind accepted runtime snapshot",
+          "activate runtime availability"
+        ],
+        "definition_rule": "Editing a MetaModule definition does not mutate an already running activation until explicit apply/reload.",
+        "snapshot_rule": "Runtime activation binds to an exact accepted canonical snapshot.",
+        "state_values": [
+          "defined",
+          "validated",
+          "available",
+          "active",
+          "inactive",
+          "error"
+        ],
+        "placement_rule": "UI placement may exist while runtime capability is inactive, and vice versa according to explicit profile.",
+        "reload_rule": "Reload/replacement is explicit and preserves prior activation evidence.",
+        "failure_rule": "Failed activation leaves prior valid active state or explicit inactive/error state according to policy.",
+        "authority_rule": "Activation does not create rights to constituent resources."
+      }
+    }
   }
 }

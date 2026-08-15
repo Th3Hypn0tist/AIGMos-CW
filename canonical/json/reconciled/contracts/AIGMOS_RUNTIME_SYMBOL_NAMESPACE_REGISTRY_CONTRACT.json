@@ -1,46 +1,668 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "errors": [
-          "root collision",
-          "invalid grammar"
-        ],
-        "id": "OP_SYMBOL_REGISTER",
-        "inputs": [
-          "explicit root definition"
-        ],
-        "name": "Register declared symbol root",
-        "outputs": [
-          "registered root"
-        ],
-        "side_effects": [
-          "runtime registry updated"
-        ]
-      },
-      {
-        "errors": [
-          "unknown root",
-          "invalid segment",
-          "ambiguous address"
-        ],
-        "id": "OP_SYMBOL_RESOLVE",
-        "inputs": [
-          "typed symbol address",
-          "registered roots"
-        ],
-        "name": "Resolve symbol address",
-        "outputs": [
-          "resolved runtime semantic target"
-        ],
-        "side_effects": []
-      }
-    ],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
+    "name": "Runtime Symbol Namespace Registry",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define the canonical registry of AIGMos runtime symbol roots and namespace families so semantic addressing resolves by explicit namespace identity rather than implementation path. [2] Define the runtime symbol-root registry and deterministic namespace/address resolution, including exclusive sigil/root semantics.",
+  "scope": {
+    "does_not_own": [
+      "mounted module internal semantics",
+      "runtime authorization policy",
+      "presentation semantics",
+      "domain semantics",
+      "projection semantics"
+    ],
+    "owns": [
+      "Runtime Symbol Namespace Registry semantics",
+      "Runtime Symbol and Namespace Registry semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
+      "name": "Runtime Symbol Namespace Registry",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::OPERATIONS::OP_SYMBOL_REGISTER",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "root collision",
+              "invalid grammar"
+            ],
+            "id": "OP_SYMBOL_REGISTER",
+            "inputs": [
+              "explicit root definition"
+            ],
+            "name": "Register declared symbol root",
+            "outputs": [
+              "registered root"
+            ],
+            "side_effects": [
+              "runtime registry updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::OPERATIONS::OP_SYMBOL_RESOLVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "unknown root",
+              "invalid segment",
+              "ambiguous address"
+            ],
+            "id": "OP_SYMBOL_RESOLVE",
+            "inputs": [
+              "typed symbol address",
+              "registered roots"
+            ],
+            "name": "Resolve symbol address",
+            "outputs": [
+              "resolved runtime semantic target"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "addressing_rule": "Symbol addressing uses semantic grammar and does not become unrestricted filesystem addressing.",
+            "authority_rule": "Namespace existence does not grant read/write/invoke authority.",
+            "case_rule": "Canonical namespace spelling/case is exact.",
+            "collision_rule": "Casefold/root collisions are rejected.",
+            "dynamic_root_rule": "Payload/model/backend-selected root resolution is forbidden.",
+            "exclusive_locks": {
+              "!": "Trigger",
+              "%": "Runner",
+              "@": "Event"
+            },
+            "family_examples": [
+              "#INPUT:*"
+            ],
+            "identity_rule": "Each reserved root/family has explicit canonical namespace identity and owner.",
+            "module_namespace_separator": ".",
+            "mount_rule": "Namespace registry resolves a root to its declared semantic owner/mount semantics.",
+            "path_rule": "Filesystem directory name does not create or own a namespace.",
+            "path_separator": ":",
+            "registry_role": "runtime namespace index",
+            "root_examples": [
+              "#I",
+              "#A",
+              "#P",
+              "#R",
+              "#T",
+              "#MCP",
+              "#OSC",
+              "#REST",
+              "#UM",
+              "#MEM",
+              "#HELP",
+              "#CAL",
+              "#SHOP"
+            ],
+            "root_prefixes": [
+              "#",
+              "$",
+              "&",
+              "?",
+              "%",
+              "!",
+              "@",
+              "|"
+            ],
+            "root_rule": "A runtime root exists only when explicitly declared by canonical runtime semantics."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_NAMESPACES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_ADDRESSING",
+            "child_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_NAMESPACES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME",
+            "child_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_NAMESPACES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "child_ref": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_NAMESPACES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "child_ref": "NAMESPACE_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_NAMESPACES_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "child_ref": "RUNTIME_SEMANTICS_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_NAMESPACES_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "child_ref": "GATE_0FEFD56595",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_NAMESPACES_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "child_ref": "GATE_C1F4114859",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_NAMESPACES_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "child_ref": "GATE_65B0E50990",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_NAMESPACES_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "child_ref": "GATE_DE75F783AE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_NAMESPACES_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "child_ref": "GATE_1A75675059",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_NAMESPACES_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "child_ref": "GATE_30FE64E3E9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_NAMESPACES_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "child_ref": "GATE_8AC6B1EAAB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_NAMESPACES_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "child_ref": "GATE_A5C1434FA4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_NAMESPACES_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "child_ref": "GATE_EE78521251",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_NAMESPACES_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "child_ref": "GATE_532A697C10",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_NAMESPACES_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_NAMESPACES",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_SYMBOL_REGISTRY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME_SYMBOLS",
+            "child_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SYMBOL_REGISTRY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "child_ref": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SYMBOL_REGISTRY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "child_ref": "NAMESPACE_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SYMBOL_REGISTRY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "child_ref": "RUNTIME_SEMANTICS_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SYMBOL_REGISTRY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "child_ref": "GATE_0FEFD56595",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SYMBOL_REGISTRY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "child_ref": "GATE_C1F4114859",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SYMBOL_REGISTRY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "child_ref": "GATE_65B0E50990",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SYMBOL_REGISTRY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "child_ref": "GATE_DE75F783AE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SYMBOL_REGISTRY_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "child_ref": "GATE_1A75675059",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SYMBOL_REGISTRY_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "child_ref": "GATE_30FE64E3E9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SYMBOL_REGISTRY_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "child_ref": "GATE_8AC6B1EAAB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SYMBOL_REGISTRY_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "child_ref": "GATE_A5C1434FA4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SYMBOL_REGISTRY_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "child_ref": "GATE_EE78521251",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SYMBOL_REGISTRY_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "child_ref": "GATE_532A697C10",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_SYMBOL_REGISTRY_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_SYMBOL_REGISTRY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+            "child_ref": "TOPIC_CORE_ADDRESSING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].composed_topic_refs[0]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_RUNTIME_NAMESPACES",
+      "name": "Runtime Symbol Namespace Registry",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_NAMESPACES::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define the canonical registry of AIGMos runtime symbol roots and namespace families so semantic addressing resolves by explicit namespace identity rather than implementation path.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+      "name": "Symbol Registry",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_SYMBOL_REGISTRY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define the runtime symbol-root registry and deterministic namespace/address resolution, including exclusive sigil/root semantics.",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -110,29 +732,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
-    "name": "Runtime Symbol Namespace Registry",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked pending reconciliation against existing runtime symbol/module contracts and whole-tree Contract Format 1.4 validation.",
-      "Unlocked until reconciled against the existing runtime contracts and repository-wide 1.4 traceability validation.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: namespaces/00_Runtime_Symbol_Namespace_Registry.json, runtime/symbols/00_Runtime_Symbol_Namespace_Registry.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
-    ],
-    "summary": "Reconciled source purposes: [1] Define the canonical registry of AIGMos runtime symbol roots and namespace families so semantic addressing resolves by explicit namespace identity rather than implementation path. [2] Define the runtime symbol-root registry and deterministic namespace/address resolution, including exclusive sigil/root semantics."
-  },
-  "purpose": "Reconciled source purposes: [1] Define the canonical registry of AIGMos runtime symbol roots and namespace families so semantic addressing resolves by explicit namespace identity rather than implementation path. [2] Define the runtime symbol-root registry and deterministic namespace/address resolution, including exclusive sigil/root semantics.",
   "references": [
     {
       "id": "REF_ADDRESS",
@@ -150,146 +749,216 @@
       "purpose": "Root and sigil invariants."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "mounted module internal semantics",
-      "runtime authorization policy",
-      "presentation semantics",
-      "domain semantics",
-      "projection semantics"
-    ],
-    "owns": [
-      "Runtime Symbol Namespace Registry semantics",
-      "Runtime Symbol and Namespace Registry semantics"
-    ]
-  },
-  "semantics": {
-    "addressing_rule": "Symbol addressing uses semantic grammar and does not become unrestricted filesystem addressing.",
-    "authority_rule": "Namespace existence does not grant read/write/invoke authority.",
-    "case_rule": "Canonical namespace spelling/case is exact.",
-    "collision_rule": "Casefold/root collisions are rejected.",
-    "dynamic_root_rule": "Payload/model/backend-selected root resolution is forbidden.",
-    "exclusive_locks": {
-      "!": "Trigger",
-      "%": "Runner",
-      "@": "Event"
-    },
-    "family_examples": [
-      "#INPUT:*"
-    ],
-    "identity_rule": "Each reserved root/family has explicit canonical namespace identity and owner.",
-    "module_namespace_separator": ".",
-    "mount_rule": "Namespace registry resolves a root to its declared semantic owner/mount semantics.",
-    "path_rule": "Filesystem directory name does not create or own a namespace.",
-    "path_separator": ":",
-    "registry_role": "runtime namespace index",
-    "root_examples": [
-      "#I",
-      "#A",
-      "#P",
-      "#R",
-      "#T",
-      "#MCP",
-      "#OSC",
-      "#REST",
-      "#UM",
-      "#MEM",
-      "#HELP",
-      "#CAL",
-      "#SHOP"
-    ],
-    "root_prefixes": [
-      "#",
-      "$",
-      "&",
-      "?",
-      "%",
-      "!",
-      "@",
-      "|"
-    ],
-    "root_rule": "A runtime root exists only when explicitly declared by canonical runtime semantics."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
+  "gaps": [
     {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_RUNTIME_NAMESPACES",
-      "member_refs": [
-        "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
-        "NAMESPACE_EXPLICIT",
-        "RUNTIME_SEMANTICS_EXPLICIT",
-        "GATE_0FEFD56595",
-        "GATE_C1F4114859",
-        "GATE_65B0E50990",
-        "GATE_DE75F783AE",
-        "GATE_1A75675059",
-        "GATE_30FE64E3E9",
-        "GATE_8AC6B1EAAB",
-        "GATE_A5C1434FA4",
-        "GATE_EE78521251",
-        "GATE_532A697C10",
-        "GATE_6"
-      ],
-      "metadata": {},
-      "name": "Runtime Symbol Namespace Registry",
-      "operation_refs": [
-        "OP_SYMBOL_REGISTER",
-        "OP_SYMBOL_RESOLVE"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_CORE_ADDRESSING",
-        "TOPIC_CORE_RUNTIME"
-      ],
-      "purpose": "Define the canonical registry of AIGMos runtime symbol roots and namespace families so semantic addressing resolves by explicit namespace identity rather than implementation path.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_NAMESPACES",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_NAMESPACES",
+      "field_path": "topics[0].operation_refs"
     },
     {
-      "child_topics": [],
-      "composed_topic_refs": [
-        "TOPIC_CORE_ADDRESSING"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
-      "member_refs": [
-        "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
-        "NAMESPACE_EXPLICIT",
-        "RUNTIME_SEMANTICS_EXPLICIT",
-        "GATE_0FEFD56595",
-        "GATE_C1F4114859",
-        "GATE_65B0E50990",
-        "GATE_DE75F783AE",
-        "GATE_1A75675059",
-        "GATE_30FE64E3E9",
-        "GATE_8AC6B1EAAB",
-        "GATE_A5C1434FA4",
-        "GATE_EE78521251",
-        "GATE_532A697C10",
-        "GATE_6"
-      ],
-      "metadata": {},
-      "name": "Symbol Registry",
-      "operation_refs": [
-        "OP_SYMBOL_REGISTER",
-        "OP_SYMBOL_RESOLVE"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME_SYMBOLS"
-      ],
-      "purpose": "Define the runtime symbol-root registry and deterministic namespace/address resolution, including exclusive sigil/root semantics.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_SYMBOL_REGISTRY",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+      "field_path": "topics[1].operation_refs"
     }
-  ]
+  ],
+  "prose": {
+    "notes": [
+      "Unlocked pending reconciliation against existing runtime symbol/module contracts and whole-tree Contract Format 1.4 validation.",
+      "Unlocked until reconciled against the existing runtime contracts and repository-wide 1.4 traceability validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: namespaces/00_Runtime_Symbol_Namespace_Registry.json, runtime/symbols/00_Runtime_Symbol_Namespace_Registry.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define the canonical registry of AIGMos runtime symbol roots and namespace families so semantic addressing resolves by explicit namespace identity rather than implementation path. [2] Define the runtime symbol-root registry and deterministic namespace/address resolution, including exclusive sigil/root semantics."
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_RUNTIME_NAMESPACES",
+          "member_refs": [
+            "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
+            "NAMESPACE_EXPLICIT",
+            "RUNTIME_SEMANTICS_EXPLICIT",
+            "GATE_0FEFD56595",
+            "GATE_C1F4114859",
+            "GATE_65B0E50990",
+            "GATE_DE75F783AE",
+            "GATE_1A75675059",
+            "GATE_30FE64E3E9",
+            "GATE_8AC6B1EAAB",
+            "GATE_A5C1434FA4",
+            "GATE_EE78521251",
+            "GATE_532A697C10",
+            "GATE_6"
+          ],
+          "metadata": {},
+          "name": "Runtime Symbol Namespace Registry",
+          "operation_refs": [
+            "OP_SYMBOL_REGISTER",
+            "OP_SYMBOL_RESOLVE"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_CORE_ADDRESSING",
+            "TOPIC_CORE_RUNTIME"
+          ],
+          "purpose": "Define the canonical registry of AIGMos runtime symbol roots and namespace families so semantic addressing resolves by explicit namespace identity rather than implementation path.",
+          "relation_refs": []
+        },
+        {
+          "child_topics": [],
+          "composed_topic_refs": [
+            "TOPIC_CORE_ADDRESSING"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_RUNTIME_SYMBOL_REGISTRY",
+          "member_refs": [
+            "AIGMOS_RUNTIME_SYMBOL_NAMESPACE_REGISTRY_CONTRACT",
+            "NAMESPACE_EXPLICIT",
+            "RUNTIME_SEMANTICS_EXPLICIT",
+            "GATE_0FEFD56595",
+            "GATE_C1F4114859",
+            "GATE_65B0E50990",
+            "GATE_DE75F783AE",
+            "GATE_1A75675059",
+            "GATE_30FE64E3E9",
+            "GATE_8AC6B1EAAB",
+            "GATE_A5C1434FA4",
+            "GATE_EE78521251",
+            "GATE_532A697C10",
+            "GATE_6"
+          ],
+          "metadata": {},
+          "name": "Symbol Registry",
+          "operation_refs": [
+            "OP_SYMBOL_REGISTER",
+            "OP_SYMBOL_RESOLVE"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME_SYMBOLS"
+          ],
+          "purpose": "Define the runtime symbol-root registry and deterministic namespace/address resolution, including exclusive sigil/root semantics.",
+          "relation_refs": []
+        }
+      ],
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "errors": [
+              "root collision",
+              "invalid grammar"
+            ],
+            "id": "OP_SYMBOL_REGISTER",
+            "inputs": [
+              "explicit root definition"
+            ],
+            "name": "Register declared symbol root",
+            "outputs": [
+              "registered root"
+            ],
+            "side_effects": [
+              "runtime registry updated"
+            ]
+          },
+          {
+            "errors": [
+              "unknown root",
+              "invalid segment",
+              "ambiguous address"
+            ],
+            "id": "OP_SYMBOL_RESOLVE",
+            "inputs": [
+              "typed symbol address",
+              "registered roots"
+            ],
+            "name": "Resolve symbol address",
+            "outputs": [
+              "resolved runtime semantic target"
+            ],
+            "side_effects": []
+          }
+        ],
+        "states": []
+      },
+      "semantics": {
+        "addressing_rule": "Symbol addressing uses semantic grammar and does not become unrestricted filesystem addressing.",
+        "authority_rule": "Namespace existence does not grant read/write/invoke authority.",
+        "case_rule": "Canonical namespace spelling/case is exact.",
+        "collision_rule": "Casefold/root collisions are rejected.",
+        "dynamic_root_rule": "Payload/model/backend-selected root resolution is forbidden.",
+        "exclusive_locks": {
+          "!": "Trigger",
+          "%": "Runner",
+          "@": "Event"
+        },
+        "family_examples": [
+          "#INPUT:*"
+        ],
+        "identity_rule": "Each reserved root/family has explicit canonical namespace identity and owner.",
+        "module_namespace_separator": ".",
+        "mount_rule": "Namespace registry resolves a root to its declared semantic owner/mount semantics.",
+        "path_rule": "Filesystem directory name does not create or own a namespace.",
+        "path_separator": ":",
+        "registry_role": "runtime namespace index",
+        "root_examples": [
+          "#I",
+          "#A",
+          "#P",
+          "#R",
+          "#T",
+          "#MCP",
+          "#OSC",
+          "#REST",
+          "#UM",
+          "#MEM",
+          "#HELP",
+          "#CAL",
+          "#SHOP"
+        ],
+        "root_prefixes": [
+          "#",
+          "$",
+          "&",
+          "?",
+          "%",
+          "!",
+          "@",
+          "|"
+        ],
+        "root_rule": "A runtime root exists only when explicitly declared by canonical runtime semantics."
+      }
+    }
+  }
 }

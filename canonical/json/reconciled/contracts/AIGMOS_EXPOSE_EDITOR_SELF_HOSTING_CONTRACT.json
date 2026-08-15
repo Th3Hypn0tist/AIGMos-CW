@@ -1,62 +1,674 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "errors": [
-          "source unresolved"
-        ],
-        "id": "OP_EDITOR_PROJECT",
-        "inputs": [
-          "nanoCMS Editor layout",
-          "MetaModule editor semantics",
-          "authorized source refs"
-        ],
-        "name": "Project Editor UI",
-        "outputs": [
-          "Editor SPA projection"
-        ],
-        "side_effects": []
-      },
-      {
-        "errors": [
-          "authority denied",
-          "validation failure"
-        ],
-        "id": "OP_EDITOR_EDIT_COPY",
-        "inputs": [
-          "current Editor definition",
-          "authorized delta"
-        ],
-        "name": "Edit candidate copy of Editor definition",
-        "outputs": [
-          "candidate Editor definition"
-        ],
-        "side_effects": [
-          "candidate definition updated"
-        ]
-      },
-      {
-        "errors": [
-          "activation failure"
-        ],
-        "id": "OP_EDITOR_ACTIVATE_COPY",
-        "inputs": [
-          "validated candidate"
-        ],
-        "name": "Activate validated Editor copy",
-        "outputs": [
-          "active Editor definition"
-        ],
-        "side_effects": [
-          "active Editor configuration updated"
-        ]
-      }
-    ],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT",
+    "name": "Expose Editor Self-Hosting",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define the Editor as an ordinary MetaModule under nanoCMS, governed by AccessCore and capable of self-editing only through copy-validate-activate semantics with a recovery path. [2] Define the Expose Editor itself as a normal MetaModule placed under nanoCMS, with its own internal editor sections/views organized by the same nanoCMS structure and a safe copy-validate-activate recovery path.",
+  "scope": {
+    "does_not_own": [
+      "runtime execution authority unless explicitly referenced",
+      "unrelated domain semantics",
+      "MetaModule business semantics",
+      "runtime authority",
+      "domain data semantics"
+    ],
+    "owns": [
+      "Expose Editor Self-Hosting semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT",
+      "name": "Expose Editor Self-Hosting",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::OPERATIONS::OP_EDITOR_PROJECT",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "source unresolved"
+            ],
+            "id": "OP_EDITOR_PROJECT",
+            "inputs": [
+              "nanoCMS Editor layout",
+              "MetaModule editor semantics",
+              "authorized source refs"
+            ],
+            "name": "Project Editor UI",
+            "outputs": [
+              "Editor SPA projection"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::OPERATIONS::OP_EDITOR_EDIT_COPY",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "authority denied",
+              "validation failure"
+            ],
+            "id": "OP_EDITOR_EDIT_COPY",
+            "inputs": [
+              "current Editor definition",
+              "authorized delta"
+            ],
+            "name": "Edit candidate copy of Editor definition",
+            "outputs": [
+              "candidate Editor definition"
+            ],
+            "side_effects": [
+              "candidate definition updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::OPERATIONS::OP_EDITOR_ACTIVATE_COPY",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "activation failure"
+            ],
+            "id": "OP_EDITOR_ACTIVATE_COPY",
+            "inputs": [
+              "validated candidate"
+            ],
+            "name": "Activate validated Editor copy",
+            "outputs": [
+              "active Editor definition"
+            ],
+            "side_effects": [
+              "active Editor configuration updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "ac_rule": "AC off means no AccessCore restrictions; AC on governs Editor and its subareas through normal policy.",
+            "activation_rule": "Only validated candidate may become active.",
+            "authority_rule": "Editor self-hosting never bypasses AccessCore.",
+            "layout_rule": "Reconciled source clauses: [1] Editor internal navigation/layout is represented through nanoCMS site/page structure. [2] Editor internal navigation/layout is represented by nanoCMS site/page structure.",
+            "module_rule": "Editor is a normal MetaModule, not a privileged runtime class.",
+            "no_bypass_rule": "Editor has no privileged AC/runtime bypass.",
+            "placement_rule": "Editor is placed/bound through nanoCMS like other outward-facing MetaModules.",
+            "recovery_rule": "Reconciled source clauses: [1] A bootstrap/recovery path remains available if the candidate Editor is invalid. [2] A bootstrap/recovery path remains available if candidate Editor configuration is invalid.",
+            "runtime_class": "ordinary MetaModule",
+            "self_edit_rule": "Reconciled source clauses: [1] Running Editor edits/validates a candidate copy rather than irreversibly mutating the only active definition. [2] Running Editor edits a candidate/copy of its own MetaModule/structure rather than irreversibly mutating the only active definition.",
+            "spa_rule": "Editor may present SPA-style UI over normal canonical operations/REST bindings.",
+            "validation_rule": "Candidate self-edit validates before activation/reload."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_EDITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "TOPIC_EXPOSE_EDITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "EXPOSE_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "NANOCMS_STRUCTURE_ONLY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "GATE_6BD80DE97F",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "GATE_74392A39F9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "GATE_616623BF30",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "GATE_D053701A04",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "GATE_9B8FE5C7AC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "GATE_F1A8ACC104",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "GATE_24AC2F59A2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "GATE_2AA09A4339",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "GATE_5FD987E9B1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "GATE_22328D8026",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_EDITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "TOPIC_METAMODULE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_EDITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "TOPIC_NANOCMS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_EDITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "TOPIC_ACCESSCORE_AUTHORIZATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_EDITOR_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_EDITOR_SELF_HOSTING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_EDITOR_SELF_HOSTING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_NANOCMS",
+            "child_ref": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_SELF_HOSTING_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+            "child_ref": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_SELF_HOSTING_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+            "child_ref": "EXPOSE_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_SELF_HOSTING_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+            "child_ref": "NANOCMS_STRUCTURE_ONLY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_SELF_HOSTING_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+            "child_ref": "GATE_6BD80DE97F",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_SELF_HOSTING_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+            "child_ref": "GATE_74392A39F9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_SELF_HOSTING_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+            "child_ref": "GATE_616623BF30",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_SELF_HOSTING_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+            "child_ref": "GATE_D053701A04",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_SELF_HOSTING_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+            "child_ref": "GATE_9B8FE5C7AC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_SELF_HOSTING_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+            "child_ref": "GATE_F1A8ACC104",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_SELF_HOSTING_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+            "child_ref": "GATE_24AC2F59A2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_SELF_HOSTING_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+            "child_ref": "GATE_2AA09A4339",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_SELF_HOSTING_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+            "child_ref": "GATE_5FD987E9B1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_EDITOR_SELF_HOSTING_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+            "child_ref": "GATE_22328D8026",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[12]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_EXPOSE_EDITOR",
+      "name": "Editor",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_EDITOR::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define the Editor as an ordinary MetaModule under nanoCMS, governed by AccessCore and capable of self-editing only through copy-validate-activate semantics with a recovery path.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+      "name": "Expose Editor Self-Hosting",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define the Expose Editor itself as a normal MetaModule placed under nanoCMS, with its own internal editor sections/views organized by the same nanoCMS structure and a safe copy-validate-activate recovery path.",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -121,29 +733,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT",
-    "name": "Expose Editor Self-Hosting",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked until reconciled against existing Expose/nanoCMS/Meta contracts and repository-wide Contract Format 1.4 validation.",
-      "Unlocked pending reconciliation against existing Expose/nanoCMS contracts and whole-tree Contract Format 1.4 validation.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: expose/editor/00_Editor_Self_Hosting.json, expose/nanocms/04_Editor_Self_Hosting.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
-    ],
-    "summary": "Reconciled source purposes: [1] Define the Editor as an ordinary MetaModule under nanoCMS, governed by AccessCore and capable of self-editing only through copy-validate-activate semantics with a recovery path. [2] Define the Expose Editor itself as a normal MetaModule placed under nanoCMS, with its own internal editor sections/views organized by the same nanoCMS structure and a safe copy-validate-activate recovery path."
-  },
-  "purpose": "Reconciled source purposes: [1] Define the Editor as an ordinary MetaModule under nanoCMS, governed by AccessCore and capable of self-editing only through copy-validate-activate semantics with a recovery path. [2] Define the Expose Editor itself as a normal MetaModule placed under nanoCMS, with its own internal editor sections/views organized by the same nanoCMS structure and a safe copy-validate-activate recovery path.",
   "references": [
     {
       "id": "REF_META",
@@ -171,115 +760,202 @@
       "purpose": "Self-edit uses candidate validation/activation semantics."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "runtime execution authority unless explicitly referenced",
-      "unrelated domain semantics",
-      "MetaModule business semantics",
-      "runtime authority",
-      "domain data semantics"
-    ],
-    "owns": [
-      "Expose Editor Self-Hosting semantics"
-    ]
-  },
-  "semantics": {
-    "ac_rule": "AC off means no AccessCore restrictions; AC on governs Editor and its subareas through normal policy.",
-    "activation_rule": "Only validated candidate may become active.",
-    "authority_rule": "Editor self-hosting never bypasses AccessCore.",
-    "layout_rule": "Reconciled source clauses: [1] Editor internal navigation/layout is represented through nanoCMS site/page structure. [2] Editor internal navigation/layout is represented by nanoCMS site/page structure.",
-    "module_rule": "Editor is a normal MetaModule, not a privileged runtime class.",
-    "no_bypass_rule": "Editor has no privileged AC/runtime bypass.",
-    "placement_rule": "Editor is placed/bound through nanoCMS like other outward-facing MetaModules.",
-    "recovery_rule": "Reconciled source clauses: [1] A bootstrap/recovery path remains available if the candidate Editor is invalid. [2] A bootstrap/recovery path remains available if candidate Editor configuration is invalid.",
-    "runtime_class": "ordinary MetaModule",
-    "self_edit_rule": "Reconciled source clauses: [1] Running Editor edits/validates a candidate copy rather than irreversibly mutating the only active definition. [2] Running Editor edits a candidate/copy of its own MetaModule/structure rather than irreversibly mutating the only active definition.",
-    "spa_rule": "Editor may present SPA-style UI over normal canonical operations/REST bindings.",
-    "validation_rule": "Candidate self-edit validates before activation/reload."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
+  "gaps": [
     {
-      "child_topics": [],
-      "composed_topic_refs": [
-        "TOPIC_METAMODULE",
-        "TOPIC_NANOCMS",
-        "TOPIC_ACCESSCORE_AUTHORIZATION",
-        "TOPIC_CORE_CHANGE_CONTROL"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_EXPOSE_EDITOR",
-      "member_refs": [
-        "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT",
-        "EXPOSE_BOUNDARY_EXPLICIT",
-        "NANOCMS_STRUCTURE_ONLY",
-        "GATE_6BD80DE97F",
-        "GATE_74392A39F9",
-        "GATE_616623BF30",
-        "GATE_D053701A04",
-        "GATE_9B8FE5C7AC",
-        "GATE_F1A8ACC104",
-        "GATE_24AC2F59A2",
-        "GATE_2AA09A4339",
-        "GATE_5FD987E9B1",
-        "GATE_22328D8026"
-      ],
-      "metadata": {},
-      "name": "Editor",
-      "operation_refs": [
-        "OP_EDITOR_PROJECT",
-        "OP_EDITOR_EDIT_COPY",
-        "OP_EDITOR_ACTIVATE_COPY"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_CORE"
-      ],
-      "purpose": "Define the Editor as an ordinary MetaModule under nanoCMS, governed by AccessCore and capable of self-editing only through copy-validate-activate semantics with a recovery path.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_EXPOSE_EDITOR",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_EXPOSE_EDITOR",
+      "field_path": "topics[0].operation_refs"
     },
     {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
-      "member_refs": [
-        "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT",
-        "EXPOSE_BOUNDARY_EXPLICIT",
-        "NANOCMS_STRUCTURE_ONLY",
-        "GATE_6BD80DE97F",
-        "GATE_74392A39F9",
-        "GATE_616623BF30",
-        "GATE_D053701A04",
-        "GATE_9B8FE5C7AC",
-        "GATE_F1A8ACC104",
-        "GATE_24AC2F59A2",
-        "GATE_2AA09A4339",
-        "GATE_5FD987E9B1",
-        "GATE_22328D8026"
-      ],
-      "metadata": {},
-      "name": "Expose Editor Self-Hosting",
-      "operation_refs": [
-        "OP_EDITOR_PROJECT",
-        "OP_EDITOR_EDIT_COPY",
-        "OP_EDITOR_ACTIVATE_COPY"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_EXPOSE",
-        "TOPIC_NANOCMS"
-      ],
-      "purpose": "Define the Expose Editor itself as a normal MetaModule placed under nanoCMS, with its own internal editor sections/views organized by the same nanoCMS structure and a safe copy-validate-activate recovery path.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+      "field_path": "topics[1].operation_refs"
     }
-  ]
+  ],
+  "prose": {
+    "notes": [
+      "Unlocked until reconciled against existing Expose/nanoCMS/Meta contracts and repository-wide Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against existing Expose/nanoCMS contracts and whole-tree Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: expose/editor/00_Editor_Self_Hosting.json, expose/nanocms/04_Editor_Self_Hosting.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define the Editor as an ordinary MetaModule under nanoCMS, governed by AccessCore and capable of self-editing only through copy-validate-activate semantics with a recovery path. [2] Define the Expose Editor itself as a normal MetaModule placed under nanoCMS, with its own internal editor sections/views organized by the same nanoCMS structure and a safe copy-validate-activate recovery path."
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [
+            "TOPIC_METAMODULE",
+            "TOPIC_NANOCMS",
+            "TOPIC_ACCESSCORE_AUTHORIZATION",
+            "TOPIC_CORE_CHANGE_CONTROL"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_EXPOSE_EDITOR",
+          "member_refs": [
+            "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT",
+            "EXPOSE_BOUNDARY_EXPLICIT",
+            "NANOCMS_STRUCTURE_ONLY",
+            "GATE_6BD80DE97F",
+            "GATE_74392A39F9",
+            "GATE_616623BF30",
+            "GATE_D053701A04",
+            "GATE_9B8FE5C7AC",
+            "GATE_F1A8ACC104",
+            "GATE_24AC2F59A2",
+            "GATE_2AA09A4339",
+            "GATE_5FD987E9B1",
+            "GATE_22328D8026"
+          ],
+          "metadata": {},
+          "name": "Editor",
+          "operation_refs": [
+            "OP_EDITOR_PROJECT",
+            "OP_EDITOR_EDIT_COPY",
+            "OP_EDITOR_ACTIVATE_COPY"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_CORE"
+          ],
+          "purpose": "Define the Editor as an ordinary MetaModule under nanoCMS, governed by AccessCore and capable of self-editing only through copy-validate-activate semantics with a recovery path.",
+          "relation_refs": []
+        },
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_EXPOSE_EDITOR_SELF_HOSTING",
+          "member_refs": [
+            "AIGMOS_EXPOSE_EDITOR_SELF_HOSTING_CONTRACT",
+            "EXPOSE_BOUNDARY_EXPLICIT",
+            "NANOCMS_STRUCTURE_ONLY",
+            "GATE_6BD80DE97F",
+            "GATE_74392A39F9",
+            "GATE_616623BF30",
+            "GATE_D053701A04",
+            "GATE_9B8FE5C7AC",
+            "GATE_F1A8ACC104",
+            "GATE_24AC2F59A2",
+            "GATE_2AA09A4339",
+            "GATE_5FD987E9B1",
+            "GATE_22328D8026"
+          ],
+          "metadata": {},
+          "name": "Expose Editor Self-Hosting",
+          "operation_refs": [
+            "OP_EDITOR_PROJECT",
+            "OP_EDITOR_EDIT_COPY",
+            "OP_EDITOR_ACTIVATE_COPY"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_EXPOSE",
+            "TOPIC_NANOCMS"
+          ],
+          "purpose": "Define the Expose Editor itself as a normal MetaModule placed under nanoCMS, with its own internal editor sections/views organized by the same nanoCMS structure and a safe copy-validate-activate recovery path.",
+          "relation_refs": []
+        }
+      ],
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "errors": [
+              "source unresolved"
+            ],
+            "id": "OP_EDITOR_PROJECT",
+            "inputs": [
+              "nanoCMS Editor layout",
+              "MetaModule editor semantics",
+              "authorized source refs"
+            ],
+            "name": "Project Editor UI",
+            "outputs": [
+              "Editor SPA projection"
+            ],
+            "side_effects": []
+          },
+          {
+            "errors": [
+              "authority denied",
+              "validation failure"
+            ],
+            "id": "OP_EDITOR_EDIT_COPY",
+            "inputs": [
+              "current Editor definition",
+              "authorized delta"
+            ],
+            "name": "Edit candidate copy of Editor definition",
+            "outputs": [
+              "candidate Editor definition"
+            ],
+            "side_effects": [
+              "candidate definition updated"
+            ]
+          },
+          {
+            "errors": [
+              "activation failure"
+            ],
+            "id": "OP_EDITOR_ACTIVATE_COPY",
+            "inputs": [
+              "validated candidate"
+            ],
+            "name": "Activate validated Editor copy",
+            "outputs": [
+              "active Editor definition"
+            ],
+            "side_effects": [
+              "active Editor configuration updated"
+            ]
+          }
+        ],
+        "states": []
+      },
+      "semantics": {
+        "ac_rule": "AC off means no AccessCore restrictions; AC on governs Editor and its subareas through normal policy.",
+        "activation_rule": "Only validated candidate may become active.",
+        "authority_rule": "Editor self-hosting never bypasses AccessCore.",
+        "layout_rule": "Reconciled source clauses: [1] Editor internal navigation/layout is represented through nanoCMS site/page structure. [2] Editor internal navigation/layout is represented by nanoCMS site/page structure.",
+        "module_rule": "Editor is a normal MetaModule, not a privileged runtime class.",
+        "no_bypass_rule": "Editor has no privileged AC/runtime bypass.",
+        "placement_rule": "Editor is placed/bound through nanoCMS like other outward-facing MetaModules.",
+        "recovery_rule": "Reconciled source clauses: [1] A bootstrap/recovery path remains available if the candidate Editor is invalid. [2] A bootstrap/recovery path remains available if candidate Editor configuration is invalid.",
+        "runtime_class": "ordinary MetaModule",
+        "self_edit_rule": "Reconciled source clauses: [1] Running Editor edits/validates a candidate copy rather than irreversibly mutating the only active definition. [2] Running Editor edits a candidate/copy of its own MetaModule/structure rather than irreversibly mutating the only active definition.",
+        "spa_rule": "Editor may present SPA-style UI over normal canonical operations/REST bindings.",
+        "validation_rule": "Candidate self-edit validates before activation/reload."
+      }
+    }
+  }
 }

@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define the exact boundary by which a due `#CAL` occurrence becomes an inert scheduling Event that can then participate in normal Event→Trigger→Runner causality.",
   "scope": {
     "owns": [
@@ -22,64 +21,199 @@
       "external calendar provider semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT",
+      "name": "Schedule to Event Boundary",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "flow": [
+              "resolve due occurrence",
+              "create occurrence identity",
+              "emit scheduling Event",
+              "evaluate Trigger",
+              "request Runner/operation through normal dispatch"
+            ],
+            "event_rule": "Scheduling Event references exact schedule and occurrence identities.",
+            "payload_rule": "Event payload may carry bounded schedule/occurrence metadata and remains inert.",
+            "trigger_rule": "Schedule does not bypass Trigger semantics unless an explicitly declared direct operation binding contract exists in the future.",
+            "authority_rule": "Due time does not grant execution authorization.",
+            "dedupe_rule": "Each occurrence has deterministic identity/deduplication evidence preventing accidental duplicate emission.",
+            "failure_rule": "Failure to emit/handle Event is recorded explicitly and never represented as successful downstream execution.",
+            "causality_rule": "Downstream execution/results retain causality refs to originating schedule occurrence/Event."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_SCHEDULE_EVENT_BOUNDARY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CALENDAR",
+            "child_ref": "TOPIC_SCHEDULE_EVENT_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_SCHEDULE_EVENT_BOUNDARY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_SCHEDULING",
+            "child_ref": "TOPIC_SCHEDULE_EVENT_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SCHEDULE_EVENT_BOUNDARY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SCHEDULE_EVENT_BOUNDARY",
+            "child_ref": "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SCHEDULE_EVENT_BOUNDARY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SCHEDULE_EVENT_BOUNDARY",
+            "child_ref": "SCHEDULE_NONEXECUTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SCHEDULE_EVENT_BOUNDARY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SCHEDULE_EVENT_BOUNDARY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SCHEDULE_EVENT_BOUNDARY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SCHEDULE_EVENT_BOUNDARY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SCHEDULE_EVENT_BOUNDARY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SCHEDULE_EVENT_BOUNDARY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SCHEDULE_EVENT_BOUNDARY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SCHEDULE_EVENT_BOUNDARY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SCHEDULE_EVENT_BOUNDARY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SCHEDULE_EVENT_BOUNDARY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/calendar/02_Schedule_Event_Boundary.json"
+      }
+    },
     {
       "id": "TOPIC_SCHEDULE_EVENT_BOUNDARY",
       "name": "Schedule to Event Boundary",
-      "purpose": "Define the exact boundary by which a due `#CAL` occurrence becomes an inert scheduling Event that can then participate in normal Event→Trigger→Runner causality.",
-      "parent_topic_refs": [
-        "TOPIC_CALENDAR",
-        "TOPIC_SCHEDULING"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT",
-        "SCHEDULE_NONEXECUTION",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_SCHEDULE_EVENT_BOUNDARY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define the exact boundary by which a due `#CAL` occurrence becomes an inert scheduling Event that can then participate in normal Event→Trigger→Runner causality.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "flow": [
-      "resolve due occurrence",
-      "create occurrence identity",
-      "emit scheduling Event",
-      "evaluate Trigger",
-      "request Runner/operation through normal dispatch"
-    ],
-    "event_rule": "Scheduling Event references exact schedule and occurrence identities.",
-    "payload_rule": "Event payload may carry bounded schedule/occurrence metadata and remains inert.",
-    "trigger_rule": "Schedule does not bypass Trigger semantics unless an explicitly declared direct operation binding contract exists in the future.",
-    "authority_rule": "Due time does not grant execution authorization.",
-    "dedupe_rule": "Each occurrence has deterministic identity/deduplication evidence preventing accidental duplicate emission.",
-    "failure_rule": "Failure to emit/handle Event is recorded explicitly and never represented as successful downstream execution.",
-    "causality_rule": "Downstream execution/results retain causality refs to originating schedule occurrence/Event."
-  },
   "constraints": {
     "invariants": [
       {
@@ -127,10 +261,80 @@
       "purpose": "Scheduling Events enter normal Trigger path."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define the exact boundary by which a due `#CAL` occurrence becomes an inert scheduling Event that can then participate in normal Event→Trigger→Runner causality.",
     "notes": [
       "Unlocked pending reconciliation against #CAL, Event/Trigger causality, Runner and timezone/runtime contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_SCHEDULE_EVENT_BOUNDARY",
+          "name": "Schedule to Event Boundary",
+          "purpose": "Define the exact boundary by which a due `#CAL` occurrence becomes an inert scheduling Event that can then participate in normal Event→Trigger→Runner causality.",
+          "parent_topic_refs": [
+            "TOPIC_CALENDAR",
+            "TOPIC_SCHEDULING"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_SCHEDULE_EVENT_BOUNDARY_CONTRACT",
+            "SCHEDULE_NONEXECUTION",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "flow": [
+          "resolve due occurrence",
+          "create occurrence identity",
+          "emit scheduling Event",
+          "evaluate Trigger",
+          "request Runner/operation through normal dispatch"
+        ],
+        "event_rule": "Scheduling Event references exact schedule and occurrence identities.",
+        "payload_rule": "Event payload may carry bounded schedule/occurrence metadata and remains inert.",
+        "trigger_rule": "Schedule does not bypass Trigger semantics unless an explicitly declared direct operation binding contract exists in the future.",
+        "authority_rule": "Due time does not grant execution authorization.",
+        "dedupe_rule": "Each occurrence has deterministic identity/deduplication evidence preventing accidental duplicate emission.",
+        "failure_rule": "Failure to emit/handle Event is recorded explicitly and never represented as successful downstream execution.",
+        "causality_rule": "Downstream execution/results retain causality refs to originating schedule occurrence/Event."
+      }
+    }
   }
 }

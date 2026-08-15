@@ -1,50 +1,440 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "errors": [
-          "identity collision",
-          "selection invalid"
-        ],
-        "id": "OP_INSTANCE_EDITOR_CREATE",
-        "inputs": [
-          "module definition",
-          "instance identity",
-          "schema/domain selections"
-        ],
-        "name": "Create pure module instance",
-        "outputs": [
-          "instance definition"
-        ],
-        "side_effects": [
-          "instance definition updated"
-        ]
-      },
-      {
-        "errors": [
-          "relation unresolved",
-          "domain unresolved"
-        ],
-        "id": "OP_INSTANCE_EDITOR_BIND",
-        "inputs": [
-          "instance",
-          "local/relation binding",
-          "domain refs"
-        ],
-        "name": "Bind instance data/domain composition",
-        "outputs": [
-          "bound instance"
-        ],
-        "side_effects": [
-          "instance binding updated"
-        ]
-      }
-    ],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT",
+    "name": "Expose Instance Editor",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define Instance Editor for creating/configuring module instances from existing module, schema and domain semantics without inventing runtime structure or relations. [2] Define Instance Editor as candidate construction/configuration of module instances, schemas and domain-module selections without creating live runtime instances until validated activation.",
+  "scope": {
+    "does_not_own": [
+      "runtime execution authority",
+      "unrelated domain semantics",
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ],
+    "owns": [
+      "Expose Instance Editor semantics",
+      "Instance Editor Boundary semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT",
+      "name": "Expose Instance Editor",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::OPERATIONS::OP_INSTANCE_EDITOR_CREATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "identity collision",
+              "selection invalid"
+            ],
+            "id": "OP_INSTANCE_EDITOR_CREATE",
+            "inputs": [
+              "module definition",
+              "instance identity",
+              "schema/domain selections"
+            ],
+            "name": "Create pure module instance",
+            "outputs": [
+              "instance definition"
+            ],
+            "side_effects": [
+              "instance definition updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::OPERATIONS::OP_INSTANCE_EDITOR_BIND",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "relation unresolved",
+              "domain unresolved"
+            ],
+            "id": "OP_INSTANCE_EDITOR_BIND",
+            "inputs": [
+              "instance",
+              "local/relation binding",
+              "domain refs"
+            ],
+            "name": "Bind instance data/domain composition",
+            "outputs": [
+              "bound instance"
+            ],
+            "side_effects": [
+              "instance binding updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "activation_rule": "Accepted instance definition remains distinct from runtime activation.",
+            "authority_rule": "Reconciled source clauses: [1] Editor visibility/use does not bypass applicable configuration authorization. [2] Editing an instance candidate grants no runtime lifecycle authority.",
+            "binding_rule": "local/relation bindings follow UserModule instance-binding semantics.",
+            "candidate_rule": "Instance Editor creates/edits candidate instance definitions.",
+            "create_rule": "Instance Editor creates/configures instances, not new hidden module classes.",
+            "domain_rule": "Domain modules are selected by explicit canonical identity.",
+            "module_rule": "Selected module/domain identities are exact.",
+            "pure_module_rule": "Pure modules may be instantiated directly from canonical definitions.",
+            "pure_rule": "Creation of pure modules/instances does not silently attach hidden dependencies.",
+            "relation_rule": "Relation-backed binding requires an existing declared relation/FK.",
+            "schema_rule": "Reconciled source clauses: [1] Schema is selected from existing explicit schemas or authored through canonical schema operations. [2] Schema may reference or instantiate explicit existing schema contracts.",
+            "validation_rule": "Dependencies/config/schema validate before apply."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_INSTANCE_EDITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_INSTANCE_EDITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_INSTANCE_EDITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EDITOR",
+            "child_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_INSTANCE_EDITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_INSTANCE_EDITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "EDITOR_TOOL_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_INSTANCE_EDITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "UI_NONAUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_INSTANCE_EDITOR_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "UI_EFFECT_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_INSTANCE_EDITOR_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "GATE_B4B7933924",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_INSTANCE_EDITOR_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "GATE_61628916EE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_INSTANCE_EDITOR_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "GATE_F5EA8D9787",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_INSTANCE_EDITOR_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "GATE_424941E4ED",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_INSTANCE_EDITOR_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "GATE_9A66CC5740",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_INSTANCE_EDITOR_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "GATE_FAE799E734",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_INSTANCE_EDITOR_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "GATE_FE7420170C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_INSTANCE_EDITOR_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "GATE_E9CD68E8BA",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_INSTANCE_EDITOR_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "GATE_02C1E0C3B2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_INSTANCE_EDITOR_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "GATE_AB65531191",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_INSTANCE_EDITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "TOPIC_RUNTIME_USERMODULE_INSTANCES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_INSTANCE_EDITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "TOPIC_CORE_SCHEMA",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_INSTANCE_EDITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+            "child_ref": "TOPIC_CORE_STRUCTURE_RELATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+      "name": "Instance Editor",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_INSTANCE_EDITOR::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Reconciled source clauses: [1] Define Instance Editor for creating/configuring module instances from existing module, schema and domain semantics without inventing runtime structure or relations. [2] Define Instance Editor as candidate construction/configuration of module instances, schemas and domain-module selections without creating live runtime instances until validated activation.",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -113,29 +503,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT",
-    "name": "Expose Instance Editor",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked until reconciled against existing Expose Editor contracts and repository-wide Contract Format 1.4 validation.",
-      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: expose/editor/06_Instance_Editor.json, expose/editor/111_Instance_Editor_Boundary.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
-    ],
-    "summary": "Reconciled source purposes: [1] Define Instance Editor for creating/configuring module instances from existing module, schema and domain semantics without inventing runtime structure or relations. [2] Define Instance Editor as candidate construction/configuration of module instances, schemas and domain-module selections without creating live runtime instances until validated activation."
-  },
-  "purpose": "Reconciled source purposes: [1] Define Instance Editor for creating/configuring module instances from existing module, schema and domain semantics without inventing runtime structure or relations. [2] Define Instance Editor as candidate construction/configuration of module instances, schemas and domain-module selections without creating live runtime instances until validated activation.",
   "references": [
     {
       "id": "REF_INSTANCE",
@@ -153,81 +520,147 @@
       "purpose": "Instance activation is separate from definition editing."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "runtime execution authority",
-      "unrelated domain semantics",
-      "domain semantic ownership",
-      "AccessCore policy ownership"
-    ],
-    "owns": [
-      "Expose Instance Editor semantics",
-      "Instance Editor Boundary semantics"
-    ]
-  },
-  "semantics": {
-    "activation_rule": "Accepted instance definition remains distinct from runtime activation.",
-    "authority_rule": "Reconciled source clauses: [1] Editor visibility/use does not bypass applicable configuration authorization. [2] Editing an instance candidate grants no runtime lifecycle authority.",
-    "binding_rule": "local/relation bindings follow UserModule instance-binding semantics.",
-    "candidate_rule": "Instance Editor creates/edits candidate instance definitions.",
-    "create_rule": "Instance Editor creates/configures instances, not new hidden module classes.",
-    "domain_rule": "Domain modules are selected by explicit canonical identity.",
-    "module_rule": "Selected module/domain identities are exact.",
-    "pure_module_rule": "Pure modules may be instantiated directly from canonical definitions.",
-    "pure_rule": "Creation of pure modules/instances does not silently attach hidden dependencies.",
-    "relation_rule": "Relation-backed binding requires an existing declared relation/FK.",
-    "schema_rule": "Reconciled source clauses: [1] Schema is selected from existing explicit schemas or authored through canonical schema operations. [2] Schema may reference or instantiate explicit existing schema contracts.",
-    "validation_rule": "Dependencies/config/schema validate before apply."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
+  "gaps": [
     {
-      "child_topics": [],
-      "composed_topic_refs": [
-        "TOPIC_RUNTIME_USERMODULE_INSTANCES",
-        "TOPIC_CORE_SCHEMA",
-        "TOPIC_CORE_STRUCTURE_RELATION"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_EXPOSE_INSTANCE_EDITOR",
-      "member_refs": [
-        "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT",
-        "EDITOR_TOOL_BOUNDARY_EXPLICIT",
-        "UI_NONAUTHORITY",
-        "UI_EFFECT_BOUNDARY",
-        "GATE_B4B7933924",
-        "GATE_61628916EE",
-        "GATE_F5EA8D9787",
-        "GATE_424941E4ED",
-        "GATE_9A66CC5740",
-        "GATE_FAE799E734",
-        "GATE_FE7420170C",
-        "GATE_E9CD68E8BA",
-        "GATE_02C1E0C3B2",
-        "GATE_AB65531191"
-      ],
-      "metadata": {},
-      "name": "Instance Editor",
-      "operation_refs": [
-        "OP_INSTANCE_EDITOR_CREATE",
-        "OP_INSTANCE_EDITOR_BIND"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_EXPOSE_EDITOR",
-        "TOPIC_EXPOSE",
-        "TOPIC_EDITOR"
-      ],
-      "purpose": "Reconciled source clauses: [1] Define Instance Editor for creating/configuring module instances from existing module, schema and domain semantics without inventing runtime structure or relations. [2] Define Instance Editor as candidate construction/configuration of module instances, schemas and domain-module selections without creating live runtime instances until validated activation.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_EXPOSE_INSTANCE_EDITOR",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+      "field_path": "topics[0].operation_refs"
     }
-  ]
+  ],
+  "prose": {
+    "notes": [
+      "Unlocked until reconciled against existing Expose Editor contracts and repository-wide Contract Format 1.4 validation.",
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: expose/editor/06_Instance_Editor.json, expose/editor/111_Instance_Editor_Boundary.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define Instance Editor for creating/configuring module instances from existing module, schema and domain semantics without inventing runtime structure or relations. [2] Define Instance Editor as candidate construction/configuration of module instances, schemas and domain-module selections without creating live runtime instances until validated activation."
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [
+            "TOPIC_RUNTIME_USERMODULE_INSTANCES",
+            "TOPIC_CORE_SCHEMA",
+            "TOPIC_CORE_STRUCTURE_RELATION"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_EXPOSE_INSTANCE_EDITOR",
+          "member_refs": [
+            "AIGMOS_EXPOSE_INSTANCE_EDITOR_CONTRACT",
+            "EDITOR_TOOL_BOUNDARY_EXPLICIT",
+            "UI_NONAUTHORITY",
+            "UI_EFFECT_BOUNDARY",
+            "GATE_B4B7933924",
+            "GATE_61628916EE",
+            "GATE_F5EA8D9787",
+            "GATE_424941E4ED",
+            "GATE_9A66CC5740",
+            "GATE_FAE799E734",
+            "GATE_FE7420170C",
+            "GATE_E9CD68E8BA",
+            "GATE_02C1E0C3B2",
+            "GATE_AB65531191"
+          ],
+          "metadata": {},
+          "name": "Instance Editor",
+          "operation_refs": [
+            "OP_INSTANCE_EDITOR_CREATE",
+            "OP_INSTANCE_EDITOR_BIND"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_EXPOSE_EDITOR",
+            "TOPIC_EXPOSE",
+            "TOPIC_EDITOR"
+          ],
+          "purpose": "Reconciled source clauses: [1] Define Instance Editor for creating/configuring module instances from existing module, schema and domain semantics without inventing runtime structure or relations. [2] Define Instance Editor as candidate construction/configuration of module instances, schemas and domain-module selections without creating live runtime instances until validated activation.",
+          "relation_refs": []
+        }
+      ],
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "errors": [
+              "identity collision",
+              "selection invalid"
+            ],
+            "id": "OP_INSTANCE_EDITOR_CREATE",
+            "inputs": [
+              "module definition",
+              "instance identity",
+              "schema/domain selections"
+            ],
+            "name": "Create pure module instance",
+            "outputs": [
+              "instance definition"
+            ],
+            "side_effects": [
+              "instance definition updated"
+            ]
+          },
+          {
+            "errors": [
+              "relation unresolved",
+              "domain unresolved"
+            ],
+            "id": "OP_INSTANCE_EDITOR_BIND",
+            "inputs": [
+              "instance",
+              "local/relation binding",
+              "domain refs"
+            ],
+            "name": "Bind instance data/domain composition",
+            "outputs": [
+              "bound instance"
+            ],
+            "side_effects": [
+              "instance binding updated"
+            ]
+          }
+        ],
+        "states": []
+      },
+      "semantics": {
+        "activation_rule": "Accepted instance definition remains distinct from runtime activation.",
+        "authority_rule": "Reconciled source clauses: [1] Editor visibility/use does not bypass applicable configuration authorization. [2] Editing an instance candidate grants no runtime lifecycle authority.",
+        "binding_rule": "local/relation bindings follow UserModule instance-binding semantics.",
+        "candidate_rule": "Instance Editor creates/edits candidate instance definitions.",
+        "create_rule": "Instance Editor creates/configures instances, not new hidden module classes.",
+        "domain_rule": "Domain modules are selected by explicit canonical identity.",
+        "module_rule": "Selected module/domain identities are exact.",
+        "pure_module_rule": "Pure modules may be instantiated directly from canonical definitions.",
+        "pure_rule": "Creation of pure modules/instances does not silently attach hidden dependencies.",
+        "relation_rule": "Relation-backed binding requires an existing declared relation/FK.",
+        "schema_rule": "Reconciled source clauses: [1] Schema is selected from existing explicit schemas or authored through canonical schema operations. [2] Schema may reference or instantiate explicit existing schema contracts.",
+        "validation_rule": "Dependencies/config/schema validate before apply."
+      }
+    }
+  }
 }

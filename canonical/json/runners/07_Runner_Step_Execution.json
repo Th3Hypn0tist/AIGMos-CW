@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define each Runner step as an ordered/dependency-bound execution unit with exact definition, input, output, status and parent execution provenance.",
   "scope": {
     "owns": [
@@ -22,58 +21,193 @@
       "domain operation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT",
+      "name": "Runner Step Execution",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "step_rule": "Each machine-significant step has a stable definition identity within the Runner/Routine.",
+            "execution_rule": "Each executed step has a distinct step-execution identity.",
+            "parent_rule": "Step execution references exact parent Runner execution.",
+            "order_rule": "Execution ordering/dependencies are explicit and never inferred only from log timestamps.",
+            "input_rule": "Resolved inputs are explicit refs/values according to operation contract.",
+            "output_rule": "Outputs/results are attached to exact step execution.",
+            "failure_rule": "Skipped, failed, cancelled and completed states are distinct.",
+            "retry_rule": "Retries create explicit attempts rather than rewriting prior attempt evidence."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNNER_STEP_EXECUTION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNNERS",
+            "child_ref": "TOPIC_RUNNER_STEP_EXECUTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNNER_STEP_EXECUTION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXECUTION_TRACE",
+            "child_ref": "TOPIC_RUNNER_STEP_EXECUTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_STEP_EXECUTION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_STEP_EXECUTION",
+            "child_ref": "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_STEP_EXECUTION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_STEP_EXECUTION",
+            "child_ref": "RUNNER_EXECUTION_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_STEP_EXECUTION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_STEP_EXECUTION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_STEP_EXECUTION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_STEP_EXECUTION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_STEP_EXECUTION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_STEP_EXECUTION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_STEP_EXECUTION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_STEP_EXECUTION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_STEP_EXECUTION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_STEP_EXECUTION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runners/07_Runner_Step_Execution.json"
+      }
+    },
     {
       "id": "TOPIC_RUNNER_STEP_EXECUTION",
       "name": "Runner Step Execution",
-      "purpose": "Define each Runner step as an ordered/dependency-bound execution unit with exact definition, input, output, status and parent execution provenance.",
-      "parent_topic_refs": [
-        "TOPIC_RUNNERS",
-        "TOPIC_EXECUTION_TRACE"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT",
-        "RUNNER_EXECUTION_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNNER_STEP_EXECUTION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define each Runner step as an ordered/dependency-bound execution unit with exact definition, input, output, status and parent execution provenance.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "step_rule": "Each machine-significant step has a stable definition identity within the Runner/Routine.",
-    "execution_rule": "Each executed step has a distinct step-execution identity.",
-    "parent_rule": "Step execution references exact parent Runner execution.",
-    "order_rule": "Execution ordering/dependencies are explicit and never inferred only from log timestamps.",
-    "input_rule": "Resolved inputs are explicit refs/values according to operation contract.",
-    "output_rule": "Outputs/results are attached to exact step execution.",
-    "failure_rule": "Skipped, failed, cancelled and completed states are distinct.",
-    "retry_rule": "Retries create explicit attempts rather than rewriting prior attempt evidence."
-  },
   "constraints": {
     "invariants": [
       {
@@ -116,10 +250,74 @@
       "purpose": "Steps execute within an exact Runner execution."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define each Runner step as an ordered/dependency-bound execution unit with exact definition, input, output, status and parent execution provenance.",
     "notes": [
       "Unlocked pending reconciliation against Routine/Runner, Event/Trigger causality and command dispatch contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RUNNER_STEP_EXECUTION",
+          "name": "Runner Step Execution",
+          "purpose": "Define each Runner step as an ordered/dependency-bound execution unit with exact definition, input, output, status and parent execution provenance.",
+          "parent_topic_refs": [
+            "TOPIC_RUNNERS",
+            "TOPIC_EXECUTION_TRACE"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_RUNNER_STEP_EXECUTION_CONTRACT",
+            "RUNNER_EXECUTION_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "step_rule": "Each machine-significant step has a stable definition identity within the Runner/Routine.",
+        "execution_rule": "Each executed step has a distinct step-execution identity.",
+        "parent_rule": "Step execution references exact parent Runner execution.",
+        "order_rule": "Execution ordering/dependencies are explicit and never inferred only from log timestamps.",
+        "input_rule": "Resolved inputs are explicit refs/values according to operation contract.",
+        "output_rule": "Outputs/results are attached to exact step execution.",
+        "failure_rule": "Skipped, failed, cancelled and completed states are distinct.",
+        "retry_rule": "Retries create explicit attempts rather than rewriting prior attempt evidence."
+      }
+    }
   }
 }

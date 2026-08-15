@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_CHANGEFEED_SUBSCRIPTION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define subscriptions as explicit read/projection identities over exact DWH source scopes, change types and filters with separate runtime cursor/delivery state.",
   "scope": {
     "owns": [
@@ -22,65 +21,200 @@
       "AccessCore policy ownership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_CHANGEFEED_SUBSCRIPTION_CONTRACT",
+      "name": "DWH Changefeed Subscription",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_CHANGEFEED_SUBSCRIPTION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "identity_rule": "Each configured subscription has an explicit stable identity.",
+            "source_rule": "Subscription binds exact instance/schema/resource/changefeed scope.",
+            "filter_rule": "Record/field/change-type filters are explicit and schema-resolved.",
+            "projection_rule": "Delivered payload fields/profile are explicit and governed.",
+            "cursor_rule": "Subscription definition identity is distinct from runtime cursor/delivery-session identity.",
+            "start_rule": "Start position such as current, exact watermark, snapshot boundary or explicit historical position is declared.",
+            "authorization_rule": "Subscription creation/read/delivery obeys source governance and does not grant mutation authority.",
+            "lifecycle_states": [
+              "configured",
+              "active",
+              "paused",
+              "stale",
+              "failed",
+              "closed"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_CHANGEFEED_SUBSCRIPTION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_CHANGEFEED_SUBSCRIPTION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_CHANGEFEED_SUBSCRIPTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_CHANGEFEED_SUBSCRIPTION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_CHANGEFEED_SUBSCRIPTION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CHANGEFEED_CDC",
+            "child_ref": "TOPIC_DWH_CHANGEFEED_SUBSCRIPTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_CHANGEFEED_SUBSCRIPTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_CHANGEFEED_SUBSCRIPTION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_CHANGEFEED_SUBSCRIPTION",
+            "child_ref": "AIGMOS_DWH_CHANGEFEED_SUBSCRIPTION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_CHANGEFEED_SUBSCRIPTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_CHANGEFEED_SUBSCRIPTION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_CHANGEFEED_SUBSCRIPTION",
+            "child_ref": "CHANGEFEED_NONEXECUTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_CHANGEFEED_SUBSCRIPTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_CHANGEFEED_SUBSCRIPTION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_CHANGEFEED_SUBSCRIPTION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_CHANGEFEED_SUBSCRIPTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_CHANGEFEED_SUBSCRIPTION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_CHANGEFEED_SUBSCRIPTION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_CHANGEFEED_SUBSCRIPTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_CHANGEFEED_SUBSCRIPTION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_CHANGEFEED_SUBSCRIPTION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_CHANGEFEED_SUBSCRIPTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_CHANGEFEED_SUBSCRIPTION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_CHANGEFEED_SUBSCRIPTION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_CHANGEFEED_SUBSCRIPTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_CHANGEFEED_SUBSCRIPTION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_CHANGEFEED_SUBSCRIPTION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/changefeed/01_Changefeed_Subscription.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_CHANGEFEED_SUBSCRIPTION",
       "name": "DWH Changefeed Subscription",
-      "purpose": "Define subscriptions as explicit read/projection identities over exact DWH source scopes, change types and filters with separate runtime cursor/delivery state.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_CHANGEFEED_CDC"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_CHANGEFEED_SUBSCRIPTION_CONTRACT",
-        "CHANGEFEED_NONEXECUTION",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_CHANGEFEED_SUBSCRIPTION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define subscriptions as explicit read/projection identities over exact DWH source scopes, change types and filters with separate runtime cursor/delivery state.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "identity_rule": "Each configured subscription has an explicit stable identity.",
-    "source_rule": "Subscription binds exact instance/schema/resource/changefeed scope.",
-    "filter_rule": "Record/field/change-type filters are explicit and schema-resolved.",
-    "projection_rule": "Delivered payload fields/profile are explicit and governed.",
-    "cursor_rule": "Subscription definition identity is distinct from runtime cursor/delivery-session identity.",
-    "start_rule": "Start position such as current, exact watermark, snapshot boundary or explicit historical position is declared.",
-    "authorization_rule": "Subscription creation/read/delivery obeys source governance and does not grant mutation authority.",
-    "lifecycle_states": [
-      "configured",
-      "active",
-      "paused",
-      "stale",
-      "failed",
-      "closed"
-    ]
-  },
   "constraints": {
     "invariants": [
       {
@@ -128,10 +262,81 @@
       "purpose": "Delivered fields remain governed projections."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define subscriptions as explicit read/projection identities over exact DWH source scopes, change types and filters with separate runtime cursor/delivery state.",
     "notes": [
       "Unlocked pending reconciliation against DWH mutation/persistence, Event causality, sync and remote-sharing contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_CHANGEFEED_SUBSCRIPTION",
+          "name": "DWH Changefeed Subscription",
+          "purpose": "Define subscriptions as explicit read/projection identities over exact DWH source scopes, change types and filters with separate runtime cursor/delivery state.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_CHANGEFEED_CDC"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_CHANGEFEED_SUBSCRIPTION_CONTRACT",
+            "CHANGEFEED_NONEXECUTION",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "identity_rule": "Each configured subscription has an explicit stable identity.",
+        "source_rule": "Subscription binds exact instance/schema/resource/changefeed scope.",
+        "filter_rule": "Record/field/change-type filters are explicit and schema-resolved.",
+        "projection_rule": "Delivered payload fields/profile are explicit and governed.",
+        "cursor_rule": "Subscription definition identity is distinct from runtime cursor/delivery-session identity.",
+        "start_rule": "Start position such as current, exact watermark, snapshot boundary or explicit historical position is declared.",
+        "authorization_rule": "Subscription creation/read/delivery obeys source governance and does not grant mutation authority.",
+        "lifecycle_states": [
+          "configured",
+          "active",
+          "paused",
+          "stale",
+          "failed",
+          "closed"
+        ]
+      }
+    }
   }
 }

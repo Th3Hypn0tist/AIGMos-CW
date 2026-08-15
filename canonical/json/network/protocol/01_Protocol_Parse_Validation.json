@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define parse, size/schema/type validation and normalization before protocol payload can reach application routing.",
   "scope": {
     "owns": [
@@ -22,66 +21,215 @@
       "application operation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT",
+      "name": "Protocol Parse and Validation",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "flow": [
+              "frame/message decode",
+              "size/bounds validation",
+              "syntax parse",
+              "type/schema validation",
+              "normalization",
+              "route resolution",
+              "candidate application request"
+            ],
+            "size_rule": "Maximum message/frame sizes are explicit.",
+            "syntax_rule": "Malformed syntax fails without partial effect.",
+            "schema_rule": "Typed payload validates before routing.",
+            "normalization_rule": "Normalization cannot broaden semantic scope.",
+            "unknown_rule": "Unknown methods/types/routes fail or follow explicit extension semantics.",
+            "security_rule": "Parser errors do not leak sensitive internal state."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROTOCOL_PARSE_VALIDATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_NETWORK",
+            "child_ref": "TOPIC_PROTOCOL_PARSE_VALIDATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROTOCOL_PARSE_VALIDATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_PROTOCOLS",
+            "child_ref": "TOPIC_PROTOCOL_PARSE_VALIDATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_PARSE_VALIDATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_PARSE_VALIDATION",
+            "child_ref": "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_PARSE_VALIDATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_PARSE_VALIDATION",
+            "child_ref": "TRANSPORT_NONAUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_PARSE_VALIDATION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_PARSE_VALIDATION",
+            "child_ref": "INGRESS_EFFECT_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_PARSE_VALIDATION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_PARSE_VALIDATION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_PARSE_VALIDATION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_PARSE_VALIDATION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_PARSE_VALIDATION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_PARSE_VALIDATION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_PARSE_VALIDATION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_PARSE_VALIDATION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_PARSE_VALIDATION_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_PARSE_VALIDATION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/network/protocol/01_Protocol_Parse_Validation.json"
+      }
+    },
     {
       "id": "TOPIC_PROTOCOL_PARSE_VALIDATION",
       "name": "Protocol Parse and Validation",
-      "purpose": "Define parse, size/schema/type validation and normalization before protocol payload can reach application routing.",
-      "parent_topic_refs": [
-        "TOPIC_NETWORK",
-        "TOPIC_PROTOCOLS"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT",
-        "TRANSPORT_NONAUTHORITY",
-        "INGRESS_EFFECT_BOUNDARY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_PROTOCOL_PARSE_VALIDATION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define parse, size/schema/type validation and normalization before protocol payload can reach application routing.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "flow": [
-      "frame/message decode",
-      "size/bounds validation",
-      "syntax parse",
-      "type/schema validation",
-      "normalization",
-      "route resolution",
-      "candidate application request"
-    ],
-    "size_rule": "Maximum message/frame sizes are explicit.",
-    "syntax_rule": "Malformed syntax fails without partial effect.",
-    "schema_rule": "Typed payload validates before routing.",
-    "normalization_rule": "Normalization cannot broaden semantic scope.",
-    "unknown_rule": "Unknown methods/types/routes fail or follow explicit extension semantics.",
-    "security_rule": "Parser errors do not leak sensitive internal state."
-  },
   "constraints": {
     "invariants": [
       {
@@ -128,10 +276,82 @@
       "purpose": "Validation produces normalized inert envelope."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define parse, size/schema/type validation and normalization before protocol payload can reach application routing.",
     "notes": [
       "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_PROTOCOL_PARSE_VALIDATION",
+          "name": "Protocol Parse and Validation",
+          "purpose": "Define parse, size/schema/type validation and normalization before protocol payload can reach application routing.",
+          "parent_topic_refs": [
+            "TOPIC_NETWORK",
+            "TOPIC_PROTOCOLS"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_PROTOCOL_PARSE_VALIDATION_CONTRACT",
+            "TRANSPORT_NONAUTHORITY",
+            "INGRESS_EFFECT_BOUNDARY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "flow": [
+          "frame/message decode",
+          "size/bounds validation",
+          "syntax parse",
+          "type/schema validation",
+          "normalization",
+          "route resolution",
+          "candidate application request"
+        ],
+        "size_rule": "Maximum message/frame sizes are explicit.",
+        "syntax_rule": "Malformed syntax fails without partial effect.",
+        "schema_rule": "Typed payload validates before routing.",
+        "normalization_rule": "Normalization cannot broaden semantic scope.",
+        "unknown_rule": "Unknown methods/types/routes fail or follow explicit extension semantics.",
+        "security_rule": "Parser errors do not leak sensitive internal state."
+      }
+    }
   }
 }

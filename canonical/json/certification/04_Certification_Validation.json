@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define deterministic certification validation over certification identity, package/hash subject, registry state, issuer/profile and cache freshness, producing explicit valid/invalid/unverifiable outcomes.",
   "scope": {
     "owns": [
@@ -22,68 +21,203 @@
       "module semantic identity"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT",
+      "name": "Certification Validation",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "inputs": [
+              "certification_ref",
+              "package_snapshot_ref",
+              "package_hash_evidence",
+              "profile_ref",
+              "registry_or_valid_cache"
+            ],
+            "results": [
+              "valid",
+              "invalid",
+              "unverifiable"
+            ],
+            "valid_rule": "Valid requires exact subject/hash match and non-revoked/non-expired certification evidence.",
+            "invalid_rule": "Hash mismatch, revoked status, wrong subject/profile or invalid issuer evidence produces invalid.",
+            "unverifiable_rule": "Evidence unavailable or stale without authoritative confirmation produces unverifiable, never valid.",
+            "license_rule": "Commercial license status is not a certification-validation input unless a separate policy explicitly requires both for deployment.",
+            "runtime_rule": "Valid certification remains orthogonal to AccessCore/runtime authorization.",
+            "evidence_rule": "Validation result retains exact evidence/cache/registry refs."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_CERTIFICATION_VALIDATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CERTIFICATION",
+            "child_ref": "TOPIC_CERTIFICATION_VALIDATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_CERTIFICATION_VALIDATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DISTRIBUTION_PACKAGE",
+            "child_ref": "TOPIC_CERTIFICATION_VALIDATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CERTIFICATION_VALIDATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CERTIFICATION_VALIDATION",
+            "child_ref": "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CERTIFICATION_VALIDATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CERTIFICATION_VALIDATION",
+            "child_ref": "CERTIFICATION_EVIDENCE_BOUND",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CERTIFICATION_VALIDATION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CERTIFICATION_VALIDATION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CERTIFICATION_VALIDATION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CERTIFICATION_VALIDATION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CERTIFICATION_VALIDATION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CERTIFICATION_VALIDATION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CERTIFICATION_VALIDATION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CERTIFICATION_VALIDATION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CERTIFICATION_VALIDATION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CERTIFICATION_VALIDATION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/certification/04_Certification_Validation.json"
+      }
+    },
     {
       "id": "TOPIC_CERTIFICATION_VALIDATION",
       "name": "Certification Validation",
-      "purpose": "Define deterministic certification validation over certification identity, package/hash subject, registry state, issuer/profile and cache freshness, producing explicit valid/invalid/unverifiable outcomes.",
-      "parent_topic_refs": [
-        "TOPIC_CERTIFICATION",
-        "TOPIC_DISTRIBUTION_PACKAGE"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT",
-        "CERTIFICATION_EVIDENCE_BOUND",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_CERTIFICATION_VALIDATION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define deterministic certification validation over certification identity, package/hash subject, registry state, issuer/profile and cache freshness, producing explicit valid/invalid/unverifiable outcomes.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "inputs": [
-      "certification_ref",
-      "package_snapshot_ref",
-      "package_hash_evidence",
-      "profile_ref",
-      "registry_or_valid_cache"
-    ],
-    "results": [
-      "valid",
-      "invalid",
-      "unverifiable"
-    ],
-    "valid_rule": "Valid requires exact subject/hash match and non-revoked/non-expired certification evidence.",
-    "invalid_rule": "Hash mismatch, revoked status, wrong subject/profile or invalid issuer evidence produces invalid.",
-    "unverifiable_rule": "Evidence unavailable or stale without authoritative confirmation produces unverifiable, never valid.",
-    "license_rule": "Commercial license status is not a certification-validation input unless a separate policy explicitly requires both for deployment.",
-    "runtime_rule": "Valid certification remains orthogonal to AccessCore/runtime authorization.",
-    "evidence_rule": "Validation result retains exact evidence/cache/registry refs."
-  },
   "constraints": {
     "invariants": [
       {
@@ -131,10 +265,84 @@
       "purpose": "Validation may use valid cached evidence."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define deterministic certification validation over certification identity, package/hash subject, registry state, issuer/profile and cache freshness, producing explicit valid/invalid/unverifiable outcomes.",
     "notes": [
       "Unlocked pending reconciliation against existing certification/distribution/licensing contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_CERTIFICATION_VALIDATION",
+          "name": "Certification Validation",
+          "purpose": "Define deterministic certification validation over certification identity, package/hash subject, registry state, issuer/profile and cache freshness, producing explicit valid/invalid/unverifiable outcomes.",
+          "parent_topic_refs": [
+            "TOPIC_CERTIFICATION",
+            "TOPIC_DISTRIBUTION_PACKAGE"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_CERTIFICATION_VALIDATION_CONTRACT",
+            "CERTIFICATION_EVIDENCE_BOUND",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "inputs": [
+          "certification_ref",
+          "package_snapshot_ref",
+          "package_hash_evidence",
+          "profile_ref",
+          "registry_or_valid_cache"
+        ],
+        "results": [
+          "valid",
+          "invalid",
+          "unverifiable"
+        ],
+        "valid_rule": "Valid requires exact subject/hash match and non-revoked/non-expired certification evidence.",
+        "invalid_rule": "Hash mismatch, revoked status, wrong subject/profile or invalid issuer evidence produces invalid.",
+        "unverifiable_rule": "Evidence unavailable or stale without authoritative confirmation produces unverifiable, never valid.",
+        "license_rule": "Commercial license status is not a certification-validation input unless a separate policy explicitly requires both for deployment.",
+        "runtime_rule": "Valid certification remains orthogonal to AccessCore/runtime authorization.",
+        "evidence_rule": "Validation result retains exact evidence/cache/registry refs."
+      }
+    }
   }
 }

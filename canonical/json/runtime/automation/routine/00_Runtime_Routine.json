@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNTIME_ROUTINE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define #R as the inert authored Routine definition registry and Routine dispatch as explicit bounded Core-owned command/operation sequencing.",
   "scope": {
     "owns": [
@@ -21,89 +20,123 @@
       "projection semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_ROUTINE_REGISTER",
-        "name": "Register Routine definition",
-        "inputs": [
-          "inert Routine definition"
-        ],
-        "outputs": [
-          "#R registry entry"
-        ],
-        "errors": [
-          "invalid routine shape"
-        ],
-        "side_effects": [
-          "Routine registry updated"
-        ]
-      },
-      {
-        "id": "OP_ROUTINE_RESOLVE",
-        "name": "Resolve Routine",
-        "inputs": [
-          "literal/core-resolved Routine ref"
-        ],
-        "outputs": [
-          "Routine definition"
-        ],
-        "errors": [
-          "Routine unresolved",
-          "Routine ambiguous"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_ROUTINE_DISPATCH",
-        "name": "Dispatch Routine",
-        "inputs": [
-          "Routine definition",
-          "validated inputs/context"
-        ],
-        "outputs": [
-          "bounded Routine execution"
-        ],
-        "errors": [
-          "command unresolved",
-          "cycle detected",
-          "depth exceeded"
-        ],
-        "side_effects": [
-          "only effects of validated invoked operations/commands"
-        ]
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_ROUTINE_CONTRACT",
+      "name": "Runtime Routine",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_ROUTINE_CONTRACT::OPERATIONS::OP_ROUTINE_REGISTER",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_ROUTINE_REGISTER",
+            "name": "Register Routine definition",
+            "inputs": [
+              "inert Routine definition"
+            ],
+            "outputs": [
+              "#R registry entry"
+            ],
+            "errors": [
+              "invalid routine shape"
+            ],
+            "side_effects": [
+              "Routine registry updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_ROUTINE_CONTRACT::OPERATIONS::OP_ROUTINE_RESOLVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_ROUTINE_RESOLVE",
+            "name": "Resolve Routine",
+            "inputs": [
+              "literal/core-resolved Routine ref"
+            ],
+            "outputs": [
+              "Routine definition"
+            ],
+            "errors": [
+              "Routine unresolved",
+              "Routine ambiguous"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_ROUTINE_CONTRACT::OPERATIONS::OP_ROUTINE_DISPATCH",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_ROUTINE_DISPATCH",
+            "name": "Dispatch Routine",
+            "inputs": [
+              "Routine definition",
+              "validated inputs/context"
+            ],
+            "outputs": [
+              "bounded Routine execution"
+            ],
+            "errors": [
+              "command unresolved",
+              "cycle detected",
+              "depth exceeded"
+            ],
+            "side_effects": [
+              "only effects of validated invoked operations/commands"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_ROUTINE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "symbol_root": "#R",
+            "definition_rule": "Routine is inert definition data and does not execute when loaded or read.",
+            "contents": [
+              "ordered command/operation refs",
+              "metadata",
+              "declared inputs",
+              "declared outputs",
+              "declared effect policy refs"
+            ],
+            "dynamic_command_rule": "Routine input cannot select arbitrary command names or semantic roots.",
+            "dispatch_rule": "Each invoked command/operation resolves and validates through canonical registries/dispatcher.",
+            "depth_rule": "Routine chain depth is bounded.",
+            "cycle_rule": "Routine cycles are detected.",
+            "partial_failure_rule": "Partial failure behavior and cleanup are explicit."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/automation/routine/00_Runtime_Routine.json"
       }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "symbol_root": "#R",
-    "definition_rule": "Routine is inert definition data and does not execute when loaded or read.",
-    "contents": [
-      "ordered command/operation refs",
-      "metadata",
-      "declared inputs",
-      "declared outputs",
-      "declared effect policy refs"
-    ],
-    "dynamic_command_rule": "Routine input cannot select arbitrary command names or semantic roots.",
-    "dispatch_rule": "Each invoked command/operation resolves and validates through canonical registries/dispatcher.",
-    "depth_rule": "Routine chain depth is bounded.",
-    "cycle_rule": "Routine cycles are detected.",
-    "partial_failure_rule": "Partial failure behavior and cleanup are explicit."
-  },
+    }
+  ],
   "constraints": {
     "invariants": [
       {
@@ -156,10 +189,105 @@
       "purpose": "Routine execution uses Core dispatch."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define #R as the inert authored Routine definition registry and Routine dispatch as explicit bounded Core-owned command/operation sequencing.",
     "notes": [
       "Unlocked until reconciled against the existing automation/runtime contracts and repository-wide 1.4 traceability validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_ROUTINE_REGISTER",
+            "name": "Register Routine definition",
+            "inputs": [
+              "inert Routine definition"
+            ],
+            "outputs": [
+              "#R registry entry"
+            ],
+            "errors": [
+              "invalid routine shape"
+            ],
+            "side_effects": [
+              "Routine registry updated"
+            ]
+          },
+          {
+            "id": "OP_ROUTINE_RESOLVE",
+            "name": "Resolve Routine",
+            "inputs": [
+              "literal/core-resolved Routine ref"
+            ],
+            "outputs": [
+              "Routine definition"
+            ],
+            "errors": [
+              "Routine unresolved",
+              "Routine ambiguous"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_ROUTINE_DISPATCH",
+            "name": "Dispatch Routine",
+            "inputs": [
+              "Routine definition",
+              "validated inputs/context"
+            ],
+            "outputs": [
+              "bounded Routine execution"
+            ],
+            "errors": [
+              "command unresolved",
+              "cycle detected",
+              "depth exceeded"
+            ],
+            "side_effects": [
+              "only effects of validated invoked operations/commands"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "symbol_root": "#R",
+        "definition_rule": "Routine is inert definition data and does not execute when loaded or read.",
+        "contents": [
+          "ordered command/operation refs",
+          "metadata",
+          "declared inputs",
+          "declared outputs",
+          "declared effect policy refs"
+        ],
+        "dynamic_command_rule": "Routine input cannot select arbitrary command names or semantic roots.",
+        "dispatch_rule": "Each invoked command/operation resolves and validates through canonical registries/dispatcher.",
+        "depth_rule": "Routine chain depth is bounded.",
+        "cycle_rule": "Routine cycles are detected.",
+        "partial_failure_rule": "Partial failure behavior and cleanup are explicit."
+      }
+    }
   }
 }

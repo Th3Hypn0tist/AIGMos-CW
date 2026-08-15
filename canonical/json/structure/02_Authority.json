@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define authority as its own structural/governance dimension for permission over resources and operations, independent from ownership, containment, Topic membership, capability existence and identity assurance.",
   "scope": {
     "owns": [
@@ -21,100 +20,276 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT",
+      "name": "Canonical Authority",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT::OPERATIONS::OP_AUTHORITY_DEFINE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_AUTHORITY_DEFINE",
+            "name": "Define authority edge",
+            "inputs": [
+              "authority_subject",
+              "resource/operation",
+              "rights/policy"
+            ],
+            "outputs": [
+              "authority edge"
+            ],
+            "errors": [
+              "subject unresolved",
+              "target unresolved"
+            ],
+            "side_effects": [
+              "authority graph updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT::OPERATIONS::OP_AUTHORITY_EVALUATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_AUTHORITY_EVALUATE",
+            "name": "Evaluate authority edge",
+            "inputs": [
+              "subject",
+              "target",
+              "operation",
+              "policy context"
+            ],
+            "outputs": [
+              "allow | deny"
+            ],
+            "errors": [
+              "policy unresolved"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "dimension": "authority",
+            "capability_rule": "Capability existence and authority are separate.",
+            "ownership_rule": "Ownership does not imply authority unless an explicit policy grants it.",
+            "topic_rule": "Topic membership does not imply authority.",
+            "assurance_rule": "Identity assurance can be a requirement but is not authorization.",
+            "projection_rule": "Visibility/control presence does not grant authority.",
+            "remote_rule": "Delegated remote authority follows explicit non-expansion semantics."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_STRUCTURE_AUTHORITY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "TOPIC_STRUCTURE_AUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_AUTHORITY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_AUTHORITY",
+            "child_ref": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_AUTHORITY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_AUTHORITY",
+            "child_ref": "STRUCTURAL_DIMENSION_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_AUTHORITY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_AUTHORITY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_AUTHORITY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_AUTHORITY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_AUTHORITY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_AUTHORITY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_AUTHORITY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_AUTHORITY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_AUTHORITY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_AUTHORITY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_AUTHORITY_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_AUTHORITY",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_STRUCTURE_AUTHORITY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_STRUCTURE_AUTHORITY",
+            "child_ref": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_STRUCTURE_AUTHORITY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_STRUCTURE_AUTHORITY",
+            "child_ref": "TOPIC_ACCESSCORE_AUTHORIZATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/structure/02_Authority.json"
+      }
+    },
     {
       "id": "TOPIC_STRUCTURE_AUTHORITY",
       "name": "Authority",
-      "purpose": "Define authority as its own structural/governance dimension for permission over resources and operations, independent from ownership, containment, Topic membership, capability existence and identity assurance.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_STRUCTURE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_CAPABILITY_AUTHORITY",
-        "TOPIC_ACCESSCORE_AUTHORIZATION"
-      ],
-      "member_refs": [
-        "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT",
-        "STRUCTURAL_DIMENSION_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_AUTHORITY_DEFINE",
-        "OP_AUTHORITY_EVALUATE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_STRUCTURE_AUTHORITY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define authority as its own structural/governance dimension for permission over resources and operations, independent from ownership, containment, Topic membership, capability existence and identity assurance.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_AUTHORITY_DEFINE",
-        "name": "Define authority edge",
-        "inputs": [
-          "authority_subject",
-          "resource/operation",
-          "rights/policy"
-        ],
-        "outputs": [
-          "authority edge"
-        ],
-        "errors": [
-          "subject unresolved",
-          "target unresolved"
-        ],
-        "side_effects": [
-          "authority graph updated"
-        ]
-      },
-      {
-        "id": "OP_AUTHORITY_EVALUATE",
-        "name": "Evaluate authority edge",
-        "inputs": [
-          "subject",
-          "target",
-          "operation",
-          "policy context"
-        ],
-        "outputs": [
-          "allow | deny"
-        ],
-        "errors": [
-          "policy unresolved"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "dimension": "authority",
-    "capability_rule": "Capability existence and authority are separate.",
-    "ownership_rule": "Ownership does not imply authority unless an explicit policy grants it.",
-    "topic_rule": "Topic membership does not imply authority.",
-    "assurance_rule": "Identity assurance can be a requirement but is not authorization.",
-    "projection_rule": "Visibility/control presence does not grant authority.",
-    "remote_rule": "Delegated remote authority follows explicit non-expansion semantics."
-  },
   "constraints": {
     "invariants": [
       {
@@ -167,10 +342,126 @@
       "purpose": "AccessCore evaluates runtime authorization."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_STRUCTURE_AUTHORITY",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_STRUCTURE_AUTHORITY",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define authority as its own structural/governance dimension for permission over resources and operations, independent from ownership, containment, Topic membership, capability existence and identity assurance.",
     "notes": [
       "Unlocked until reconciled against the assembled 1.4 architecture tree and reference/trace closure."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_STRUCTURE_AUTHORITY",
+          "name": "Authority",
+          "purpose": "Define authority as its own structural/governance dimension for permission over resources and operations, independent from ownership, containment, Topic membership, capability existence and identity assurance.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_STRUCTURE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "TOPIC_ACCESSCORE_AUTHORIZATION"
+          ],
+          "member_refs": [
+            "AIGMOS_STRUCTURE_AUTHORITY_CONTRACT",
+            "STRUCTURAL_DIMENSION_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_AUTHORITY_DEFINE",
+            "OP_AUTHORITY_EVALUATE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_AUTHORITY_DEFINE",
+            "name": "Define authority edge",
+            "inputs": [
+              "authority_subject",
+              "resource/operation",
+              "rights/policy"
+            ],
+            "outputs": [
+              "authority edge"
+            ],
+            "errors": [
+              "subject unresolved",
+              "target unresolved"
+            ],
+            "side_effects": [
+              "authority graph updated"
+            ]
+          },
+          {
+            "id": "OP_AUTHORITY_EVALUATE",
+            "name": "Evaluate authority edge",
+            "inputs": [
+              "subject",
+              "target",
+              "operation",
+              "policy context"
+            ],
+            "outputs": [
+              "allow | deny"
+            ],
+            "errors": [
+              "policy unresolved"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "dimension": "authority",
+        "capability_rule": "Capability existence and authority are separate.",
+        "ownership_rule": "Ownership does not imply authority unless an explicit policy grants it.",
+        "topic_rule": "Topic membership does not imply authority.",
+        "assurance_rule": "Identity assurance can be a requirement but is not authorization.",
+        "projection_rule": "Visibility/control presence does not grant authority.",
+        "remote_rule": "Delegated remote authority follows explicit non-expansion semantics."
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_IMPORT_EXPORT_ROUNDTRIP_PROFILE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define which import/export profile pairs claim semantic roundtrip equivalence and how lossless versus lossy formats are distinguished.",
   "scope": {
     "owns": [
@@ -22,57 +21,192 @@
       "arbitrary filesystem authority"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_IMPORT_EXPORT_ROUNDTRIP_PROFILE_CONTRACT",
+      "name": "Import/Export Roundtrip Profile",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_IMPORT_EXPORT_ROUNDTRIP_PROFILE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "profile_rule": "Each format pair explicitly declares `lossless_semantic_roundtrip`, `lossy_projection` or `unsupported_roundtrip`.",
+            "lossless_rule": "Lossless roundtrip must preserve canonical identity, refs, meaningful order, value distinctions and ownership-relevant semantics.",
+            "lossy_rule": "Lossy profile declares dropped/unrepresentable semantic dimensions.",
+            "byte_rule": "Semantic roundtrip does not require byte-identical serialization unless a separate byte-preservation profile says so.",
+            "test_rule": "Lossless profiles must pass golden roundtrip fixtures.",
+            "version_rule": "Roundtrip claim is tied to exact import/export profile/version.",
+            "failure_rule": "A lossy profile cannot be used as authoritative canonical backup without explicit acceptance of the loss."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_IMPORT_EXPORT_ROUNDTRIP_PROFILE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_COMMAND_NAMESPACE",
+            "child_ref": "TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_IMPORT_EXPORT_ROUNDTRIP_PROFILE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_SERIALIZATION",
+            "child_ref": "TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_IMPORT_EXPORT_ROUNDTRIP_PROFILE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE",
+            "child_ref": "AIGMOS_IMPORT_EXPORT_ROUNDTRIP_PROFILE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_IMPORT_EXPORT_ROUNDTRIP_PROFILE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE",
+            "child_ref": "IMPORT_EXPORT_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_IMPORT_EXPORT_ROUNDTRIP_PROFILE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_IMPORT_EXPORT_ROUNDTRIP_PROFILE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_IMPORT_EXPORT_ROUNDTRIP_PROFILE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_IMPORT_EXPORT_ROUNDTRIP_PROFILE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_IMPORT_EXPORT_ROUNDTRIP_PROFILE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/import_export/04_Roundtrip_Profile.json"
+      }
+    },
     {
       "id": "TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE",
       "name": "Import/Export Roundtrip Profile",
-      "purpose": "Define which import/export profile pairs claim semantic roundtrip equivalence and how lossless versus lossy formats are distinguished.",
-      "parent_topic_refs": [
-        "TOPIC_COMMAND_NAMESPACE",
-        "TOPIC_SERIALIZATION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_IMPORT_EXPORT_ROUNDTRIP_PROFILE_CONTRACT",
-        "IMPORT_EXPORT_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define which import/export profile pairs claim semantic roundtrip equivalence and how lossless versus lossy formats are distinguished.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "profile_rule": "Each format pair explicitly declares `lossless_semantic_roundtrip`, `lossy_projection` or `unsupported_roundtrip`.",
-    "lossless_rule": "Lossless roundtrip must preserve canonical identity, refs, meaningful order, value distinctions and ownership-relevant semantics.",
-    "lossy_rule": "Lossy profile declares dropped/unrepresentable semantic dimensions.",
-    "byte_rule": "Semantic roundtrip does not require byte-identical serialization unless a separate byte-preservation profile says so.",
-    "test_rule": "Lossless profiles must pass golden roundtrip fixtures.",
-    "version_rule": "Roundtrip claim is tied to exact import/export profile/version.",
-    "failure_rule": "A lossy profile cannot be used as authoritative canonical backup without explicit acceptance of the loss."
-  },
   "constraints": {
     "invariants": [
       {
@@ -115,10 +249,73 @@
       "purpose": "Roundtrip uses semantic equivalence."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define which import/export profile pairs claim semantic roundtrip equivalence and how lossless versus lossy formats are distinguished.",
     "notes": [
       "Unlocked pending reconciliation against recursive command namespace, serialization and canonical change contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_IMPORT_EXPORT_ROUNDTRIP_PROFILE",
+          "name": "Import/Export Roundtrip Profile",
+          "purpose": "Define which import/export profile pairs claim semantic roundtrip equivalence and how lossless versus lossy formats are distinguished.",
+          "parent_topic_refs": [
+            "TOPIC_COMMAND_NAMESPACE",
+            "TOPIC_SERIALIZATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_IMPORT_EXPORT_ROUNDTRIP_PROFILE_CONTRACT",
+            "IMPORT_EXPORT_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "profile_rule": "Each format pair explicitly declares `lossless_semantic_roundtrip`, `lossy_projection` or `unsupported_roundtrip`.",
+        "lossless_rule": "Lossless roundtrip must preserve canonical identity, refs, meaningful order, value distinctions and ownership-relevant semantics.",
+        "lossy_rule": "Lossy profile declares dropped/unrepresentable semantic dimensions.",
+        "byte_rule": "Semantic roundtrip does not require byte-identical serialization unless a separate byte-preservation profile says so.",
+        "test_rule": "Lossless profiles must pass golden roundtrip fixtures.",
+        "version_rule": "Roundtrip claim is tied to exact import/export profile/version.",
+        "failure_rule": "A lossy profile cannot be used as authoritative canonical backup without explicit acceptance of the loss."
+      }
+    }
   }
 }

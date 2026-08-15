@@ -1,97 +1,544 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "errors": [
-          "dependency missing",
-          "destination invalid",
-          "validation failure"
-        ],
-        "id": "OP_UM_INSTALL",
-        "inputs": [
-          "validated module package/definition",
-          "explicit destination"
-        ],
-        "name": "Install UserModule definition",
-        "outputs": [
-          "installed inert definition"
-        ],
-        "side_effects": [
-          "definition source installed"
-        ]
-      },
-      {
-        "errors": [
-          "load failure"
-        ],
-        "id": "OP_UM_LOAD",
-        "inputs": [
-          "installed definition"
-        ],
-        "name": "Load UserModule",
-        "outputs": [
-          "registered inert module"
-        ],
-        "side_effects": [
-          "registry updated"
-        ]
-      },
-      {
-        "errors": [
-          "dependency missing",
-          "profile denies enable"
-        ],
-        "id": "OP_UM_ENABLE",
-        "inputs": [
-          "registered module",
-          "boot/profile config"
-        ],
-        "name": "Enable UserModule capability",
-        "outputs": [
-          "enabled capability"
-        ],
-        "side_effects": [
-          "runtime capability set updated"
-        ]
-      },
-      {
-        "errors": [],
-        "id": "OP_UM_DISABLE",
-        "inputs": [
-          "enabled module"
-        ],
-        "name": "Disable UserModule capability",
-        "outputs": [
-          "disabled capability"
-        ],
-        "side_effects": [
-          "runtime capability set updated"
-        ]
-      },
-      {
-        "errors": [
-          "validation failure",
-          "ownership conflict"
-        ],
-        "id": "OP_UM_RELOAD",
-        "inputs": [
-          "module identity",
-          "updated authoritative source"
-        ],
-        "name": "Reload UserModule definition",
-        "outputs": [
-          "reconciled registered definition"
-        ],
-        "side_effects": [
-          "source-owned registry state updated"
-        ]
-      }
-    ],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT",
+    "name": "Runtime UserModule Lifecycle",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define install, load, enable, disable and reload as separate UserModule lifecycle operations, preserving inert-definition and explicit-capability boundaries. [2] Define explicit UserModule lifecycle states from discovered/installed definition through registered, configured, enabled, loaded/running and stopped/error states.",
+  "scope": {
+    "does_not_own": [
+      "domain semantics",
+      "projection semantics",
+      "domain semantics not declared by the module",
+      "AccessCore policy",
+      "presentation-only placement"
+    ],
+    "owns": [
+      "Runtime UserModule Lifecycle semantics",
+      "UserModule Instance Lifecycle semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT",
+      "name": "Runtime UserModule Lifecycle",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::OPERATIONS::OP_UM_INSTALL",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "dependency missing",
+              "destination invalid",
+              "validation failure"
+            ],
+            "id": "OP_UM_INSTALL",
+            "inputs": [
+              "validated module package/definition",
+              "explicit destination"
+            ],
+            "name": "Install UserModule definition",
+            "outputs": [
+              "installed inert definition"
+            ],
+            "side_effects": [
+              "definition source installed"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::OPERATIONS::OP_UM_LOAD",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "load failure"
+            ],
+            "id": "OP_UM_LOAD",
+            "inputs": [
+              "installed definition"
+            ],
+            "name": "Load UserModule",
+            "outputs": [
+              "registered inert module"
+            ],
+            "side_effects": [
+              "registry updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::OPERATIONS::OP_UM_ENABLE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "dependency missing",
+              "profile denies enable"
+            ],
+            "id": "OP_UM_ENABLE",
+            "inputs": [
+              "registered module",
+              "boot/profile config"
+            ],
+            "name": "Enable UserModule capability",
+            "outputs": [
+              "enabled capability"
+            ],
+            "side_effects": [
+              "runtime capability set updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::OPERATIONS::OP_UM_DISABLE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [],
+            "id": "OP_UM_DISABLE",
+            "inputs": [
+              "enabled module"
+            ],
+            "name": "Disable UserModule capability",
+            "outputs": [
+              "disabled capability"
+            ],
+            "side_effects": [
+              "runtime capability set updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::OPERATIONS::OP_UM_RELOAD",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "validation failure",
+              "ownership conflict"
+            ],
+            "id": "OP_UM_RELOAD",
+            "inputs": [
+              "module identity",
+              "updated authoritative source"
+            ],
+            "name": "Reload UserModule definition",
+            "outputs": [
+              "reconciled registered definition"
+            ],
+            "side_effects": [
+              "source-owned registry state updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "authority_rule": "Lifecycle operations require explicit authority.",
+            "dependency_rule": "Missing dependencies hard-fail; they are never auto-enabled.",
+            "disable_rule": "Reconciled source clauses: [1] Disable removes active capability without deleting the authoritative definition unless uninstall semantics explicitly do so. [2] Disable removes runtime availability without changing canonical module identity.",
+            "enable_rule": "Enable changes capability presence subject to explicit boot/profile/dependency rules.",
+            "failure_rule": "Load/start failure is visible and does not silently change module identity or enable dependencies.",
+            "inert_rule": "Discovery/install/registration does not execute the module.",
+            "install_rule": "Install writes definition/source material but does not execute or automatically enable the module.",
+            "load_rule": "Reconciled source clauses: [1] Load parses/registers inert definitions. [2] Load validates module identity/type/schema/dependencies before activation.",
+            "migration_rule": "Breaking module semantic changes follow canonical identity/versioning rules.",
+            "reload_rule": "Reload reconciles source-owned definition state and preserves unrelated runtime-owned state.",
+            "separation_rule": "Installed, registered, enabled and running are distinct states.",
+            "start_rule": "Only lifecycle-capable module types/instances enter running state where applicable.",
+            "states": [
+              "absent",
+              "installed",
+              "registered",
+              "enabled",
+              "disabled",
+              "discovered",
+              "configured",
+              "loading",
+              "running",
+              "stopped",
+              "error"
+            ],
+            "stop_rule": "Stop releases owned runtime resources without deleting definition/installation."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME_USER_MODULES",
+            "child_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "child_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_NAMESPACE_UM",
+            "child_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "USERMODULE_SEMANTICS_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "GATE_3BC1EE6D77",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "GATE_A25343F242",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "GATE_A36FE9EC15",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "GATE_59E8B7EAF2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "GATE_473EFECBA9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "GATE_FEE759AFA1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "GATE_208B190AEA",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "GATE_1106D4F8ED",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "GATE_C8F20B7C15",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "GATE_6B59B68B85",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "GATE_9093F0DC7B",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_14",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "GATE_079CC65C95",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[14]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "TOPIC_RUNTIME_LOADERS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "TOPIC_RUNTIME_BOOT_PROFILE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_USERMODULE_LIFECYCLE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+            "child_ref": "TOPIC_RUNTIME_DEFINITION_STATE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+      "name": "UserModule Lifecycle",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Reconciled source clauses: [1] Define install, load, enable, disable and reload as separate UserModule lifecycle operations, preserving inert-definition and explicit-capability boundaries. [2] Define explicit UserModule lifecycle states from discovered/installed definition through registered, configured, enabled, loaded/running and stopped/error states.",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -166,29 +613,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT",
-    "name": "Runtime UserModule Lifecycle",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked until reconciled against existing UserModule contracts and repository-wide Contract Format 1.4 validation.",
-      "Unlocked pending reconciliation against existing UserModule runtime contracts and whole-tree Contract Format 1.4 validation.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: runtime/usermodule/02_Runtime_UserModule_Lifecycle.json, usermodule/02_UserModule_Instance_Lifecycle.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
-    ],
-    "summary": "Reconciled source purposes: [1] Define install, load, enable, disable and reload as separate UserModule lifecycle operations, preserving inert-definition and explicit-capability boundaries. [2] Define explicit UserModule lifecycle states from discovered/installed definition through registered, configured, enabled, loaded/running and stopped/error states."
-  },
-  "purpose": "Reconciled source purposes: [1] Define install, load, enable, disable and reload as separate UserModule lifecycle operations, preserving inert-definition and explicit-capability boundaries. [2] Define explicit UserModule lifecycle states from discovered/installed definition through registered, configured, enabled, loaded/running and stopped/error states.",
   "references": [
     {
       "id": "REF_LOADER",
@@ -211,100 +635,212 @@
       "purpose": "Module activation respects explicit dependency validation."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "domain semantics",
-      "projection semantics",
-      "domain semantics not declared by the module",
-      "AccessCore policy",
-      "presentation-only placement"
-    ],
-    "owns": [
-      "Runtime UserModule Lifecycle semantics",
-      "UserModule Instance Lifecycle semantics"
-    ]
-  },
-  "semantics": {
-    "authority_rule": "Lifecycle operations require explicit authority.",
-    "dependency_rule": "Missing dependencies hard-fail; they are never auto-enabled.",
-    "disable_rule": "Reconciled source clauses: [1] Disable removes active capability without deleting the authoritative definition unless uninstall semantics explicitly do so. [2] Disable removes runtime availability without changing canonical module identity.",
-    "enable_rule": "Enable changes capability presence subject to explicit boot/profile/dependency rules.",
-    "failure_rule": "Load/start failure is visible and does not silently change module identity or enable dependencies.",
-    "inert_rule": "Discovery/install/registration does not execute the module.",
-    "install_rule": "Install writes definition/source material but does not execute or automatically enable the module.",
-    "load_rule": "Reconciled source clauses: [1] Load parses/registers inert definitions. [2] Load validates module identity/type/schema/dependencies before activation.",
-    "migration_rule": "Breaking module semantic changes follow canonical identity/versioning rules.",
-    "reload_rule": "Reload reconciles source-owned definition state and preserves unrelated runtime-owned state.",
-    "separation_rule": "Installed, registered, enabled and running are distinct states.",
-    "start_rule": "Only lifecycle-capable module types/instances enter running state where applicable.",
-    "states": [
-      "absent",
-      "installed",
-      "registered",
-      "enabled",
-      "disabled",
-      "discovered",
-      "configured",
-      "loading",
-      "running",
-      "stopped",
-      "error"
-    ],
-    "stop_rule": "Stop releases owned runtime resources without deleting definition/installation."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
+  "gaps": [
     {
-      "child_topics": [],
-      "composed_topic_refs": [
-        "TOPIC_RUNTIME_LOADERS",
-        "TOPIC_RUNTIME_BOOT_PROFILE",
-        "TOPIC_RUNTIME_DEFINITION_STATE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
-      "member_refs": [
-        "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT",
-        "USERMODULE_SEMANTICS_EXPLICIT",
-        "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
-        "GATE_3BC1EE6D77",
-        "GATE_A25343F242",
-        "GATE_A36FE9EC15",
-        "GATE_59E8B7EAF2",
-        "GATE_473EFECBA9",
-        "GATE_FEE759AFA1",
-        "GATE_208B190AEA",
-        "GATE_1106D4F8ED",
-        "GATE_C8F20B7C15",
-        "GATE_6B59B68B85",
-        "GATE_9093F0DC7B",
-        "GATE_079CC65C95"
-      ],
-      "metadata": {},
-      "name": "UserModule Lifecycle",
-      "operation_refs": [
-        "OP_UM_INSTALL",
-        "OP_UM_LOAD",
-        "OP_UM_ENABLE",
-        "OP_UM_DISABLE",
-        "OP_UM_RELOAD"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME_USER_MODULES",
-        "TOPIC_RUNTIME_USERMODULE_REGISTRY",
-        "TOPIC_NAMESPACE_UM"
-      ],
-      "purpose": "Reconciled source clauses: [1] Define install, load, enable, disable and reload as separate UserModule lifecycle operations, preserving inert-definition and explicit-capability boundaries. [2] Define explicit UserModule lifecycle states from discovered/installed definition through registered, configured, enabled, loaded/running and stopped/error states.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+      "field_path": "topics[0].operation_refs"
     }
-  ]
+  ],
+  "prose": {
+    "notes": [
+      "Unlocked until reconciled against existing UserModule contracts and repository-wide Contract Format 1.4 validation.",
+      "Unlocked pending reconciliation against existing UserModule runtime contracts and whole-tree Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: runtime/usermodule/02_Runtime_UserModule_Lifecycle.json, usermodule/02_UserModule_Instance_Lifecycle.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define install, load, enable, disable and reload as separate UserModule lifecycle operations, preserving inert-definition and explicit-capability boundaries. [2] Define explicit UserModule lifecycle states from discovered/installed definition through registered, configured, enabled, loaded/running and stopped/error states."
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [
+            "TOPIC_RUNTIME_LOADERS",
+            "TOPIC_RUNTIME_BOOT_PROFILE",
+            "TOPIC_RUNTIME_DEFINITION_STATE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_RUNTIME_USERMODULE_LIFECYCLE",
+          "member_refs": [
+            "AIGMOS_RUNTIME_USERMODULE_LIFECYCLE_CONTRACT",
+            "USERMODULE_SEMANTICS_EXPLICIT",
+            "USERMODULE_TYPE_LIFECYCLE_EXPLICIT",
+            "GATE_3BC1EE6D77",
+            "GATE_A25343F242",
+            "GATE_A36FE9EC15",
+            "GATE_59E8B7EAF2",
+            "GATE_473EFECBA9",
+            "GATE_FEE759AFA1",
+            "GATE_208B190AEA",
+            "GATE_1106D4F8ED",
+            "GATE_C8F20B7C15",
+            "GATE_6B59B68B85",
+            "GATE_9093F0DC7B",
+            "GATE_079CC65C95"
+          ],
+          "metadata": {},
+          "name": "UserModule Lifecycle",
+          "operation_refs": [
+            "OP_UM_INSTALL",
+            "OP_UM_LOAD",
+            "OP_UM_ENABLE",
+            "OP_UM_DISABLE",
+            "OP_UM_RELOAD"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME_USER_MODULES",
+            "TOPIC_RUNTIME_USERMODULE_REGISTRY",
+            "TOPIC_NAMESPACE_UM"
+          ],
+          "purpose": "Reconciled source clauses: [1] Define install, load, enable, disable and reload as separate UserModule lifecycle operations, preserving inert-definition and explicit-capability boundaries. [2] Define explicit UserModule lifecycle states from discovered/installed definition through registered, configured, enabled, loaded/running and stopped/error states.",
+          "relation_refs": []
+        }
+      ],
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "errors": [
+              "dependency missing",
+              "destination invalid",
+              "validation failure"
+            ],
+            "id": "OP_UM_INSTALL",
+            "inputs": [
+              "validated module package/definition",
+              "explicit destination"
+            ],
+            "name": "Install UserModule definition",
+            "outputs": [
+              "installed inert definition"
+            ],
+            "side_effects": [
+              "definition source installed"
+            ]
+          },
+          {
+            "errors": [
+              "load failure"
+            ],
+            "id": "OP_UM_LOAD",
+            "inputs": [
+              "installed definition"
+            ],
+            "name": "Load UserModule",
+            "outputs": [
+              "registered inert module"
+            ],
+            "side_effects": [
+              "registry updated"
+            ]
+          },
+          {
+            "errors": [
+              "dependency missing",
+              "profile denies enable"
+            ],
+            "id": "OP_UM_ENABLE",
+            "inputs": [
+              "registered module",
+              "boot/profile config"
+            ],
+            "name": "Enable UserModule capability",
+            "outputs": [
+              "enabled capability"
+            ],
+            "side_effects": [
+              "runtime capability set updated"
+            ]
+          },
+          {
+            "errors": [],
+            "id": "OP_UM_DISABLE",
+            "inputs": [
+              "enabled module"
+            ],
+            "name": "Disable UserModule capability",
+            "outputs": [
+              "disabled capability"
+            ],
+            "side_effects": [
+              "runtime capability set updated"
+            ]
+          },
+          {
+            "errors": [
+              "validation failure",
+              "ownership conflict"
+            ],
+            "id": "OP_UM_RELOAD",
+            "inputs": [
+              "module identity",
+              "updated authoritative source"
+            ],
+            "name": "Reload UserModule definition",
+            "outputs": [
+              "reconciled registered definition"
+            ],
+            "side_effects": [
+              "source-owned registry state updated"
+            ]
+          }
+        ],
+        "states": []
+      },
+      "semantics": {
+        "authority_rule": "Lifecycle operations require explicit authority.",
+        "dependency_rule": "Missing dependencies hard-fail; they are never auto-enabled.",
+        "disable_rule": "Reconciled source clauses: [1] Disable removes active capability without deleting the authoritative definition unless uninstall semantics explicitly do so. [2] Disable removes runtime availability without changing canonical module identity.",
+        "enable_rule": "Enable changes capability presence subject to explicit boot/profile/dependency rules.",
+        "failure_rule": "Load/start failure is visible and does not silently change module identity or enable dependencies.",
+        "inert_rule": "Discovery/install/registration does not execute the module.",
+        "install_rule": "Install writes definition/source material but does not execute or automatically enable the module.",
+        "load_rule": "Reconciled source clauses: [1] Load parses/registers inert definitions. [2] Load validates module identity/type/schema/dependencies before activation.",
+        "migration_rule": "Breaking module semantic changes follow canonical identity/versioning rules.",
+        "reload_rule": "Reload reconciles source-owned definition state and preserves unrelated runtime-owned state.",
+        "separation_rule": "Installed, registered, enabled and running are distinct states.",
+        "start_rule": "Only lifecycle-capable module types/instances enter running state where applicable.",
+        "states": [
+          "absent",
+          "installed",
+          "registered",
+          "enabled",
+          "disabled",
+          "discovered",
+          "configured",
+          "loading",
+          "running",
+          "stopped",
+          "error"
+        ],
+        "stop_rule": "Stop releases owned runtime resources without deleting definition/installation."
+      }
+    }
+  }
 }

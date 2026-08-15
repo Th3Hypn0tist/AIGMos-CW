@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define a read-only Expose monitor for IAM composition, showing exact IdentityCore identity, authentication/assurance state and linked PortfolioCore/MeritCore/AccessCore provenance without collapsing ownership boundaries.",
   "scope": {
     "owns": [
@@ -22,89 +21,228 @@
       "runtime business-domain semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT",
+      "name": "IAM Monitor",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "views": [
+              "resolved identity",
+              "IdentityCore profile/relations",
+              "credential/factor classes without secrets",
+              "session/assurance state",
+              "PortfolioCore refs",
+              "MeritCore refs",
+              "AccessCore decision refs"
+            ],
+            "readonly_rule": "Monitor is read-only by default.",
+            "identity_rule": "IdentityCore identity, session identity, credential refs and external identity mappings remain distinct.",
+            "secret_rule": "Credentials, private keys, second-factor secrets and recovery secrets are never displayed.",
+            "ownership_rule": "Displayed Portfolio/Merit/Access values retain owning-core refs.",
+            "action_rule": "Login/reauth/profile/evidence/recommendation/policy actions invoke separate owning operations/editors.",
+            "authority_rule": "Viewing IAM state grants no authentication, evidence, merit or authorization rights.",
+            "privacy_rule": "Identity and evidence visibility follows applicable policy."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_IAM_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_IAM",
+            "child_ref": "TOPIC_EXPOSE_IAM_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_IAM_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_IDENTITYCORE",
+            "child_ref": "TOPIC_EXPOSE_IAM_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_IAM_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_IAM_MONITOR",
+            "child_ref": "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_IAM_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_IAM_MONITOR",
+            "child_ref": "IAM_COMPOSITION_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_IAM_MONITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_IAM_MONITOR",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_IAM_MONITOR_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_IAM_MONITOR",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_IAM_MONITOR_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_IAM_MONITOR",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_IAM_MONITOR_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_IAM_MONITOR",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_IAM_MONITOR_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_IAM_MONITOR",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/editor/44_IAM_Monitor.json"
+      }
+    },
     {
       "id": "TOPIC_EXPOSE_IAM_MONITOR",
       "name": "IAM Monitor",
-      "purpose": "Define a read-only Expose monitor for IAM composition, showing exact IdentityCore identity, authentication/assurance state and linked PortfolioCore/MeritCore/AccessCore provenance without collapsing ownership boundaries.",
-      "parent_topic_refs": [
-        "TOPIC_IAM",
-        "TOPIC_IDENTITYCORE"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT",
-        "IAM_COMPOSITION_BOUNDARY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_IAM_MONITOR::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define a read-only Expose monitor for IAM composition, showing exact IdentityCore identity, authentication/assurance state and linked PortfolioCore/MeritCore/AccessCore provenance without collapsing ownership boundaries.",
+            "metadata": {}
+          }
+        }
+      ]
     },
     {
       "id": "TOPIC_IAM",
       "name": "IAM",
-      "purpose": "Define grouping-only parent Topic identity TOPIC_IAM already referenced by 24 existing canonical child Topic reference occurrence(s).",
-      "parent_topic_refs": [],
-      "composed_topic_refs": [],
-      "member_refs": [],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {
-        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
-        "referencing_child_occurrences": 24,
-        "distinct_child_topics": 24,
-        "host_contract_ref": "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT",
-        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
-        "placement_nonsemantic": true,
-        "ownership_nontransfer": true,
-        "new_parent_edges_added": 0
-      }
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_IAM::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define grouping-only parent Topic identity TOPIC_IAM already referenced by 24 existing canonical child Topic reference occurrence(s).",
+            "metadata": {
+              "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+              "referencing_child_occurrences": 24,
+              "distinct_child_topics": 24,
+              "host_contract_ref": "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT",
+              "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+              "placement_nonsemantic": true,
+              "ownership_nontransfer": true,
+              "new_parent_edges_added": 0
+            }
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "views": [
-      "resolved identity",
-      "IdentityCore profile/relations",
-      "credential/factor classes without secrets",
-      "session/assurance state",
-      "PortfolioCore refs",
-      "MeritCore refs",
-      "AccessCore decision refs"
-    ],
-    "readonly_rule": "Monitor is read-only by default.",
-    "identity_rule": "IdentityCore identity, session identity, credential refs and external identity mappings remain distinct.",
-    "secret_rule": "Credentials, private keys, second-factor secrets and recovery secrets are never displayed.",
-    "ownership_rule": "Displayed Portfolio/Merit/Access values retain owning-core refs.",
-    "action_rule": "Login/reauth/profile/evidence/recommendation/policy actions invoke separate owning operations/editors.",
-    "authority_rule": "Viewing IAM state grants no authentication, evidence, merit or authorization rights.",
-    "privacy_rule": "Identity and evidence visibility follows applicable policy."
-  },
   "constraints": {
     "invariants": [
       {
@@ -152,11 +290,106 @@
       "purpose": "Monitor preserves component ownership."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define a read-only Expose monitor for IAM composition, showing exact IdentityCore identity, authentication/assurance state and linked PortfolioCore/MeritCore/AccessCore provenance without collapsing ownership boundaries.",
     "notes": [
       "Unlocked pending reconciliation against existing IAM/IdentityCore/PortfolioCore/MeritCore/AccessCore contracts and whole-tree Contract Format 1.4 validation.",
       "Pass 6 hosts grouping-only Topic TOPIC_IAM solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXPOSE_IAM_MONITOR",
+          "name": "IAM Monitor",
+          "purpose": "Define a read-only Expose monitor for IAM composition, showing exact IdentityCore identity, authentication/assurance state and linked PortfolioCore/MeritCore/AccessCore provenance without collapsing ownership boundaries.",
+          "parent_topic_refs": [
+            "TOPIC_IAM",
+            "TOPIC_IDENTITYCORE"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT",
+            "IAM_COMPOSITION_BOUNDARY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        },
+        {
+          "id": "TOPIC_IAM",
+          "name": "IAM",
+          "purpose": "Define grouping-only parent Topic identity TOPIC_IAM already referenced by 24 existing canonical child Topic reference occurrence(s).",
+          "parent_topic_refs": [],
+          "composed_topic_refs": [],
+          "member_refs": [],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {
+            "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+            "referencing_child_occurrences": 24,
+            "distinct_child_topics": 24,
+            "host_contract_ref": "AIGMOS_EXPOSE_IAM_MONITOR_CONTRACT",
+            "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+            "placement_nonsemantic": true,
+            "ownership_nontransfer": true,
+            "new_parent_edges_added": 0
+          }
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "views": [
+          "resolved identity",
+          "IdentityCore profile/relations",
+          "credential/factor classes without secrets",
+          "session/assurance state",
+          "PortfolioCore refs",
+          "MeritCore refs",
+          "AccessCore decision refs"
+        ],
+        "readonly_rule": "Monitor is read-only by default.",
+        "identity_rule": "IdentityCore identity, session identity, credential refs and external identity mappings remain distinct.",
+        "secret_rule": "Credentials, private keys, second-factor secrets and recovery secrets are never displayed.",
+        "ownership_rule": "Displayed Portfolio/Merit/Access values retain owning-core refs.",
+        "action_rule": "Login/reauth/profile/evidence/recommendation/policy actions invoke separate owning operations/editors.",
+        "authority_rule": "Viewing IAM state grants no authentication, evidence, merit or authorization rights.",
+        "privacy_rule": "Identity and evidence visibility follows applicable policy."
+      }
+    }
   }
 }

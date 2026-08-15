@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define an immutable logical snapshot identity for an accepted canonical tree, binding repository manifest, semantic graph state and applicable evidence without using Git commit, archive filename or filesystem tree as the semantic snapshot identity.",
   "scope": {
     "owns": [
@@ -22,55 +21,176 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT",
+      "name": "Canonical Snapshot",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "snapshot_rule": "Snapshot has an explicit stable identity and references the exact accepted canonical graph.",
+            "manifest_rule": "Snapshot references the repository manifest used to enumerate active artifacts.",
+            "evidence_rule": "Accepted/released snapshot references its validation evidence bundle.",
+            "vcs_rule": "Git commit/tag may be provenance/binding metadata but is not the canonical semantic snapshot identity.",
+            "archive_rule": "Archive filename/hash may identify physical distribution integrity but does not replace semantic snapshot identity.",
+            "immutability_rule": "Changing machine-significant semantics creates a new snapshot identity."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RELEASE_SNAPSHOT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_VALIDATION_RELEASE_GATE",
+            "child_ref": "TOPIC_RELEASE_SNAPSHOT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RELEASE_SNAPSHOT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_REPOSITORY_MANIFEST",
+            "child_ref": "TOPIC_RELEASE_SNAPSHOT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RELEASE_SNAPSHOT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RELEASE_SNAPSHOT",
+            "child_ref": "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RELEASE_SNAPSHOT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RELEASE_SNAPSHOT",
+            "child_ref": "RELEASE_TRACEABILITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RELEASE_SNAPSHOT_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RELEASE_SNAPSHOT",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RELEASE_SNAPSHOT_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RELEASE_SNAPSHOT",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RELEASE_SNAPSHOT_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RELEASE_SNAPSHOT",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RELEASE_SNAPSHOT_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RELEASE_SNAPSHOT",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/release/00_Canonical_Snapshot.json"
+      }
+    },
     {
       "id": "TOPIC_RELEASE_SNAPSHOT",
       "name": "Canonical Snapshot",
-      "purpose": "Define an immutable logical snapshot identity for an accepted canonical tree, binding repository manifest, semantic graph state and applicable evidence without using Git commit, archive filename or filesystem tree as the semantic snapshot identity.",
-      "parent_topic_refs": [
-        "TOPIC_VALIDATION_RELEASE_GATE",
-        "TOPIC_REPOSITORY_MANIFEST"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT",
-        "RELEASE_TRACEABILITY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RELEASE_SNAPSHOT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define an immutable logical snapshot identity for an accepted canonical tree, binding repository manifest, semantic graph state and applicable evidence without using Git commit, archive filename or filesystem tree as the semantic snapshot identity.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "snapshot_rule": "Snapshot has an explicit stable identity and references the exact accepted canonical graph.",
-    "manifest_rule": "Snapshot references the repository manifest used to enumerate active artifacts.",
-    "evidence_rule": "Accepted/released snapshot references its validation evidence bundle.",
-    "vcs_rule": "Git commit/tag may be provenance/binding metadata but is not the canonical semantic snapshot identity.",
-    "archive_rule": "Archive filename/hash may identify physical distribution integrity but does not replace semantic snapshot identity.",
-    "immutability_rule": "Changing machine-significant semantics creates a new snapshot identity."
-  },
   "constraints": {
     "invariants": [
       {
@@ -108,10 +228,71 @@
       "purpose": "Approved release gate identifies exact candidate snapshot."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define an immutable logical snapshot identity for an accepted canonical tree, binding repository manifest, semantic graph state and applicable evidence without using Git commit, archive filename or filesystem tree as the semantic snapshot identity.",
     "notes": [
       "Unlocked pending reconciliation against the assembled 1.4 release/migration tree and whole-tree validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RELEASE_SNAPSHOT",
+          "name": "Canonical Snapshot",
+          "purpose": "Define an immutable logical snapshot identity for an accepted canonical tree, binding repository manifest, semantic graph state and applicable evidence without using Git commit, archive filename or filesystem tree as the semantic snapshot identity.",
+          "parent_topic_refs": [
+            "TOPIC_VALIDATION_RELEASE_GATE",
+            "TOPIC_REPOSITORY_MANIFEST"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_CANONICAL_SNAPSHOT_CONTRACT",
+            "RELEASE_TRACEABILITY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "snapshot_rule": "Snapshot has an explicit stable identity and references the exact accepted canonical graph.",
+        "manifest_rule": "Snapshot references the repository manifest used to enumerate active artifacts.",
+        "evidence_rule": "Accepted/released snapshot references its validation evidence bundle.",
+        "vcs_rule": "Git commit/tag may be provenance/binding metadata but is not the canonical semantic snapshot identity.",
+        "archive_rule": "Archive filename/hash may identify physical distribution integrity but does not replace semantic snapshot identity.",
+        "immutability_rule": "Changing machine-significant semantics creates a new snapshot identity."
+      }
+    }
   }
 }

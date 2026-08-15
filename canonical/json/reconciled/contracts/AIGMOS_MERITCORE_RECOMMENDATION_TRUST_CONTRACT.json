@@ -1,47 +1,619 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "errors": [
-          "identity invalid",
-          "context invalid"
-        ],
-        "id": "OP_RECOMMENDATION_RECORD",
-        "inputs": [
-          "recommender identity",
-          "subject identity",
-          "Project/context evidence",
-          "recommendation"
-        ],
-        "name": "Record recommendation",
-        "outputs": [
-          "recommendation record"
-        ],
-        "side_effects": [
-          "MeritCore updated"
-        ]
-      },
-      {
-        "errors": [
-          "policy unresolved"
-        ],
-        "id": "OP_TRUST_DERIVE",
-        "inputs": [
-          "eligible MeritCore evidence",
-          "explicit trust policy"
-        ],
-        "name": "Derive trust state",
-        "outputs": [
-          "trust state"
-        ],
-        "side_effects": []
-      }
-    ],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT",
+    "name": "MeritCore Recommendation and Trust",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define recommendations and trust as MeritCore-owned human-interaction evidence with explicit author, subject, context and Project linkage where applicable. [2] Define recommendations and trust as MeritCore-owned identity-to-identity evidence semantics with explicit context and provenance, not generic social metadata.",
+  "scope": {
+    "does_not_own": [
+      "Project work identity",
+      "FreeMarket broker relevance policy",
+      "IdentityCore person/organization identity",
+      "presentation semantics",
+      "transport implementation"
+    ],
+    "owns": [
+      "MeritCore Recommendation and Trust semantics",
+      "MeritCore Recommendations and Trust semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT",
+      "name": "MeritCore Recommendation and Trust",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::OPERATIONS::OP_RECOMMENDATION_RECORD",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "identity invalid",
+              "context invalid"
+            ],
+            "id": "OP_RECOMMENDATION_RECORD",
+            "inputs": [
+              "recommender identity",
+              "subject identity",
+              "Project/context evidence",
+              "recommendation"
+            ],
+            "name": "Record recommendation",
+            "outputs": [
+              "recommendation record"
+            ],
+            "side_effects": [
+              "MeritCore updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::OPERATIONS::OP_TRUST_DERIVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "policy unresolved"
+            ],
+            "id": "OP_TRUST_DERIVE",
+            "inputs": [
+              "eligible MeritCore evidence",
+              "explicit trust policy"
+            ],
+            "name": "Derive trust state",
+            "outputs": [
+              "trust state"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "authority_rule": "Reconciled source clauses: [1] Recommendation author identity/relationship does not automatically grant MeritCore mutation authority. [2] Recommendation or trust score does not itself grant AccessCore authorization.",
+            "history_rule": "Recommendations/trust changes preserve provenance/history.",
+            "negative_rule": "Negative feedback is retained as governed evidence and may initiate review.",
+            "owner": "MeritCore",
+            "ownership_rule": "Recommendations and trust semantics belong to MeritCore, not PortfolioCore.",
+            "portfolio_rule": "PortfolioCore may project/reference recommendations but does not own them.",
+            "project_rule": "Recommendation may reference exact Project evidence where applicable.",
+            "provenance_rule": "Recommendation provenance is retained.",
+            "recommendation_rule": "Reconciled source clauses: [1] Recommendation has explicit author identity, subject identity, context and evidence refs. [2] Recommendation identifies recommender, subject and relevant Project/context evidence.",
+            "trust_rule": "Reconciled source clauses: [1] Trust signals are explicit evidence/results rather than inferred from social proximity. [2] Trust is derived only by explicit MeritCore trust policy from eligible evidence."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_PARENT_TOPIC_MERITCORE_RECOMMENDATION_TRUST_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_MERITCORE",
+            "child_ref": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_PARENT_TOPIC_MERITCORE_RECOMMENDATION_TRUST_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_IAM",
+            "child_ref": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERITCORE_RECOMMENDATION_TRUST_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+            "child_ref": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERITCORE_RECOMMENDATION_TRUST_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+            "child_ref": "MERIT_EVIDENCE_BOUND",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERITCORE_RECOMMENDATION_TRUST_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+            "child_ref": "IDENTITY_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERITCORE_RECOMMENDATION_TRUST_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+            "child_ref": "GATE_B82829E128",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERITCORE_RECOMMENDATION_TRUST_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+            "child_ref": "GATE_A1B051A645",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERITCORE_RECOMMENDATION_TRUST_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+            "child_ref": "GATE_118EE1CC36",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERITCORE_RECOMMENDATION_TRUST_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+            "child_ref": "GATE_4CECF36F91",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERITCORE_RECOMMENDATION_TRUST_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+            "child_ref": "GATE_85689CD5E1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERITCORE_RECOMMENDATION_TRUST_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+            "child_ref": "GATE_CA3BF979D9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERITCORE_RECOMMENDATION_TRUST_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+            "child_ref": "GATE_E525930CA1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERITCORE_RECOMMENDATION_TRUST_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+            "child_ref": "GATE_F607EB59C1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERITCORE_RECOMMENDATION_TRUST_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+            "child_ref": "GATE_E5A9A0ABC2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERITCORE_RECOMMENDATION_TRUST_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+            "child_ref": "GATE_F0231EAF57",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_PARENT_TOPIC_MERIT_RECOMMENDATIONS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_IDENTITY",
+            "child_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERIT_RECOMMENDATIONS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+            "child_ref": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERIT_RECOMMENDATIONS_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+            "child_ref": "MERIT_EVIDENCE_BOUND",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERIT_RECOMMENDATIONS_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+            "child_ref": "IDENTITY_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERIT_RECOMMENDATIONS_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+            "child_ref": "GATE_B82829E128",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERIT_RECOMMENDATIONS_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+            "child_ref": "GATE_A1B051A645",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERIT_RECOMMENDATIONS_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+            "child_ref": "GATE_118EE1CC36",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERIT_RECOMMENDATIONS_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+            "child_ref": "GATE_4CECF36F91",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERIT_RECOMMENDATIONS_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+            "child_ref": "GATE_85689CD5E1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERIT_RECOMMENDATIONS_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+            "child_ref": "GATE_CA3BF979D9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERIT_RECOMMENDATIONS_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+            "child_ref": "GATE_E525930CA1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERIT_RECOMMENDATIONS_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+            "child_ref": "GATE_F607EB59C1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERIT_RECOMMENDATIONS_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+            "child_ref": "GATE_E5A9A0ABC2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MERIT_RECOMMENDATIONS_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+            "child_ref": "GATE_F0231EAF57",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_MERIT_RECOMMENDATIONS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+            "child_ref": "TOPIC_MERITCORE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_MERIT_RECOMMENDATIONS_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+            "child_ref": "TOPIC_CORE_PROVENANCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].composed_topic_refs[1]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+      "name": "MeritCore Recommendation and Trust",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_MERITCORE_RECOMMENDATION_TRUST::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define recommendations and trust as MeritCore-owned human-interaction evidence with explicit author, subject, context and Project linkage where applicable.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_MERIT_RECOMMENDATIONS",
+      "name": "Recommendations and Trust",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_MERIT_RECOMMENDATIONS::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define recommendations and trust as MeritCore-owned identity-to-identity evidence semantics with explicit context and provenance, not generic social metadata.",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -106,29 +678,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT",
-    "name": "MeritCore Recommendation and Trust",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked pending reconciliation against existing IAM/MeritCore/Project/FreeMarket contracts and whole-tree Contract Format 1.4 validation.",
-      "Unlocked until reconciled against existing IAM/PortfolioCore/MeritCore contracts and repository-wide Contract Format 1.4 validation.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: iam/meritcore/03_Recommendation_Trust.json, identity/04_MeritCore_Recommendations_Trust.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
-    ],
-    "summary": "Reconciled source purposes: [1] Define recommendations and trust as MeritCore-owned human-interaction evidence with explicit author, subject, context and Project linkage where applicable. [2] Define recommendations and trust as MeritCore-owned identity-to-identity evidence semantics with explicit context and provenance, not generic social metadata."
-  },
-  "purpose": "Reconciled source purposes: [1] Define recommendations and trust as MeritCore-owned human-interaction evidence with explicit author, subject, context and Project linkage where applicable. [2] Define recommendations and trust as MeritCore-owned identity-to-identity evidence semantics with explicit context and provenance, not generic social metadata.",
   "references": [
     {
       "id": "REF_TIMELINE",
@@ -146,110 +695,181 @@
       "purpose": "Trust does not substitute for authorization."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "Project work identity",
-      "FreeMarket broker relevance policy",
-      "IdentityCore person/organization identity",
-      "presentation semantics",
-      "transport implementation"
-    ],
-    "owns": [
-      "MeritCore Recommendation and Trust semantics",
-      "MeritCore Recommendations and Trust semantics"
-    ]
-  },
-  "semantics": {
-    "authority_rule": "Reconciled source clauses: [1] Recommendation author identity/relationship does not automatically grant MeritCore mutation authority. [2] Recommendation or trust score does not itself grant AccessCore authorization.",
-    "history_rule": "Recommendations/trust changes preserve provenance/history.",
-    "negative_rule": "Negative feedback is retained as governed evidence and may initiate review.",
-    "owner": "MeritCore",
-    "ownership_rule": "Recommendations and trust semantics belong to MeritCore, not PortfolioCore.",
-    "portfolio_rule": "PortfolioCore may project/reference recommendations but does not own them.",
-    "project_rule": "Recommendation may reference exact Project evidence where applicable.",
-    "provenance_rule": "Recommendation provenance is retained.",
-    "recommendation_rule": "Reconciled source clauses: [1] Recommendation has explicit author identity, subject identity, context and evidence refs. [2] Recommendation identifies recommender, subject and relevant Project/context evidence.",
-    "trust_rule": "Reconciled source clauses: [1] Trust signals are explicit evidence/results rather than inferred from social proximity. [2] Trust is derived only by explicit MeritCore trust policy from eligible evidence."
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
+  "gaps": [
     {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
-      "member_refs": [
-        "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT",
-        "MERIT_EVIDENCE_BOUND",
-        "IDENTITY_BOUNDARY_EXPLICIT",
-        "GATE_B82829E128",
-        "GATE_A1B051A645",
-        "GATE_118EE1CC36",
-        "GATE_4CECF36F91",
-        "GATE_85689CD5E1",
-        "GATE_CA3BF979D9",
-        "GATE_E525930CA1",
-        "GATE_F607EB59C1",
-        "GATE_E5A9A0ABC2",
-        "GATE_F0231EAF57"
-      ],
-      "metadata": {},
-      "name": "MeritCore Recommendation and Trust",
-      "operation_refs": [
-        "OP_RECOMMENDATION_RECORD",
-        "OP_TRUST_DERIVE"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_MERITCORE",
-        "TOPIC_IAM"
-      ],
-      "purpose": "Define recommendations and trust as MeritCore-owned human-interaction evidence with explicit author, subject, context and Project linkage where applicable.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+      "field_path": "topics[0].operation_refs"
     },
     {
-      "child_topics": [],
-      "composed_topic_refs": [
-        "TOPIC_MERITCORE",
-        "TOPIC_CORE_PROVENANCE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_MERIT_RECOMMENDATIONS",
-      "member_refs": [
-        "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT",
-        "MERIT_EVIDENCE_BOUND",
-        "IDENTITY_BOUNDARY_EXPLICIT",
-        "GATE_B82829E128",
-        "GATE_A1B051A645",
-        "GATE_118EE1CC36",
-        "GATE_4CECF36F91",
-        "GATE_85689CD5E1",
-        "GATE_CA3BF979D9",
-        "GATE_E525930CA1",
-        "GATE_F607EB59C1",
-        "GATE_E5A9A0ABC2",
-        "GATE_F0231EAF57"
-      ],
-      "metadata": {},
-      "name": "Recommendations and Trust",
-      "operation_refs": [
-        "OP_RECOMMENDATION_RECORD",
-        "OP_TRUST_DERIVE"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_CORE_IDENTITY"
-      ],
-      "purpose": "Define recommendations and trust as MeritCore-owned identity-to-identity evidence semantics with explicit context and provenance, not generic social metadata.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_MERIT_RECOMMENDATIONS",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_MERIT_RECOMMENDATIONS",
+      "field_path": "topics[1].operation_refs"
     }
-  ]
+  ],
+  "prose": {
+    "notes": [
+      "Unlocked pending reconciliation against existing IAM/MeritCore/Project/FreeMarket contracts and whole-tree Contract Format 1.4 validation.",
+      "Unlocked until reconciled against existing IAM/PortfolioCore/MeritCore contracts and repository-wide Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: iam/meritcore/03_Recommendation_Trust.json, identity/04_MeritCore_Recommendations_Trust.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define recommendations and trust as MeritCore-owned human-interaction evidence with explicit author, subject, context and Project linkage where applicable. [2] Define recommendations and trust as MeritCore-owned identity-to-identity evidence semantics with explicit context and provenance, not generic social metadata."
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_MERITCORE_RECOMMENDATION_TRUST",
+          "member_refs": [
+            "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT",
+            "MERIT_EVIDENCE_BOUND",
+            "IDENTITY_BOUNDARY_EXPLICIT",
+            "GATE_B82829E128",
+            "GATE_A1B051A645",
+            "GATE_118EE1CC36",
+            "GATE_4CECF36F91",
+            "GATE_85689CD5E1",
+            "GATE_CA3BF979D9",
+            "GATE_E525930CA1",
+            "GATE_F607EB59C1",
+            "GATE_E5A9A0ABC2",
+            "GATE_F0231EAF57"
+          ],
+          "metadata": {},
+          "name": "MeritCore Recommendation and Trust",
+          "operation_refs": [
+            "OP_RECOMMENDATION_RECORD",
+            "OP_TRUST_DERIVE"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_MERITCORE",
+            "TOPIC_IAM"
+          ],
+          "purpose": "Define recommendations and trust as MeritCore-owned human-interaction evidence with explicit author, subject, context and Project linkage where applicable.",
+          "relation_refs": []
+        },
+        {
+          "child_topics": [],
+          "composed_topic_refs": [
+            "TOPIC_MERITCORE",
+            "TOPIC_CORE_PROVENANCE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_MERIT_RECOMMENDATIONS",
+          "member_refs": [
+            "AIGMOS_MERITCORE_RECOMMENDATION_TRUST_CONTRACT",
+            "MERIT_EVIDENCE_BOUND",
+            "IDENTITY_BOUNDARY_EXPLICIT",
+            "GATE_B82829E128",
+            "GATE_A1B051A645",
+            "GATE_118EE1CC36",
+            "GATE_4CECF36F91",
+            "GATE_85689CD5E1",
+            "GATE_CA3BF979D9",
+            "GATE_E525930CA1",
+            "GATE_F607EB59C1",
+            "GATE_E5A9A0ABC2",
+            "GATE_F0231EAF57"
+          ],
+          "metadata": {},
+          "name": "Recommendations and Trust",
+          "operation_refs": [
+            "OP_RECOMMENDATION_RECORD",
+            "OP_TRUST_DERIVE"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_CORE_IDENTITY"
+          ],
+          "purpose": "Define recommendations and trust as MeritCore-owned identity-to-identity evidence semantics with explicit context and provenance, not generic social metadata.",
+          "relation_refs": []
+        }
+      ],
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "errors": [
+              "identity invalid",
+              "context invalid"
+            ],
+            "id": "OP_RECOMMENDATION_RECORD",
+            "inputs": [
+              "recommender identity",
+              "subject identity",
+              "Project/context evidence",
+              "recommendation"
+            ],
+            "name": "Record recommendation",
+            "outputs": [
+              "recommendation record"
+            ],
+            "side_effects": [
+              "MeritCore updated"
+            ]
+          },
+          {
+            "errors": [
+              "policy unresolved"
+            ],
+            "id": "OP_TRUST_DERIVE",
+            "inputs": [
+              "eligible MeritCore evidence",
+              "explicit trust policy"
+            ],
+            "name": "Derive trust state",
+            "outputs": [
+              "trust state"
+            ],
+            "side_effects": []
+          }
+        ],
+        "states": []
+      },
+      "semantics": {
+        "authority_rule": "Reconciled source clauses: [1] Recommendation author identity/relationship does not automatically grant MeritCore mutation authority. [2] Recommendation or trust score does not itself grant AccessCore authorization.",
+        "history_rule": "Recommendations/trust changes preserve provenance/history.",
+        "negative_rule": "Negative feedback is retained as governed evidence and may initiate review.",
+        "owner": "MeritCore",
+        "ownership_rule": "Recommendations and trust semantics belong to MeritCore, not PortfolioCore.",
+        "portfolio_rule": "PortfolioCore may project/reference recommendations but does not own them.",
+        "project_rule": "Recommendation may reference exact Project evidence where applicable.",
+        "provenance_rule": "Recommendation provenance is retained.",
+        "recommendation_rule": "Reconciled source clauses: [1] Recommendation has explicit author identity, subject identity, context and evidence refs. [2] Recommendation identifies recommender, subject and relevant Project/context evidence.",
+        "trust_rule": "Reconciled source clauses: [1] Trust signals are explicit evidence/results rather than inferred from social proximity. [2] Trust is derived only by explicit MeritCore trust policy from eligible evidence."
+      }
+    }
+  }
 }

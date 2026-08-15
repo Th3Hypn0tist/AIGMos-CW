@@ -1,0 +1,901 @@
+{
+  "name": "Canonical Contract Format",
+  "type": "canonical_contract_format",
+  "version": "2.0.0",
+  "status": "locked",
+  "release": {
+    "state": "final",
+    "delta_from": "1.8.0",
+    "change_class": "breaking_semantic_and_serialization_refactor",
+    "semantic_delta": [
+      "Entity becomes the universal canonical semantic object.",
+      "Property becomes the universal machine-significant semantic carrier attached to an Entity.",
+      "Links migrate from a dedicated links[] authority into Property instances with property_type_ref=link.",
+      "Events migrate from dedicated behavior/event authority into Property instances with property_type_ref=event.",
+      "Ruleset mechanics are inherited from DependencyRules and are no longer modeled as Canonical Contract Format-owned semantics.",
+      "Profiles define Entity semantic minima in terms of Properties.",
+      "Format Demands define target-format compatibility minima in terms of Properties and Ruleset-conformant semantics.",
+      "StructureTree remains a derived semantic IR/index and never a second authority."
+    ]
+  },
+  "position": 0,
+  "purpose": "Define a representation-independent canonical semantic contract model for arbitrary domains using the minimal universal semantic core Entity + Property, with Property semantics resolved through inherited DependencyRules Rulesets.",
+  "bootstrap": {
+    "role": "format_root",
+    "order": [
+      "Canonical Contract Format",
+      "one active Master / boundary registry when a model has a shared architecture root",
+      "all active canonical contracts and registries"
+    ],
+    "rule": "This contract is the format root. Every active canonical artifact MUST conform to the current format and every required profile before it may be locked."
+  },
+  "representation": {
+    "semantic_standard": "Canonical Contract Format",
+    "current_serialization": "JSON",
+    "rule": "JSON is a serialization representation only. Canonical semantics are defined independently of JSON.",
+    "representation_independence": true,
+    "lossless_targets": [
+      "JSON",
+      "other deterministic serializations",
+      "StructureTree-derived projections"
+    ],
+    "round_trip_goal": "Equivalent active canonical meaning after lossless representation round-trip."
+  },
+  "fundamental_rules": [
+    {
+      "id": "CF_NO_SEMANTIC_GUESSING",
+      "rule": "Active machine-significant semantics MUST NOT depend on heuristic inference from prose, filenames, paths, ordering, visualization, naming convention or implementation detail."
+    },
+    {
+      "id": "CF_ENTITY_IS_UNIVERSAL_SEMANTIC_OBJECT",
+      "rule": "Every machine-significant modeled thing that requires stable semantic identity MUST be representable as an Entity."
+    },
+    {
+      "id": "CF_ONE_ENTITY_ONE_ACTIVE_DEFINITION",
+      "rule": "One active Entity identity MUST resolve to exactly one active authoritative definition."
+    },
+    {
+      "id": "CF_ENTITY_PROPERTIES_ARE_UNBOUNDED",
+      "rule": "An Entity properties[] collection MUST have no format-level maximum cardinality."
+    },
+    {
+      "id": "CF_PROPERTY_TYPE_IS_EXPLICIT",
+      "rule": "Every canonical Property MUST reference an explicit property_type_ref."
+    },
+    {
+      "id": "CF_PROPERTY_RULESET_IS_EXPLICIT",
+      "rule": "Every locked canonical Property MUST resolve to an explicit active ruleset_ref governed by DependencyRules."
+    },
+    {
+      "id": "CF_RULESET_DEFINES_PROPERTY_SEMANTICS",
+      "rule": "The resolved DependencyRules Ruleset defines the machine-significant value structure, semantic roles, cardinalities, constraints and validation behavior of a Property Type."
+    },
+    {
+      "id": "CF_LINK_IS_PROPERTY",
+      "rule": "Link is the universal Property Type for machine-significant directed canonical semantic connections and MUST NOT require parallel edge stores."
+    },
+    {
+      "id": "CF_EVENT_IS_PROPERTY",
+      "rule": "An Event is a Property Type attached to an Entity and MUST NOT require a parallel universal Event-node ontology."
+    },
+    {
+      "id": "CF_NODE_IS_REPRESENTATION",
+      "rule": "A visual Node, primitive, mesh, card, BIM object view or other rendered object is a Representation of an Entity and MUST NOT become canonical semantic identity merely because it is rendered."
+    },
+    {
+      "id": "CF_PROPERTY_MINIMUM_NOT_MAXIMUM",
+      "rule": "Rulesets, Profiles and Format Demands MAY define required semantic minima but MUST NOT impose a format-level maximum on total Entity Properties unless a specific semantic cardinality itself requires one."
+    },
+    {
+      "id": "CF_PROPERTY_SEMANTICS_NOT_INFERRED_FROM_RENDERING",
+      "rule": "Property meaning MUST NOT be inferred from geometry, color, animation, spatial proximity, renderer direction or visual grouping."
+    },
+    {
+      "id": "CF_UNKNOWN_NOT_INVENTED",
+      "rule": "Unknown or missing semantics MUST remain explicit gaps and MUST NOT be invented by a consumer."
+    },
+    {
+      "id": "CF_PROGRESSIVE_FORMALIZATION",
+      "rule": "Unlocked Entities and Properties MAY be progressively refined while preserving stable identity and explicit semantic history. Locked semantic claims MUST NOT be silently rewritten."
+    },
+    {
+      "id": "CF_ROUND_TRIP",
+      "rule": "A valid canonical model MUST survive representation -> normalized canonical semantic model -> representation without semantic loss."
+    },
+    {
+      "id": "CF_PROFILE_DEFINES_ENTITY_MINIMUM",
+      "rule": "A Profile defines the minimum Properties and other explicit semantics required for an Entity or scope to satisfy a semantic modeling context. A Profile does not own Property value semantics."
+    },
+    {
+      "id": "CF_FORMAT_DEMAND_IS_EXPLICIT",
+      "rule": "Compatibility or export requirements for a named format MUST be represented as explicit Format Demand semantics when those requirements affect deterministic validation."
+    },
+    {
+      "id": "CF_FORMAT_DEMAND_MINIMUM_NOT_MAXIMUM",
+      "rule": "A Format Demand defines a required compatibility minimum and MUST NOT close or bound the canonical Entity/Property model."
+    },
+    {
+      "id": "CF_FORMAT_DEMANDS_ARE_COMPOSABLE",
+      "rule": "Any number of Format Demands MAY apply to the same model, scope or Entity. Requirements MUST be evaluated independently and in composition."
+    },
+    {
+      "id": "CF_FORMAT_DEMAND_CONFLICT_IS_EXPLICIT",
+      "rule": "Mutually incompatible active Format Demands MUST produce explicit conflict findings. A validator MUST NOT silently choose one demand over another."
+    },
+    {
+      "id": "CF_FORMAT_DEMAND_NOT_SEMANTIC_AUTHORITY",
+      "rule": "A Format Demand does not redefine canonical Entity identity, Property identity or Property meaning."
+    },
+    {
+      "id": "CF_RULESET_AUTHORITY_IS_DEPENDENCY_RULES",
+      "rule": "Canonical Contract Format references Rulesets but MUST NOT redefine DependencyRules composition, inheritance, closure, conflict, exclusion, cycle or Ruleset-resolution semantics."
+    },
+    {
+      "id": "CF_STRUCTURE_TREE_IS_DERIVED",
+      "rule": "StructureTree or any equivalent resolved index/IR is derived and rebuildable and MUST NOT become a second canonical semantic authority."
+    },
+    {
+      "id": "CF_ENTITY_PROPERTY_IDS_SHARE_CANONICAL_NAMESPACE",
+      "rule": "Active Entity and Property identities share one canonical identity namespace. Every canonical Entity/Property ref MUST resolve deterministically to exactly one active target."
+    },
+    {
+      "id": "CF_LINK_IS_UNIVERSAL_DIRECTED_CONNECTION_PROPERTY",
+      "rule": "Every machine-significant directed canonical semantic connection MUST be representable as a Link Property. Relation, dependency, ownership, authority, containment, architecture, topic, Event causality and other directed semantics are Link specializations governed by explicit Rulesets."
+    },
+    {
+      "id": "CF_LINK_PROPERTY_OWNER_DEFINED_BY_RULESET",
+      "rule": "The authoritative owner/placement semantics of a Link Property MUST be defined by the applicable Link Ruleset and MUST NOT be inferred from parent_ref, child_ref, visual direction or serialization order."
+    },
+    {
+      "id": "CF_EVENT_REFERENCES_ARE_LINK_PROPERTIES",
+      "rule": "Directed machine-significant references involving an Event Property MUST be explicit Link Properties when they express reads, inputs, outputs, effects, causes, conditions, targets or other canonical directed semantics."
+    },
+    {
+      "id": "CF_DETERMINISTIC_CAUSAL_TRACEABILITY",
+      "rule": "When causality is modeled, canonical semantics MUST preserve deterministic forward and backward traceability across the actual Entity/Property data or state surfaces through which consequences propagate."
+    },
+    {
+      "id": "CF_CAUSAL_DATA_SURFACE_IS_EXPLICIT",
+      "rule": "A modeled causal chain MUST expose semantically relevant data/state surfaces. A direct Event-to-Event shortcut MUST NOT replace an Event -> Effect -> data/state path when that path carries canonical meaning."
+    }
+  ],
+  "dependency_rules": {
+    "model": "DependencyRules",
+    "ownership": "external_inherited_standard",
+    "ruleset_ref": "CW_CCF_2_0_RULESET",
+    "companion_artifact": "Canonical_Wireframe_Dependency_Rules_v2.0.0.json",
+    "rule": "CCF references DependencyRules Rulesets. CW-specific Ruleset membership and Property Rulesets live in the companion CW DR artifact. CCF MUST NOT redefine base DR semantics."
+  },
+  "lifecycle": {
+    "status_values": [
+      "unlocked",
+      "locked",
+      "superseded",
+      "deprecated"
+    ],
+    "unlocked": "Active semantics exist but may still be incomplete, unresolved, under design, or not yet validated against the current format and applicable profiles.",
+    "locked": "The artifact has passed the current format, applicable profile requirements, deterministic reference resolution, semantic closure and all applicable hard gates.",
+    "superseded": "Historical definition replaced by another active definition.",
+    "deprecated": "Retained for history or compatibility but not active for new canonical work.",
+    "transition": "unlocked -> validate -> locked",
+    "format_migration": "A breaking format or profile change MUST unlock every affected active artifact until individually revalidated."
+  },
+  "maturity": {
+    "purpose": "Describe progressive formalization independently from lifecycle authority.",
+    "values": [
+      "idea",
+      "suggestion",
+      "unresolved",
+      "structured",
+      "typed",
+      "complete",
+      "validated"
+    ],
+    "rule": "maturity is descriptive and MUST NOT replace status. Only status=locked grants locked canonical authority."
+  },
+  "canonical_core": {
+    "minimal_core": [
+      "Entity",
+      "Property"
+    ],
+    "entity": {
+      "required": [
+        "id",
+        "name",
+        "entity_type_ref",
+        "status",
+        "properties"
+      ],
+      "optional": [
+        "maturity",
+        "profiles",
+        "format_demands",
+        "gaps",
+        "prose",
+        "metadata"
+      ],
+      "properties_collection": {
+        "min": 0,
+        "max": null,
+        "meaning": "unbounded"
+      },
+      "rule": "Entity is the canonical holder of machine-significant Properties."
+    },
+    "property": {
+      "required": [
+        "id",
+        "property_type_ref",
+        "ruleset_ref",
+        "status",
+        "value"
+      ],
+      "optional": [
+        "maturity",
+        "gap_ref",
+        "provenance",
+        "metadata",
+        "prose"
+      ],
+      "rule": "Property is the universal typed semantic attribute, relationship or behavior container attached to an Entity. The resolved DependencyRules Ruleset determines the required structure and meaning of value."
+    }
+  },
+  "contract_shape": {
+    "required": [
+      "format",
+      "identity",
+      "status",
+      "purpose",
+      "scope",
+      "entities",
+      "constraints",
+      "references",
+      "gaps",
+      "prose"
+    ],
+    "optional": [
+      "maturity",
+      "profiles",
+      "format_demands",
+      "architecture",
+      "representation_bindings",
+      "metadata"
+    ],
+    "format": {
+      "required": [
+        "contract_format",
+        "format_version"
+      ],
+      "contract_format": "CANONICAL_CONTRACT",
+      "format_version": "2.0"
+    },
+    "identity": {
+      "required": [
+        "id",
+        "name",
+        "type",
+        "version"
+      ],
+      "rule": "id is the stable semantic identity and MUST originate from explicit structured identity data, never only from a path, filename, display name or inferred convention."
+    },
+    "scope": {
+      "required": [
+        "owns",
+        "does_not_own"
+      ],
+      "rule": "Scope declares semantic responsibility boundaries and MUST NOT be inferred from links or placement."
+    },
+    "entities": {
+      "collection_cardinality": {
+        "min": 0,
+        "max": null,
+        "meaning": "unbounded"
+      },
+      "item_required": [
+        "id",
+        "name",
+        "entity_type_ref",
+        "status",
+        "properties"
+      ],
+      "item_optional": [
+        "maturity",
+        "profiles",
+        "format_demands",
+        "gaps",
+        "prose",
+        "metadata"
+      ],
+      "properties": {
+        "collection_cardinality": {
+          "min": 0,
+          "max": null,
+          "meaning": "unbounded"
+        },
+        "item_required": [
+          "id",
+          "property_type_ref",
+          "ruleset_ref",
+          "status",
+          "value"
+        ],
+        "item_optional": [
+          "maturity",
+          "gap_ref",
+          "provenance",
+          "metadata",
+          "prose"
+        ]
+      }
+    },
+    "profiles": {
+      "collection_cardinality": {
+        "min": 0,
+        "max": null,
+        "meaning": "unbounded"
+      },
+      "rule": "Profiles define Entity/scope semantic minima. Internal Property value semantics remain owned by the resolved DependencyRules Ruleset."
+    },
+    "format_demands": {
+      "collection_cardinality": {
+        "min": 0,
+        "max": null,
+        "meaning": "unbounded"
+      },
+      "item_required": [
+        "id",
+        "format_ref",
+        "applies_to",
+        "requirements"
+      ],
+      "item_optional": [
+        "name",
+        "version_ref",
+        "purpose",
+        "status",
+        "provenance",
+        "constraints",
+        "metadata",
+        "prose"
+      ],
+      "rule": "Format Demands define compatibility minima over explicit scopes and MUST NOT redefine Property semantics."
+    },
+    "architecture": {
+      "status": "contextual_not_core",
+      "rule": "Architecture is modeled through explicit Entities/Properties and applicable Profiles/Rulesets. A model-level architecture context MAY declare root_ref when a single-root architecture view is required."
+    },
+    "constraints": {
+      "required": [
+        "invariants",
+        "hard_gates"
+      ],
+      "invariant_required": [
+        "id",
+        "rule"
+      ],
+      "hard_gate_required": [
+        "id",
+        "condition",
+        "result"
+      ],
+      "hard_gate_result": "hard_fail"
+    },
+    "references": {
+      "item_required": [
+        "id",
+        "target_ref",
+        "purpose"
+      ],
+      "rule": "A reference indicates semantic addressability but does not itself create a typed semantic connection. Every active target_ref MUST resolve deterministically."
+    },
+    "gaps": {
+      "item_required": [
+        "gap_id",
+        "type",
+        "status"
+      ],
+      "item_optional": [
+        "target_ref",
+        "entity_ref",
+        "property_ref",
+        "field_path",
+        "severity",
+        "description",
+        "resolution_hint",
+        "metadata"
+      ],
+      "status_values": [
+        "open",
+        "resolved",
+        "accepted_unknown"
+      ],
+      "rule": "A Gap records unknown, unresolved or incomplete semantics without inventing an answer."
+    },
+    "prose": {
+      "required": [
+        "summary",
+        "notes"
+      ],
+      "rule": "Prose may explain semantics but MUST NOT be the only carrier of a machine-significant identity, placement, typed connection, authority, behavioral or causal fact."
+    }
+  },
+  "property_type_model": {
+    "principle": "Property Types form an open vocabulary. Machine-significant Property semantics are defined by explicit DependencyRules Rulesets.",
+    "maximum_property_types": null,
+    "standardized_candidates": [
+      "link",
+      "event",
+      "state",
+      "content",
+      "measurement",
+      "representation_binding",
+      "implementation_binding",
+      "runtime_binding",
+      "schedule",
+      "classification"
+    ],
+    "rule": "Property Types form an open vocabulary. Link, Event and Effect are standardized core Property Types; domains may add more through explicit DependencyRules Rulesets without changing CCF.",
+    "normative_in_2_0": [
+      "link",
+      "event",
+      "effect"
+    ]
+  },
+  "profile_model": {
+    "role": "Define what Properties an Entity must have to satisfy a semantic modeling profile.",
+    "rule": "Profiles define Entity semantic minima; they do not define the internal schema of Property values.",
+    "minimum_not_maximum": true
+  },
+  "format_demand_model": {
+    "role": "Define what Entity Properties and Ruleset-conformant information must exist for compatibility with a target format.",
+    "rule": "Format Demands define compatibility minima and MUST NOT redefine Property semantics already owned by Rulesets.",
+    "multiple_demands": true,
+    "conflicts_explicit": true,
+    "readiness_is_descriptive": true
+  },
+  "format_identity_rule": {
+    "statement": "format_ref MUST resolve to an explicit format identity or authoritative format registry entry. The string value alone MUST NOT be treated as sufficient semantic definition when deterministic validation depends on it.",
+    "examples": [
+      "CANONICAL_WIREFRAME",
+      "BIM",
+      "THINGS",
+      "IFC",
+      "AIGMOS"
+    ],
+    "note": "Examples are illustrative format identities, not normative definitions of those external formats."
+  },
+  "representation_model": {
+    "principle": "Visual and physical representations are optional views or bindings of Entities.",
+    "examples": [
+      "primitive",
+      "text_card",
+      "icon",
+      "mesh",
+      "glTF",
+      "IFC element",
+      "BIM object",
+      "Thing view",
+      "code symbol",
+      "document"
+    ],
+    "rule": "An Entity MAY have zero or more representations. Primitive instances are fallback representations and do not define a separate semantic Entity class.",
+    "presentation_state_examples": [
+      "position",
+      "rotation",
+      "scale",
+      "color_override",
+      "expanded",
+      "selected",
+      "camera_relative_state"
+    ],
+    "semantic_boundary": "Presentation state MUST NOT become canonical semantics unless explicitly represented by a Property governed by a Ruleset."
+  },
+  "progressive_formalization": {
+    "enabled": true,
+    "rule": "Unlocked Entity and Property identities MAY remain stable while Property Type, ruleset_ref and value are refined. Unknown required semantics remain explicit gaps.",
+    "locked_rule": "No locked semantic claim may be silently rewritten."
+  },
+  "structure_tree": {
+    "role": "StructureTree becomes the resolved semantic IR built from Entities, Properties and Rulesets.",
+    "candidate_core": [
+      "entities_by_ref",
+      "properties_by_entity",
+      "properties_by_type",
+      "rulesets_by_ref",
+      "link_parent_index",
+      "link_child_index",
+      "event_index",
+      "profile_compliance",
+      "format_demand_readiness",
+      "gaps",
+      "validation_state"
+    ],
+    "rule": "StructureTree is derived and rebuildable and MUST NOT become a second canonical authority.",
+    "import_paths": [
+      "CW -> StructureTree",
+      "mindmap -> StructureTree -> unlocked CW candidate",
+      "source code Mapper -> StructureTree -> unlocked CW candidate",
+      "BIM/IFC Mapper -> StructureTree -> unlocked CW candidate",
+      "Things Mapper -> StructureTree -> unlocked CW candidate",
+      "3D/CAD Mapper -> StructureTree -> unlocked CW candidate"
+    ]
+  },
+  "canonicalization": {
+    "encoding": "UTF-8",
+    "duplicate_json_keys": "hard_fail",
+    "array_order_default": "non_semantic",
+    "ordered_array_rule": "If array order carries semantics, its owning field MUST explicitly declare ordered=true.",
+    "required_empty_dimensions": "Required dimensions remain present as empty arrays or objects when applicable but empty. Absence MUST NOT silently mean not applicable.",
+    "inert_semantic_values": [
+      "null",
+      "boolean",
+      "finite number",
+      "string",
+      "array",
+      "object"
+    ]
+  },
+  "round_trip": {
+    "forward": "representation -> normalized canonical semantic model MUST preserve every active identity, typed Link, Link Type, parent_ref/child_ref orientation, architecture root, profile requirement, behavior record, flow, semantic value, invariant, hard gate, gap and reference.",
+    "reverse": "normalized canonical semantic model -> representation MUST invent nothing, drop nothing and preserve identity, Link type, parent_ref, child_ref, Link properties, architecture placement, causal links and contract-specific semantic values.",
+    "equivalence": "Whitespace, key order and non-semantic serialization details may differ; canonical semantic meaning may not."
+  },
+  "traceability": {
+    "reverse_trace": "Any canonical identity SHOULD be queryable as child_ref for its semantic parents by Link Type, and as parent_ref for its semantic children by Link Type, together with producing flows, Topic contexts, surfaces and implementation bindings.",
+    "forward_trace": "Any canonical identity SHOULD be queryable across parent_ref -> child_ref Links and explicit behavior to reconstruct its typed semantic neighborhood without project-specific heuristics.",
+    "generic_consumer_rule": "A generic consumer MUST reconstruct significant semantics from canonical data and registered Link Type contracts without embedded domain-specific guessing."
+  },
+  "reference_resolution": {
+    "zero_active_matches": "hard_fail",
+    "one_active_match": "valid",
+    "multiple_active_matches": "hard_fail",
+    "forbidden_inputs": [
+      "filename similarity",
+      "directory placement",
+      "display aliases without explicit alias authority",
+      "prose interpretation",
+      "renderer position",
+      "canvas position",
+      "implementation imports",
+      "context guessing",
+      "domain-specific heuristics"
+    ],
+    "identity_namespace": "single_canonical_identity_namespace",
+    "rule": "Every required canonical Entity/Property reference resolves deterministically to exactly one active target. Heuristic qualification is forbidden."
+  },
+  "validator": {
+    "required_operations": [
+      "validate_shape",
+      "resolve_entities",
+      "resolve_property_types",
+      "resolve_dependency_rules_rulesets",
+      "validate_property_against_ruleset",
+      "validate_profile_property_minima",
+      "resolve_format_refs",
+      "resolve_format_demands",
+      "validate_format_demand_scope",
+      "validate_format_demand_property_minima",
+      "validate_format_demand_conflicts",
+      "calculate_format_readiness",
+      "validate_property_reference_resolution",
+      "validate_no_dual_truth",
+      "validate_no_semantic_guessing",
+      "validate_reverse_traceability",
+      "validate_round_trip",
+      "materialize_structure_tree",
+      "validate_hard_gates",
+      "lock_eligible",
+      "validate_entity_property_identity_namespace",
+      "resolve_link_owner_ruleset_semantics",
+      "validate_event_references_as_links",
+      "build_resolved_causal_graph",
+      "validate_forward_causal_trace",
+      "validate_backward_causal_trace",
+      "detect_causal_cycles"
+    ],
+    "failure_output": [
+      "error_id",
+      "artifact_identity_or_file",
+      "entity_ref_when_applicable",
+      "property_ref_when_applicable",
+      "field_path_when_applicable",
+      "property_type_ref_when_applicable",
+      "ruleset_ref_when_applicable",
+      "profile_id_when_applicable",
+      "format_demand_ref_when_applicable",
+      "gate_id",
+      "explanation"
+    ],
+    "lock_rule": "lock_eligible=true permits unlocked -> locked. Otherwise the artifact MUST remain unlocked.",
+    "format_readiness_model": {
+      "purpose": "Allow tools such as Structure to show how much of a Format Demand is currently satisfied without treating partial readiness as canonical validity.",
+      "result_shape": {
+        "format_demand_ref": "FORMAT_DEMAND_ID",
+        "applicable_requirements": 0,
+        "satisfied_requirements": 0,
+        "blocking_requirements": [],
+        "missing_requirements": [],
+        "conflicts": [],
+        "readiness_ratio": "0.0 .. 1.0",
+        "conformant": false
+      },
+      "normative_rule": "readiness_ratio is descriptive tooling output. Conformance requires every blocking/required requirement defined by the Format Demand to pass."
+    }
+  },
+  "hard_gates": [
+    {
+      "id": "CF_MISSING_REQUIRED_FIELD",
+      "condition": "A required Canonical Contract Format, Entity, Property, Profile or Format Demand field is absent.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_AMBIGUOUS_ENTITY",
+      "condition": "One active Entity identity resolves to multiple active authoritative definitions.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_UNRESOLVED_REFERENCE",
+      "condition": "An active locked reference that is required by its resolved Ruleset or contextual mechanism resolves to zero active targets.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_AMBIGUOUS_REFERENCE",
+      "condition": "An active locked reference resolves to multiple active targets where exactly one is required.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_PROPERTY_TYPE_UNRESOLVED",
+      "condition": "A locked Property property_type_ref does not resolve deterministically.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_PROPERTY_RULESET_UNRESOLVED",
+      "condition": "A locked Property ruleset_ref does not resolve to exactly one active DependencyRules Ruleset.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_PROPERTY_RULESET_VIOLATION",
+      "condition": "A locked Property does not satisfy the required shape, semantic roles, cardinalities or constraints of its resolved Ruleset.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_PROFILE_REQUIRED_PROPERTY_MISSING",
+      "condition": "An Entity or scope claimed conformant to a Profile does not satisfy one or more required Property minima.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_ENTITY_PROPERTY_COLLECTION_BOUNDED",
+      "condition": "A format-level rule attempts to impose a finite maximum on the total Entity properties[] collection.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_LINK_STORED_OUTSIDE_PROPERTY_MODEL",
+      "condition": "After 2.0 migration, an active canonical Link remains authoritative in a parallel dedicated Link store instead of the Entity Property model.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_EVENT_STORED_AS_PARALLEL_ONTOLOGY",
+      "condition": "After 2.0 migration, Event semantics are duplicated as both Entity Properties and an independent universal Event-node authority.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_PRESENTATION_BECOMES_IMPLICIT_SEMANTICS",
+      "condition": "Geometry, primitive type, mesh position, color, animation or other presentation state is used as canonical meaning without an explicit Property governed by a Ruleset.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_FORMAT_DEMAND_UNRESOLVED_FORMAT",
+      "condition": "An active locked Format Demand references a format_ref that does not resolve deterministically.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_FORMAT_DEMAND_SCOPE_UNRESOLVED",
+      "condition": "The applies_to scope of an active locked Format Demand cannot be resolved deterministically.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_FORMAT_DEMAND_REQUIRED_MINIMUM_MISSING",
+      "condition": "A scope claimed conformant to a Format Demand does not satisfy one or more required minimum requirements.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_FORMAT_DEMAND_TOTAL_MODEL_BOUND",
+      "condition": "A Format Demand attempts to impose a finite maximum on the model's total Entities, total properties[] or extensible Property Type vocabulary merely to define compatibility.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_FORMAT_DEMAND_CONFLICT_HIDDEN",
+      "condition": "Two applicable Format Demands conflict and the validator resolves the conflict implicitly instead of reporting it.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_SEMANTIC_GUESS_REQUIRED",
+      "condition": "A generic consumer requires project-specific or domain-specific heuristic interpretation to reconstruct required active semantics.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_ROUND_TRIP_LOSS",
+      "condition": "Representation -> canonical semantic model -> representation changes active semantic meaning.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_DUAL_TRUTH",
+      "condition": "The same active semantic fact has more than one authoritative canonical storage location after migration.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_ENTITY_PROPERTY_ID_COLLISION",
+      "condition": "An active Entity and Property share the same canonical identity or a canonical Entity/Property reference resolves ambiguously.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_LINK_PROPERTY_OWNER_UNRESOLVED",
+      "condition": "A locked Link Property's applicable Ruleset does not deterministically define its owner/placement semantics.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_EVENT_EMBEDDED_REFERENCE_DUAL_TRUTH",
+      "condition": "A directed Event reference is authoritative both as embedded Event data and as a Link Property.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_CAUSAL_DATA_PATH_HIDDEN",
+      "condition": "An authoritative causal explanation hides a semantically relevant intermediate data/state path behind a direct Event-to-Event shortcut.",
+      "result": "hard_fail"
+    },
+    {
+      "id": "CF_CAUSAL_GUESSING_REQUIRED",
+      "condition": "Forward or backward causal traversal requires heuristic inference of a missing Event, Effect, target, condition or data/state relation.",
+      "result": "hard_fail"
+    }
+  ],
+  "migration": {
+    "from_1_8": {
+      "change_class": "breaking_semantic_and_serialization_refactor",
+      "principle": "Existing semantic meaning is preserved while dedicated semantic stores are normalized into Entity properties[].",
+      "mappings": {
+        "identity": "Entity core fields or explicitly scoped Entity identity",
+        "links[]": "Entity properties[property_type_ref=link]; legacy directed connections preserve their semantic specialization through explicit CW DependencyRules Rulesets.",
+        "behavior.events[]": "Entity properties[property_type_ref=event]; directed Event references are split into Link Properties.",
+        "behavior.states[]": "Entity properties[property_type_ref=state] when an applicable Ruleset exists",
+        "behavior.operations[]": "Not a CCF-core mapping requirement. Operation semantics are explicit Property Types / Rulesets selected by the adopting model.",
+        "behavior.flows[]": "Not a CCF-core mapping requirement. Flow semantics are expressed through Link/Event/other Property Types and Rulesets selected by the adopting model.",
+        "implementation": "implementation_binding Property when an applicable Ruleset exists",
+        "link_types": "CW DependencyRules Link Rulesets and/or explicit type registry identities",
+        "profiles": "Profiles remain contextual semantic-minimum mechanisms",
+        "format_demands": "Format Demands remain contextual compatibility-minimum mechanisms",
+        "gaps": "Gaps remain explicit lifecycle/validation records"
+      },
+      "no_dual_truth": true
+    }
+  },
+  "general_use": {
+    "scope": "generic cross-domain systems modeling",
+    "principle": "Domains extend the model through Entity Types, Property Types, DependencyRules Rulesets, Profiles and Format Demands rather than by changing the CCF core.",
+    "extension_model": {
+      "new_modeled_thing": "Entity Type",
+      "new_semantic_characteristic_or_relationship": "Property Type",
+      "new_property_structure_or_validation": "DependencyRules Ruleset",
+      "new_semantic_completeness_context": "Profile",
+      "new_interoperability_requirement": "Format Demand"
+    }
+  },
+  "distribution": {
+    "canonical_uri": "https://aigm.fi/format/Canonical_Contract_Format.json",
+    "history_base_uri": "https://aigm.fi/format/history/",
+    "history_filename_pattern": "Canonical_Contract_Format_v<version>.json",
+    "current_rule": "After publication, Canonical_Contract_Format.json MUST resolve to this locked 2.0.0 release until superseded by a later locked release.",
+    "history_rule": "Superseded locked releases are archived immutably under the versioned history filename.",
+    "immutability_rule": "A historical versioned format artifact MUST NOT be modified after publication."
+  },
+  "release_invariants": [
+    "Entity and Property are the minimal universal canonical semantic core.",
+    "Entity properties[] is unbounded.",
+    "Entity and Property identities share one deterministic canonical identity namespace.",
+    "Every locked Property resolves an explicit Property Type and DependencyRules Ruleset.",
+    "Link is the universal Property Type for directed canonical semantic connections.",
+    "Link endpoints may resolve to Entity or Property identities as constrained by the applicable Link Ruleset.",
+    "Link Property owner/placement is Ruleset-defined.",
+    "Event is a Property Type.",
+    "Directed Event references are Link Properties and MUST NOT form a parallel authority.",
+    "Effect is a Property Type and Effect targets are Link Properties.",
+    "Causal traces preserve semantically relevant data/state surfaces and are reconstructable forward and backward without guessing.",
+    "Property Types and Link specializations are open vocabularies.",
+    "Profiles define semantic minima; Format Demands define compatibility minima.",
+    "StructureTree and visualizations are derived, never canonical authority.",
+    "Unknown required semantics remain explicit Gaps.",
+    "Round-trip preservation is mandatory."
+  ],
+  "identity_model": {
+    "namespace": "single_canonical_identity_namespace",
+    "applies_to": [
+      "Entity",
+      "Property"
+    ],
+    "rules": [
+      "Every active Entity id resolves to exactly one active Entity.",
+      "Every active Property id resolves to exactly one active Property.",
+      "Active Entity and Property ids MUST NOT collide.",
+      "Canonical Entity/Property references therefore resolve without heuristic qualification."
+    ]
+  },
+  "link_model": {
+    "property_type_ref": "link",
+    "role": "Universal directed canonical semantic connection carrier.",
+    "orientation": "parent_ref -> child_ref",
+    "endpoint_refs": {
+      "allowed_targets": [
+        "Entity",
+        "Property"
+      ],
+      "resolution": "single_canonical_identity_namespace",
+      "rule": "The applicable Link Ruleset constrains endpoint kinds and semantic roles."
+    },
+    "property_owner": {
+      "authority": "applicable_link_ruleset",
+      "rule": "CCF does not impose a universal Link Property owner/placement."
+    },
+    "specialization_vocabulary": "open",
+    "maximum_specializations": null,
+    "reverse_rule": "A Link does not imply an unstated reverse Link."
+  },
+  "event_model": {
+    "property_type_ref": "event",
+    "rule": "Event is a Property Type. Directed Event references are explicit Link Properties and are not embedded parallel canonical authorities.",
+    "canonical_reference_links": [
+      "event_read",
+      "event_input",
+      "event_output",
+      "event_effect",
+      "event_cause",
+      "event_condition"
+    ]
+  },
+  "effect_model": {
+    "property_type_ref": "effect",
+    "rule": "Effect is a Property Type representing an explicit Event consequence. Effect targets are explicit effect_target Link Properties."
+  },
+  "causal_traceability": {
+    "status": "core",
+    "canonical_pattern": [
+      "DATA_OR_STATE_PROPERTY",
+      "LINK:event_condition/event_input/event_read",
+      "EVENT_PROPERTY",
+      "LINK:event_effect",
+      "EFFECT_PROPERTY",
+      "LINK:effect_target",
+      "DATA_OR_STATE_PROPERTY"
+    ],
+    "forward_trace": "deterministically reconstruct downstream modeled impact",
+    "backward_trace": "deterministically reconstruct upstream modeled cause",
+    "cycle_rule": "Cycles are detected and reported; validity is Ruleset-defined.",
+    "rule": "No renderer, mapper, AI or consumer may invent missing causal edges."
+  },
+  "resolved_design_decisions": [
+    {
+      "id": "CCF2_LINK_PROPERTY_OWNER",
+      "decision": "Applicable Link Ruleset defines deterministic Link Property owner/placement."
+    },
+    {
+      "id": "CCF2_PROPERTY_REFERENCE_QUALIFICATION",
+      "decision": "Entity and Property ids share one canonical identity namespace."
+    },
+    {
+      "id": "CCF2_EVENT_NORMALIZATION",
+      "decision": "Event is a Property; directed Event references are split into Link Properties."
+    }
+  ],
+  "non_core_extension_points": [
+    {
+      "id": "CCF2_OPERATION_FLOW",
+      "rule": "Operation and flow semantics are Property/Link/Event Ruleset concerns, not CCF-core blockers."
+    },
+    {
+      "id": "CCF2_RUNTIME_DESIGN_STATE",
+      "rule": "Runtime-vs-design-state policy is a Profile/Property Ruleset concern, not a CCF-core blocker."
+    },
+    {
+      "id": "CCF2_REPRESENTATION_BINDING",
+      "rule": "Representation binding is an optional Property/Ruleset extension, not a CCF-core blocker."
+    }
+  ]
+}

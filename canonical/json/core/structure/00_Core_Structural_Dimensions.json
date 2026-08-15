@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define containment, relation, ownership, authority and dependency as distinct canonical structural dimensions that must be represented explicitly and must never be inferred from one another, from Topic membership, or from filesystem placement.",
   "scope": {
     "owns": [
@@ -26,595 +25,698 @@
       "filesystem hierarchy semantics"
     ]
   },
-  "members": [
+  "entities": [
     {
-      "id": "FSYM_66942562BFF92EEFBB28",
-      "name": "canonical_reader",
-      "type": "flow_actor_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
-        "flow_ref_field": "actor_ref",
-        "source_literal": "canonical_reader",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+      "name": "Core Structural Dimensions",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::OPERATIONS::OP_STRUCTURE_MATERIALIZE_CONTAINMENT",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_STRUCTURE_MATERIALIZE_CONTAINMENT",
+            "name": "Materialize containment",
+            "inputs": [
+              "structure.containment"
+            ],
+            "outputs": [
+              "containment graph"
+            ],
+            "errors": [
+              "unresolved endpoint",
+              "invalid containment edge"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::OPERATIONS::OP_STRUCTURE_MATERIALIZE_RELATIONS",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_STRUCTURE_MATERIALIZE_RELATIONS",
+            "name": "Materialize relations",
+            "inputs": [
+              "structure.relations"
+            ],
+            "outputs": [
+              "relation graph"
+            ],
+            "errors": [
+              "unresolved endpoint",
+              "unknown relation semantics"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::OPERATIONS::OP_STRUCTURE_MATERIALIZE_OWNERSHIP",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_STRUCTURE_MATERIALIZE_OWNERSHIP",
+            "name": "Materialize ownership",
+            "inputs": [
+              "structure.ownership"
+            ],
+            "outputs": [
+              "ownership graph"
+            ],
+            "errors": [
+              "unresolved owner",
+              "unresolved target"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::OPERATIONS::OP_STRUCTURE_MATERIALIZE_AUTHORITY",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_STRUCTURE_MATERIALIZE_AUTHORITY",
+            "name": "Materialize authority",
+            "inputs": [
+              "structure.authority"
+            ],
+            "outputs": [
+              "authority graph"
+            ],
+            "errors": [
+              "unresolved authority",
+              "unresolved target"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::OPERATIONS::OP_STRUCTURE_MATERIALIZE_DEPENDENCIES",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_STRUCTURE_MATERIALIZE_DEPENDENCIES",
+            "name": "Materialize dependencies",
+            "inputs": [
+              "structure.dependencies"
+            ],
+            "outputs": [
+              "dependency graph"
+            ],
+            "errors": [
+              "unresolved source",
+              "unresolved target"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::OPERATIONS::OP_STRUCTURE_VALIDATE_DIMENSION_SEPARATION",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_STRUCTURE_VALIDATE_DIMENSION_SEPARATION",
+            "name": "Validate structural dimension separation",
+            "inputs": [
+              "containment graph",
+              "relation graph",
+              "ownership graph",
+              "authority graph",
+              "dependency graph"
+            ],
+            "outputs": [
+              "dimension separation report"
+            ],
+            "errors": [
+              "implicit dimension inference",
+              "ambiguous structural meaning"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::OPERATIONS::OP_STRUCTURE_MATERIALIZE_ALL",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_STRUCTURE_MATERIALIZE_ALL",
+            "name": "Materialize all structural dimensions",
+            "inputs": [
+              "structure.containment",
+              "structure.relations",
+              "structure.ownership",
+              "structure.authority",
+              "structure.dependencies"
+            ],
+            "outputs": [
+              "containment graph",
+              "relation graph",
+              "ownership graph",
+              "authority graph",
+              "dependency graph"
+            ],
+            "errors": [
+              "unresolved structural endpoint",
+              "invalid structural edge",
+              "unknown structural semantics"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::FLOWS::FLOW_STRUCTURE_MATERIALIZATION",
+          "property_type_ref": "aigmos_flow",
+          "ruleset_ref": "AIGMOS_RULESET_FLOW",
+          "status": "unlocked",
+          "value": {
+            "id": "FLOW_STRUCTURE_MATERIALIZATION",
+            "owner_ref": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "name": "Materialize canonical structural dimensions",
+            "flow_type": "deterministic_structure_read",
+            "entry_refs": [
+              "OP_STRUCTURE_MATERIALIZE_CONTAINMENT",
+              "OP_STRUCTURE_MATERIALIZE_RELATIONS",
+              "OP_STRUCTURE_MATERIALIZE_OWNERSHIP",
+              "OP_STRUCTURE_MATERIALIZE_AUTHORITY",
+              "OP_STRUCTURE_MATERIALIZE_DEPENDENCIES"
+            ],
+            "exit_refs": [
+              "OP_STRUCTURE_VALIDATE_DIMENSION_SEPARATION"
+            ],
+            "steps": [
+              {
+                "id": "STEP_MATERIALIZE_DIMENSIONS",
+                "actor_ref": "FSYM_66942562BFF92EEFBB28",
+                "action_ref": "OP_STRUCTURE_MATERIALIZE_ALL",
+                "data_ref": "FSYM_80585212E57530F7C576",
+                "target_ref": "FSYM_E582C51E155CB4BD10CC",
+                "cause_ref": null,
+                "condition_ref": null,
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_065B9EF82FFC02C75999",
+                  "FSYM_516FAD55A0054304FC0E",
+                  "FSYM_3263351B0726BB8A1DD8",
+                  "FSYM_0A1DF73457FA941B721B",
+                  "FSYM_58D7092CF3F8204626C5"
+                ],
+                "error_refs": [
+                  "FSYM_748610B0F001DAE36F68"
+                ],
+                "next_step_refs": [
+                  "STEP_VALIDATE_DIMENSIONS"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_VALIDATE_DIMENSIONS",
+                "actor_ref": "FSYM_8BBDCD89F3A7073E038D",
+                "action_ref": "OP_STRUCTURE_VALIDATE_DIMENSION_SEPARATION",
+                "data_ref": "FSYM_E6DF351FF426C3E72AEB",
+                "target_ref": "FSYM_E582C51E155CB4BD10CC",
+                "cause_ref": "STEP_MATERIALIZE_DIMENSIONS",
+                "condition_ref": null,
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_D99179B9A043E28493CC"
+                ],
+                "error_refs": [
+                  "FSYM_E5841A45AB8E6FCC14DB",
+                  "FSYM_79069066A1B518AEF982"
+                ],
+                "next_step_refs": [],
+                "subflow_refs": [],
+                "resume_ref": null
+              }
+            ],
+            "metadata": {
+              "ordering_note": "Structural dimensions may be materialized independently. Their serialization order carries no semantics."
+            }
+          },
+          "metadata": {
+            "migration_source_path": "behavior.flows[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "dimensions": {
+              "containment": "Declares semantic parent/child containment only.",
+              "relation": "Declares a typed semantic relation only.",
+              "ownership": "Declares which semantic owner owns the target meaning/surface.",
+              "authority": "Declares runtime or policy authority only.",
+              "dependency": "Declares a required or optional dependency only."
+            },
+            "non_implication_rules": [
+              "containment does not imply ownership",
+              "containment does not imply authority",
+              "containment does not imply dependency",
+              "containment does not imply execution order",
+              "relation does not imply containment",
+              "relation does not imply ownership",
+              "relation does not imply authority",
+              "relation does not imply dependency",
+              "ownership does not imply containment",
+              "ownership does not imply authority",
+              "ownership does not imply dependency",
+              "authority does not imply ownership",
+              "authority does not imply containment",
+              "authority does not imply structural admissibility",
+              "dependency does not imply ownership",
+              "dependency does not imply authority",
+              "dependency does not imply execution order",
+              "Topic membership does not imply any structural dimension",
+              "Topic inheritance does not imply any structural dimension",
+              "Topic composition does not imply any structural dimension",
+              "filesystem hierarchy does not imply any structural dimension"
+            ],
+            "causality_boundary": "Execution causality belongs in explicit behavior.flows, never in structural edges alone.",
+            "projection_boundary": "A projector may combine structural dimensions visually, but projected proximity, nesting or edge styling does not change their canonical meanings."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_PARENT_TOPIC_CORE_STRUCTURE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "TOPIC_CORE_STRUCTURE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "STRUCTURAL_DIMENSIONS_DISTINCT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "STRUCTURE_NOT_CAUSALITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "GATE_CONTAINMENT_AS_OWNERSHIP",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "GATE_OWNERSHIP_AS_AUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "GATE_DEPENDENCY_AS_CAUSALITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "GATE_TOPIC_AS_STRUCTURE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "GATE_PATH_AS_STRUCTURE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "GATE_VISUAL_AS_STRUCTURE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "FSYM_66942562BFF92EEFBB28",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "FSYM_80585212E57530F7C576",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "FSYM_E582C51E155CB4BD10CC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "FSYM_065B9EF82FFC02C75999",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "FSYM_516FAD55A0054304FC0E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_14",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "FSYM_3263351B0726BB8A1DD8",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[14]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_15",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "FSYM_0A1DF73457FA941B721B",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[15]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_16",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "FSYM_58D7092CF3F8204626C5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[16]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_17",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "FSYM_748610B0F001DAE36F68",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[17]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_18",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "FSYM_8BBDCD89F3A7073E038D",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[18]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_19",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "FSYM_E6DF351FF426C3E72AEB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[19]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_20",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "FSYM_D99179B9A043E28493CC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[20]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_21",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "FSYM_E5841A45AB8E6FCC14DB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[21]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_STRUCTURE_22",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "FSYM_79069066A1B518AEF982",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[22]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/core/structure/00_Core_Structural_Dimensions.json"
       }
     },
-    {
-      "id": "FSYM_80585212E57530F7C576",
-      "name": "structure",
-      "type": "flow_data_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
-        "flow_ref_field": "data_ref",
-        "source_literal": "structure",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_E582C51E155CB4BD10CC",
-      "name": "canonical structural model",
-      "type": "flow_target_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
-        "flow_ref_field": "target_ref",
-        "source_literal": "canonical structural model",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_065B9EF82FFC02C75999",
-      "name": "containment graph",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "containment graph",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_516FAD55A0054304FC0E",
-      "name": "relation graph",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "relation graph",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_3263351B0726BB8A1DD8",
-      "name": "ownership graph",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "ownership graph",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_0A1DF73457FA941B721B",
-      "name": "authority graph",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "authority graph",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_58D7092CF3F8204626C5",
-      "name": "dependency graph",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "dependency graph",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_748610B0F001DAE36F68",
-      "name": "unresolved structural endpoint",
-      "type": "flow_error_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
-        "flow_ref_field": "error_refs",
-        "source_literal": "unresolved structural endpoint",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_8BBDCD89F3A7073E038D",
-      "name": "canonical_validator",
-      "type": "flow_actor_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
-        "flow_ref_field": "actor_ref",
-        "source_literal": "canonical_validator",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_E6DF351FF426C3E72AEB",
-      "name": "materialized structural graphs",
-      "type": "flow_data_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
-        "flow_ref_field": "data_ref",
-        "source_literal": "materialized structural graphs",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_D99179B9A043E28493CC",
-      "name": "dimension separation report",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "dimension separation report",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_E5841A45AB8E6FCC14DB",
-      "name": "implicit dimension inference",
-      "type": "flow_error_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
-        "flow_ref_field": "error_refs",
-        "source_literal": "implicit dimension inference",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_79069066A1B518AEF982",
-      "name": "ambiguous structural meaning",
-      "type": "flow_error_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
-        "flow_ref_field": "error_refs",
-        "source_literal": "ambiguous structural meaning",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    }
-  ],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
     {
       "id": "TOPIC_CORE_STRUCTURE",
       "name": "Structure",
-      "purpose": "Group the canonical dimensions used to reconstruct semantic structure without inference.",
-      "parent_topic_refs": [
-        "TOPIC_CORE"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
-        "STRUCTURAL_DIMENSIONS_DISTINCT",
-        "STRUCTURE_NOT_CAUSALITY",
-        "GATE_CONTAINMENT_AS_OWNERSHIP",
-        "GATE_OWNERSHIP_AS_AUTHORITY",
-        "GATE_DEPENDENCY_AS_CAUSALITY",
-        "GATE_TOPIC_AS_STRUCTURE",
-        "GATE_PATH_AS_STRUCTURE",
-        "GATE_VISUAL_AS_STRUCTURE",
-        "FSYM_66942562BFF92EEFBB28",
-        "FSYM_80585212E57530F7C576",
-        "FSYM_E582C51E155CB4BD10CC",
-        "FSYM_065B9EF82FFC02C75999",
-        "FSYM_516FAD55A0054304FC0E",
-        "FSYM_3263351B0726BB8A1DD8",
-        "FSYM_0A1DF73457FA941B721B",
-        "FSYM_58D7092CF3F8204626C5",
-        "FSYM_748610B0F001DAE36F68",
-        "FSYM_8BBDCD89F3A7073E038D",
-        "FSYM_E6DF351FF426C3E72AEB",
-        "FSYM_D99179B9A043E28493CC",
-        "FSYM_E5841A45AB8E6FCC14DB",
-        "FSYM_79069066A1B518AEF982"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_STRUCTURE_MATERIALIZE_CONTAINMENT",
-        "OP_STRUCTURE_MATERIALIZE_RELATIONS",
-        "OP_STRUCTURE_MATERIALIZE_OWNERSHIP",
-        "OP_STRUCTURE_MATERIALIZE_AUTHORITY",
-        "OP_STRUCTURE_MATERIALIZE_DEPENDENCIES",
-        "OP_STRUCTURE_VALIDATE_DIMENSION_SEPARATION",
-        "OP_STRUCTURE_MATERIALIZE_ALL"
-      ],
-      "event_refs": [],
-      "flow_refs": [
-        "FLOW_STRUCTURE_MATERIALIZATION"
-      ],
-      "child_topics": [
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
         {
-          "id": "TOPIC_CORE_STRUCTURE_CONTAINMENT",
-          "name": "Containment",
-          "purpose": "Group explicit containment edges.",
-          "parent_topic_refs": [
-            "TOPIC_CORE_STRUCTURE"
-          ],
-          "composed_topic_refs": [],
-          "member_refs": [],
-          "relation_refs": [],
-          "operation_refs": [
-            "OP_STRUCTURE_MATERIALIZE_CONTAINMENT"
-          ],
-          "event_refs": [],
-          "flow_refs": [],
-          "child_topics": [],
-          "metadata": {}
-        },
-        {
-          "id": "TOPIC_CORE_STRUCTURE_RELATION",
-          "name": "Relation",
-          "purpose": "Group explicit semantic relation edges.",
-          "parent_topic_refs": [
-            "TOPIC_CORE_STRUCTURE"
-          ],
-          "composed_topic_refs": [],
-          "member_refs": [],
-          "relation_refs": [],
-          "operation_refs": [
-            "OP_STRUCTURE_MATERIALIZE_RELATIONS"
-          ],
-          "event_refs": [],
-          "flow_refs": [],
-          "child_topics": [],
-          "metadata": {}
-        },
-        {
-          "id": "TOPIC_CORE_STRUCTURE_OWNERSHIP",
-          "name": "Ownership",
-          "purpose": "Group explicit semantic ownership edges.",
-          "parent_topic_refs": [
-            "TOPIC_CORE_STRUCTURE"
-          ],
-          "composed_topic_refs": [],
-          "member_refs": [],
-          "relation_refs": [],
-          "operation_refs": [
-            "OP_STRUCTURE_MATERIALIZE_OWNERSHIP"
-          ],
-          "event_refs": [],
-          "flow_refs": [],
-          "child_topics": [],
-          "metadata": {}
-        },
-        {
-          "id": "TOPIC_CORE_STRUCTURE_AUTHORITY",
-          "name": "Authority",
-          "purpose": "Group explicit runtime/policy authority edges without conflating them with ownership.",
-          "parent_topic_refs": [
-            "TOPIC_CORE_STRUCTURE"
-          ],
-          "composed_topic_refs": [],
-          "member_refs": [],
-          "relation_refs": [],
-          "operation_refs": [
-            "OP_STRUCTURE_MATERIALIZE_AUTHORITY"
-          ],
-          "event_refs": [],
-          "flow_refs": [],
-          "child_topics": [],
-          "metadata": {}
-        },
-        {
-          "id": "TOPIC_CORE_STRUCTURE_DEPENDENCY",
-          "name": "Dependency",
-          "purpose": "Group explicit dependency edges without treating them as execution causality.",
-          "parent_topic_refs": [
-            "TOPIC_CORE_STRUCTURE"
-          ],
-          "composed_topic_refs": [],
-          "member_refs": [],
-          "relation_refs": [],
-          "operation_refs": [
-            "OP_STRUCTURE_MATERIALIZE_DEPENDENCIES"
-          ],
-          "event_refs": [],
-          "flow_refs": [],
-          "child_topics": [],
-          "metadata": {}
+          "id": "TOPIC_CORE_STRUCTURE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Group the canonical dimensions used to reconstruct semantic structure without inference.",
+            "metadata": {}
+          }
         }
-      ],
-      "metadata": {}
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_STRUCTURE_MATERIALIZE_CONTAINMENT",
-        "name": "Materialize containment",
-        "inputs": [
-          "structure.containment"
-        ],
-        "outputs": [
-          "containment graph"
-        ],
-        "errors": [
-          "unresolved endpoint",
-          "invalid containment edge"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_STRUCTURE_MATERIALIZE_RELATIONS",
-        "name": "Materialize relations",
-        "inputs": [
-          "structure.relations"
-        ],
-        "outputs": [
-          "relation graph"
-        ],
-        "errors": [
-          "unresolved endpoint",
-          "unknown relation semantics"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_STRUCTURE_MATERIALIZE_OWNERSHIP",
-        "name": "Materialize ownership",
-        "inputs": [
-          "structure.ownership"
-        ],
-        "outputs": [
-          "ownership graph"
-        ],
-        "errors": [
-          "unresolved owner",
-          "unresolved target"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_STRUCTURE_MATERIALIZE_AUTHORITY",
-        "name": "Materialize authority",
-        "inputs": [
-          "structure.authority"
-        ],
-        "outputs": [
-          "authority graph"
-        ],
-        "errors": [
-          "unresolved authority",
-          "unresolved target"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_STRUCTURE_MATERIALIZE_DEPENDENCIES",
-        "name": "Materialize dependencies",
-        "inputs": [
-          "structure.dependencies"
-        ],
-        "outputs": [
-          "dependency graph"
-        ],
-        "errors": [
-          "unresolved source",
-          "unresolved target"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_STRUCTURE_VALIDATE_DIMENSION_SEPARATION",
-        "name": "Validate structural dimension separation",
-        "inputs": [
-          "containment graph",
-          "relation graph",
-          "ownership graph",
-          "authority graph",
-          "dependency graph"
-        ],
-        "outputs": [
-          "dimension separation report"
-        ],
-        "errors": [
-          "implicit dimension inference",
-          "ambiguous structural meaning"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_STRUCTURE_MATERIALIZE_ALL",
-        "name": "Materialize all structural dimensions",
-        "inputs": [
-          "structure.containment",
-          "structure.relations",
-          "structure.ownership",
-          "structure.authority",
-          "structure.dependencies"
-        ],
-        "outputs": [
-          "containment graph",
-          "relation graph",
-          "ownership graph",
-          "authority graph",
-          "dependency graph"
-        ],
-        "errors": [
-          "unresolved structural endpoint",
-          "invalid structural edge",
-          "unknown structural semantics"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": [
-      {
-        "id": "FLOW_STRUCTURE_MATERIALIZATION",
-        "owner_ref": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
-        "name": "Materialize canonical structural dimensions",
-        "flow_type": "deterministic_structure_read",
-        "entry_refs": [
-          "OP_STRUCTURE_MATERIALIZE_CONTAINMENT",
-          "OP_STRUCTURE_MATERIALIZE_RELATIONS",
-          "OP_STRUCTURE_MATERIALIZE_OWNERSHIP",
-          "OP_STRUCTURE_MATERIALIZE_AUTHORITY",
-          "OP_STRUCTURE_MATERIALIZE_DEPENDENCIES"
-        ],
-        "exit_refs": [
-          "OP_STRUCTURE_VALIDATE_DIMENSION_SEPARATION"
-        ],
-        "steps": [
-          {
-            "id": "STEP_MATERIALIZE_DIMENSIONS",
-            "actor_ref": "FSYM_66942562BFF92EEFBB28",
-            "action_ref": "OP_STRUCTURE_MATERIALIZE_ALL",
-            "data_ref": "FSYM_80585212E57530F7C576",
-            "target_ref": "FSYM_E582C51E155CB4BD10CC",
-            "cause_ref": null,
-            "condition_ref": null,
-            "payload_ref": null,
-            "result_refs": [
-              "FSYM_065B9EF82FFC02C75999",
-              "FSYM_516FAD55A0054304FC0E",
-              "FSYM_3263351B0726BB8A1DD8",
-              "FSYM_0A1DF73457FA941B721B",
-              "FSYM_58D7092CF3F8204626C5"
-            ],
-            "error_refs": [
-              "FSYM_748610B0F001DAE36F68"
-            ],
-            "next_step_refs": [
-              "STEP_VALIDATE_DIMENSIONS"
-            ],
-            "subflow_refs": [],
-            "resume_ref": null
-          },
-          {
-            "id": "STEP_VALIDATE_DIMENSIONS",
-            "actor_ref": "FSYM_8BBDCD89F3A7073E038D",
-            "action_ref": "OP_STRUCTURE_VALIDATE_DIMENSION_SEPARATION",
-            "data_ref": "FSYM_E6DF351FF426C3E72AEB",
-            "target_ref": "FSYM_E582C51E155CB4BD10CC",
-            "cause_ref": "STEP_MATERIALIZE_DIMENSIONS",
-            "condition_ref": null,
-            "payload_ref": null,
-            "result_refs": [
-              "FSYM_D99179B9A043E28493CC"
-            ],
-            "error_refs": [
-              "FSYM_E5841A45AB8E6FCC14DB",
-              "FSYM_79069066A1B518AEF982"
-            ],
-            "next_step_refs": [],
-            "subflow_refs": [],
-            "resume_ref": null
-          }
-        ],
-        "metadata": {
-          "ordering_note": "Structural dimensions may be materialized independently. Their serialization order carries no semantics."
-        }
-      }
-    ]
-  },
-  "semantics": {
-    "dimensions": {
-      "containment": "Declares semantic parent/child containment only.",
-      "relation": "Declares a typed semantic relation only.",
-      "ownership": "Declares which semantic owner owns the target meaning/surface.",
-      "authority": "Declares runtime or policy authority only.",
-      "dependency": "Declares a required or optional dependency only."
-    },
-    "non_implication_rules": [
-      "containment does not imply ownership",
-      "containment does not imply authority",
-      "containment does not imply dependency",
-      "containment does not imply execution order",
-      "relation does not imply containment",
-      "relation does not imply ownership",
-      "relation does not imply authority",
-      "relation does not imply dependency",
-      "ownership does not imply containment",
-      "ownership does not imply authority",
-      "ownership does not imply dependency",
-      "authority does not imply ownership",
-      "authority does not imply containment",
-      "authority does not imply structural admissibility",
-      "dependency does not imply ownership",
-      "dependency does not imply authority",
-      "dependency does not imply execution order",
-      "Topic membership does not imply any structural dimension",
-      "Topic inheritance does not imply any structural dimension",
-      "Topic composition does not imply any structural dimension",
-      "filesystem hierarchy does not imply any structural dimension"
-    ],
-    "causality_boundary": "Execution causality belongs in explicit behavior.flows, never in structural edges alone.",
-    "projection_boundary": "A projector may combine structural dimensions visually, but projected proximity, nesting or edge styling does not change their canonical meanings."
-  },
   "constraints": {
     "invariants": [
       {
@@ -671,11 +773,640 @@
       "purpose": "All structural endpoints must resolve through canonical identity resolution."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_CORE_STRUCTURE",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_CORE_STRUCTURE",
+      "field_path": "topics[0].operation_refs"
+    },
+    {
+      "gap_id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::GAP::TOPIC_flow_refs_TOPIC_CORE_STRUCTURE",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field flow_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_CORE_STRUCTURE",
+      "field_path": "topics[0].flow_refs"
+    },
+    {
+      "gap_id": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT::GAP::TOPIC_child_topics_TOPIC_CORE_STRUCTURE",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field child_topics is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_CORE_STRUCTURE",
+      "field_path": "topics[0].child_topics"
+    }
+  ],
   "prose": {
     "summary": "Separates containment, relations, ownership, authority and dependencies so a generic reader can reconstruct each dimension without cross-inference.",
     "notes": [
       "Unlocked until the assembled 1.4 review tree validates all structural endpoints and cross-dimension rules.",
       "Pass 8 formalized previously free Flow actor/data/target/condition/payload/result/error tokens as exact owner-scoped member identities while preserving every source literal."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [
+        {
+          "id": "FSYM_66942562BFF92EEFBB28",
+          "name": "canonical_reader",
+          "type": "flow_actor_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "flow_ref_field": "actor_ref",
+            "source_literal": "canonical_reader",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_80585212E57530F7C576",
+          "name": "structure",
+          "type": "flow_data_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "flow_ref_field": "data_ref",
+            "source_literal": "structure",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_E582C51E155CB4BD10CC",
+          "name": "canonical structural model",
+          "type": "flow_target_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "flow_ref_field": "target_ref",
+            "source_literal": "canonical structural model",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_065B9EF82FFC02C75999",
+          "name": "containment graph",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "containment graph",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_516FAD55A0054304FC0E",
+          "name": "relation graph",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "relation graph",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_3263351B0726BB8A1DD8",
+          "name": "ownership graph",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "ownership graph",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_0A1DF73457FA941B721B",
+          "name": "authority graph",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "authority graph",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_58D7092CF3F8204626C5",
+          "name": "dependency graph",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "dependency graph",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_748610B0F001DAE36F68",
+          "name": "unresolved structural endpoint",
+          "type": "flow_error_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "flow_ref_field": "error_refs",
+            "source_literal": "unresolved structural endpoint",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_8BBDCD89F3A7073E038D",
+          "name": "canonical_validator",
+          "type": "flow_actor_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "flow_ref_field": "actor_ref",
+            "source_literal": "canonical_validator",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_E6DF351FF426C3E72AEB",
+          "name": "materialized structural graphs",
+          "type": "flow_data_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "flow_ref_field": "data_ref",
+            "source_literal": "materialized structural graphs",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_D99179B9A043E28493CC",
+          "name": "dimension separation report",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "dimension separation report",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_E5841A45AB8E6FCC14DB",
+          "name": "implicit dimension inference",
+          "type": "flow_error_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "flow_ref_field": "error_refs",
+            "source_literal": "implicit dimension inference",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_79069066A1B518AEF982",
+          "name": "ambiguous structural meaning",
+          "type": "flow_error_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "flow_ref_field": "error_refs",
+            "source_literal": "ambiguous structural meaning",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        }
+      ],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_CORE_STRUCTURE",
+          "name": "Structure",
+          "purpose": "Group the canonical dimensions used to reconstruct semantic structure without inference.",
+          "parent_topic_refs": [
+            "TOPIC_CORE"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "STRUCTURAL_DIMENSIONS_DISTINCT",
+            "STRUCTURE_NOT_CAUSALITY",
+            "GATE_CONTAINMENT_AS_OWNERSHIP",
+            "GATE_OWNERSHIP_AS_AUTHORITY",
+            "GATE_DEPENDENCY_AS_CAUSALITY",
+            "GATE_TOPIC_AS_STRUCTURE",
+            "GATE_PATH_AS_STRUCTURE",
+            "GATE_VISUAL_AS_STRUCTURE",
+            "FSYM_66942562BFF92EEFBB28",
+            "FSYM_80585212E57530F7C576",
+            "FSYM_E582C51E155CB4BD10CC",
+            "FSYM_065B9EF82FFC02C75999",
+            "FSYM_516FAD55A0054304FC0E",
+            "FSYM_3263351B0726BB8A1DD8",
+            "FSYM_0A1DF73457FA941B721B",
+            "FSYM_58D7092CF3F8204626C5",
+            "FSYM_748610B0F001DAE36F68",
+            "FSYM_8BBDCD89F3A7073E038D",
+            "FSYM_E6DF351FF426C3E72AEB",
+            "FSYM_D99179B9A043E28493CC",
+            "FSYM_E5841A45AB8E6FCC14DB",
+            "FSYM_79069066A1B518AEF982"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_STRUCTURE_MATERIALIZE_CONTAINMENT",
+            "OP_STRUCTURE_MATERIALIZE_RELATIONS",
+            "OP_STRUCTURE_MATERIALIZE_OWNERSHIP",
+            "OP_STRUCTURE_MATERIALIZE_AUTHORITY",
+            "OP_STRUCTURE_MATERIALIZE_DEPENDENCIES",
+            "OP_STRUCTURE_VALIDATE_DIMENSION_SEPARATION",
+            "OP_STRUCTURE_MATERIALIZE_ALL"
+          ],
+          "event_refs": [],
+          "flow_refs": [
+            "FLOW_STRUCTURE_MATERIALIZATION"
+          ],
+          "child_topics": [
+            {
+              "id": "TOPIC_CORE_STRUCTURE_CONTAINMENT",
+              "name": "Containment",
+              "purpose": "Group explicit containment edges.",
+              "parent_topic_refs": [
+                "TOPIC_CORE_STRUCTURE"
+              ],
+              "composed_topic_refs": [],
+              "member_refs": [],
+              "relation_refs": [],
+              "operation_refs": [
+                "OP_STRUCTURE_MATERIALIZE_CONTAINMENT"
+              ],
+              "event_refs": [],
+              "flow_refs": [],
+              "child_topics": [],
+              "metadata": {}
+            },
+            {
+              "id": "TOPIC_CORE_STRUCTURE_RELATION",
+              "name": "Relation",
+              "purpose": "Group explicit semantic relation edges.",
+              "parent_topic_refs": [
+                "TOPIC_CORE_STRUCTURE"
+              ],
+              "composed_topic_refs": [],
+              "member_refs": [],
+              "relation_refs": [],
+              "operation_refs": [
+                "OP_STRUCTURE_MATERIALIZE_RELATIONS"
+              ],
+              "event_refs": [],
+              "flow_refs": [],
+              "child_topics": [],
+              "metadata": {}
+            },
+            {
+              "id": "TOPIC_CORE_STRUCTURE_OWNERSHIP",
+              "name": "Ownership",
+              "purpose": "Group explicit semantic ownership edges.",
+              "parent_topic_refs": [
+                "TOPIC_CORE_STRUCTURE"
+              ],
+              "composed_topic_refs": [],
+              "member_refs": [],
+              "relation_refs": [],
+              "operation_refs": [
+                "OP_STRUCTURE_MATERIALIZE_OWNERSHIP"
+              ],
+              "event_refs": [],
+              "flow_refs": [],
+              "child_topics": [],
+              "metadata": {}
+            },
+            {
+              "id": "TOPIC_CORE_STRUCTURE_AUTHORITY",
+              "name": "Authority",
+              "purpose": "Group explicit runtime/policy authority edges without conflating them with ownership.",
+              "parent_topic_refs": [
+                "TOPIC_CORE_STRUCTURE"
+              ],
+              "composed_topic_refs": [],
+              "member_refs": [],
+              "relation_refs": [],
+              "operation_refs": [
+                "OP_STRUCTURE_MATERIALIZE_AUTHORITY"
+              ],
+              "event_refs": [],
+              "flow_refs": [],
+              "child_topics": [],
+              "metadata": {}
+            },
+            {
+              "id": "TOPIC_CORE_STRUCTURE_DEPENDENCY",
+              "name": "Dependency",
+              "purpose": "Group explicit dependency edges without treating them as execution causality.",
+              "parent_topic_refs": [
+                "TOPIC_CORE_STRUCTURE"
+              ],
+              "composed_topic_refs": [],
+              "member_refs": [],
+              "relation_refs": [],
+              "operation_refs": [
+                "OP_STRUCTURE_MATERIALIZE_DEPENDENCIES"
+              ],
+              "event_refs": [],
+              "flow_refs": [],
+              "child_topics": [],
+              "metadata": {}
+            }
+          ],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_STRUCTURE_MATERIALIZE_CONTAINMENT",
+            "name": "Materialize containment",
+            "inputs": [
+              "structure.containment"
+            ],
+            "outputs": [
+              "containment graph"
+            ],
+            "errors": [
+              "unresolved endpoint",
+              "invalid containment edge"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_STRUCTURE_MATERIALIZE_RELATIONS",
+            "name": "Materialize relations",
+            "inputs": [
+              "structure.relations"
+            ],
+            "outputs": [
+              "relation graph"
+            ],
+            "errors": [
+              "unresolved endpoint",
+              "unknown relation semantics"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_STRUCTURE_MATERIALIZE_OWNERSHIP",
+            "name": "Materialize ownership",
+            "inputs": [
+              "structure.ownership"
+            ],
+            "outputs": [
+              "ownership graph"
+            ],
+            "errors": [
+              "unresolved owner",
+              "unresolved target"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_STRUCTURE_MATERIALIZE_AUTHORITY",
+            "name": "Materialize authority",
+            "inputs": [
+              "structure.authority"
+            ],
+            "outputs": [
+              "authority graph"
+            ],
+            "errors": [
+              "unresolved authority",
+              "unresolved target"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_STRUCTURE_MATERIALIZE_DEPENDENCIES",
+            "name": "Materialize dependencies",
+            "inputs": [
+              "structure.dependencies"
+            ],
+            "outputs": [
+              "dependency graph"
+            ],
+            "errors": [
+              "unresolved source",
+              "unresolved target"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_STRUCTURE_VALIDATE_DIMENSION_SEPARATION",
+            "name": "Validate structural dimension separation",
+            "inputs": [
+              "containment graph",
+              "relation graph",
+              "ownership graph",
+              "authority graph",
+              "dependency graph"
+            ],
+            "outputs": [
+              "dimension separation report"
+            ],
+            "errors": [
+              "implicit dimension inference",
+              "ambiguous structural meaning"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_STRUCTURE_MATERIALIZE_ALL",
+            "name": "Materialize all structural dimensions",
+            "inputs": [
+              "structure.containment",
+              "structure.relations",
+              "structure.ownership",
+              "structure.authority",
+              "structure.dependencies"
+            ],
+            "outputs": [
+              "containment graph",
+              "relation graph",
+              "ownership graph",
+              "authority graph",
+              "dependency graph"
+            ],
+            "errors": [
+              "unresolved structural endpoint",
+              "invalid structural edge",
+              "unknown structural semantics"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": [
+          {
+            "id": "FLOW_STRUCTURE_MATERIALIZATION",
+            "owner_ref": "AIGMOS_CORE_STRUCTURAL_DIMENSIONS_CONTRACT",
+            "name": "Materialize canonical structural dimensions",
+            "flow_type": "deterministic_structure_read",
+            "entry_refs": [
+              "OP_STRUCTURE_MATERIALIZE_CONTAINMENT",
+              "OP_STRUCTURE_MATERIALIZE_RELATIONS",
+              "OP_STRUCTURE_MATERIALIZE_OWNERSHIP",
+              "OP_STRUCTURE_MATERIALIZE_AUTHORITY",
+              "OP_STRUCTURE_MATERIALIZE_DEPENDENCIES"
+            ],
+            "exit_refs": [
+              "OP_STRUCTURE_VALIDATE_DIMENSION_SEPARATION"
+            ],
+            "steps": [
+              {
+                "id": "STEP_MATERIALIZE_DIMENSIONS",
+                "actor_ref": "FSYM_66942562BFF92EEFBB28",
+                "action_ref": "OP_STRUCTURE_MATERIALIZE_ALL",
+                "data_ref": "FSYM_80585212E57530F7C576",
+                "target_ref": "FSYM_E582C51E155CB4BD10CC",
+                "cause_ref": null,
+                "condition_ref": null,
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_065B9EF82FFC02C75999",
+                  "FSYM_516FAD55A0054304FC0E",
+                  "FSYM_3263351B0726BB8A1DD8",
+                  "FSYM_0A1DF73457FA941B721B",
+                  "FSYM_58D7092CF3F8204626C5"
+                ],
+                "error_refs": [
+                  "FSYM_748610B0F001DAE36F68"
+                ],
+                "next_step_refs": [
+                  "STEP_VALIDATE_DIMENSIONS"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_VALIDATE_DIMENSIONS",
+                "actor_ref": "FSYM_8BBDCD89F3A7073E038D",
+                "action_ref": "OP_STRUCTURE_VALIDATE_DIMENSION_SEPARATION",
+                "data_ref": "FSYM_E6DF351FF426C3E72AEB",
+                "target_ref": "FSYM_E582C51E155CB4BD10CC",
+                "cause_ref": "STEP_MATERIALIZE_DIMENSIONS",
+                "condition_ref": null,
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_D99179B9A043E28493CC"
+                ],
+                "error_refs": [
+                  "FSYM_E5841A45AB8E6FCC14DB",
+                  "FSYM_79069066A1B518AEF982"
+                ],
+                "next_step_refs": [],
+                "subflow_refs": [],
+                "resume_ref": null
+              }
+            ],
+            "metadata": {
+              "ordering_note": "Structural dimensions may be materialized independently. Their serialization order carries no semantics."
+            }
+          }
+        ]
+      },
+      "semantics": {
+        "dimensions": {
+          "containment": "Declares semantic parent/child containment only.",
+          "relation": "Declares a typed semantic relation only.",
+          "ownership": "Declares which semantic owner owns the target meaning/surface.",
+          "authority": "Declares runtime or policy authority only.",
+          "dependency": "Declares a required or optional dependency only."
+        },
+        "non_implication_rules": [
+          "containment does not imply ownership",
+          "containment does not imply authority",
+          "containment does not imply dependency",
+          "containment does not imply execution order",
+          "relation does not imply containment",
+          "relation does not imply ownership",
+          "relation does not imply authority",
+          "relation does not imply dependency",
+          "ownership does not imply containment",
+          "ownership does not imply authority",
+          "ownership does not imply dependency",
+          "authority does not imply ownership",
+          "authority does not imply containment",
+          "authority does not imply structural admissibility",
+          "dependency does not imply ownership",
+          "dependency does not imply authority",
+          "dependency does not imply execution order",
+          "Topic membership does not imply any structural dimension",
+          "Topic inheritance does not imply any structural dimension",
+          "Topic composition does not imply any structural dimension",
+          "filesystem hierarchy does not imply any structural dimension"
+        ],
+        "causality_boundary": "Execution causality belongs in explicit behavior.flows, never in structural edges alone.",
+        "projection_boundary": "A projector may combine structural dimensions visually, but projected proximity, nesting or edge styling does not change their canonical meanings."
+      }
+    }
   }
 }

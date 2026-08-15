@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define ingest as parse→map→transform→schema validate→quality validate→authorize→write, with candidate data inert until all required acceptance gates succeed.",
   "scope": {
     "owns": [
@@ -22,69 +21,204 @@
       "AccessCore policy ownership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT",
+      "name": "DWH Ingest Validation and Acceptance Boundary",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "flow": [
+              "parse source profile",
+              "resolve field mappings",
+              "apply declared transformations",
+              "validate destination schema",
+              "evaluate quality profile",
+              "evaluate origin/input scope",
+              "authorize destination mutation",
+              "commit write/transaction",
+              "record lineage/result"
+            ],
+            "candidate_rule": "Parsed/mapped/transformed data remains candidate/inert until accepted.",
+            "schema_rule": "Destination schema validation precedes accepted write.",
+            "quality_rule": "Applicable quality validation/gates are explicit.",
+            "scope_rule": "Remote/local input scope is evaluated at origin/receiving boundary.",
+            "authorization_rule": "Destination write authorization is evaluated independently from source reachability.",
+            "atomic_rule": "Failed ingest does not partially mutate accepted state unless an explicit partial-batch profile says so.",
+            "lineage_rule": "Accepted data retains source, mapping, transformation and write provenance.",
+            "failure_rule": "Rejected input remains rejected/quarantined/evidenced according to profile and never masquerades as accepted."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_INGEST_MAPPING",
+            "child_ref": "TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE",
+            "child_ref": "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE",
+            "child_ref": "INGEST_MAPPING_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/ingest/03_Ingest_Validation_Acceptance.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE",
       "name": "DWH Ingest Validation and Acceptance Boundary",
-      "purpose": "Define ingest as parse→map→transform→schema validate→quality validate→authorize→write, with candidate data inert until all required acceptance gates succeed.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_INGEST_MAPPING"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT",
-        "INGEST_MAPPING_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define ingest as parse→map→transform→schema validate→quality validate→authorize→write, with candidate data inert until all required acceptance gates succeed.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "flow": [
-      "parse source profile",
-      "resolve field mappings",
-      "apply declared transformations",
-      "validate destination schema",
-      "evaluate quality profile",
-      "evaluate origin/input scope",
-      "authorize destination mutation",
-      "commit write/transaction",
-      "record lineage/result"
-    ],
-    "candidate_rule": "Parsed/mapped/transformed data remains candidate/inert until accepted.",
-    "schema_rule": "Destination schema validation precedes accepted write.",
-    "quality_rule": "Applicable quality validation/gates are explicit.",
-    "scope_rule": "Remote/local input scope is evaluated at origin/receiving boundary.",
-    "authorization_rule": "Destination write authorization is evaluated independently from source reachability.",
-    "atomic_rule": "Failed ingest does not partially mutate accepted state unless an explicit partial-batch profile says so.",
-    "lineage_rule": "Accepted data retains source, mapping, transformation and write provenance.",
-    "failure_rule": "Rejected input remains rejected/quarantined/evidenced according to profile and never masquerades as accepted."
-  },
   "constraints": {
     "invariants": [
       {
@@ -137,10 +271,85 @@
       "purpose": "Remote ingest observes all/ext/id input scope where applicable."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define ingest as parse→map→transform→schema validate→quality validate→authorize→write, with candidate data inert until all required acceptance gates succeed.",
     "notes": [
       "Unlocked pending reconciliation against DWH origin governance, schema binding, transformation provenance and adapter contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_INGEST_VALIDATION_ACCEPTANCE",
+          "name": "DWH Ingest Validation and Acceptance Boundary",
+          "purpose": "Define ingest as parse→map→transform→schema validate→quality validate→authorize→write, with candidate data inert until all required acceptance gates succeed.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_INGEST_MAPPING"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_INGEST_VALIDATION_ACCEPTANCE_CONTRACT",
+            "INGEST_MAPPING_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "flow": [
+          "parse source profile",
+          "resolve field mappings",
+          "apply declared transformations",
+          "validate destination schema",
+          "evaluate quality profile",
+          "evaluate origin/input scope",
+          "authorize destination mutation",
+          "commit write/transaction",
+          "record lineage/result"
+        ],
+        "candidate_rule": "Parsed/mapped/transformed data remains candidate/inert until accepted.",
+        "schema_rule": "Destination schema validation precedes accepted write.",
+        "quality_rule": "Applicable quality validation/gates are explicit.",
+        "scope_rule": "Remote/local input scope is evaluated at origin/receiving boundary.",
+        "authorization_rule": "Destination write authorization is evaluated independently from source reachability.",
+        "atomic_rule": "Failed ingest does not partially mutate accepted state unless an explicit partial-batch profile says so.",
+        "lineage_rule": "Accepted data retains source, mapping, transformation and write provenance.",
+        "failure_rule": "Rejected input remains rejected/quarantined/evidenced according to profile and never masquerades as accepted."
+      }
+    }
   }
 }

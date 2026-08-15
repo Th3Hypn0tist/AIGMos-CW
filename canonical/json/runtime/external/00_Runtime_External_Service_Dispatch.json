@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define named external/network service invocation as explicit bounded dispatch to declared service instances, with stable logical identity separated from transport bindings and inert responses.",
   "scope": {
     "owns": [
@@ -21,123 +20,321 @@
       "projection semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT",
+      "name": "Runtime External Service Dispatch",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::OPERATIONS::OP_SERVICE_RESOLVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_SERVICE_RESOLVE",
+            "name": "Resolve named service instance",
+            "inputs": [
+              "service instance identity"
+            ],
+            "outputs": [
+              "exact service binding"
+            ],
+            "errors": [
+              "service unresolved",
+              "service ambiguous"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::OPERATIONS::OP_SERVICE_VALIDATE_CALL",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_SERVICE_VALIDATE_CALL",
+            "name": "Validate external service call",
+            "inputs": [
+              "service binding",
+              "request",
+              "authority context"
+            ],
+            "outputs": [
+              "validated call"
+            ],
+            "errors": [
+              "schema invalid",
+              "authority denied"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::OPERATIONS::OP_SERVICE_CALL",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_SERVICE_CALL",
+            "name": "Perform bounded external service call",
+            "inputs": [
+              "validated call"
+            ],
+            "outputs": [
+              "structured inert response"
+            ],
+            "errors": [
+              "transport failure",
+              "timeout",
+              "response invalid"
+            ],
+            "side_effects": [
+              "declared external interaction"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "identity_rule": "Service instance has stable logical identity separate from port/address/transport binding.",
+            "protocol_examples": [
+              "REST",
+              "OSC",
+              "WebSocket",
+              "WebRTC",
+              "HTTP/nanoCMS",
+              "other installed protocol services"
+            ],
+            "binding_rule": "Transport binding changes do not redefine service semantics when compatible.",
+            "call_rule": "External call uses explicit schema, authority and dispatcher validation.",
+            "response_rule": "External response is inert and cannot grant authority or select arbitrary command/root.",
+            "timeout_rule": "External call has finite timeout/bounds.",
+            "port_rule": "Port/binding configuration is configuration state, not semantic identity."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_EXTERNAL_SERVICES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME_IO",
+            "child_ref": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_EXTERNAL_SERVICES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "child_ref": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_EXTERNAL_SERVICES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "child_ref": "RUNTIME_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_EXTERNAL_SERVICES_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_EXTERNAL_SERVICES_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_EXTERNAL_SERVICES_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_EXTERNAL_SERVICES_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_EXTERNAL_SERVICES_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_EXTERNAL_SERVICES_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_EXTERNAL_SERVICES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "child_ref": "TOPIC_CORE_EXTERNAL_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_EXTERNAL_SERVICES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "child_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_EXTERNAL_SERVICES_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "child_ref": "TOPIC_CORE_BOUNDED_OPERATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/external/00_Runtime_External_Service_Dispatch.json"
+      }
+    },
     {
       "id": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
       "name": "External Services",
-      "purpose": "Define named external/network service invocation as explicit bounded dispatch to declared service instances, with stable logical identity separated from transport bindings and inert responses.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME_IO"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_EXTERNAL_BOUNDARY",
-        "TOPIC_RUNTIME_DISPATCHER",
-        "TOPIC_CORE_BOUNDED_OPERATION"
-      ],
-      "member_refs": [
-        "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT",
-        "RUNTIME_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_SERVICE_RESOLVE",
-        "OP_SERVICE_VALIDATE_CALL",
-        "OP_SERVICE_CALL"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_EXTERNAL_SERVICES::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define named external/network service invocation as explicit bounded dispatch to declared service instances, with stable logical identity separated from transport bindings and inert responses.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_SERVICE_RESOLVE",
-        "name": "Resolve named service instance",
-        "inputs": [
-          "service instance identity"
-        ],
-        "outputs": [
-          "exact service binding"
-        ],
-        "errors": [
-          "service unresolved",
-          "service ambiguous"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_SERVICE_VALIDATE_CALL",
-        "name": "Validate external service call",
-        "inputs": [
-          "service binding",
-          "request",
-          "authority context"
-        ],
-        "outputs": [
-          "validated call"
-        ],
-        "errors": [
-          "schema invalid",
-          "authority denied"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_SERVICE_CALL",
-        "name": "Perform bounded external service call",
-        "inputs": [
-          "validated call"
-        ],
-        "outputs": [
-          "structured inert response"
-        ],
-        "errors": [
-          "transport failure",
-          "timeout",
-          "response invalid"
-        ],
-        "side_effects": [
-          "declared external interaction"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "identity_rule": "Service instance has stable logical identity separate from port/address/transport binding.",
-    "protocol_examples": [
-      "REST",
-      "OSC",
-      "WebSocket",
-      "WebRTC",
-      "HTTP/nanoCMS",
-      "other installed protocol services"
-    ],
-    "binding_rule": "Transport binding changes do not redefine service semantics when compatible.",
-    "call_rule": "External call uses explicit schema, authority and dispatcher validation.",
-    "response_rule": "External response is inert and cannot grant authority or select arbitrary command/root.",
-    "timeout_rule": "External call has finite timeout/bounds.",
-    "port_rule": "Port/binding configuration is configuration state, not semantic identity."
-  },
   "constraints": {
     "invariants": [
       {
@@ -190,10 +387,149 @@
       "purpose": "Calls cross the Core dispatch boundary."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_EXTERNAL_SERVICES",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define named external/network service invocation as explicit bounded dispatch to declared service instances, with stable logical identity separated from transport bindings and inert responses.",
     "notes": [
       "Unlocked until reconciled against existing runtime contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+          "name": "External Services",
+          "purpose": "Define named external/network service invocation as explicit bounded dispatch to declared service instances, with stable logical identity separated from transport bindings and inert responses.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME_IO"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_EXTERNAL_BOUNDARY",
+            "TOPIC_RUNTIME_DISPATCHER",
+            "TOPIC_CORE_BOUNDED_OPERATION"
+          ],
+          "member_refs": [
+            "AIGMOS_RUNTIME_EXTERNAL_SERVICE_DISPATCH_CONTRACT",
+            "RUNTIME_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_SERVICE_RESOLVE",
+            "OP_SERVICE_VALIDATE_CALL",
+            "OP_SERVICE_CALL"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_SERVICE_RESOLVE",
+            "name": "Resolve named service instance",
+            "inputs": [
+              "service instance identity"
+            ],
+            "outputs": [
+              "exact service binding"
+            ],
+            "errors": [
+              "service unresolved",
+              "service ambiguous"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_SERVICE_VALIDATE_CALL",
+            "name": "Validate external service call",
+            "inputs": [
+              "service binding",
+              "request",
+              "authority context"
+            ],
+            "outputs": [
+              "validated call"
+            ],
+            "errors": [
+              "schema invalid",
+              "authority denied"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_SERVICE_CALL",
+            "name": "Perform bounded external service call",
+            "inputs": [
+              "validated call"
+            ],
+            "outputs": [
+              "structured inert response"
+            ],
+            "errors": [
+              "transport failure",
+              "timeout",
+              "response invalid"
+            ],
+            "side_effects": [
+              "declared external interaction"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "identity_rule": "Service instance has stable logical identity separate from port/address/transport binding.",
+        "protocol_examples": [
+          "REST",
+          "OSC",
+          "WebSocket",
+          "WebRTC",
+          "HTTP/nanoCMS",
+          "other installed protocol services"
+        ],
+        "binding_rule": "Transport binding changes do not redefine service semantics when compatible.",
+        "call_rule": "External call uses explicit schema, authority and dispatcher validation.",
+        "response_rule": "External response is inert and cannot grant authority or select arbitrary command/root.",
+        "timeout_rule": "External call has finite timeout/bounds.",
+        "port_rule": "Port/binding configuration is configuration state, not semantic identity."
+      }
+    }
   }
 }

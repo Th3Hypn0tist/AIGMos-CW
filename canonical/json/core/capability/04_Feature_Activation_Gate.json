@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_FEATURE_ACTIVATION_GATE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define exact technical activation eligibility from feature flag, dependency closure, capability satisfaction, configuration and runtime health before explicit activation operation.",
   "scope": {
     "owns": [
@@ -22,71 +21,220 @@
       "domain-specific semantic ownership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_FEATURE_ACTIVATION_GATE_CONTRACT",
+      "name": "Feature Activation Gate",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_FEATURE_ACTIVATION_GATE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "inputs": [
+              "feature_flag",
+              "required_dependencies",
+              "capability_satisfaction",
+              "configuration_valid",
+              "resource_budget",
+              "runtime_environment",
+              "other declared prerequisite"
+            ],
+            "result_states": [
+              "eligible",
+              "ineligible",
+              "blocked",
+              "unknown"
+            ],
+            "activation_rule": "Eligible does not mean active; explicit activation operation is separate.",
+            "dependency_rule": "No silent dependency auto-enable.",
+            "security_rule": "Eligibility cannot bypass AccessCore/governance/security invariants.",
+            "unknown_rule": "Unknown required prerequisite blocks activation.",
+            "authority_rule": "Eligibility never grants lifecycle authority."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_FEATURE_ACTIVATION_GATE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_FEATURE_ACTIVATION_GATE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_SEMANTICS",
+            "child_ref": "TOPIC_FEATURE_ACTIVATION_GATE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_FEATURE_ACTIVATION_GATE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_FEATURE_ACTIVATION_GATE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CAPABILITIES",
+            "child_ref": "TOPIC_FEATURE_ACTIVATION_GATE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_FEATURE_ACTIVATION_GATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FEATURE_ACTIVATION_GATE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FEATURE_ACTIVATION_GATE",
+            "child_ref": "AIGMOS_FEATURE_ACTIVATION_GATE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_FEATURE_ACTIVATION_GATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FEATURE_ACTIVATION_GATE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FEATURE_ACTIVATION_GATE",
+            "child_ref": "EXPLICIT_IDENTITY_AND_MEANING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_FEATURE_ACTIVATION_GATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FEATURE_ACTIVATION_GATE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FEATURE_ACTIVATION_GATE",
+            "child_ref": "DERIVED_NONAUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_FEATURE_ACTIVATION_GATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FEATURE_ACTIVATION_GATE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FEATURE_ACTIVATION_GATE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_FEATURE_ACTIVATION_GATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FEATURE_ACTIVATION_GATE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FEATURE_ACTIVATION_GATE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_FEATURE_ACTIVATION_GATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FEATURE_ACTIVATION_GATE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FEATURE_ACTIVATION_GATE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_FEATURE_ACTIVATION_GATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FEATURE_ACTIVATION_GATE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FEATURE_ACTIVATION_GATE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_FEATURE_ACTIVATION_GATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_FEATURE_ACTIVATION_GATE_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_FEATURE_ACTIVATION_GATE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/core/capability/04_Feature_Activation_Gate.json"
+      }
+    },
     {
       "id": "TOPIC_FEATURE_ACTIVATION_GATE",
       "name": "Feature Activation Gate",
-      "purpose": "Define exact technical activation eligibility from feature flag, dependency closure, capability satisfaction, configuration and runtime health before explicit activation operation.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_SEMANTICS",
-        "TOPIC_CAPABILITIES"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_FEATURE_ACTIVATION_GATE_CONTRACT",
-        "EXPLICIT_IDENTITY_AND_MEANING",
-        "DERIVED_NONAUTHORITY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_FEATURE_ACTIVATION_GATE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define exact technical activation eligibility from feature flag, dependency closure, capability satisfaction, configuration and runtime health before explicit activation operation.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "inputs": [
-      "feature_flag",
-      "required_dependencies",
-      "capability_satisfaction",
-      "configuration_valid",
-      "resource_budget",
-      "runtime_environment",
-      "other declared prerequisite"
-    ],
-    "result_states": [
-      "eligible",
-      "ineligible",
-      "blocked",
-      "unknown"
-    ],
-    "activation_rule": "Eligible does not mean active; explicit activation operation is separate.",
-    "dependency_rule": "No silent dependency auto-enable.",
-    "security_rule": "Eligibility cannot bypass AccessCore/governance/security invariants.",
-    "unknown_rule": "Unknown required prerequisite blocks activation.",
-    "authority_rule": "Eligibility never grants lifecycle authority."
-  },
   "constraints": {
     "invariants": [
       {
@@ -127,10 +275,87 @@
     ]
   },
   "references": [],
+  "gaps": [],
   "prose": {
     "summary": "Define exact technical activation eligibility from feature flag, dependency closure, capability satisfaction, configuration and runtime health before explicit activation operation.",
     "notes": [
       "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_FEATURE_ACTIVATION_GATE",
+          "name": "Feature Activation Gate",
+          "purpose": "Define exact technical activation eligibility from feature flag, dependency closure, capability satisfaction, configuration and runtime health before explicit activation operation.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_SEMANTICS",
+            "TOPIC_CAPABILITIES"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_FEATURE_ACTIVATION_GATE_CONTRACT",
+            "EXPLICIT_IDENTITY_AND_MEANING",
+            "DERIVED_NONAUTHORITY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "inputs": [
+          "feature_flag",
+          "required_dependencies",
+          "capability_satisfaction",
+          "configuration_valid",
+          "resource_budget",
+          "runtime_environment",
+          "other declared prerequisite"
+        ],
+        "result_states": [
+          "eligible",
+          "ineligible",
+          "blocked",
+          "unknown"
+        ],
+        "activation_rule": "Eligible does not mean active; explicit activation operation is separate.",
+        "dependency_rule": "No silent dependency auto-enable.",
+        "security_rule": "Eligibility cannot bypass AccessCore/governance/security invariants.",
+        "unknown_rule": "Unknown required prerequisite blocks activation.",
+        "authority_rule": "Eligibility never grants lifecycle authority."
+      }
+    }
   }
 }

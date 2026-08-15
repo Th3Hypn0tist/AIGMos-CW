@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define capability existence and authority to use that capability as separate canonical questions, preventing policy, payload, Topic or ownership data from creating functionality that is not explicitly defined.",
   "scope": {
     "owns": [
@@ -21,107 +20,263 @@
       "runtime implementation details"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT",
+      "name": "Core Capability and Authority Separation",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT::OPERATIONS::OP_CAPABILITY_RESOLVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_CAPABILITY_RESOLVE",
+            "name": "Resolve capability",
+            "inputs": [
+              "declared capability surface"
+            ],
+            "outputs": [
+              "capability exists/absent"
+            ],
+            "errors": [
+              "capability undefined"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT::OPERATIONS::OP_AUTHORITY_RESOLVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_AUTHORITY_RESOLVE",
+            "name": "Resolve authority",
+            "inputs": [
+              "authority declarations",
+              "policy context"
+            ],
+            "outputs": [
+              "allowed/denied"
+            ],
+            "errors": [
+              "authority unresolved"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT::OPERATIONS::OP_CAPABILITY_AUTHORITY_VALIDATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_CAPABILITY_AUTHORITY_VALIDATE",
+            "name": "Validate capability/authority separation",
+            "inputs": [
+              "capability result",
+              "authority result"
+            ],
+            "outputs": [
+              "valid execution eligibility"
+            ],
+            "errors": [
+              "capability inferred from authority",
+              "authority inferred from capability"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "capability_question": "Does this capability exist canonically?",
+            "authority_question": "Is this actor/context permitted to invoke/use the existing capability?",
+            "rule": "Authority can narrow or deny use of an existing capability but cannot create a missing capability.",
+            "payload_rule": "Payload/model/tool/backend output cannot grant authority or create capability.",
+            "ownership_rule": "Semantic ownership does not automatically grant runtime authority.",
+            "topic_rule": "Topic membership/composition does not create capability or authority."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_CORE_CAPABILITY_AUTHORITY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CAPABILITY_AUTHORITY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "child_ref": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CAPABILITY_AUTHORITY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "child_ref": "EXPLICIT_MACHINE_SEMANTICS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CAPABILITY_AUTHORITY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CAPABILITY_AUTHORITY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CAPABILITY_AUTHORITY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CAPABILITY_AUTHORITY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CAPABILITY_AUTHORITY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_CORE_CAPABILITY_AUTHORITY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "child_ref": "TOPIC_CORE_STRUCTURE_AUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/core/authority/00_Core_Capability_Authority_Separation.json"
+      }
+    },
     {
       "id": "TOPIC_CORE_CAPABILITY_AUTHORITY",
       "name": "Capability and Authority",
-      "purpose": "Define capability existence and authority to use that capability as separate canonical questions, preventing policy, payload, Topic or ownership data from creating functionality that is not explicitly defined.",
-      "parent_topic_refs": [
-        "TOPIC_CORE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_STRUCTURE_AUTHORITY"
-      ],
-      "member_refs": [
-        "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT",
-        "EXPLICIT_MACHINE_SEMANTICS",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_CAPABILITY_RESOLVE",
-        "OP_AUTHORITY_RESOLVE",
-        "OP_CAPABILITY_AUTHORITY_VALIDATE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_CORE_CAPABILITY_AUTHORITY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define capability existence and authority to use that capability as separate canonical questions, preventing policy, payload, Topic or ownership data from creating functionality that is not explicitly defined.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_CAPABILITY_RESOLVE",
-        "name": "Resolve capability",
-        "inputs": [
-          "declared capability surface"
-        ],
-        "outputs": [
-          "capability exists/absent"
-        ],
-        "errors": [
-          "capability undefined"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_AUTHORITY_RESOLVE",
-        "name": "Resolve authority",
-        "inputs": [
-          "authority declarations",
-          "policy context"
-        ],
-        "outputs": [
-          "allowed/denied"
-        ],
-        "errors": [
-          "authority unresolved"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_CAPABILITY_AUTHORITY_VALIDATE",
-        "name": "Validate capability/authority separation",
-        "inputs": [
-          "capability result",
-          "authority result"
-        ],
-        "outputs": [
-          "valid execution eligibility"
-        ],
-        "errors": [
-          "capability inferred from authority",
-          "authority inferred from capability"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "capability_question": "Does this capability exist canonically?",
-    "authority_question": "Is this actor/context permitted to invoke/use the existing capability?",
-    "rule": "Authority can narrow or deny use of an existing capability but cannot create a missing capability.",
-    "payload_rule": "Payload/model/tool/backend output cannot grant authority or create capability.",
-    "ownership_rule": "Semantic ownership does not automatically grant runtime authority.",
-    "topic_rule": "Topic membership/composition does not create capability or authority."
-  },
   "constraints": {
     "invariants": [
       {
@@ -169,10 +324,133 @@
       "purpose": "Undefined capabilities do not exist and authority is not data."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_CORE_CAPABILITY_AUTHORITY",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define capability existence and authority to use that capability as separate canonical questions, preventing policy, payload, Topic or ownership data from creating functionality that is not explicitly defined.",
     "notes": [
       "Unlocked until repository-wide 1.4 migration validates this boundary against the assembled active canonical graph."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+          "name": "Capability and Authority",
+          "purpose": "Define capability existence and authority to use that capability as separate canonical questions, preventing policy, payload, Topic or ownership data from creating functionality that is not explicitly defined.",
+          "parent_topic_refs": [
+            "TOPIC_CORE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_STRUCTURE_AUTHORITY"
+          ],
+          "member_refs": [
+            "AIGMOS_CORE_CAPABILITY_AUTHORITY_SEPARATION_CONTRACT",
+            "EXPLICIT_MACHINE_SEMANTICS",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_CAPABILITY_RESOLVE",
+            "OP_AUTHORITY_RESOLVE",
+            "OP_CAPABILITY_AUTHORITY_VALIDATE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_CAPABILITY_RESOLVE",
+            "name": "Resolve capability",
+            "inputs": [
+              "declared capability surface"
+            ],
+            "outputs": [
+              "capability exists/absent"
+            ],
+            "errors": [
+              "capability undefined"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_AUTHORITY_RESOLVE",
+            "name": "Resolve authority",
+            "inputs": [
+              "authority declarations",
+              "policy context"
+            ],
+            "outputs": [
+              "allowed/denied"
+            ],
+            "errors": [
+              "authority unresolved"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_CAPABILITY_AUTHORITY_VALIDATE",
+            "name": "Validate capability/authority separation",
+            "inputs": [
+              "capability result",
+              "authority result"
+            ],
+            "outputs": [
+              "valid execution eligibility"
+            ],
+            "errors": [
+              "capability inferred from authority",
+              "authority inferred from capability"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "capability_question": "Does this capability exist canonically?",
+        "authority_question": "Is this actor/context permitted to invoke/use the existing capability?",
+        "rule": "Authority can narrow or deny use of an existing capability but cannot create a missing capability.",
+        "payload_rule": "Payload/model/tool/backend output cannot grant authority or create capability.",
+        "ownership_rule": "Semantic ownership does not automatically grant runtime authority.",
+        "topic_rule": "Topic membership/composition does not create capability or authority."
+      }
+    }
   }
 }

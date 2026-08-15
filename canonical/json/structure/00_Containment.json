@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define containment as the explicit structural dimension for semantic inside/part-of organization, separate from Topic grouping, relation, ownership, authority and dependency.",
   "scope": {
     "owns": [
@@ -21,96 +20,244 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT",
+      "name": "Canonical Containment",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT::OPERATIONS::OP_CONTAINMENT_DEFINE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_CONTAINMENT_DEFINE",
+            "name": "Define containment edge",
+            "inputs": [
+              "container_ref",
+              "contained_ref",
+              "containment semantics"
+            ],
+            "outputs": [
+              "containment edge"
+            ],
+            "errors": [
+              "endpoint unresolved",
+              "invalid containment cycle"
+            ],
+            "side_effects": [
+              "structure updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT::OPERATIONS::OP_CONTAINMENT_VALIDATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_CONTAINMENT_VALIDATE",
+            "name": "Validate containment graph",
+            "inputs": [
+              "containment edges"
+            ],
+            "outputs": [
+              "validated containment graph"
+            ],
+            "errors": [
+              "cycle forbidden",
+              "multiple-container violation"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "dimension": "containment",
+            "meaning": "semantic inside/part-of structure",
+            "topic_rule": "Topic membership or inheritance does not imply containment.",
+            "filesystem_rule": "Directory nesting does not imply canonical containment.",
+            "ownership_rule": "Containment does not imply ownership.",
+            "authority_rule": "Containment does not imply authority.",
+            "ordering_rule": "Sibling order is non-semantic unless explicitly declared."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_STRUCTURE_CONTAINMENT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_STRUCTURE",
+            "child_ref": "TOPIC_STRUCTURE_CONTAINMENT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_CONTAINMENT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_CONTAINMENT",
+            "child_ref": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_CONTAINMENT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_CONTAINMENT",
+            "child_ref": "STRUCTURAL_DIMENSION_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_CONTAINMENT_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_CONTAINMENT",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_CONTAINMENT_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_CONTAINMENT",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_CONTAINMENT_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_CONTAINMENT",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_CONTAINMENT_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_CONTAINMENT",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_STRUCTURE_CONTAINMENT_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_STRUCTURE_CONTAINMENT",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_STRUCTURE_CONTAINMENT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_STRUCTURE_CONTAINMENT",
+            "child_ref": "TOPIC_CORE_ORDERING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/structure/00_Containment.json"
+      }
+    },
     {
       "id": "TOPIC_STRUCTURE_CONTAINMENT",
       "name": "Containment",
-      "purpose": "Define containment as the explicit structural dimension for semantic inside/part-of organization, separate from Topic grouping, relation, ownership, authority and dependency.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_STRUCTURE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_ORDERING"
-      ],
-      "member_refs": [
-        "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT",
-        "STRUCTURAL_DIMENSION_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_CONTAINMENT_DEFINE",
-        "OP_CONTAINMENT_VALIDATE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_STRUCTURE_CONTAINMENT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define containment as the explicit structural dimension for semantic inside/part-of organization, separate from Topic grouping, relation, ownership, authority and dependency.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_CONTAINMENT_DEFINE",
-        "name": "Define containment edge",
-        "inputs": [
-          "container_ref",
-          "contained_ref",
-          "containment semantics"
-        ],
-        "outputs": [
-          "containment edge"
-        ],
-        "errors": [
-          "endpoint unresolved",
-          "invalid containment cycle"
-        ],
-        "side_effects": [
-          "structure updated"
-        ]
-      },
-      {
-        "id": "OP_CONTAINMENT_VALIDATE",
-        "name": "Validate containment graph",
-        "inputs": [
-          "containment edges"
-        ],
-        "outputs": [
-          "validated containment graph"
-        ],
-        "errors": [
-          "cycle forbidden",
-          "multiple-container violation"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "dimension": "containment",
-    "meaning": "semantic inside/part-of structure",
-    "topic_rule": "Topic membership or inheritance does not imply containment.",
-    "filesystem_rule": "Directory nesting does not imply canonical containment.",
-    "ownership_rule": "Containment does not imply ownership.",
-    "authority_rule": "Containment does not imply authority.",
-    "ordering_rule": "Sibling order is non-semantic unless explicitly declared."
-  },
   "constraints": {
     "invariants": [
       {
@@ -153,10 +300,122 @@
       "purpose": "Containment is one explicit structural dimension."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_STRUCTURE_CONTAINMENT",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_STRUCTURE_CONTAINMENT",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define containment as the explicit structural dimension for semantic inside/part-of organization, separate from Topic grouping, relation, ownership, authority and dependency.",
     "notes": [
       "Unlocked until reconciled against the assembled 1.4 architecture tree and reference/trace closure."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_STRUCTURE_CONTAINMENT",
+          "name": "Containment",
+          "purpose": "Define containment as the explicit structural dimension for semantic inside/part-of organization, separate from Topic grouping, relation, ownership, authority and dependency.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_STRUCTURE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_ORDERING"
+          ],
+          "member_refs": [
+            "AIGMOS_STRUCTURE_CONTAINMENT_CONTRACT",
+            "STRUCTURAL_DIMENSION_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_CONTAINMENT_DEFINE",
+            "OP_CONTAINMENT_VALIDATE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_CONTAINMENT_DEFINE",
+            "name": "Define containment edge",
+            "inputs": [
+              "container_ref",
+              "contained_ref",
+              "containment semantics"
+            ],
+            "outputs": [
+              "containment edge"
+            ],
+            "errors": [
+              "endpoint unresolved",
+              "invalid containment cycle"
+            ],
+            "side_effects": [
+              "structure updated"
+            ]
+          },
+          {
+            "id": "OP_CONTAINMENT_VALIDATE",
+            "name": "Validate containment graph",
+            "inputs": [
+              "containment edges"
+            ],
+            "outputs": [
+              "validated containment graph"
+            ],
+            "errors": [
+              "cycle forbidden",
+              "multiple-container violation"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "dimension": "containment",
+        "meaning": "semantic inside/part-of structure",
+        "topic_rule": "Topic membership or inheritance does not imply containment.",
+        "filesystem_rule": "Directory nesting does not imply canonical containment.",
+        "ownership_rule": "Containment does not imply ownership.",
+        "authority_rule": "Containment does not imply authority.",
+        "ordering_rule": "Sibling order is non-semantic unless explicitly declared."
+      }
+    }
   }
 }

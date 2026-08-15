@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define DWH data origin, local/remote classification and input scope at the point where data enters the originating instance.",
   "scope": {
     "owns": [
@@ -22,61 +21,196 @@
       "transport identity"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT",
+      "name": "DWH Origin and Scope",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "origin_rule": "Every governed DWH datum has an explicit origin instance/identity context.",
+            "classification_rule": "Local and remote DWH semantics remain distinct from AccessCore authorization.",
+            "input_scope_values": [
+              "all",
+              "ext",
+              "id"
+            ],
+            "scope_rule": "Input scope is applied at the data origin before remote propagation.",
+            "identity_rule": "Origin identity is preserved through remote transport where required.",
+            "schema_rule": "Input is validated/classified against the origin-side declared schema/binding.",
+            "authority_rule": "DWH classification/scope does not itself grant read/write rights."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_ORIGIN_SCOPE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_ORIGIN_SCOPE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_ORIGIN_SCOPE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_REMOTE_DATA",
+            "child_ref": "TOPIC_DWH_ORIGIN_SCOPE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_ORIGIN_SCOPE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_ORIGIN_SCOPE",
+            "child_ref": "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_ORIGIN_SCOPE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_ORIGIN_SCOPE",
+            "child_ref": "DWH_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_ORIGIN_SCOPE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_ORIGIN_SCOPE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_ORIGIN_SCOPE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_ORIGIN_SCOPE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_ORIGIN_SCOPE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_ORIGIN_SCOPE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_ORIGIN_SCOPE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_ORIGIN_SCOPE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_ORIGIN_SCOPE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_ORIGIN_SCOPE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/00_DWH_Origin_Scope.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_ORIGIN_SCOPE",
       "name": "DWH Origin and Scope",
-      "purpose": "Define DWH data origin, local/remote classification and input scope at the point where data enters the originating instance.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_REMOTE_DATA"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT",
-        "DWH_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_ORIGIN_SCOPE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define DWH data origin, local/remote classification and input scope at the point where data enters the originating instance.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "origin_rule": "Every governed DWH datum has an explicit origin instance/identity context.",
-    "classification_rule": "Local and remote DWH semantics remain distinct from AccessCore authorization.",
-    "input_scope_values": [
-      "all",
-      "ext",
-      "id"
-    ],
-    "scope_rule": "Input scope is applied at the data origin before remote propagation.",
-    "identity_rule": "Origin identity is preserved through remote transport where required.",
-    "schema_rule": "Input is validated/classified against the origin-side declared schema/binding.",
-    "authority_rule": "DWH classification/scope does not itself grant read/write rights."
-  },
   "constraints": {
     "invariants": [
       {
@@ -119,10 +253,77 @@
       "purpose": "DWH scope remains orthogonal to authorization."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define DWH data origin, local/remote classification and input scope at the point where data enters the originating instance.",
     "notes": [
       "Unlocked pending reconciliation against existing DWH/EXT/WebRTC/AccessCore contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_ORIGIN_SCOPE",
+          "name": "DWH Origin and Scope",
+          "purpose": "Define DWH data origin, local/remote classification and input scope at the point where data enters the originating instance.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_REMOTE_DATA"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_ORIGIN_SCOPE_CONTRACT",
+            "DWH_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "origin_rule": "Every governed DWH datum has an explicit origin instance/identity context.",
+        "classification_rule": "Local and remote DWH semantics remain distinct from AccessCore authorization.",
+        "input_scope_values": [
+          "all",
+          "ext",
+          "id"
+        ],
+        "scope_rule": "Input scope is applied at the data origin before remote propagation.",
+        "identity_rule": "Origin identity is preserved through remote transport where required.",
+        "schema_rule": "Input is validated/classified against the origin-side declared schema/binding.",
+        "authority_rule": "DWH classification/scope does not itself grant read/write rights."
+      }
+    }
   }
 }

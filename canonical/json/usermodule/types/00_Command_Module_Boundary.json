@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define command-type UserModules as explicit one-shot operation surfaces with validated inputs and bounded effects, never as persistent input streams or UI ownership.",
   "scope": {
     "owns": [
@@ -22,58 +21,193 @@
       "protocol transport ownership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT",
+      "name": "Command Module Boundary",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "type": "command",
+            "execution_rule": "A command invocation is a discrete one-shot operation.",
+            "input_rule": "Arguments are validated before dispatch.",
+            "effect_rule": "Effects occur only through the command's declared canonical operation semantics.",
+            "state_rule": "Persistent state belongs to declared data owners, not to the command invocation identity.",
+            "stream_rule": "Continuous input/listener behavior is not command-type semantics.",
+            "view_rule": "Rendering/UI projection is not command ownership.",
+            "authority_rule": "Command existence/visibility does not grant invocation authority."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_COMMAND_MODULE_BOUNDARY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_USERMODULE_TYPES",
+            "child_ref": "TOPIC_COMMAND_MODULE_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_COMMAND_MODULE_BOUNDARY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_INPUT_ADAPTER_VIEW",
+            "child_ref": "TOPIC_COMMAND_MODULE_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_MODULE_BOUNDARY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_MODULE_BOUNDARY",
+            "child_ref": "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_MODULE_BOUNDARY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_MODULE_BOUNDARY",
+            "child_ref": "MODULE_TYPE_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_MODULE_BOUNDARY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_MODULE_BOUNDARY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_MODULE_BOUNDARY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_MODULE_BOUNDARY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_MODULE_BOUNDARY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_MODULE_BOUNDARY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_MODULE_BOUNDARY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_MODULE_BOUNDARY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_COMMAND_MODULE_BOUNDARY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_COMMAND_MODULE_BOUNDARY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/usermodule/types/00_Command_Module_Boundary.json"
+      }
+    },
     {
       "id": "TOPIC_COMMAND_MODULE_BOUNDARY",
       "name": "Command Module Boundary",
-      "purpose": "Define command-type UserModules as explicit one-shot operation surfaces with validated inputs and bounded effects, never as persistent input streams or UI ownership.",
-      "parent_topic_refs": [
-        "TOPIC_USERMODULE_TYPES",
-        "TOPIC_INPUT_ADAPTER_VIEW"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT",
-        "MODULE_TYPE_BOUNDARY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_COMMAND_MODULE_BOUNDARY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define command-type UserModules as explicit one-shot operation surfaces with validated inputs and bounded effects, never as persistent input streams or UI ownership.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "type": "command",
-    "execution_rule": "A command invocation is a discrete one-shot operation.",
-    "input_rule": "Arguments are validated before dispatch.",
-    "effect_rule": "Effects occur only through the command's declared canonical operation semantics.",
-    "state_rule": "Persistent state belongs to declared data owners, not to the command invocation identity.",
-    "stream_rule": "Continuous input/listener behavior is not command-type semantics.",
-    "view_rule": "Rendering/UI projection is not command ownership.",
-    "authority_rule": "Command existence/visibility does not grant invocation authority."
-  },
   "constraints": {
     "invariants": [
       {
@@ -116,10 +250,74 @@
       "purpose": "Command invocation crosses normal dispatch boundary."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define command-type UserModules as explicit one-shot operation surfaces with validated inputs and bounded effects, never as persistent input streams or UI ownership.",
     "notes": [
       "Unlocked pending reconciliation against UserModule type, DWH, protocol and Expose contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_COMMAND_MODULE_BOUNDARY",
+          "name": "Command Module Boundary",
+          "purpose": "Define command-type UserModules as explicit one-shot operation surfaces with validated inputs and bounded effects, never as persistent input streams or UI ownership.",
+          "parent_topic_refs": [
+            "TOPIC_USERMODULE_TYPES",
+            "TOPIC_INPUT_ADAPTER_VIEW"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_COMMAND_MODULE_BOUNDARY_CONTRACT",
+            "MODULE_TYPE_BOUNDARY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "type": "command",
+        "execution_rule": "A command invocation is a discrete one-shot operation.",
+        "input_rule": "Arguments are validated before dispatch.",
+        "effect_rule": "Effects occur only through the command's declared canonical operation semantics.",
+        "state_rule": "Persistent state belongs to declared data owners, not to the command invocation identity.",
+        "stream_rule": "Continuous input/listener behavior is not command-type semantics.",
+        "view_rule": "Rendering/UI projection is not command ownership.",
+        "authority_rule": "Command existence/visibility does not grant invocation authority."
+      }
+    }
   }
 }

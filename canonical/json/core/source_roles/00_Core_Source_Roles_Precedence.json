@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define canonical source roles, their permitted authority, and deterministic reconciliation rules when multiple artifacts describe related semantic surfaces.",
   "scope": {
     "owns": [
@@ -28,607 +27,900 @@
       "implicit newest-file policy"
     ]
   },
-  "members": [
+  "entities": [
     {
-      "id": "FSYM_CAC9C0A7BEF2F4EFAB95",
-      "name": "canonical_reader",
-      "type": "flow_actor_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "actor_ref",
-        "source_literal": "canonical_reader",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+      "name": "Core Source Roles and Precedence",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::DEP_LIFECYCLE",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_DEPENDENCY",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "dependency",
+            "parent_ref": "AIGMOS_CORE_CANONICAL_LIFECYCLE_CONTRACT",
+            "child_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "properties": {
+              "dependency_type": "source_state_dependency",
+              "required": true
+            }
+          },
+          "metadata": {
+            "migration_source_path": "structure.dependencies[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::DEP_IDENTITY_RESOLUTION",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_DEPENDENCY",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "dependency",
+            "parent_ref": "AIGMOS_CORE_CANONICAL_IDENTITY_RESOLUTION_CONTRACT",
+            "child_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "properties": {
+              "dependency_type": "resolution_dependency",
+              "required": true
+            }
+          },
+          "metadata": {
+            "migration_source_path": "structure.dependencies[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::DEP_SEMANTIC_GAPS",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_DEPENDENCY",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "dependency",
+            "parent_ref": "AIGMOS_CORE_SEMANTIC_GAP_CONTRACT",
+            "child_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "properties": {
+              "dependency_type": "conflict_reporting_dependency",
+              "required": true
+            }
+          },
+          "metadata": {
+            "migration_source_path": "structure.dependencies[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::OPERATIONS::OP_SOURCE_CLASSIFY",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_SOURCE_CLASSIFY",
+            "name": "Classify source role",
+            "inputs": [
+              "canonical artifact"
+            ],
+            "outputs": [
+              "explicit source_role"
+            ],
+            "errors": [
+              "source_role missing",
+              "source_role invalid"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::OPERATIONS::OP_SOURCE_RESOLVE_AUTHORITY",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_SOURCE_RESOLVE_AUTHORITY",
+            "name": "Resolve semantic authority by role",
+            "inputs": [
+              "source_role",
+              "identity",
+              "active status"
+            ],
+            "outputs": [
+              "authoritative/non-authoritative classification"
+            ],
+            "errors": [
+              "authority ambiguous"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::OPERATIONS::OP_SOURCE_RECONCILE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_SOURCE_RECONCILE",
+            "name": "Reconcile related source artifacts",
+            "inputs": [
+              "classified artifacts",
+              "identity graph",
+              "explicit references"
+            ],
+            "outputs": [
+              "reconciled semantic surface",
+              "conflicts"
+            ],
+            "errors": [
+              "unresolved contradiction"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::OPERATIONS::OP_SOURCE_REPORT_CONFLICT",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_SOURCE_REPORT_CONFLICT",
+            "name": "Report unresolved source conflict",
+            "inputs": [
+              "conflicting authoritative facts",
+              "affected refs"
+            ],
+            "outputs": [
+              "machine-readable semantic gap/conflict"
+            ],
+            "errors": [],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::FLOWS::FLOW_SOURCE_RECONCILIATION",
+          "property_type_ref": "aigmos_flow",
+          "ruleset_ref": "AIGMOS_RULESET_FLOW",
+          "status": "unlocked",
+          "value": {
+            "id": "FLOW_SOURCE_RECONCILIATION",
+            "owner_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "name": "Resolve source-role authority and conflicts",
+            "flow_type": "deterministic_reconciliation",
+            "entry_refs": [
+              "OP_SOURCE_CLASSIFY"
+            ],
+            "exit_refs": [
+              "OP_SOURCE_RECONCILE",
+              "OP_SOURCE_REPORT_CONFLICT"
+            ],
+            "steps": [
+              {
+                "id": "STEP_SOURCE_CLASSIFY",
+                "actor_ref": "FSYM_CAC9C0A7BEF2F4EFAB95",
+                "action_ref": "OP_SOURCE_CLASSIFY",
+                "data_ref": "FSYM_DC6EE77E15990AAC269D",
+                "target_ref": "FSYM_1DC1CC26DFB8AA96CF51",
+                "cause_ref": null,
+                "condition_ref": null,
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_E86ABE63C6467ECCDE17"
+                ],
+                "error_refs": [
+                  "FSYM_E02AC6E0BB8DFDAC56A9",
+                  "FSYM_F4AF732C7E4061825A6C"
+                ],
+                "next_step_refs": [
+                  "STEP_SOURCE_AUTHORITY"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_SOURCE_AUTHORITY",
+                "actor_ref": "FSYM_CAC9C0A7BEF2F4EFAB95",
+                "action_ref": "OP_SOURCE_RESOLVE_AUTHORITY",
+                "data_ref": "FSYM_B6B12C02A7D274DCB9FD",
+                "target_ref": "FSYM_1DC1CC26DFB8AA96CF51",
+                "cause_ref": "STEP_SOURCE_CLASSIFY",
+                "condition_ref": null,
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_BC10A9A0A1FD6D9ADCC6"
+                ],
+                "error_refs": [
+                  "FSYM_7D054484BE143EAFEB0D"
+                ],
+                "next_step_refs": [
+                  "STEP_SOURCE_RECONCILE"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_SOURCE_RECONCILE",
+                "actor_ref": "FSYM_CAC9C0A7BEF2F4EFAB95",
+                "action_ref": "OP_SOURCE_RECONCILE",
+                "data_ref": "FSYM_580F30041DD653720D76",
+                "target_ref": "FSYM_F647934D446296F34E2E",
+                "cause_ref": "STEP_SOURCE_AUTHORITY",
+                "condition_ref": null,
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_DC1F0C3D29994517A75D",
+                  "FSYM_51B5B6BFB4F7DAC24ACE"
+                ],
+                "error_refs": [
+                  "FSYM_F615C5DB8E24ECB8F97A"
+                ],
+                "next_step_refs": [
+                  "STEP_SOURCE_CONFLICT"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_SOURCE_CONFLICT",
+                "actor_ref": "FSYM_AF893FE364C05455961C",
+                "action_ref": "OP_SOURCE_REPORT_CONFLICT",
+                "data_ref": "FSYM_3E9E1630E15A3F2AD5A2",
+                "target_ref": "FSYM_54A3D27E639AEFEB26BA",
+                "cause_ref": "STEP_SOURCE_RECONCILE",
+                "condition_ref": "FSYM_7FBD8070FE3593F2CE10",
+                "payload_ref": "FSYM_204DE46C246DDCDFD630",
+                "result_refs": [
+                  "FSYM_2FDFFB44C62DA298276A"
+                ],
+                "error_refs": [],
+                "next_step_refs": [],
+                "subflow_refs": [],
+                "resume_ref": null
+              }
+            ],
+            "metadata": {}
+          },
+          "metadata": {
+            "migration_source_path": "behavior.flows[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "source_roles": {
+              "definition": {
+                "meaning": "Defines active canonical semantics for its identity when active.",
+                "may_be_semantic_authority": true
+              },
+              "membership_registry": {
+                "meaning": "Enumerates membership/registration facts; does not redefine member semantics.",
+                "may_be_semantic_authority": "only for the registry membership surface it explicitly owns"
+              },
+              "boundary_master": {
+                "meaning": "Declares boundaries, entry points or top-level active references; does not absorb child semantics.",
+                "may_be_semantic_authority": "only for the boundary/bootstrap surface it explicitly owns"
+              },
+              "reconciliation": {
+                "meaning": "Makes explicit how already-authoritative sources are reconciled; it must not invent missing domain semantics.",
+                "may_be_semantic_authority": "only for the reconciliation rule itself"
+              },
+              "historical_or_migration": {
+                "meaning": "Historical or migration evidence; not active semantic authority.",
+                "may_be_semantic_authority": false
+              },
+              "derived_projection": {
+                "meaning": "Read-only derived view of canonical semantics.",
+                "may_be_semantic_authority": false
+              }
+            },
+            "precedence_rules": [
+              "Explicit active semantic definition beats historical_or_migration evidence for active meaning.",
+              "Definition semantics are not overridden by a membership_registry that merely lists the definition.",
+              "Boundary masters declare entry/boundary surfaces but do not redefine child semantics.",
+              "Derived projections never override their canonical sources.",
+              "Reconciliation rules may select among explicitly scoped authoritative sources only when the selection rule itself is canonical and deterministic.",
+              "No generic newest-file, highest-version, deepest-directory, filename, or timestamp heuristic determines authority."
+            ],
+            "conflict_rule": "If two simultaneously authoritative sources assert incompatible facts within the same semantic scope and no explicit reconciliation rule resolves them, the result is an explicit semantic gap and the affected surface cannot be locked.",
+            "duplication_rule": "Duplicated semantic facts across multiple authoritative sources are discouraged because they create drift risk; prefer one semantic definition plus references/composition.",
+            "topic_rule": "Topic membership and Topic composition are source-neutral grouping mechanisms and do not affect source-role authority."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_CORE_SOURCE_ROLES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "DEP_LIFECYCLE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "DEP_IDENTITY_RESOLUTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "DEP_SEMANTIC_GAPS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "SOURCE_ROLE_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "PROJECTION_NOT_AUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "HISTORY_NOT_ACTIVE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "GATE_SOURCE_ROLE_MISSING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "GATE_NEWEST_FILE_WINS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "GATE_PROJECTION_OVERRIDE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "GATE_REGISTRY_REDEFINES_MEMBER",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "GATE_MASTER_ABSORBS_CHILD",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "GATE_UNRESOLVED_SOURCE_CONFLICT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_CAC9C0A7BEF2F4EFAB95",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_14",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_DC6EE77E15990AAC269D",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[14]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_15",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_1DC1CC26DFB8AA96CF51",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[15]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_16",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_E86ABE63C6467ECCDE17",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[16]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_17",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_E02AC6E0BB8DFDAC56A9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[17]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_18",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_F4AF732C7E4061825A6C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[18]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_19",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_B6B12C02A7D274DCB9FD",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[19]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_20",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_BC10A9A0A1FD6D9ADCC6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[20]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_21",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_7D054484BE143EAFEB0D",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[21]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_22",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_580F30041DD653720D76",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[22]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_23",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_F647934D446296F34E2E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[23]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_24",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_DC1F0C3D29994517A75D",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[24]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_25",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_51B5B6BFB4F7DAC24ACE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[25]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_26",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_F615C5DB8E24ECB8F97A",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[26]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_27",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_AF893FE364C05455961C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[27]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_28",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_3E9E1630E15A3F2AD5A2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[28]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_29",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_54A3D27E639AEFEB26BA",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[29]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_30",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_7FBD8070FE3593F2CE10",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[30]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_31",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_204DE46C246DDCDFD630",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[31]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_SOURCE_ROLES_32",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "FSYM_2FDFFB44C62DA298276A",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[32]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_CORE_SOURCE_ROLES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "TOPIC_CORE_LIFECYCLE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_CORE_SOURCE_ROLES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "TOPIC_CORE_IDENTITY_RESOLUTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_CORE_SOURCE_ROLES_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "TOPIC_CORE_SEMANTIC_GAPS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/core/source_roles/00_Core_Source_Roles_Precedence.json"
       }
     },
-    {
-      "id": "FSYM_DC6EE77E15990AAC269D",
-      "name": "canonical artifacts",
-      "type": "flow_data_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "data_ref",
-        "source_literal": "canonical artifacts",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_1DC1CC26DFB8AA96CF51",
-      "name": "source-role model",
-      "type": "flow_target_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "target_ref",
-        "source_literal": "source-role model",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_E86ABE63C6467ECCDE17",
-      "name": "classified sources",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "classified sources",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_E02AC6E0BB8DFDAC56A9",
-      "name": "source_role missing",
-      "type": "flow_error_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "error_refs",
-        "source_literal": "source_role missing",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_F4AF732C7E4061825A6C",
-      "name": "source_role invalid",
-      "type": "flow_error_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "error_refs",
-        "source_literal": "source_role invalid",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_B6B12C02A7D274DCB9FD",
-      "name": "classified sources + active identity graph",
-      "type": "flow_data_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "data_ref",
-        "source_literal": "classified sources + active identity graph",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_BC10A9A0A1FD6D9ADCC6",
-      "name": "authority classification",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "authority classification",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_7D054484BE143EAFEB0D",
-      "name": "authority ambiguous",
-      "type": "flow_error_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "error_refs",
-        "source_literal": "authority ambiguous",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_580F30041DD653720D76",
-      "name": "authority classification + explicit references",
-      "type": "flow_data_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "data_ref",
-        "source_literal": "authority classification + explicit references",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_F647934D446296F34E2E",
-      "name": "normalized semantic model",
-      "type": "flow_target_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "target_ref",
-        "source_literal": "normalized semantic model",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_DC1F0C3D29994517A75D",
-      "name": "reconciled semantic surface",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "reconciled semantic surface",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_51B5B6BFB4F7DAC24ACE",
-      "name": "conflicts",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "conflicts",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_F615C5DB8E24ECB8F97A",
-      "name": "unresolved contradiction",
-      "type": "flow_error_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "error_refs",
-        "source_literal": "unresolved contradiction",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_AF893FE364C05455961C",
-      "name": "canonical_validator",
-      "type": "flow_actor_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "actor_ref",
-        "source_literal": "canonical_validator",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_3E9E1630E15A3F2AD5A2",
-      "name": "conflicts",
-      "type": "flow_data_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "data_ref",
-        "source_literal": "conflicts",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_54A3D27E639AEFEB26BA",
-      "name": "semantic gap report",
-      "type": "flow_target_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "target_ref",
-        "source_literal": "semantic gap report",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_7FBD8070FE3593F2CE10",
-      "name": "one or more unresolved authoritative conflicts exist",
-      "type": "flow_condition_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "condition_ref",
-        "source_literal": "one or more unresolved authoritative conflicts exist",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_204DE46C246DDCDFD630",
-      "name": "affected refs + conflicting facts",
-      "type": "flow_payload_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "payload_ref",
-        "source_literal": "affected refs + conflicting facts",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_2FDFFB44C62DA298276A",
-      "name": "explicit conflict gap",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "explicit conflict gap",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    }
-  ],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": [
-      {
-        "id": "DEP_LIFECYCLE",
-        "source_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "target_ref": "AIGMOS_CORE_CANONICAL_LIFECYCLE_CONTRACT",
-        "dependency_type": "source_state_dependency",
-        "required": true
-      },
-      {
-        "id": "DEP_IDENTITY_RESOLUTION",
-        "source_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "target_ref": "AIGMOS_CORE_CANONICAL_IDENTITY_RESOLUTION_CONTRACT",
-        "dependency_type": "resolution_dependency",
-        "required": true
-      },
-      {
-        "id": "DEP_SEMANTIC_GAPS",
-        "source_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "target_ref": "AIGMOS_CORE_SEMANTIC_GAP_CONTRACT",
-        "dependency_type": "conflict_reporting_dependency",
-        "required": true
-      }
-    ]
-  },
-  "topics": [
     {
       "id": "TOPIC_CORE_SOURCE_ROLES",
       "name": "Source Roles",
-      "purpose": "Group canonical source-role, precedence and reconciliation semantics.",
-      "parent_topic_refs": [
-        "TOPIC_CORE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_LIFECYCLE",
-        "TOPIC_CORE_IDENTITY_RESOLUTION",
-        "TOPIC_CORE_SEMANTIC_GAPS"
-      ],
-      "member_refs": [
-        "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "DEP_LIFECYCLE",
-        "DEP_IDENTITY_RESOLUTION",
-        "DEP_SEMANTIC_GAPS",
-        "SOURCE_ROLE_EXPLICIT",
-        "PROJECTION_NOT_AUTHORITY",
-        "HISTORY_NOT_ACTIVE",
-        "GATE_SOURCE_ROLE_MISSING",
-        "GATE_NEWEST_FILE_WINS",
-        "GATE_PROJECTION_OVERRIDE",
-        "GATE_REGISTRY_REDEFINES_MEMBER",
-        "GATE_MASTER_ABSORBS_CHILD",
-        "GATE_UNRESOLVED_SOURCE_CONFLICT",
-        "FSYM_CAC9C0A7BEF2F4EFAB95",
-        "FSYM_DC6EE77E15990AAC269D",
-        "FSYM_1DC1CC26DFB8AA96CF51",
-        "FSYM_E86ABE63C6467ECCDE17",
-        "FSYM_E02AC6E0BB8DFDAC56A9",
-        "FSYM_F4AF732C7E4061825A6C",
-        "FSYM_B6B12C02A7D274DCB9FD",
-        "FSYM_BC10A9A0A1FD6D9ADCC6",
-        "FSYM_7D054484BE143EAFEB0D",
-        "FSYM_580F30041DD653720D76",
-        "FSYM_F647934D446296F34E2E",
-        "FSYM_DC1F0C3D29994517A75D",
-        "FSYM_51B5B6BFB4F7DAC24ACE",
-        "FSYM_F615C5DB8E24ECB8F97A",
-        "FSYM_AF893FE364C05455961C",
-        "FSYM_3E9E1630E15A3F2AD5A2",
-        "FSYM_54A3D27E639AEFEB26BA",
-        "FSYM_7FBD8070FE3593F2CE10",
-        "FSYM_204DE46C246DDCDFD630",
-        "FSYM_2FDFFB44C62DA298276A"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_SOURCE_CLASSIFY",
-        "OP_SOURCE_RESOLVE_AUTHORITY",
-        "OP_SOURCE_RECONCILE",
-        "OP_SOURCE_REPORT_CONFLICT"
-      ],
-      "event_refs": [],
-      "flow_refs": [
-        "FLOW_SOURCE_RECONCILIATION"
-      ],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_CORE_SOURCE_ROLES::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Group canonical source-role, precedence and reconciliation semantics.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_SOURCE_CLASSIFY",
-        "name": "Classify source role",
-        "inputs": [
-          "canonical artifact"
-        ],
-        "outputs": [
-          "explicit source_role"
-        ],
-        "errors": [
-          "source_role missing",
-          "source_role invalid"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_SOURCE_RESOLVE_AUTHORITY",
-        "name": "Resolve semantic authority by role",
-        "inputs": [
-          "source_role",
-          "identity",
-          "active status"
-        ],
-        "outputs": [
-          "authoritative/non-authoritative classification"
-        ],
-        "errors": [
-          "authority ambiguous"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_SOURCE_RECONCILE",
-        "name": "Reconcile related source artifacts",
-        "inputs": [
-          "classified artifacts",
-          "identity graph",
-          "explicit references"
-        ],
-        "outputs": [
-          "reconciled semantic surface",
-          "conflicts"
-        ],
-        "errors": [
-          "unresolved contradiction"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_SOURCE_REPORT_CONFLICT",
-        "name": "Report unresolved source conflict",
-        "inputs": [
-          "conflicting authoritative facts",
-          "affected refs"
-        ],
-        "outputs": [
-          "machine-readable semantic gap/conflict"
-        ],
-        "errors": [],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": [
-      {
-        "id": "FLOW_SOURCE_RECONCILIATION",
-        "owner_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "name": "Resolve source-role authority and conflicts",
-        "flow_type": "deterministic_reconciliation",
-        "entry_refs": [
-          "OP_SOURCE_CLASSIFY"
-        ],
-        "exit_refs": [
-          "OP_SOURCE_RECONCILE",
-          "OP_SOURCE_REPORT_CONFLICT"
-        ],
-        "steps": [
-          {
-            "id": "STEP_SOURCE_CLASSIFY",
-            "actor_ref": "FSYM_CAC9C0A7BEF2F4EFAB95",
-            "action_ref": "OP_SOURCE_CLASSIFY",
-            "data_ref": "FSYM_DC6EE77E15990AAC269D",
-            "target_ref": "FSYM_1DC1CC26DFB8AA96CF51",
-            "cause_ref": null,
-            "condition_ref": null,
-            "payload_ref": null,
-            "result_refs": [
-              "FSYM_E86ABE63C6467ECCDE17"
-            ],
-            "error_refs": [
-              "FSYM_E02AC6E0BB8DFDAC56A9",
-              "FSYM_F4AF732C7E4061825A6C"
-            ],
-            "next_step_refs": [
-              "STEP_SOURCE_AUTHORITY"
-            ],
-            "subflow_refs": [],
-            "resume_ref": null
-          },
-          {
-            "id": "STEP_SOURCE_AUTHORITY",
-            "actor_ref": "FSYM_CAC9C0A7BEF2F4EFAB95",
-            "action_ref": "OP_SOURCE_RESOLVE_AUTHORITY",
-            "data_ref": "FSYM_B6B12C02A7D274DCB9FD",
-            "target_ref": "FSYM_1DC1CC26DFB8AA96CF51",
-            "cause_ref": "STEP_SOURCE_CLASSIFY",
-            "condition_ref": null,
-            "payload_ref": null,
-            "result_refs": [
-              "FSYM_BC10A9A0A1FD6D9ADCC6"
-            ],
-            "error_refs": [
-              "FSYM_7D054484BE143EAFEB0D"
-            ],
-            "next_step_refs": [
-              "STEP_SOURCE_RECONCILE"
-            ],
-            "subflow_refs": [],
-            "resume_ref": null
-          },
-          {
-            "id": "STEP_SOURCE_RECONCILE",
-            "actor_ref": "FSYM_CAC9C0A7BEF2F4EFAB95",
-            "action_ref": "OP_SOURCE_RECONCILE",
-            "data_ref": "FSYM_580F30041DD653720D76",
-            "target_ref": "FSYM_F647934D446296F34E2E",
-            "cause_ref": "STEP_SOURCE_AUTHORITY",
-            "condition_ref": null,
-            "payload_ref": null,
-            "result_refs": [
-              "FSYM_DC1F0C3D29994517A75D",
-              "FSYM_51B5B6BFB4F7DAC24ACE"
-            ],
-            "error_refs": [
-              "FSYM_F615C5DB8E24ECB8F97A"
-            ],
-            "next_step_refs": [
-              "STEP_SOURCE_CONFLICT"
-            ],
-            "subflow_refs": [],
-            "resume_ref": null
-          },
-          {
-            "id": "STEP_SOURCE_CONFLICT",
-            "actor_ref": "FSYM_AF893FE364C05455961C",
-            "action_ref": "OP_SOURCE_REPORT_CONFLICT",
-            "data_ref": "FSYM_3E9E1630E15A3F2AD5A2",
-            "target_ref": "FSYM_54A3D27E639AEFEB26BA",
-            "cause_ref": "STEP_SOURCE_RECONCILE",
-            "condition_ref": "FSYM_7FBD8070FE3593F2CE10",
-            "payload_ref": "FSYM_204DE46C246DDCDFD630",
-            "result_refs": [
-              "FSYM_2FDFFB44C62DA298276A"
-            ],
-            "error_refs": [],
-            "next_step_refs": [],
-            "subflow_refs": [],
-            "resume_ref": null
-          }
-        ],
-        "metadata": {}
-      }
-    ]
-  },
-  "semantics": {
-    "source_roles": {
-      "definition": {
-        "meaning": "Defines active canonical semantics for its identity when active.",
-        "may_be_semantic_authority": true
-      },
-      "membership_registry": {
-        "meaning": "Enumerates membership/registration facts; does not redefine member semantics.",
-        "may_be_semantic_authority": "only for the registry membership surface it explicitly owns"
-      },
-      "boundary_master": {
-        "meaning": "Declares boundaries, entry points or top-level active references; does not absorb child semantics.",
-        "may_be_semantic_authority": "only for the boundary/bootstrap surface it explicitly owns"
-      },
-      "reconciliation": {
-        "meaning": "Makes explicit how already-authoritative sources are reconciled; it must not invent missing domain semantics.",
-        "may_be_semantic_authority": "only for the reconciliation rule itself"
-      },
-      "historical_or_migration": {
-        "meaning": "Historical or migration evidence; not active semantic authority.",
-        "may_be_semantic_authority": false
-      },
-      "derived_projection": {
-        "meaning": "Read-only derived view of canonical semantics.",
-        "may_be_semantic_authority": false
-      }
-    },
-    "precedence_rules": [
-      "Explicit active semantic definition beats historical_or_migration evidence for active meaning.",
-      "Definition semantics are not overridden by a membership_registry that merely lists the definition.",
-      "Boundary masters declare entry/boundary surfaces but do not redefine child semantics.",
-      "Derived projections never override their canonical sources.",
-      "Reconciliation rules may select among explicitly scoped authoritative sources only when the selection rule itself is canonical and deterministic.",
-      "No generic newest-file, highest-version, deepest-directory, filename, or timestamp heuristic determines authority."
-    ],
-    "conflict_rule": "If two simultaneously authoritative sources assert incompatible facts within the same semantic scope and no explicit reconciliation rule resolves them, the result is an explicit semantic gap and the affected surface cannot be locked.",
-    "duplication_rule": "Duplicated semantic facts across multiple authoritative sources are discouraged because they create drift risk; prefer one semantic definition plus references/composition.",
-    "topic_rule": "Topic membership and Topic composition are source-neutral grouping mechanisms and do not affect source-role authority."
-  },
   "constraints": {
     "invariants": [
       {
@@ -694,11 +986,643 @@
       "purpose": "Unresolved source conflicts become explicit semantic gaps."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_CORE_SOURCE_ROLES",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_CORE_SOURCE_ROLES",
+      "field_path": "topics[0].operation_refs"
+    },
+    {
+      "gap_id": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT::GAP::TOPIC_flow_refs_TOPIC_CORE_SOURCE_ROLES",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field flow_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_CORE_SOURCE_ROLES",
+      "field_path": "topics[0].flow_refs"
+    }
+  ],
   "prose": {
     "summary": "Defines what each canonical source role is allowed to mean and prevents projections, registries, historical files or filesystem ordering from silently overriding semantic definitions.",
     "notes": [
       "Unlocked until all active repository artifacts are classified and reconciliation conflicts are checked under 1.4.",
       "Pass 8 formalized previously free Flow actor/data/target/condition/payload/result/error tokens as exact owner-scoped member identities while preserving every source literal."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [
+        {
+          "id": "FSYM_CAC9C0A7BEF2F4EFAB95",
+          "name": "canonical_reader",
+          "type": "flow_actor_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "actor_ref",
+            "source_literal": "canonical_reader",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_DC6EE77E15990AAC269D",
+          "name": "canonical artifacts",
+          "type": "flow_data_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "data_ref",
+            "source_literal": "canonical artifacts",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_1DC1CC26DFB8AA96CF51",
+          "name": "source-role model",
+          "type": "flow_target_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "target_ref",
+            "source_literal": "source-role model",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_E86ABE63C6467ECCDE17",
+          "name": "classified sources",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "classified sources",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_E02AC6E0BB8DFDAC56A9",
+          "name": "source_role missing",
+          "type": "flow_error_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "error_refs",
+            "source_literal": "source_role missing",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_F4AF732C7E4061825A6C",
+          "name": "source_role invalid",
+          "type": "flow_error_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "error_refs",
+            "source_literal": "source_role invalid",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_B6B12C02A7D274DCB9FD",
+          "name": "classified sources + active identity graph",
+          "type": "flow_data_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "data_ref",
+            "source_literal": "classified sources + active identity graph",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_BC10A9A0A1FD6D9ADCC6",
+          "name": "authority classification",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "authority classification",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_7D054484BE143EAFEB0D",
+          "name": "authority ambiguous",
+          "type": "flow_error_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "error_refs",
+            "source_literal": "authority ambiguous",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_580F30041DD653720D76",
+          "name": "authority classification + explicit references",
+          "type": "flow_data_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "data_ref",
+            "source_literal": "authority classification + explicit references",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_F647934D446296F34E2E",
+          "name": "normalized semantic model",
+          "type": "flow_target_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "target_ref",
+            "source_literal": "normalized semantic model",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_DC1F0C3D29994517A75D",
+          "name": "reconciled semantic surface",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "reconciled semantic surface",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_51B5B6BFB4F7DAC24ACE",
+          "name": "conflicts",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "conflicts",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_F615C5DB8E24ECB8F97A",
+          "name": "unresolved contradiction",
+          "type": "flow_error_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "error_refs",
+            "source_literal": "unresolved contradiction",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_AF893FE364C05455961C",
+          "name": "canonical_validator",
+          "type": "flow_actor_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "actor_ref",
+            "source_literal": "canonical_validator",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_3E9E1630E15A3F2AD5A2",
+          "name": "conflicts",
+          "type": "flow_data_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "data_ref",
+            "source_literal": "conflicts",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_54A3D27E639AEFEB26BA",
+          "name": "semantic gap report",
+          "type": "flow_target_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "target_ref",
+            "source_literal": "semantic gap report",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_7FBD8070FE3593F2CE10",
+          "name": "one or more unresolved authoritative conflicts exist",
+          "type": "flow_condition_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "condition_ref",
+            "source_literal": "one or more unresolved authoritative conflicts exist",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_204DE46C246DDCDFD630",
+          "name": "affected refs + conflicting facts",
+          "type": "flow_payload_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "payload_ref",
+            "source_literal": "affected refs + conflicting facts",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_2FDFFB44C62DA298276A",
+          "name": "explicit conflict gap",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "explicit conflict gap",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        }
+      ],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": [
+          {
+            "id": "DEP_LIFECYCLE",
+            "source_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "target_ref": "AIGMOS_CORE_CANONICAL_LIFECYCLE_CONTRACT",
+            "dependency_type": "source_state_dependency",
+            "required": true
+          },
+          {
+            "id": "DEP_IDENTITY_RESOLUTION",
+            "source_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "target_ref": "AIGMOS_CORE_CANONICAL_IDENTITY_RESOLUTION_CONTRACT",
+            "dependency_type": "resolution_dependency",
+            "required": true
+          },
+          {
+            "id": "DEP_SEMANTIC_GAPS",
+            "source_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "target_ref": "AIGMOS_CORE_SEMANTIC_GAP_CONTRACT",
+            "dependency_type": "conflict_reporting_dependency",
+            "required": true
+          }
+        ]
+      },
+      "topics": [
+        {
+          "id": "TOPIC_CORE_SOURCE_ROLES",
+          "name": "Source Roles",
+          "purpose": "Group canonical source-role, precedence and reconciliation semantics.",
+          "parent_topic_refs": [
+            "TOPIC_CORE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_LIFECYCLE",
+            "TOPIC_CORE_IDENTITY_RESOLUTION",
+            "TOPIC_CORE_SEMANTIC_GAPS"
+          ],
+          "member_refs": [
+            "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "DEP_LIFECYCLE",
+            "DEP_IDENTITY_RESOLUTION",
+            "DEP_SEMANTIC_GAPS",
+            "SOURCE_ROLE_EXPLICIT",
+            "PROJECTION_NOT_AUTHORITY",
+            "HISTORY_NOT_ACTIVE",
+            "GATE_SOURCE_ROLE_MISSING",
+            "GATE_NEWEST_FILE_WINS",
+            "GATE_PROJECTION_OVERRIDE",
+            "GATE_REGISTRY_REDEFINES_MEMBER",
+            "GATE_MASTER_ABSORBS_CHILD",
+            "GATE_UNRESOLVED_SOURCE_CONFLICT",
+            "FSYM_CAC9C0A7BEF2F4EFAB95",
+            "FSYM_DC6EE77E15990AAC269D",
+            "FSYM_1DC1CC26DFB8AA96CF51",
+            "FSYM_E86ABE63C6467ECCDE17",
+            "FSYM_E02AC6E0BB8DFDAC56A9",
+            "FSYM_F4AF732C7E4061825A6C",
+            "FSYM_B6B12C02A7D274DCB9FD",
+            "FSYM_BC10A9A0A1FD6D9ADCC6",
+            "FSYM_7D054484BE143EAFEB0D",
+            "FSYM_580F30041DD653720D76",
+            "FSYM_F647934D446296F34E2E",
+            "FSYM_DC1F0C3D29994517A75D",
+            "FSYM_51B5B6BFB4F7DAC24ACE",
+            "FSYM_F615C5DB8E24ECB8F97A",
+            "FSYM_AF893FE364C05455961C",
+            "FSYM_3E9E1630E15A3F2AD5A2",
+            "FSYM_54A3D27E639AEFEB26BA",
+            "FSYM_7FBD8070FE3593F2CE10",
+            "FSYM_204DE46C246DDCDFD630",
+            "FSYM_2FDFFB44C62DA298276A"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_SOURCE_CLASSIFY",
+            "OP_SOURCE_RESOLVE_AUTHORITY",
+            "OP_SOURCE_RECONCILE",
+            "OP_SOURCE_REPORT_CONFLICT"
+          ],
+          "event_refs": [],
+          "flow_refs": [
+            "FLOW_SOURCE_RECONCILIATION"
+          ],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_SOURCE_CLASSIFY",
+            "name": "Classify source role",
+            "inputs": [
+              "canonical artifact"
+            ],
+            "outputs": [
+              "explicit source_role"
+            ],
+            "errors": [
+              "source_role missing",
+              "source_role invalid"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_SOURCE_RESOLVE_AUTHORITY",
+            "name": "Resolve semantic authority by role",
+            "inputs": [
+              "source_role",
+              "identity",
+              "active status"
+            ],
+            "outputs": [
+              "authoritative/non-authoritative classification"
+            ],
+            "errors": [
+              "authority ambiguous"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_SOURCE_RECONCILE",
+            "name": "Reconcile related source artifacts",
+            "inputs": [
+              "classified artifacts",
+              "identity graph",
+              "explicit references"
+            ],
+            "outputs": [
+              "reconciled semantic surface",
+              "conflicts"
+            ],
+            "errors": [
+              "unresolved contradiction"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_SOURCE_REPORT_CONFLICT",
+            "name": "Report unresolved source conflict",
+            "inputs": [
+              "conflicting authoritative facts",
+              "affected refs"
+            ],
+            "outputs": [
+              "machine-readable semantic gap/conflict"
+            ],
+            "errors": [],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": [
+          {
+            "id": "FLOW_SOURCE_RECONCILIATION",
+            "owner_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "name": "Resolve source-role authority and conflicts",
+            "flow_type": "deterministic_reconciliation",
+            "entry_refs": [
+              "OP_SOURCE_CLASSIFY"
+            ],
+            "exit_refs": [
+              "OP_SOURCE_RECONCILE",
+              "OP_SOURCE_REPORT_CONFLICT"
+            ],
+            "steps": [
+              {
+                "id": "STEP_SOURCE_CLASSIFY",
+                "actor_ref": "FSYM_CAC9C0A7BEF2F4EFAB95",
+                "action_ref": "OP_SOURCE_CLASSIFY",
+                "data_ref": "FSYM_DC6EE77E15990AAC269D",
+                "target_ref": "FSYM_1DC1CC26DFB8AA96CF51",
+                "cause_ref": null,
+                "condition_ref": null,
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_E86ABE63C6467ECCDE17"
+                ],
+                "error_refs": [
+                  "FSYM_E02AC6E0BB8DFDAC56A9",
+                  "FSYM_F4AF732C7E4061825A6C"
+                ],
+                "next_step_refs": [
+                  "STEP_SOURCE_AUTHORITY"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_SOURCE_AUTHORITY",
+                "actor_ref": "FSYM_CAC9C0A7BEF2F4EFAB95",
+                "action_ref": "OP_SOURCE_RESOLVE_AUTHORITY",
+                "data_ref": "FSYM_B6B12C02A7D274DCB9FD",
+                "target_ref": "FSYM_1DC1CC26DFB8AA96CF51",
+                "cause_ref": "STEP_SOURCE_CLASSIFY",
+                "condition_ref": null,
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_BC10A9A0A1FD6D9ADCC6"
+                ],
+                "error_refs": [
+                  "FSYM_7D054484BE143EAFEB0D"
+                ],
+                "next_step_refs": [
+                  "STEP_SOURCE_RECONCILE"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_SOURCE_RECONCILE",
+                "actor_ref": "FSYM_CAC9C0A7BEF2F4EFAB95",
+                "action_ref": "OP_SOURCE_RECONCILE",
+                "data_ref": "FSYM_580F30041DD653720D76",
+                "target_ref": "FSYM_F647934D446296F34E2E",
+                "cause_ref": "STEP_SOURCE_AUTHORITY",
+                "condition_ref": null,
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_DC1F0C3D29994517A75D",
+                  "FSYM_51B5B6BFB4F7DAC24ACE"
+                ],
+                "error_refs": [
+                  "FSYM_F615C5DB8E24ECB8F97A"
+                ],
+                "next_step_refs": [
+                  "STEP_SOURCE_CONFLICT"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_SOURCE_CONFLICT",
+                "actor_ref": "FSYM_AF893FE364C05455961C",
+                "action_ref": "OP_SOURCE_REPORT_CONFLICT",
+                "data_ref": "FSYM_3E9E1630E15A3F2AD5A2",
+                "target_ref": "FSYM_54A3D27E639AEFEB26BA",
+                "cause_ref": "STEP_SOURCE_RECONCILE",
+                "condition_ref": "FSYM_7FBD8070FE3593F2CE10",
+                "payload_ref": "FSYM_204DE46C246DDCDFD630",
+                "result_refs": [
+                  "FSYM_2FDFFB44C62DA298276A"
+                ],
+                "error_refs": [],
+                "next_step_refs": [],
+                "subflow_refs": [],
+                "resume_ref": null
+              }
+            ],
+            "metadata": {}
+          }
+        ]
+      },
+      "semantics": {
+        "source_roles": {
+          "definition": {
+            "meaning": "Defines active canonical semantics for its identity when active.",
+            "may_be_semantic_authority": true
+          },
+          "membership_registry": {
+            "meaning": "Enumerates membership/registration facts; does not redefine member semantics.",
+            "may_be_semantic_authority": "only for the registry membership surface it explicitly owns"
+          },
+          "boundary_master": {
+            "meaning": "Declares boundaries, entry points or top-level active references; does not absorb child semantics.",
+            "may_be_semantic_authority": "only for the boundary/bootstrap surface it explicitly owns"
+          },
+          "reconciliation": {
+            "meaning": "Makes explicit how already-authoritative sources are reconciled; it must not invent missing domain semantics.",
+            "may_be_semantic_authority": "only for the reconciliation rule itself"
+          },
+          "historical_or_migration": {
+            "meaning": "Historical or migration evidence; not active semantic authority.",
+            "may_be_semantic_authority": false
+          },
+          "derived_projection": {
+            "meaning": "Read-only derived view of canonical semantics.",
+            "may_be_semantic_authority": false
+          }
+        },
+        "precedence_rules": [
+          "Explicit active semantic definition beats historical_or_migration evidence for active meaning.",
+          "Definition semantics are not overridden by a membership_registry that merely lists the definition.",
+          "Boundary masters declare entry/boundary surfaces but do not redefine child semantics.",
+          "Derived projections never override their canonical sources.",
+          "Reconciliation rules may select among explicitly scoped authoritative sources only when the selection rule itself is canonical and deterministic.",
+          "No generic newest-file, highest-version, deepest-directory, filename, or timestamp heuristic determines authority."
+        ],
+        "conflict_rule": "If two simultaneously authoritative sources assert incompatible facts within the same semantic scope and no explicit reconciliation rule resolves them, the result is an explicit semantic gap and the affected surface cannot be locked.",
+        "duplication_rule": "Duplicated semantic facts across multiple authoritative sources are discouraged because they create drift risk; prefer one semantic definition plus references/composition.",
+        "topic_rule": "Topic membership and Topic composition are source-neutral grouping mechanisms and do not affect source-role authority."
+      }
+    }
   }
 }

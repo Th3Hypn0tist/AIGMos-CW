@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define the explicit mutation boundary for canonical semantics so reads, projections, normalization, Topic inheritance/composition, tracing and validation remain side-effect free, while intentional semantic changes are represented as explicit reviewed writes with affected-surface revalidation.",
   "scope": {
     "owns": [
@@ -28,929 +27,1368 @@
       "domain-specific edit authorization"
     ]
   },
-  "members": [
+  "entities": [
     {
-      "id": "FSYM_4A1DF5A0BDEDE20D23FB",
-      "name": "canonical_author",
-      "type": "flow_actor_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "actor_ref",
-        "source_literal": "canonical_author",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+      "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+      "name": "Core Canonical Change Boundary",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::DEP_SOURCE_ROLES",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_DEPENDENCY",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "dependency",
+            "parent_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "child_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "properties": {
+              "dependency_type": "change_authority_dependency",
+              "required": true
+            }
+          },
+          "metadata": {
+            "migration_source_path": "structure.dependencies[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::DEP_TRACEABILITY",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_DEPENDENCY",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "dependency",
+            "parent_ref": "AIGMOS_CORE_BIDIRECTIONAL_TRACEABILITY_CONTRACT",
+            "child_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "properties": {
+              "dependency_type": "impact_analysis_dependency",
+              "required": true
+            }
+          },
+          "metadata": {
+            "migration_source_path": "structure.dependencies[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::DEP_LOCK",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_DEPENDENCY",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "dependency",
+            "parent_ref": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+            "child_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "properties": {
+              "dependency_type": "revalidation_dependency",
+              "required": true
+            }
+          },
+          "metadata": {
+            "migration_source_path": "structure.dependencies[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::DEP_PROVENANCE",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_DEPENDENCY",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "dependency",
+            "parent_ref": "AIGMOS_CORE_PROVENANCE_EVIDENCE_CONTRACT",
+            "child_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "properties": {
+              "dependency_type": "change_evidence_dependency",
+              "required": true
+            }
+          },
+          "metadata": {
+            "migration_source_path": "structure.dependencies[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::STATES::CHANGE_DECLARED",
+          "property_type_ref": "aigmos_state",
+          "ruleset_ref": "AIGMOS_RULESET_STATE",
+          "status": "unlocked",
+          "value": {
+            "id": "CHANGE_DECLARED",
+            "name": "declared"
+          },
+          "metadata": {
+            "migration_source_path": "behavior.states[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::STATES::CHANGE_APPLIED",
+          "property_type_ref": "aigmos_state",
+          "ruleset_ref": "AIGMOS_RULESET_STATE",
+          "status": "unlocked",
+          "value": {
+            "id": "CHANGE_APPLIED",
+            "name": "applied"
+          },
+          "metadata": {
+            "migration_source_path": "behavior.states[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::STATES::CHANGE_REVALIDATING",
+          "property_type_ref": "aigmos_state",
+          "ruleset_ref": "AIGMOS_RULESET_STATE",
+          "status": "unlocked",
+          "value": {
+            "id": "CHANGE_REVALIDATING",
+            "name": "revalidating"
+          },
+          "metadata": {
+            "migration_source_path": "behavior.states[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::STATES::CHANGE_VALIDATED",
+          "property_type_ref": "aigmos_state",
+          "ruleset_ref": "AIGMOS_RULESET_STATE",
+          "status": "unlocked",
+          "value": {
+            "id": "CHANGE_VALIDATED",
+            "name": "validated"
+          },
+          "metadata": {
+            "migration_source_path": "behavior.states[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::OPERATIONS::OP_CHANGE_DECLARE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_CHANGE_DECLARE",
+            "name": "Declare canonical semantic change",
+            "inputs": [
+              "target identity",
+              "target semantic surface",
+              "proposed explicit semantic delta"
+            ],
+            "outputs": [
+              "change record"
+            ],
+            "errors": [
+              "target unresolved",
+              "change surface ambiguous"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::OPERATIONS::OP_CHANGE_VALIDATE_SOURCE_ROLE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_CHANGE_VALIDATE_SOURCE_ROLE",
+            "name": "Validate writable source role",
+            "inputs": [
+              "change target",
+              "source_role model"
+            ],
+            "outputs": [
+              "writable/derived-only decision"
+            ],
+            "errors": [
+              "attempt to mutate derived projection",
+              "attempt to mutate historical source as active definition"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::OPERATIONS::OP_CHANGE_APPLY",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_CHANGE_APPLY",
+            "name": "Apply explicit canonical semantic delta",
+            "inputs": [
+              "validated change record",
+              "authoritative definition"
+            ],
+            "outputs": [
+              "updated canonical definition"
+            ],
+            "errors": [
+              "write target no longer current",
+              "semantic delta invalid"
+            ],
+            "side_effects": [
+              "canonical semantic definition changed"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::OPERATIONS::OP_CHANGE_TRACE_IMPACT",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_CHANGE_TRACE_IMPACT",
+            "name": "Trace semantic change impact",
+            "inputs": [
+              "changed refs",
+              "forward/reverse trace graph"
+            ],
+            "outputs": [
+              "affected canonical identities, Topics, mechanisms, flows and validations"
+            ],
+            "errors": [
+              "impact trace incomplete"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::OPERATIONS::OP_CHANGE_UNLOCK_AFFECTED",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_CHANGE_UNLOCK_AFFECTED",
+            "name": "Unlock affected canonical surfaces",
+            "inputs": [
+              "impact set",
+              "change classification"
+            ],
+            "outputs": [
+              "revalidation set"
+            ],
+            "errors": [],
+            "side_effects": [
+              "affected active contracts marked unlocked where current validation evidence is invalidated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::OPERATIONS::OP_CHANGE_REVALIDATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_CHANGE_REVALIDATE",
+            "name": "Revalidate affected canonical surfaces",
+            "inputs": [
+              "revalidation set",
+              "Contract Format validation pipeline"
+            ],
+            "outputs": [
+              "new validation evidence and lock eligibility"
+            ],
+            "errors": [
+              "validation failure",
+              "new semantic gap"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::FLOWS::FLOW_CANONICAL_CHANGE",
+          "property_type_ref": "aigmos_flow",
+          "ruleset_ref": "AIGMOS_RULESET_FLOW",
+          "status": "unlocked",
+          "value": {
+            "id": "FLOW_CANONICAL_CHANGE",
+            "owner_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "name": "Apply and revalidate canonical semantic change",
+            "flow_type": "explicit_semantic_write",
+            "entry_refs": [
+              "OP_CHANGE_DECLARE"
+            ],
+            "exit_refs": [
+              "OP_CHANGE_REVALIDATE"
+            ],
+            "steps": [
+              {
+                "id": "STEP_CHANGE_DECLARE",
+                "actor_ref": "FSYM_4A1DF5A0BDEDE20D23FB",
+                "action_ref": "OP_CHANGE_DECLARE",
+                "data_ref": "FSYM_0BA520865B5F7CD182A7",
+                "target_ref": "FSYM_9E76CBD0BF3EAFBB7875",
+                "cause_ref": null,
+                "condition_ref": null,
+                "payload_ref": "FSYM_55FE37E56FAA0392550E",
+                "result_refs": [
+                  "FSYM_34003A6DE1DFA3B28AC3"
+                ],
+                "error_refs": [
+                  "FSYM_5AC55F1825FE5FD1640E",
+                  "FSYM_731698850234EC4817A4"
+                ],
+                "next_step_refs": [
+                  "STEP_CHANGE_SOURCE_ROLE"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_CHANGE_SOURCE_ROLE",
+                "actor_ref": "FSYM_AEEAF7D6B57C7954E49B",
+                "action_ref": "OP_CHANGE_VALIDATE_SOURCE_ROLE",
+                "data_ref": "FSYM_9CFD93E0FE791B570675",
+                "target_ref": "FSYM_DFC1EB028824922EBB03",
+                "cause_ref": "STEP_CHANGE_DECLARE",
+                "condition_ref": null,
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_7FF2ED6AD585DBA53E56"
+                ],
+                "error_refs": [
+                  "FSYM_09D6FEC8ACB0A4CB8EF9",
+                  "FSYM_49DF055E2237C134DEAC"
+                ],
+                "next_step_refs": [
+                  "STEP_CHANGE_APPLY"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_CHANGE_APPLY",
+                "actor_ref": "FSYM_ECBA844A3B2B47746549",
+                "action_ref": "OP_CHANGE_APPLY",
+                "data_ref": "FSYM_83E3A4D641ACB03CDBAE",
+                "target_ref": "FSYM_15A31D5C98C29E1429F5",
+                "cause_ref": "STEP_CHANGE_SOURCE_ROLE",
+                "condition_ref": "FSYM_A4BEC0332F2892CEC254",
+                "payload_ref": "FSYM_7921E425002445E6C267",
+                "result_refs": [
+                  "FSYM_91D398E47AA9FA5D8168"
+                ],
+                "error_refs": [
+                  "FSYM_0D08A523E90276B6CF64",
+                  "FSYM_5F0BBAA87F6125D7A497"
+                ],
+                "next_step_refs": [
+                  "STEP_CHANGE_IMPACT"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_CHANGE_IMPACT",
+                "actor_ref": "FSYM_AEEAF7D6B57C7954E49B",
+                "action_ref": "OP_CHANGE_TRACE_IMPACT",
+                "data_ref": "FSYM_F11D3210ECC1B78B092C",
+                "target_ref": "FSYM_0F0EA69196E97E5CAE24",
+                "cause_ref": "STEP_CHANGE_APPLY",
+                "condition_ref": null,
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_0AE0EC71F9C807D57D9E"
+                ],
+                "error_refs": [
+                  "FSYM_0C93E2D4575C93AB3089"
+                ],
+                "next_step_refs": [
+                  "STEP_CHANGE_UNLOCK"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_CHANGE_UNLOCK",
+                "actor_ref": "FSYM_AEEAF7D6B57C7954E49B",
+                "action_ref": "OP_CHANGE_UNLOCK_AFFECTED",
+                "data_ref": "FSYM_F24CEC39481F61264028",
+                "target_ref": "FSYM_1A189CFFF828039F8B24",
+                "cause_ref": "STEP_CHANGE_IMPACT",
+                "condition_ref": "FSYM_1203025B64E21C1B588F",
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_8727CEB195AEF4C086B3"
+                ],
+                "error_refs": [],
+                "next_step_refs": [
+                  "STEP_CHANGE_REVALIDATE"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_CHANGE_REVALIDATE",
+                "actor_ref": "FSYM_AEEAF7D6B57C7954E49B",
+                "action_ref": "OP_CHANGE_REVALIDATE",
+                "data_ref": "FSYM_D0FC6C94DEB2717F5FED",
+                "target_ref": "FSYM_D1FD3D01D1728303F239",
+                "cause_ref": "STEP_CHANGE_UNLOCK",
+                "condition_ref": null,
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_5DE9FC4588D596B2AA00"
+                ],
+                "error_refs": [
+                  "FSYM_9A5FC48F594FB73D84BE",
+                  "FSYM_FD27FAA9C3F15AADB73E"
+                ],
+                "next_step_refs": [],
+                "subflow_refs": [],
+                "resume_ref": null
+              }
+            ],
+            "metadata": {
+              "read_surfaces_mutate": false,
+              "projection_mutates": false,
+              "normalization_mutates": false,
+              "topic_resolution_mutates": false
+            }
+          },
+          "metadata": {
+            "migration_source_path": "behavior.flows[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "mutation_rule": "Canonical semantics change only through an explicit semantic write against an authoritative writable definition.",
+            "read_only_surfaces": [
+              "canonical reader",
+              "normalization",
+              "Topic inheritance resolution",
+              "Topic composition resolution",
+              "Topic projection",
+              "general projection",
+              "traceability",
+              "validation",
+              "gap detection"
+            ],
+            "derived_edit_rule": "A user may edit through a derived UI/projection, but the semantic write must resolve to the authoritative canonical target and canonical operation; the projection itself never becomes the write authority.",
+            "impact_rule": "A semantic change invalidates only validation evidence whose assumptions or trace surfaces are affected, but the affected set must be determined through explicit bidirectional traceability rather than filename/directory heuristics.",
+            "unlock_rule": "Affected previously locked active contracts become unlocked when the change invalidates evidence required for their lock eligibility.",
+            "revalidation_rule": "No affected surface returns to locked until current-format validation produces new sufficient evidence.",
+            "additive_rule": "An additive change still requires impact analysis. Additive does not mean semantically irrelevant.",
+            "breaking_rule": "If a change alters the stable meaning of a semantic identity incompatibly, Semantic Versioning rules require a new identity rather than mutation-in-place."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_CORE_CHANGE_CONTROL_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "DEP_SOURCE_ROLES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "DEP_TRACEABILITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "DEP_LOCK",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "DEP_PROVENANCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "CHANGE_DECLARED",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "CHANGE_APPLIED",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "CHANGE_REVALIDATING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "CHANGE_VALIDATED",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "READS_ARE_SIDE_EFFECT_FREE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "WRITES_TARGET_AUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "CHANGE_INVALIDATES_STALE_EVIDENCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "GATE_PROJECTION_MUTATES_CANONICAL",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "GATE_READER_MUTATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_14",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "GATE_NORMALIZATION_MUTATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[14]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_15",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "GATE_TOPIC_RESOLUTION_MUTATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[15]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_16",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "GATE_CHANGE_WITHOUT_IMPACT_TRACE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[16]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_17",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "GATE_STALE_LOCK_EVIDENCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[17]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_18",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "GATE_BREAKING_MUTATION_SAME_ID",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[18]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_19",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_4A1DF5A0BDEDE20D23FB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[19]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_20",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_0BA520865B5F7CD182A7",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[20]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_21",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_9E76CBD0BF3EAFBB7875",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[21]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_22",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_55FE37E56FAA0392550E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[22]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_23",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_34003A6DE1DFA3B28AC3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[23]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_24",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_5AC55F1825FE5FD1640E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[24]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_25",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_731698850234EC4817A4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[25]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_26",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_AEEAF7D6B57C7954E49B",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[26]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_27",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_9CFD93E0FE791B570675",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[27]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_28",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_DFC1EB028824922EBB03",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[28]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_29",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_7FF2ED6AD585DBA53E56",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[29]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_30",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_09D6FEC8ACB0A4CB8EF9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[30]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_31",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_49DF055E2237C134DEAC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[31]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_32",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_ECBA844A3B2B47746549",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[32]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_33",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_83E3A4D641ACB03CDBAE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[33]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_34",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_15A31D5C98C29E1429F5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[34]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_35",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_A4BEC0332F2892CEC254",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[35]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_36",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_7921E425002445E6C267",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[36]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_37",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_91D398E47AA9FA5D8168",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[37]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_38",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_0D08A523E90276B6CF64",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[38]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_39",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_5F0BBAA87F6125D7A497",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[39]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_40",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_F11D3210ECC1B78B092C",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[40]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_41",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_0F0EA69196E97E5CAE24",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[41]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_42",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_0AE0EC71F9C807D57D9E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[42]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_43",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_0C93E2D4575C93AB3089",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[43]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_44",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_F24CEC39481F61264028",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[44]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_45",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_1A189CFFF828039F8B24",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[45]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_46",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_1203025B64E21C1B588F",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[46]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_47",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_8727CEB195AEF4C086B3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[47]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_48",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_D0FC6C94DEB2717F5FED",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[48]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_49",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_D1FD3D01D1728303F239",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[49]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_50",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_5DE9FC4588D596B2AA00",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[50]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_51",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_9A5FC48F594FB73D84BE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[51]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CORE_CHANGE_CONTROL_52",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "FSYM_FD27FAA9C3F15AADB73E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[52]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_CORE_CHANGE_CONTROL_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_CORE_CHANGE_CONTROL_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "TOPIC_CORE_TRACEABILITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_CORE_CHANGE_CONTROL_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "TOPIC_CORE_VALIDATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_CORE_CHANGE_CONTROL_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_CORE_CHANGE_CONTROL",
+            "child_ref": "TOPIC_CORE_PROVENANCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[3]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/core/change_control/00_Core_Canonical_Change_Boundary.json"
       }
     },
-    {
-      "id": "FSYM_0BA520865B5F7CD182A7",
-      "name": "proposed semantic delta",
-      "type": "flow_data_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "data_ref",
-        "source_literal": "proposed semantic delta",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_9E76CBD0BF3EAFBB7875",
-      "name": "authoritative canonical identity/surface",
-      "type": "flow_target_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "target_ref",
-        "source_literal": "authoritative canonical identity/surface",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_55FE37E56FAA0392550E",
-      "name": "explicit old/new semantic intent",
-      "type": "flow_payload_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "payload_ref",
-        "source_literal": "explicit old/new semantic intent",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_34003A6DE1DFA3B28AC3",
-      "name": "change record",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "change record",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_5AC55F1825FE5FD1640E",
-      "name": "target unresolved",
-      "type": "flow_error_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "error_refs",
-        "source_literal": "target unresolved",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_731698850234EC4817A4",
-      "name": "change surface ambiguous",
-      "type": "flow_error_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "error_refs",
-        "source_literal": "change surface ambiguous",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_AEEAF7D6B57C7954E49B",
-      "name": "canonical_validator",
-      "type": "flow_actor_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "actor_ref",
-        "source_literal": "canonical_validator",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_9CFD93E0FE791B570675",
-      "name": "change record + source-role model",
-      "type": "flow_data_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "data_ref",
-        "source_literal": "change record + source-role model",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_DFC1EB028824922EBB03",
-      "name": "change target",
-      "type": "flow_target_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "target_ref",
-        "source_literal": "change target",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_7FF2ED6AD585DBA53E56",
-      "name": "writable target validated",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "writable target validated",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_09D6FEC8ACB0A4CB8EF9",
-      "name": "attempt to mutate derived projection",
-      "type": "flow_error_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "error_refs",
-        "source_literal": "attempt to mutate derived projection",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_49DF055E2237C134DEAC",
-      "name": "attempt to mutate historical source as active definition",
-      "type": "flow_error_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "error_refs",
-        "source_literal": "attempt to mutate historical source as active definition",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_ECBA844A3B2B47746549",
-      "name": "canonical_writer",
-      "type": "flow_actor_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "actor_ref",
-        "source_literal": "canonical_writer",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_83E3A4D641ACB03CDBAE",
-      "name": "validated change record",
-      "type": "flow_data_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "data_ref",
-        "source_literal": "validated change record",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_15A31D5C98C29E1429F5",
-      "name": "authoritative definition",
-      "type": "flow_target_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "target_ref",
-        "source_literal": "authoritative definition",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_A4BEC0332F2892CEC254",
-      "name": "target writable",
-      "type": "flow_condition_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "condition_ref",
-        "source_literal": "target writable",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_7921E425002445E6C267",
-      "name": "explicit semantic delta",
-      "type": "flow_payload_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "payload_ref",
-        "source_literal": "explicit semantic delta",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_91D398E47AA9FA5D8168",
-      "name": "updated canonical definition",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "updated canonical definition",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_0D08A523E90276B6CF64",
-      "name": "write target no longer current",
-      "type": "flow_error_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "error_refs",
-        "source_literal": "write target no longer current",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_5F0BBAA87F6125D7A497",
-      "name": "semantic delta invalid",
-      "type": "flow_error_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "error_refs",
-        "source_literal": "semantic delta invalid",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_F11D3210ECC1B78B092C",
-      "name": "changed refs + bidirectional traceability",
-      "type": "flow_data_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "data_ref",
-        "source_literal": "changed refs + bidirectional traceability",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_0F0EA69196E97E5CAE24",
-      "name": "impact set",
-      "type": "flow_target_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "target_ref",
-        "source_literal": "impact set",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_0AE0EC71F9C807D57D9E",
-      "name": "affected surfaces",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "affected surfaces",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_0C93E2D4575C93AB3089",
-      "name": "impact trace incomplete",
-      "type": "flow_error_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "error_refs",
-        "source_literal": "impact trace incomplete",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_F24CEC39481F61264028",
-      "name": "affected surfaces",
-      "type": "flow_data_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "data_ref",
-        "source_literal": "affected surfaces",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_1A189CFFF828039F8B24",
-      "name": "canonical statuses",
-      "type": "flow_target_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "target_ref",
-        "source_literal": "canonical statuses",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_1203025B64E21C1B588F",
-      "name": "existing validation evidence invalidated",
-      "type": "flow_condition_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "condition_ref",
-        "source_literal": "existing validation evidence invalidated",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_8727CEB195AEF4C086B3",
-      "name": "revalidation set",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "revalidation set",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_D0FC6C94DEB2717F5FED",
-      "name": "revalidation set",
-      "type": "flow_data_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "data_ref",
-        "source_literal": "revalidation set",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_D1FD3D01D1728303F239",
-      "name": "validation evidence + lock eligibility",
-      "type": "flow_target_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "target_ref",
-        "source_literal": "validation evidence + lock eligibility",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_5DE9FC4588D596B2AA00",
-      "name": "new validation state",
-      "type": "flow_result_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "result_refs",
-        "source_literal": "new validation state",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_9A5FC48F594FB73D84BE",
-      "name": "validation failure",
-      "type": "flow_error_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "error_refs",
-        "source_literal": "validation failure",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    },
-    {
-      "id": "FSYM_FD27FAA9C3F15AADB73E",
-      "name": "new semantic gap",
-      "type": "flow_error_symbol",
-      "status": "defined",
-      "semantics": {
-        "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "flow_ref_field": "error_refs",
-        "source_literal": "new semantic gap",
-        "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
-        "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
-        "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
-        "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
-      }
-    }
-  ],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": [
-      {
-        "id": "DEP_SOURCE_ROLES",
-        "source_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "target_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
-        "dependency_type": "change_authority_dependency",
-        "required": true
-      },
-      {
-        "id": "DEP_TRACEABILITY",
-        "source_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "target_ref": "AIGMOS_CORE_BIDIRECTIONAL_TRACEABILITY_CONTRACT",
-        "dependency_type": "impact_analysis_dependency",
-        "required": true
-      },
-      {
-        "id": "DEP_LOCK",
-        "source_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "target_ref": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
-        "dependency_type": "revalidation_dependency",
-        "required": true
-      },
-      {
-        "id": "DEP_PROVENANCE",
-        "source_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "target_ref": "AIGMOS_CORE_PROVENANCE_EVIDENCE_CONTRACT",
-        "dependency_type": "change_evidence_dependency",
-        "required": true
-      }
-    ]
-  },
-  "topics": [
     {
       "id": "TOPIC_CORE_CHANGE_CONTROL",
       "name": "Change Control",
-      "purpose": "Group explicit canonical semantic mutation, change impact and revalidation semantics.",
-      "parent_topic_refs": [
-        "TOPIC_CORE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_SOURCE_ROLES",
-        "TOPIC_CORE_TRACEABILITY",
-        "TOPIC_CORE_VALIDATION",
-        "TOPIC_CORE_PROVENANCE"
-      ],
-      "member_refs": [
-        "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "DEP_SOURCE_ROLES",
-        "DEP_TRACEABILITY",
-        "DEP_LOCK",
-        "DEP_PROVENANCE",
-        "CHANGE_DECLARED",
-        "CHANGE_APPLIED",
-        "CHANGE_REVALIDATING",
-        "CHANGE_VALIDATED",
-        "READS_ARE_SIDE_EFFECT_FREE",
-        "WRITES_TARGET_AUTHORITY",
-        "CHANGE_INVALIDATES_STALE_EVIDENCE",
-        "GATE_PROJECTION_MUTATES_CANONICAL",
-        "GATE_READER_MUTATION",
-        "GATE_NORMALIZATION_MUTATION",
-        "GATE_TOPIC_RESOLUTION_MUTATION",
-        "GATE_CHANGE_WITHOUT_IMPACT_TRACE",
-        "GATE_STALE_LOCK_EVIDENCE",
-        "GATE_BREAKING_MUTATION_SAME_ID",
-        "FSYM_4A1DF5A0BDEDE20D23FB",
-        "FSYM_0BA520865B5F7CD182A7",
-        "FSYM_9E76CBD0BF3EAFBB7875",
-        "FSYM_55FE37E56FAA0392550E",
-        "FSYM_34003A6DE1DFA3B28AC3",
-        "FSYM_5AC55F1825FE5FD1640E",
-        "FSYM_731698850234EC4817A4",
-        "FSYM_AEEAF7D6B57C7954E49B",
-        "FSYM_9CFD93E0FE791B570675",
-        "FSYM_DFC1EB028824922EBB03",
-        "FSYM_7FF2ED6AD585DBA53E56",
-        "FSYM_09D6FEC8ACB0A4CB8EF9",
-        "FSYM_49DF055E2237C134DEAC",
-        "FSYM_ECBA844A3B2B47746549",
-        "FSYM_83E3A4D641ACB03CDBAE",
-        "FSYM_15A31D5C98C29E1429F5",
-        "FSYM_A4BEC0332F2892CEC254",
-        "FSYM_7921E425002445E6C267",
-        "FSYM_91D398E47AA9FA5D8168",
-        "FSYM_0D08A523E90276B6CF64",
-        "FSYM_5F0BBAA87F6125D7A497",
-        "FSYM_F11D3210ECC1B78B092C",
-        "FSYM_0F0EA69196E97E5CAE24",
-        "FSYM_0AE0EC71F9C807D57D9E",
-        "FSYM_0C93E2D4575C93AB3089",
-        "FSYM_F24CEC39481F61264028",
-        "FSYM_1A189CFFF828039F8B24",
-        "FSYM_1203025B64E21C1B588F",
-        "FSYM_8727CEB195AEF4C086B3",
-        "FSYM_D0FC6C94DEB2717F5FED",
-        "FSYM_D1FD3D01D1728303F239",
-        "FSYM_5DE9FC4588D596B2AA00",
-        "FSYM_9A5FC48F594FB73D84BE",
-        "FSYM_FD27FAA9C3F15AADB73E"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_CHANGE_DECLARE",
-        "OP_CHANGE_VALIDATE_SOURCE_ROLE",
-        "OP_CHANGE_APPLY",
-        "OP_CHANGE_TRACE_IMPACT",
-        "OP_CHANGE_UNLOCK_AFFECTED",
-        "OP_CHANGE_REVALIDATE"
-      ],
-      "event_refs": [],
-      "flow_refs": [
-        "FLOW_CANONICAL_CHANGE"
-      ],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_CORE_CHANGE_CONTROL::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Group explicit canonical semantic mutation, change impact and revalidation semantics.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [
-      {
-        "id": "CHANGE_DECLARED",
-        "name": "declared"
-      },
-      {
-        "id": "CHANGE_APPLIED",
-        "name": "applied"
-      },
-      {
-        "id": "CHANGE_REVALIDATING",
-        "name": "revalidating"
-      },
-      {
-        "id": "CHANGE_VALIDATED",
-        "name": "validated"
-      }
-    ],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_CHANGE_DECLARE",
-        "name": "Declare canonical semantic change",
-        "inputs": [
-          "target identity",
-          "target semantic surface",
-          "proposed explicit semantic delta"
-        ],
-        "outputs": [
-          "change record"
-        ],
-        "errors": [
-          "target unresolved",
-          "change surface ambiguous"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_CHANGE_VALIDATE_SOURCE_ROLE",
-        "name": "Validate writable source role",
-        "inputs": [
-          "change target",
-          "source_role model"
-        ],
-        "outputs": [
-          "writable/derived-only decision"
-        ],
-        "errors": [
-          "attempt to mutate derived projection",
-          "attempt to mutate historical source as active definition"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_CHANGE_APPLY",
-        "name": "Apply explicit canonical semantic delta",
-        "inputs": [
-          "validated change record",
-          "authoritative definition"
-        ],
-        "outputs": [
-          "updated canonical definition"
-        ],
-        "errors": [
-          "write target no longer current",
-          "semantic delta invalid"
-        ],
-        "side_effects": [
-          "canonical semantic definition changed"
-        ]
-      },
-      {
-        "id": "OP_CHANGE_TRACE_IMPACT",
-        "name": "Trace semantic change impact",
-        "inputs": [
-          "changed refs",
-          "forward/reverse trace graph"
-        ],
-        "outputs": [
-          "affected canonical identities, Topics, mechanisms, flows and validations"
-        ],
-        "errors": [
-          "impact trace incomplete"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_CHANGE_UNLOCK_AFFECTED",
-        "name": "Unlock affected canonical surfaces",
-        "inputs": [
-          "impact set",
-          "change classification"
-        ],
-        "outputs": [
-          "revalidation set"
-        ],
-        "errors": [],
-        "side_effects": [
-          "affected active contracts marked unlocked where current validation evidence is invalidated"
-        ]
-      },
-      {
-        "id": "OP_CHANGE_REVALIDATE",
-        "name": "Revalidate affected canonical surfaces",
-        "inputs": [
-          "revalidation set",
-          "Contract Format validation pipeline"
-        ],
-        "outputs": [
-          "new validation evidence and lock eligibility"
-        ],
-        "errors": [
-          "validation failure",
-          "new semantic gap"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": [
-      {
-        "id": "FLOW_CANONICAL_CHANGE",
-        "owner_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
-        "name": "Apply and revalidate canonical semantic change",
-        "flow_type": "explicit_semantic_write",
-        "entry_refs": [
-          "OP_CHANGE_DECLARE"
-        ],
-        "exit_refs": [
-          "OP_CHANGE_REVALIDATE"
-        ],
-        "steps": [
-          {
-            "id": "STEP_CHANGE_DECLARE",
-            "actor_ref": "FSYM_4A1DF5A0BDEDE20D23FB",
-            "action_ref": "OP_CHANGE_DECLARE",
-            "data_ref": "FSYM_0BA520865B5F7CD182A7",
-            "target_ref": "FSYM_9E76CBD0BF3EAFBB7875",
-            "cause_ref": null,
-            "condition_ref": null,
-            "payload_ref": "FSYM_55FE37E56FAA0392550E",
-            "result_refs": [
-              "FSYM_34003A6DE1DFA3B28AC3"
-            ],
-            "error_refs": [
-              "FSYM_5AC55F1825FE5FD1640E",
-              "FSYM_731698850234EC4817A4"
-            ],
-            "next_step_refs": [
-              "STEP_CHANGE_SOURCE_ROLE"
-            ],
-            "subflow_refs": [],
-            "resume_ref": null
-          },
-          {
-            "id": "STEP_CHANGE_SOURCE_ROLE",
-            "actor_ref": "FSYM_AEEAF7D6B57C7954E49B",
-            "action_ref": "OP_CHANGE_VALIDATE_SOURCE_ROLE",
-            "data_ref": "FSYM_9CFD93E0FE791B570675",
-            "target_ref": "FSYM_DFC1EB028824922EBB03",
-            "cause_ref": "STEP_CHANGE_DECLARE",
-            "condition_ref": null,
-            "payload_ref": null,
-            "result_refs": [
-              "FSYM_7FF2ED6AD585DBA53E56"
-            ],
-            "error_refs": [
-              "FSYM_09D6FEC8ACB0A4CB8EF9",
-              "FSYM_49DF055E2237C134DEAC"
-            ],
-            "next_step_refs": [
-              "STEP_CHANGE_APPLY"
-            ],
-            "subflow_refs": [],
-            "resume_ref": null
-          },
-          {
-            "id": "STEP_CHANGE_APPLY",
-            "actor_ref": "FSYM_ECBA844A3B2B47746549",
-            "action_ref": "OP_CHANGE_APPLY",
-            "data_ref": "FSYM_83E3A4D641ACB03CDBAE",
-            "target_ref": "FSYM_15A31D5C98C29E1429F5",
-            "cause_ref": "STEP_CHANGE_SOURCE_ROLE",
-            "condition_ref": "FSYM_A4BEC0332F2892CEC254",
-            "payload_ref": "FSYM_7921E425002445E6C267",
-            "result_refs": [
-              "FSYM_91D398E47AA9FA5D8168"
-            ],
-            "error_refs": [
-              "FSYM_0D08A523E90276B6CF64",
-              "FSYM_5F0BBAA87F6125D7A497"
-            ],
-            "next_step_refs": [
-              "STEP_CHANGE_IMPACT"
-            ],
-            "subflow_refs": [],
-            "resume_ref": null
-          },
-          {
-            "id": "STEP_CHANGE_IMPACT",
-            "actor_ref": "FSYM_AEEAF7D6B57C7954E49B",
-            "action_ref": "OP_CHANGE_TRACE_IMPACT",
-            "data_ref": "FSYM_F11D3210ECC1B78B092C",
-            "target_ref": "FSYM_0F0EA69196E97E5CAE24",
-            "cause_ref": "STEP_CHANGE_APPLY",
-            "condition_ref": null,
-            "payload_ref": null,
-            "result_refs": [
-              "FSYM_0AE0EC71F9C807D57D9E"
-            ],
-            "error_refs": [
-              "FSYM_0C93E2D4575C93AB3089"
-            ],
-            "next_step_refs": [
-              "STEP_CHANGE_UNLOCK"
-            ],
-            "subflow_refs": [],
-            "resume_ref": null
-          },
-          {
-            "id": "STEP_CHANGE_UNLOCK",
-            "actor_ref": "FSYM_AEEAF7D6B57C7954E49B",
-            "action_ref": "OP_CHANGE_UNLOCK_AFFECTED",
-            "data_ref": "FSYM_F24CEC39481F61264028",
-            "target_ref": "FSYM_1A189CFFF828039F8B24",
-            "cause_ref": "STEP_CHANGE_IMPACT",
-            "condition_ref": "FSYM_1203025B64E21C1B588F",
-            "payload_ref": null,
-            "result_refs": [
-              "FSYM_8727CEB195AEF4C086B3"
-            ],
-            "error_refs": [],
-            "next_step_refs": [
-              "STEP_CHANGE_REVALIDATE"
-            ],
-            "subflow_refs": [],
-            "resume_ref": null
-          },
-          {
-            "id": "STEP_CHANGE_REVALIDATE",
-            "actor_ref": "FSYM_AEEAF7D6B57C7954E49B",
-            "action_ref": "OP_CHANGE_REVALIDATE",
-            "data_ref": "FSYM_D0FC6C94DEB2717F5FED",
-            "target_ref": "FSYM_D1FD3D01D1728303F239",
-            "cause_ref": "STEP_CHANGE_UNLOCK",
-            "condition_ref": null,
-            "payload_ref": null,
-            "result_refs": [
-              "FSYM_5DE9FC4588D596B2AA00"
-            ],
-            "error_refs": [
-              "FSYM_9A5FC48F594FB73D84BE",
-              "FSYM_FD27FAA9C3F15AADB73E"
-            ],
-            "next_step_refs": [],
-            "subflow_refs": [],
-            "resume_ref": null
-          }
-        ],
-        "metadata": {
-          "read_surfaces_mutate": false,
-          "projection_mutates": false,
-          "normalization_mutates": false,
-          "topic_resolution_mutates": false
-        }
-      }
-    ]
-  },
-  "semantics": {
-    "mutation_rule": "Canonical semantics change only through an explicit semantic write against an authoritative writable definition.",
-    "read_only_surfaces": [
-      "canonical reader",
-      "normalization",
-      "Topic inheritance resolution",
-      "Topic composition resolution",
-      "Topic projection",
-      "general projection",
-      "traceability",
-      "validation",
-      "gap detection"
-    ],
-    "derived_edit_rule": "A user may edit through a derived UI/projection, but the semantic write must resolve to the authoritative canonical target and canonical operation; the projection itself never becomes the write authority.",
-    "impact_rule": "A semantic change invalidates only validation evidence whose assumptions or trace surfaces are affected, but the affected set must be determined through explicit bidirectional traceability rather than filename/directory heuristics.",
-    "unlock_rule": "Affected previously locked active contracts become unlocked when the change invalidates evidence required for their lock eligibility.",
-    "revalidation_rule": "No affected surface returns to locked until current-format validation produces new sufficient evidence.",
-    "additive_rule": "An additive change still requires impact analysis. Additive does not mean semantically irrelevant.",
-    "breaking_rule": "If a change alters the stable meaning of a semantic identity incompatibly, Semantic Versioning rules require a new identity rather than mutation-in-place."
-  },
   "constraints": {
     "invariants": [
       {
@@ -1031,11 +1469,965 @@
       "purpose": "Breaking semantic changes require identity-compatible versioning behavior."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_CORE_CHANGE_CONTROL",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_CORE_CHANGE_CONTROL",
+      "field_path": "topics[0].operation_refs"
+    },
+    {
+      "gap_id": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT::GAP::TOPIC_flow_refs_TOPIC_CORE_CHANGE_CONTROL",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field flow_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_CORE_CHANGE_CONTROL",
+      "field_path": "topics[0].flow_refs"
+    }
+  ],
   "prose": {
     "summary": "Separates explicit canonical writes from all derived read surfaces and requires trace-based impact analysis plus fresh validation after semantic change.",
     "notes": [
       "Unlocked until authoritative write targets and current repository change surfaces are reconciled under 1.4.",
       "Pass 8 formalized previously free Flow actor/data/target/condition/payload/result/error tokens as exact owner-scoped member identities while preserving every source literal."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [
+        {
+          "id": "FSYM_4A1DF5A0BDEDE20D23FB",
+          "name": "canonical_author",
+          "type": "flow_actor_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "actor_ref",
+            "source_literal": "canonical_author",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_0BA520865B5F7CD182A7",
+          "name": "proposed semantic delta",
+          "type": "flow_data_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "data_ref",
+            "source_literal": "proposed semantic delta",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_9E76CBD0BF3EAFBB7875",
+          "name": "authoritative canonical identity/surface",
+          "type": "flow_target_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "target_ref",
+            "source_literal": "authoritative canonical identity/surface",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_55FE37E56FAA0392550E",
+          "name": "explicit old/new semantic intent",
+          "type": "flow_payload_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "payload_ref",
+            "source_literal": "explicit old/new semantic intent",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_34003A6DE1DFA3B28AC3",
+          "name": "change record",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "change record",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_5AC55F1825FE5FD1640E",
+          "name": "target unresolved",
+          "type": "flow_error_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "error_refs",
+            "source_literal": "target unresolved",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_731698850234EC4817A4",
+          "name": "change surface ambiguous",
+          "type": "flow_error_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "error_refs",
+            "source_literal": "change surface ambiguous",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_AEEAF7D6B57C7954E49B",
+          "name": "canonical_validator",
+          "type": "flow_actor_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "actor_ref",
+            "source_literal": "canonical_validator",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_9CFD93E0FE791B570675",
+          "name": "change record + source-role model",
+          "type": "flow_data_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "data_ref",
+            "source_literal": "change record + source-role model",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_DFC1EB028824922EBB03",
+          "name": "change target",
+          "type": "flow_target_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "target_ref",
+            "source_literal": "change target",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_7FF2ED6AD585DBA53E56",
+          "name": "writable target validated",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "writable target validated",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_09D6FEC8ACB0A4CB8EF9",
+          "name": "attempt to mutate derived projection",
+          "type": "flow_error_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "error_refs",
+            "source_literal": "attempt to mutate derived projection",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_49DF055E2237C134DEAC",
+          "name": "attempt to mutate historical source as active definition",
+          "type": "flow_error_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "error_refs",
+            "source_literal": "attempt to mutate historical source as active definition",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_ECBA844A3B2B47746549",
+          "name": "canonical_writer",
+          "type": "flow_actor_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "actor_ref",
+            "source_literal": "canonical_writer",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_83E3A4D641ACB03CDBAE",
+          "name": "validated change record",
+          "type": "flow_data_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "data_ref",
+            "source_literal": "validated change record",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_15A31D5C98C29E1429F5",
+          "name": "authoritative definition",
+          "type": "flow_target_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "target_ref",
+            "source_literal": "authoritative definition",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_A4BEC0332F2892CEC254",
+          "name": "target writable",
+          "type": "flow_condition_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "condition_ref",
+            "source_literal": "target writable",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_7921E425002445E6C267",
+          "name": "explicit semantic delta",
+          "type": "flow_payload_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "payload_ref",
+            "source_literal": "explicit semantic delta",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_91D398E47AA9FA5D8168",
+          "name": "updated canonical definition",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "updated canonical definition",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_0D08A523E90276B6CF64",
+          "name": "write target no longer current",
+          "type": "flow_error_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "error_refs",
+            "source_literal": "write target no longer current",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_5F0BBAA87F6125D7A497",
+          "name": "semantic delta invalid",
+          "type": "flow_error_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "error_refs",
+            "source_literal": "semantic delta invalid",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_F11D3210ECC1B78B092C",
+          "name": "changed refs + bidirectional traceability",
+          "type": "flow_data_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "data_ref",
+            "source_literal": "changed refs + bidirectional traceability",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_0F0EA69196E97E5CAE24",
+          "name": "impact set",
+          "type": "flow_target_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "target_ref",
+            "source_literal": "impact set",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_0AE0EC71F9C807D57D9E",
+          "name": "affected surfaces",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "affected surfaces",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_0C93E2D4575C93AB3089",
+          "name": "impact trace incomplete",
+          "type": "flow_error_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "error_refs",
+            "source_literal": "impact trace incomplete",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_F24CEC39481F61264028",
+          "name": "affected surfaces",
+          "type": "flow_data_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "data_ref",
+            "source_literal": "affected surfaces",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_1A189CFFF828039F8B24",
+          "name": "canonical statuses",
+          "type": "flow_target_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "target_ref",
+            "source_literal": "canonical statuses",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_1203025B64E21C1B588F",
+          "name": "existing validation evidence invalidated",
+          "type": "flow_condition_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "condition_ref",
+            "source_literal": "existing validation evidence invalidated",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_8727CEB195AEF4C086B3",
+          "name": "revalidation set",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "revalidation set",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_D0FC6C94DEB2717F5FED",
+          "name": "revalidation set",
+          "type": "flow_data_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "data_ref",
+            "source_literal": "revalidation set",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_D1FD3D01D1728303F239",
+          "name": "validation evidence + lock eligibility",
+          "type": "flow_target_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "target_ref",
+            "source_literal": "validation evidence + lock eligibility",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_5DE9FC4588D596B2AA00",
+          "name": "new validation state",
+          "type": "flow_result_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "result_refs",
+            "source_literal": "new validation state",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_9A5FC48F594FB73D84BE",
+          "name": "validation failure",
+          "type": "flow_error_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "error_refs",
+            "source_literal": "validation failure",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        },
+        {
+          "id": "FSYM_FD27FAA9C3F15AADB73E",
+          "name": "new semantic gap",
+          "type": "flow_error_symbol",
+          "status": "defined",
+          "semantics": {
+            "owner_identity": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "flow_ref_field": "error_refs",
+            "source_literal": "new semantic gap",
+            "identity_rule": "This member gives an exact owner-scoped identity to the literal Flow token without adding semantics beyond the owning Flow reference field and the preserved source literal.",
+            "interpretation_rule": "Consumers may use this identity as an opaque declared Flow symbol. No meaning may be inferred from spelling, whitespace, filename, path or similarity to another symbol.",
+            "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
+            "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
+          }
+        }
+      ],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": [
+          {
+            "id": "DEP_SOURCE_ROLES",
+            "source_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "target_ref": "AIGMOS_CORE_SOURCE_ROLE_PRECEDENCE_CONTRACT",
+            "dependency_type": "change_authority_dependency",
+            "required": true
+          },
+          {
+            "id": "DEP_TRACEABILITY",
+            "source_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "target_ref": "AIGMOS_CORE_BIDIRECTIONAL_TRACEABILITY_CONTRACT",
+            "dependency_type": "impact_analysis_dependency",
+            "required": true
+          },
+          {
+            "id": "DEP_LOCK",
+            "source_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "target_ref": "AIGMOS_CORE_LOCK_ELIGIBILITY_CONTRACT",
+            "dependency_type": "revalidation_dependency",
+            "required": true
+          },
+          {
+            "id": "DEP_PROVENANCE",
+            "source_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "target_ref": "AIGMOS_CORE_PROVENANCE_EVIDENCE_CONTRACT",
+            "dependency_type": "change_evidence_dependency",
+            "required": true
+          }
+        ]
+      },
+      "topics": [
+        {
+          "id": "TOPIC_CORE_CHANGE_CONTROL",
+          "name": "Change Control",
+          "purpose": "Group explicit canonical semantic mutation, change impact and revalidation semantics.",
+          "parent_topic_refs": [
+            "TOPIC_CORE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_SOURCE_ROLES",
+            "TOPIC_CORE_TRACEABILITY",
+            "TOPIC_CORE_VALIDATION",
+            "TOPIC_CORE_PROVENANCE"
+          ],
+          "member_refs": [
+            "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "DEP_SOURCE_ROLES",
+            "DEP_TRACEABILITY",
+            "DEP_LOCK",
+            "DEP_PROVENANCE",
+            "CHANGE_DECLARED",
+            "CHANGE_APPLIED",
+            "CHANGE_REVALIDATING",
+            "CHANGE_VALIDATED",
+            "READS_ARE_SIDE_EFFECT_FREE",
+            "WRITES_TARGET_AUTHORITY",
+            "CHANGE_INVALIDATES_STALE_EVIDENCE",
+            "GATE_PROJECTION_MUTATES_CANONICAL",
+            "GATE_READER_MUTATION",
+            "GATE_NORMALIZATION_MUTATION",
+            "GATE_TOPIC_RESOLUTION_MUTATION",
+            "GATE_CHANGE_WITHOUT_IMPACT_TRACE",
+            "GATE_STALE_LOCK_EVIDENCE",
+            "GATE_BREAKING_MUTATION_SAME_ID",
+            "FSYM_4A1DF5A0BDEDE20D23FB",
+            "FSYM_0BA520865B5F7CD182A7",
+            "FSYM_9E76CBD0BF3EAFBB7875",
+            "FSYM_55FE37E56FAA0392550E",
+            "FSYM_34003A6DE1DFA3B28AC3",
+            "FSYM_5AC55F1825FE5FD1640E",
+            "FSYM_731698850234EC4817A4",
+            "FSYM_AEEAF7D6B57C7954E49B",
+            "FSYM_9CFD93E0FE791B570675",
+            "FSYM_DFC1EB028824922EBB03",
+            "FSYM_7FF2ED6AD585DBA53E56",
+            "FSYM_09D6FEC8ACB0A4CB8EF9",
+            "FSYM_49DF055E2237C134DEAC",
+            "FSYM_ECBA844A3B2B47746549",
+            "FSYM_83E3A4D641ACB03CDBAE",
+            "FSYM_15A31D5C98C29E1429F5",
+            "FSYM_A4BEC0332F2892CEC254",
+            "FSYM_7921E425002445E6C267",
+            "FSYM_91D398E47AA9FA5D8168",
+            "FSYM_0D08A523E90276B6CF64",
+            "FSYM_5F0BBAA87F6125D7A497",
+            "FSYM_F11D3210ECC1B78B092C",
+            "FSYM_0F0EA69196E97E5CAE24",
+            "FSYM_0AE0EC71F9C807D57D9E",
+            "FSYM_0C93E2D4575C93AB3089",
+            "FSYM_F24CEC39481F61264028",
+            "FSYM_1A189CFFF828039F8B24",
+            "FSYM_1203025B64E21C1B588F",
+            "FSYM_8727CEB195AEF4C086B3",
+            "FSYM_D0FC6C94DEB2717F5FED",
+            "FSYM_D1FD3D01D1728303F239",
+            "FSYM_5DE9FC4588D596B2AA00",
+            "FSYM_9A5FC48F594FB73D84BE",
+            "FSYM_FD27FAA9C3F15AADB73E"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_CHANGE_DECLARE",
+            "OP_CHANGE_VALIDATE_SOURCE_ROLE",
+            "OP_CHANGE_APPLY",
+            "OP_CHANGE_TRACE_IMPACT",
+            "OP_CHANGE_UNLOCK_AFFECTED",
+            "OP_CHANGE_REVALIDATE"
+          ],
+          "event_refs": [],
+          "flow_refs": [
+            "FLOW_CANONICAL_CHANGE"
+          ],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [
+          {
+            "id": "CHANGE_DECLARED",
+            "name": "declared"
+          },
+          {
+            "id": "CHANGE_APPLIED",
+            "name": "applied"
+          },
+          {
+            "id": "CHANGE_REVALIDATING",
+            "name": "revalidating"
+          },
+          {
+            "id": "CHANGE_VALIDATED",
+            "name": "validated"
+          }
+        ],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_CHANGE_DECLARE",
+            "name": "Declare canonical semantic change",
+            "inputs": [
+              "target identity",
+              "target semantic surface",
+              "proposed explicit semantic delta"
+            ],
+            "outputs": [
+              "change record"
+            ],
+            "errors": [
+              "target unresolved",
+              "change surface ambiguous"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_CHANGE_VALIDATE_SOURCE_ROLE",
+            "name": "Validate writable source role",
+            "inputs": [
+              "change target",
+              "source_role model"
+            ],
+            "outputs": [
+              "writable/derived-only decision"
+            ],
+            "errors": [
+              "attempt to mutate derived projection",
+              "attempt to mutate historical source as active definition"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_CHANGE_APPLY",
+            "name": "Apply explicit canonical semantic delta",
+            "inputs": [
+              "validated change record",
+              "authoritative definition"
+            ],
+            "outputs": [
+              "updated canonical definition"
+            ],
+            "errors": [
+              "write target no longer current",
+              "semantic delta invalid"
+            ],
+            "side_effects": [
+              "canonical semantic definition changed"
+            ]
+          },
+          {
+            "id": "OP_CHANGE_TRACE_IMPACT",
+            "name": "Trace semantic change impact",
+            "inputs": [
+              "changed refs",
+              "forward/reverse trace graph"
+            ],
+            "outputs": [
+              "affected canonical identities, Topics, mechanisms, flows and validations"
+            ],
+            "errors": [
+              "impact trace incomplete"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_CHANGE_UNLOCK_AFFECTED",
+            "name": "Unlock affected canonical surfaces",
+            "inputs": [
+              "impact set",
+              "change classification"
+            ],
+            "outputs": [
+              "revalidation set"
+            ],
+            "errors": [],
+            "side_effects": [
+              "affected active contracts marked unlocked where current validation evidence is invalidated"
+            ]
+          },
+          {
+            "id": "OP_CHANGE_REVALIDATE",
+            "name": "Revalidate affected canonical surfaces",
+            "inputs": [
+              "revalidation set",
+              "Contract Format validation pipeline"
+            ],
+            "outputs": [
+              "new validation evidence and lock eligibility"
+            ],
+            "errors": [
+              "validation failure",
+              "new semantic gap"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": [
+          {
+            "id": "FLOW_CANONICAL_CHANGE",
+            "owner_ref": "AIGMOS_CORE_CANONICAL_CHANGE_BOUNDARY_CONTRACT",
+            "name": "Apply and revalidate canonical semantic change",
+            "flow_type": "explicit_semantic_write",
+            "entry_refs": [
+              "OP_CHANGE_DECLARE"
+            ],
+            "exit_refs": [
+              "OP_CHANGE_REVALIDATE"
+            ],
+            "steps": [
+              {
+                "id": "STEP_CHANGE_DECLARE",
+                "actor_ref": "FSYM_4A1DF5A0BDEDE20D23FB",
+                "action_ref": "OP_CHANGE_DECLARE",
+                "data_ref": "FSYM_0BA520865B5F7CD182A7",
+                "target_ref": "FSYM_9E76CBD0BF3EAFBB7875",
+                "cause_ref": null,
+                "condition_ref": null,
+                "payload_ref": "FSYM_55FE37E56FAA0392550E",
+                "result_refs": [
+                  "FSYM_34003A6DE1DFA3B28AC3"
+                ],
+                "error_refs": [
+                  "FSYM_5AC55F1825FE5FD1640E",
+                  "FSYM_731698850234EC4817A4"
+                ],
+                "next_step_refs": [
+                  "STEP_CHANGE_SOURCE_ROLE"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_CHANGE_SOURCE_ROLE",
+                "actor_ref": "FSYM_AEEAF7D6B57C7954E49B",
+                "action_ref": "OP_CHANGE_VALIDATE_SOURCE_ROLE",
+                "data_ref": "FSYM_9CFD93E0FE791B570675",
+                "target_ref": "FSYM_DFC1EB028824922EBB03",
+                "cause_ref": "STEP_CHANGE_DECLARE",
+                "condition_ref": null,
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_7FF2ED6AD585DBA53E56"
+                ],
+                "error_refs": [
+                  "FSYM_09D6FEC8ACB0A4CB8EF9",
+                  "FSYM_49DF055E2237C134DEAC"
+                ],
+                "next_step_refs": [
+                  "STEP_CHANGE_APPLY"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_CHANGE_APPLY",
+                "actor_ref": "FSYM_ECBA844A3B2B47746549",
+                "action_ref": "OP_CHANGE_APPLY",
+                "data_ref": "FSYM_83E3A4D641ACB03CDBAE",
+                "target_ref": "FSYM_15A31D5C98C29E1429F5",
+                "cause_ref": "STEP_CHANGE_SOURCE_ROLE",
+                "condition_ref": "FSYM_A4BEC0332F2892CEC254",
+                "payload_ref": "FSYM_7921E425002445E6C267",
+                "result_refs": [
+                  "FSYM_91D398E47AA9FA5D8168"
+                ],
+                "error_refs": [
+                  "FSYM_0D08A523E90276B6CF64",
+                  "FSYM_5F0BBAA87F6125D7A497"
+                ],
+                "next_step_refs": [
+                  "STEP_CHANGE_IMPACT"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_CHANGE_IMPACT",
+                "actor_ref": "FSYM_AEEAF7D6B57C7954E49B",
+                "action_ref": "OP_CHANGE_TRACE_IMPACT",
+                "data_ref": "FSYM_F11D3210ECC1B78B092C",
+                "target_ref": "FSYM_0F0EA69196E97E5CAE24",
+                "cause_ref": "STEP_CHANGE_APPLY",
+                "condition_ref": null,
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_0AE0EC71F9C807D57D9E"
+                ],
+                "error_refs": [
+                  "FSYM_0C93E2D4575C93AB3089"
+                ],
+                "next_step_refs": [
+                  "STEP_CHANGE_UNLOCK"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_CHANGE_UNLOCK",
+                "actor_ref": "FSYM_AEEAF7D6B57C7954E49B",
+                "action_ref": "OP_CHANGE_UNLOCK_AFFECTED",
+                "data_ref": "FSYM_F24CEC39481F61264028",
+                "target_ref": "FSYM_1A189CFFF828039F8B24",
+                "cause_ref": "STEP_CHANGE_IMPACT",
+                "condition_ref": "FSYM_1203025B64E21C1B588F",
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_8727CEB195AEF4C086B3"
+                ],
+                "error_refs": [],
+                "next_step_refs": [
+                  "STEP_CHANGE_REVALIDATE"
+                ],
+                "subflow_refs": [],
+                "resume_ref": null
+              },
+              {
+                "id": "STEP_CHANGE_REVALIDATE",
+                "actor_ref": "FSYM_AEEAF7D6B57C7954E49B",
+                "action_ref": "OP_CHANGE_REVALIDATE",
+                "data_ref": "FSYM_D0FC6C94DEB2717F5FED",
+                "target_ref": "FSYM_D1FD3D01D1728303F239",
+                "cause_ref": "STEP_CHANGE_UNLOCK",
+                "condition_ref": null,
+                "payload_ref": null,
+                "result_refs": [
+                  "FSYM_5DE9FC4588D596B2AA00"
+                ],
+                "error_refs": [
+                  "FSYM_9A5FC48F594FB73D84BE",
+                  "FSYM_FD27FAA9C3F15AADB73E"
+                ],
+                "next_step_refs": [],
+                "subflow_refs": [],
+                "resume_ref": null
+              }
+            ],
+            "metadata": {
+              "read_surfaces_mutate": false,
+              "projection_mutates": false,
+              "normalization_mutates": false,
+              "topic_resolution_mutates": false
+            }
+          }
+        ]
+      },
+      "semantics": {
+        "mutation_rule": "Canonical semantics change only through an explicit semantic write against an authoritative writable definition.",
+        "read_only_surfaces": [
+          "canonical reader",
+          "normalization",
+          "Topic inheritance resolution",
+          "Topic composition resolution",
+          "Topic projection",
+          "general projection",
+          "traceability",
+          "validation",
+          "gap detection"
+        ],
+        "derived_edit_rule": "A user may edit through a derived UI/projection, but the semantic write must resolve to the authoritative canonical target and canonical operation; the projection itself never becomes the write authority.",
+        "impact_rule": "A semantic change invalidates only validation evidence whose assumptions or trace surfaces are affected, but the affected set must be determined through explicit bidirectional traceability rather than filename/directory heuristics.",
+        "unlock_rule": "Affected previously locked active contracts become unlocked when the change invalidates evidence required for their lock eligibility.",
+        "revalidation_rule": "No affected surface returns to locked until current-format validation produces new sufficient evidence.",
+        "additive_rule": "An additive change still requires impact analysis. Additive does not mean semantically irrelevant.",
+        "breaking_rule": "If a change alters the stable meaning of a semantic identity incompatibly, Semantic Versioning rules require a new identity rather than mutation-in-place."
+      }
+    }
   }
 }

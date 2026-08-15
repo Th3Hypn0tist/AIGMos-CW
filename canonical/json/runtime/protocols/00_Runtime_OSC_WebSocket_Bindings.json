@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define OSC and WebSocket as optional named protocol bindings that translate validated messages to/from explicit canonical/runtime surfaces without becoming semantic authorities.",
   "scope": {
     "owns": [
@@ -21,123 +20,321 @@
       "presentation layout unless explicitly stated"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT",
+      "name": "Runtime OSC and WebSocket Bindings",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::OPERATIONS::OP_PROTOCOL_BIND",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_PROTOCOL_BIND",
+            "name": "Bind protocol service",
+            "inputs": [
+              "named service instance",
+              "protocol binding"
+            ],
+            "outputs": [
+              "active protocol surface"
+            ],
+            "errors": [
+              "protocol unavailable",
+              "binding invalid"
+            ],
+            "side_effects": [
+              "protocol listener/state created"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::OPERATIONS::OP_PROTOCOL_RECEIVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_PROTOCOL_RECEIVE",
+            "name": "Receive protocol message",
+            "inputs": [
+              "protocol message",
+              "declared schema/address mapping"
+            ],
+            "outputs": [
+              "validated inert input or explicit operation request"
+            ],
+            "errors": [
+              "message invalid",
+              "address unresolved"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::OPERATIONS::OP_PROTOCOL_SEND",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_PROTOCOL_SEND",
+            "name": "Send protocol message",
+            "inputs": [
+              "validated outbound operation",
+              "target binding",
+              "payload"
+            ],
+            "outputs": [
+              "send result"
+            ],
+            "errors": [
+              "authority denied",
+              "transport failure"
+            ],
+            "side_effects": [
+              "declared external protocol interaction"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "protocols": [
+              "OSC",
+              "WebSocket"
+            ],
+            "optional_removable": true,
+            "input_rule": "Inbound protocol messages are inert until mapped to explicit input symbols or canonical operations.",
+            "output_rule": "Outbound protocol messages require explicit operation/effect authority.",
+            "address_rule": "Protocol addresses map through explicit declared mappings; they do not become arbitrary canonical roots.",
+            "osc_boot_rule": "OSC input service boot has explicit boot semantics separate from normal Runner autostart.",
+            "websocket_rule": "WebSocket connection identity/state is runtime state, not canonical semantic identity.",
+            "authority_rule": "Remote sender data never grants authority."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_PROTOCOL_BINDINGS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME_IO",
+            "child_ref": "TOPIC_RUNTIME_PROTOCOL_BINDINGS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_PROTOCOL_BINDINGS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_PROTOCOL_BINDINGS",
+            "child_ref": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_PROTOCOL_BINDINGS_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_PROTOCOL_BINDINGS",
+            "child_ref": "SERVICE_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_PROTOCOL_BINDINGS_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_PROTOCOL_BINDINGS",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_PROTOCOL_BINDINGS_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_PROTOCOL_BINDINGS",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_PROTOCOL_BINDINGS_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_PROTOCOL_BINDINGS",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_PROTOCOL_BINDINGS_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_PROTOCOL_BINDINGS",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_PROTOCOL_BINDINGS_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_PROTOCOL_BINDINGS",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_PROTOCOL_BINDINGS_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_PROTOCOL_BINDINGS",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_PROTOCOL_BINDINGS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_PROTOCOL_BINDINGS",
+            "child_ref": "TOPIC_RUNTIME_INPUT_ADAPTERS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_PROTOCOL_BINDINGS_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_PROTOCOL_BINDINGS",
+            "child_ref": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_PROTOCOL_BINDINGS_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_PROTOCOL_BINDINGS",
+            "child_ref": "TOPIC_RUNTIME_BOOT_PROFILE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/protocols/00_Runtime_OSC_WebSocket_Bindings.json"
+      }
+    },
     {
       "id": "TOPIC_RUNTIME_PROTOCOL_BINDINGS",
       "name": "Protocol Bindings",
-      "purpose": "Define OSC and WebSocket as optional named protocol bindings that translate validated messages to/from explicit canonical/runtime surfaces without becoming semantic authorities.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME_IO"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_RUNTIME_INPUT_ADAPTERS",
-        "TOPIC_RUNTIME_EXTERNAL_SERVICES",
-        "TOPIC_RUNTIME_BOOT_PROFILE"
-      ],
-      "member_refs": [
-        "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT",
-        "SERVICE_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_PROTOCOL_BIND",
-        "OP_PROTOCOL_RECEIVE",
-        "OP_PROTOCOL_SEND"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_PROTOCOL_BINDINGS::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define OSC and WebSocket as optional named protocol bindings that translate validated messages to/from explicit canonical/runtime surfaces without becoming semantic authorities.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_PROTOCOL_BIND",
-        "name": "Bind protocol service",
-        "inputs": [
-          "named service instance",
-          "protocol binding"
-        ],
-        "outputs": [
-          "active protocol surface"
-        ],
-        "errors": [
-          "protocol unavailable",
-          "binding invalid"
-        ],
-        "side_effects": [
-          "protocol listener/state created"
-        ]
-      },
-      {
-        "id": "OP_PROTOCOL_RECEIVE",
-        "name": "Receive protocol message",
-        "inputs": [
-          "protocol message",
-          "declared schema/address mapping"
-        ],
-        "outputs": [
-          "validated inert input or explicit operation request"
-        ],
-        "errors": [
-          "message invalid",
-          "address unresolved"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_PROTOCOL_SEND",
-        "name": "Send protocol message",
-        "inputs": [
-          "validated outbound operation",
-          "target binding",
-          "payload"
-        ],
-        "outputs": [
-          "send result"
-        ],
-        "errors": [
-          "authority denied",
-          "transport failure"
-        ],
-        "side_effects": [
-          "declared external protocol interaction"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "protocols": [
-      "OSC",
-      "WebSocket"
-    ],
-    "optional_removable": true,
-    "input_rule": "Inbound protocol messages are inert until mapped to explicit input symbols or canonical operations.",
-    "output_rule": "Outbound protocol messages require explicit operation/effect authority.",
-    "address_rule": "Protocol addresses map through explicit declared mappings; they do not become arbitrary canonical roots.",
-    "osc_boot_rule": "OSC input service boot has explicit boot semantics separate from normal Runner autostart.",
-    "websocket_rule": "WebSocket connection identity/state is runtime state, not canonical semantic identity.",
-    "authority_rule": "Remote sender data never grants authority."
-  },
   "constraints": {
     "invariants": [
       {
@@ -190,10 +387,149 @@
       "purpose": "Protocol service boot is explicit."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_PROTOCOL_BINDINGS",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_PROTOCOL_BINDINGS",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define OSC and WebSocket as optional named protocol bindings that translate validated messages to/from explicit canonical/runtime surfaces without becoming semantic authorities.",
     "notes": [
       "Unlocked until reconciled against existing Expose/REST/web contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RUNTIME_PROTOCOL_BINDINGS",
+          "name": "Protocol Bindings",
+          "purpose": "Define OSC and WebSocket as optional named protocol bindings that translate validated messages to/from explicit canonical/runtime surfaces without becoming semantic authorities.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME_IO"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_RUNTIME_INPUT_ADAPTERS",
+            "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "TOPIC_RUNTIME_BOOT_PROFILE"
+          ],
+          "member_refs": [
+            "AIGMOS_RUNTIME_PROTOCOL_BINDING_CONTRACT",
+            "SERVICE_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_PROTOCOL_BIND",
+            "OP_PROTOCOL_RECEIVE",
+            "OP_PROTOCOL_SEND"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_PROTOCOL_BIND",
+            "name": "Bind protocol service",
+            "inputs": [
+              "named service instance",
+              "protocol binding"
+            ],
+            "outputs": [
+              "active protocol surface"
+            ],
+            "errors": [
+              "protocol unavailable",
+              "binding invalid"
+            ],
+            "side_effects": [
+              "protocol listener/state created"
+            ]
+          },
+          {
+            "id": "OP_PROTOCOL_RECEIVE",
+            "name": "Receive protocol message",
+            "inputs": [
+              "protocol message",
+              "declared schema/address mapping"
+            ],
+            "outputs": [
+              "validated inert input or explicit operation request"
+            ],
+            "errors": [
+              "message invalid",
+              "address unresolved"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_PROTOCOL_SEND",
+            "name": "Send protocol message",
+            "inputs": [
+              "validated outbound operation",
+              "target binding",
+              "payload"
+            ],
+            "outputs": [
+              "send result"
+            ],
+            "errors": [
+              "authority denied",
+              "transport failure"
+            ],
+            "side_effects": [
+              "declared external protocol interaction"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "protocols": [
+          "OSC",
+          "WebSocket"
+        ],
+        "optional_removable": true,
+        "input_rule": "Inbound protocol messages are inert until mapped to explicit input symbols or canonical operations.",
+        "output_rule": "Outbound protocol messages require explicit operation/effect authority.",
+        "address_rule": "Protocol addresses map through explicit declared mappings; they do not become arbitrary canonical roots.",
+        "osc_boot_rule": "OSC input service boot has explicit boot semantics separate from normal Runner autostart.",
+        "websocket_rule": "WebSocket connection identity/state is runtime state, not canonical semantic identity.",
+        "authority_rule": "Remote sender data never grants authority."
+      }
+    }
   }
 }

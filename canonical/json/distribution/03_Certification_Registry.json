@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define the public certification registry as an index of certification status and package hashes, not as the owner of certified package semantics.",
   "scope": {
     "owns": [
@@ -22,97 +21,246 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT",
+      "name": "Certification Registry",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT::OPERATIONS::OP_CERT_REGISTRY_PUBLISH",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_CERT_REGISTRY_PUBLISH",
+            "name": "Publish certification registry entry",
+            "inputs": [
+              "certification metadata",
+              "package hash",
+              "token status"
+            ],
+            "outputs": [
+              "registry entry"
+            ],
+            "errors": [
+              "duplicate/conflicting entry"
+            ],
+            "side_effects": [
+              "public registry updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT::OPERATIONS::OP_CERT_REGISTRY_VERIFY",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_CERT_REGISTRY_VERIFY",
+            "name": "Verify registry entry",
+            "inputs": [
+              "package hash/token"
+            ],
+            "outputs": [
+              "registry status"
+            ],
+            "errors": [
+              "entry missing",
+              "registry unavailable"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "published_surfaces": [
+              "/certifications/list.csv",
+              "/certifications/hash.sha256"
+            ],
+            "role": "public certification index/verification surface",
+            "ownership_rule": "Registry does not own certified package semantics.",
+            "status_rule": "Registry entry explicitly identifies certification status and package hash.",
+            "cache_rule": "Clients may cache verified registry evidence according to explicit policy.",
+            "revocation_rule": "Revoked/invalid certification status is explicit and machine-readable.",
+            "format_rule": "CSV/hash files are serialization/publication formats only."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_CERTIFICATION_REGISTRY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CERTIFICATION",
+            "child_ref": "TOPIC_CERTIFICATION_REGISTRY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_CERTIFICATION_REGISTRY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_SOURCE_ROLES",
+            "child_ref": "TOPIC_CERTIFICATION_REGISTRY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CERTIFICATION_REGISTRY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CERTIFICATION_REGISTRY",
+            "child_ref": "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CERTIFICATION_REGISTRY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CERTIFICATION_REGISTRY",
+            "child_ref": "DISTRIBUTION_NONAUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CERTIFICATION_REGISTRY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CERTIFICATION_REGISTRY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CERTIFICATION_REGISTRY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CERTIFICATION_REGISTRY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CERTIFICATION_REGISTRY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CERTIFICATION_REGISTRY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CERTIFICATION_REGISTRY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CERTIFICATION_REGISTRY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_CERTIFICATION_REGISTRY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_CERTIFICATION_REGISTRY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/distribution/03_Certification_Registry.json"
+      }
+    },
     {
       "id": "TOPIC_CERTIFICATION_REGISTRY",
       "name": "Certification Registry",
-      "purpose": "Define the public certification registry as an index of certification status and package hashes, not as the owner of certified package semantics.",
-      "parent_topic_refs": [
-        "TOPIC_CERTIFICATION",
-        "TOPIC_CORE_SOURCE_ROLES"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT",
-        "DISTRIBUTION_NONAUTHORITY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_CERT_REGISTRY_PUBLISH",
-        "OP_CERT_REGISTRY_VERIFY"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_CERTIFICATION_REGISTRY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define the public certification registry as an index of certification status and package hashes, not as the owner of certified package semantics.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_CERT_REGISTRY_PUBLISH",
-        "name": "Publish certification registry entry",
-        "inputs": [
-          "certification metadata",
-          "package hash",
-          "token status"
-        ],
-        "outputs": [
-          "registry entry"
-        ],
-        "errors": [
-          "duplicate/conflicting entry"
-        ],
-        "side_effects": [
-          "public registry updated"
-        ]
-      },
-      {
-        "id": "OP_CERT_REGISTRY_VERIFY",
-        "name": "Verify registry entry",
-        "inputs": [
-          "package hash/token"
-        ],
-        "outputs": [
-          "registry status"
-        ],
-        "errors": [
-          "entry missing",
-          "registry unavailable"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "published_surfaces": [
-      "/certifications/list.csv",
-      "/certifications/hash.sha256"
-    ],
-    "role": "public certification index/verification surface",
-    "ownership_rule": "Registry does not own certified package semantics.",
-    "status_rule": "Registry entry explicitly identifies certification status and package hash.",
-    "cache_rule": "Clients may cache verified registry evidence according to explicit policy.",
-    "revocation_rule": "Revoked/invalid certification status is explicit and machine-readable.",
-    "format_rule": "CSV/hash files are serialization/publication formats only."
-  },
   "constraints": {
     "invariants": [
       {
@@ -155,10 +303,123 @@
       "purpose": "Registry indexes certification evidence."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_CERTIFICATION_REGISTRY",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_CERTIFICATION_REGISTRY",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define the public certification registry as an index of certification status and package hashes, not as the owner of certified package semantics.",
     "notes": [
       "Unlocked until reconciled against the assembled 1.4 tree and distribution/certification validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_CERTIFICATION_REGISTRY",
+          "name": "Certification Registry",
+          "purpose": "Define the public certification registry as an index of certification status and package hashes, not as the owner of certified package semantics.",
+          "parent_topic_refs": [
+            "TOPIC_CERTIFICATION",
+            "TOPIC_CORE_SOURCE_ROLES"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_CERTIFICATION_REGISTRY_CONTRACT",
+            "DISTRIBUTION_NONAUTHORITY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_CERT_REGISTRY_PUBLISH",
+            "OP_CERT_REGISTRY_VERIFY"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_CERT_REGISTRY_PUBLISH",
+            "name": "Publish certification registry entry",
+            "inputs": [
+              "certification metadata",
+              "package hash",
+              "token status"
+            ],
+            "outputs": [
+              "registry entry"
+            ],
+            "errors": [
+              "duplicate/conflicting entry"
+            ],
+            "side_effects": [
+              "public registry updated"
+            ]
+          },
+          {
+            "id": "OP_CERT_REGISTRY_VERIFY",
+            "name": "Verify registry entry",
+            "inputs": [
+              "package hash/token"
+            ],
+            "outputs": [
+              "registry status"
+            ],
+            "errors": [
+              "entry missing",
+              "registry unavailable"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "published_surfaces": [
+          "/certifications/list.csv",
+          "/certifications/hash.sha256"
+        ],
+        "role": "public certification index/verification surface",
+        "ownership_rule": "Registry does not own certified package semantics.",
+        "status_rule": "Registry entry explicitly identifies certification status and package hash.",
+        "cache_rule": "Clients may cache verified registry evidence according to explicit policy.",
+        "revocation_rule": "Revoked/invalid certification status is explicit and machine-readable.",
+        "format_rule": "CSV/hash files are serialization/publication formats only."
+      }
+    }
   }
 }

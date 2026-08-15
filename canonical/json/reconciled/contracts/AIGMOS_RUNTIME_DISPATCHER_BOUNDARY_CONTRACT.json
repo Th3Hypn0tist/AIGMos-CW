@@ -1,62 +1,940 @@
 {
-  "behavior": {
-    "events": [],
-    "flows": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "errors": [
-          "target unresolved",
-          "target ambiguous"
-        ],
-        "id": "OP_DISPATCH_RESOLVE",
-        "inputs": [
-          "explicit target ref",
-          "registry"
-        ],
-        "name": "Resolve dispatch target",
-        "outputs": [
-          "resolved executable semantic target"
-        ],
-        "side_effects": []
-      },
-      {
-        "errors": [
-          "authority denied",
-          "effect denied"
-        ],
-        "id": "OP_DISPATCH_AUTHORIZE",
-        "inputs": [
-          "target",
-          "context",
-          "declared effects"
-        ],
-        "name": "Validate dispatch authority and effects",
-        "outputs": [
-          "authorized dispatch"
-        ],
-        "side_effects": []
-      },
-      {
-        "errors": [
-          "execution failure",
-          "timeout"
-        ],
-        "id": "OP_DISPATCH_EXECUTE",
-        "inputs": [
-          "authorized dispatch"
-        ],
-        "name": "Execute bounded dispatch",
-        "outputs": [
-          "result or structured error"
-        ],
-        "side_effects": [
-          "only declared authorized effects"
-        ]
-      }
-    ],
-    "states": []
+  "format": {
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
+  "identity": {
+    "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+    "name": "Runtime Dispatcher Boundary",
+    "type": "canonical_contract",
+    "version": "1.0"
+  },
+  "status": "unlocked",
+  "purpose": "Reconciled source purposes: [1] Define the single governed transition from validated command/operation request into runtime effect execution, including identity, authority, bounds and cleanup checks. [2] Define the Core-owned execution boundary through which commands, tools, routines, runners, backend calls and external effects become actions. [3] Define the dispatcher as the sole canonical transition from validated+authorized operation request to concrete execution, with no model/tool/module bypass.",
+  "scope": {
+    "does_not_own": [
+      "domain semantics",
+      "transport presentation",
+      "implicit authorization",
+      "projection semantics",
+      "domain semantic ownership",
+      "AccessCore policy ownership"
+    ],
+    "owns": [
+      "Runtime Dispatcher Boundary semantics"
+    ]
+  },
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+      "name": "Runtime Dispatcher Boundary",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::OPERATIONS::OP_DISPATCH_RESOLVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "target unresolved",
+              "target ambiguous"
+            ],
+            "id": "OP_DISPATCH_RESOLVE",
+            "inputs": [
+              "explicit target ref",
+              "registry"
+            ],
+            "name": "Resolve dispatch target",
+            "outputs": [
+              "resolved executable semantic target"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::OPERATIONS::OP_DISPATCH_AUTHORIZE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "authority denied",
+              "effect denied"
+            ],
+            "id": "OP_DISPATCH_AUTHORIZE",
+            "inputs": [
+              "target",
+              "context",
+              "declared effects"
+            ],
+            "name": "Validate dispatch authority and effects",
+            "outputs": [
+              "authorized dispatch"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::OPERATIONS::OP_DISPATCH_EXECUTE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "errors": [
+              "execution failure",
+              "timeout"
+            ],
+            "id": "OP_DISPATCH_EXECUTE",
+            "inputs": [
+              "authorized dispatch"
+            ],
+            "name": "Execute bounded dispatch",
+            "outputs": [
+              "result or structured error"
+            ],
+            "side_effects": [
+              "only declared authorized effects"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "authority_rule": "Dispatcher evaluates required capability/AccessCore/assurance policy before effects.",
+            "binding_rule": "Dispatcher resolves exact operation→implementation binding.",
+            "bound_rule": "Timeout/retry/concurrency/resource bounds are attached before execution.",
+            "bypass_rule": "Reconciled source clauses: [1] Model/tool/payload/UI cannot directly execute effects around the dispatcher. [2] Tool, Routine, Trigger, Runner, UI, projection or model output may not bypass the dispatcher boundary.",
+            "cleanup_rule": "Reconciled source clauses: [1] Success/error/timeout/cancel converge on explicit cleanup. [2] Runtime slots/gates/resources are released on success, error, timeout and cancel.",
+            "default_rule": "Definitions and values are inert until explicit dispatch.",
+            "effect_rule": "All side effects cross this boundary or another explicitly equivalent canonical execution boundary.",
+            "execution_owner": "Core/runtime dispatch helpers",
+            "execution_rule": "Concrete execution gets a new execution identity.",
+            "failure_rule": "Unresolved implementation/binding hard-fails.",
+            "flow": [
+              "receive validated request",
+              "verify authorization decision",
+              "verify current operation/target binding",
+              "create execution identity",
+              "dispatch to exact implementation/backend",
+              "record dispatch evidence"
+            ],
+            "identity_rule": "Caller/session identity context is explicit.",
+            "input_rule": "Dispatcher accepts only a resolved canonical operation/command identity plus validated inputs/context.",
+            "model_rule": "Model output cannot directly call implementation code outside the dispatcher path.",
+            "recheck_rule": "Critical stale validation/authorization evidence may require re-evaluation before dispatch.",
+            "result_rule": "Returned result is inert data unless another explicit operation consumes it.",
+            "shell_rule": "Arbitrary shell/string execution is not a baseline dispatcher capability.",
+            "single_boundary_rule": "Effect-capable runtime execution crosses this dispatcher boundary.",
+            "tool_rule": "Tool/MCP results cannot directly trigger hidden secondary effects.",
+            "validation_order": [
+              "resolve target",
+              "validate inputs",
+              "validate capability",
+              "validate authority",
+              "validate effects",
+              "acquire applicable runtime gate/resource",
+              "execute bounded operation",
+              "cleanup",
+              "return structured result"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_COMMAND_REGISTRY",
+            "child_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_COMMAND_PARSING",
+            "child_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME",
+            "child_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DISPATCH",
+            "child_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "COMMAND_EXECUTION_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "RUNTIME_SEMANTICS_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "EXPLICIT_EXECUTION_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "GATE_D88DF3DE5F",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "GATE_D3EF75C316",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "GATE_B9E8F91BB5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "GATE_0C818234B2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "GATE_9BB74BD801",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "GATE_F62C97CEAB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "GATE_69D203306A",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "GATE_7274F72105",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "GATE_18C83A2671",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_14",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "GATE_49616A8ACB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[14]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_15",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "GATE_9E7EF207E7",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[15]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_16",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "GATE_37D7C2A8F9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[16]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_17",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "GATE_6D15EB2343",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[17]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_18",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "GATE_78C030774E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[18]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_BOUNDARY_19",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+            "child_ref": "GATE_73DA07BC94",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[19]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_DISPATCHER_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME",
+            "child_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "COMMAND_EXECUTION_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "RUNTIME_SEMANTICS_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "EXPLICIT_EXECUTION_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "GATE_D88DF3DE5F",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "GATE_D3EF75C316",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "GATE_B9E8F91BB5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "GATE_0C818234B2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_8",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "GATE_9BB74BD801",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[8]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_9",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[9]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_10",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "GATE_F62C97CEAB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[10]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_11",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "GATE_69D203306A",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[11]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_12",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "GATE_7274F72105",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[12]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_13",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "GATE_18C83A2671",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[13]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_14",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "GATE_49616A8ACB",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[14]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_15",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "GATE_9E7EF207E7",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[15]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_16",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "GATE_37D7C2A8F9",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[16]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_17",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "GATE_6D15EB2343",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[17]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_18",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "GATE_78C030774E",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[18]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DISPATCHER_19",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "GATE_73DA07BC94",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].member_refs[19]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_DISPATCHER_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "TOPIC_CORE_OPERATIONS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_DISPATCHER_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_DISPATCHER_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "TOPIC_CORE_BOUNDED_OPERATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].composed_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_DISPATCHER_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_DISPATCHER",
+            "child_ref": "TOPIC_CORE_ERRORS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[1].composed_topic_refs[3]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/reconciled/contracts/AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT.json"
+      }
+    },
+    {
+      "id": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+      "name": "Runtime Dispatcher Boundary",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Reconciled source clauses: [1] Define the single governed transition from validated command/operation request into runtime effect execution, including identity, authority, bounds and cleanup checks. [2] Define the dispatcher as the sole canonical transition from validated+authorized operation request to concrete execution, with no model/tool/module bypass.",
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOPIC_RUNTIME_DISPATCHER",
+      "name": "Dispatcher",
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_DISPATCHER::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define the Core-owned execution boundary through which commands, tools, routines, runners, backend calls and external effects become actions.",
+            "metadata": {}
+          }
+        }
+      ]
+    }
+  ],
   "constraints": {
     "hard_gates": [
       {
@@ -155,30 +1033,6 @@
       }
     ]
   },
-  "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
-  },
-  "identity": {
-    "id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
-    "name": "Runtime Dispatcher Boundary",
-    "type": "canonical_contract",
-    "version": "1.0"
-  },
-  "members": [],
-  "prose": {
-    "notes": [
-      "Unlocked pending reconciliation against existing command/runtime contracts and whole-tree Contract Format 1.4 validation.",
-      "Unlocked until reconciled against the existing runtime contracts and repository-wide 1.4 traceability validation.",
-      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
-      "Reconciled from multiple active source definitions with the same canonical identity.",
-      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
-      "Reconciliation sources: runtime/command/00_Dispatch_Boundary.json, runtime/dispatch/00_Runtime_Dispatcher_Boundary.json, runtime/operation/03_Dispatcher_Boundary.json",
-      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
-    ],
-    "summary": "Reconciled source purposes: [1] Define the single governed transition from validated command/operation request into runtime effect execution, including identity, authority, bounds and cleanup checks. [2] Define the Core-owned execution boundary through which commands, tools, routines, runners, backend calls and external effects become actions. [3] Define the dispatcher as the sole canonical transition from validated+authorized operation request to concrete execution, with no model/tool/module bypass."
-  },
-  "purpose": "Reconciled source purposes: [1] Define the single governed transition from validated command/operation request into runtime effect execution, including identity, authority, bounds and cleanup checks. [2] Define the Core-owned execution boundary through which commands, tools, routines, runners, backend calls and external effects become actions. [3] Define the dispatcher as the sole canonical transition from validated+authorized operation request to concrete execution, with no model/tool/module bypass.",
   "references": [
     {
       "id": "REF_AC",
@@ -211,157 +1065,244 @@
       "purpose": "Dispatcher accepts validated requests only."
     }
   ],
-  "scope": {
-    "does_not_own": [
-      "domain semantics",
-      "transport presentation",
-      "implicit authorization",
-      "projection semantics",
-      "domain semantic ownership",
-      "AccessCore policy ownership"
-    ],
-    "owns": [
-      "Runtime Dispatcher Boundary semantics"
-    ]
-  },
-  "semantics": {
-    "authority_rule": "Dispatcher evaluates required capability/AccessCore/assurance policy before effects.",
-    "binding_rule": "Dispatcher resolves exact operation→implementation binding.",
-    "bound_rule": "Timeout/retry/concurrency/resource bounds are attached before execution.",
-    "bypass_rule": "Reconciled source clauses: [1] Model/tool/payload/UI cannot directly execute effects around the dispatcher. [2] Tool, Routine, Trigger, Runner, UI, projection or model output may not bypass the dispatcher boundary.",
-    "cleanup_rule": "Reconciled source clauses: [1] Success/error/timeout/cancel converge on explicit cleanup. [2] Runtime slots/gates/resources are released on success, error, timeout and cancel.",
-    "default_rule": "Definitions and values are inert until explicit dispatch.",
-    "effect_rule": "All side effects cross this boundary or another explicitly equivalent canonical execution boundary.",
-    "execution_owner": "Core/runtime dispatch helpers",
-    "execution_rule": "Concrete execution gets a new execution identity.",
-    "failure_rule": "Unresolved implementation/binding hard-fails.",
-    "flow": [
-      "receive validated request",
-      "verify authorization decision",
-      "verify current operation/target binding",
-      "create execution identity",
-      "dispatch to exact implementation/backend",
-      "record dispatch evidence"
-    ],
-    "identity_rule": "Caller/session identity context is explicit.",
-    "input_rule": "Dispatcher accepts only a resolved canonical operation/command identity plus validated inputs/context.",
-    "model_rule": "Model output cannot directly call implementation code outside the dispatcher path.",
-    "recheck_rule": "Critical stale validation/authorization evidence may require re-evaluation before dispatch.",
-    "result_rule": "Returned result is inert data unless another explicit operation consumes it.",
-    "shell_rule": "Arbitrary shell/string execution is not a baseline dispatcher capability.",
-    "single_boundary_rule": "Effect-capable runtime execution crosses this dispatcher boundary.",
-    "tool_rule": "Tool/MCP results cannot directly trigger hidden secondary effects.",
-    "validation_order": [
-      "resolve target",
-      "validate inputs",
-      "validate capability",
-      "validate authority",
-      "validate effects",
-      "acquire applicable runtime gate/resource",
-      "execute bounded operation",
-      "cleanup",
-      "return structured result"
-    ]
-  },
-  "source_role": "definition",
-  "status": "locked",
-  "structure": {
-    "authority": [],
-    "containment": [],
-    "dependencies": [],
-    "ownership": [],
-    "relations": []
-  },
-  "topics": [
+  "gaps": [
     {
-      "child_topics": [],
-      "composed_topic_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
-      "member_refs": [
-        "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
-        "COMMAND_EXECUTION_EXPLICIT",
-        "RUNTIME_SEMANTICS_EXPLICIT",
-        "EXPLICIT_EXECUTION_BOUNDARY",
-        "GATE_D88DF3DE5F",
-        "GATE_D3EF75C316",
-        "GATE_B9E8F91BB5",
-        "GATE_0C818234B2",
-        "GATE_9BB74BD801",
-        "GATE_6",
-        "GATE_F62C97CEAB",
-        "GATE_69D203306A",
-        "GATE_7274F72105",
-        "GATE_18C83A2671",
-        "GATE_49616A8ACB",
-        "GATE_9E7EF207E7",
-        "GATE_37D7C2A8F9",
-        "GATE_6D15EB2343",
-        "GATE_78C030774E",
-        "GATE_73DA07BC94"
-      ],
-      "metadata": {},
-      "name": "Runtime Dispatcher Boundary",
-      "operation_refs": [
-        "OP_DISPATCH_RESOLVE",
-        "OP_DISPATCH_AUTHORIZE",
-        "OP_DISPATCH_EXECUTE"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_RUNTIME_COMMAND_REGISTRY",
-        "TOPIC_COMMAND_PARSING",
-        "TOPIC_RUNTIME",
-        "TOPIC_DISPATCH"
-      ],
-      "purpose": "Reconciled source clauses: [1] Define the single governed transition from validated command/operation request into runtime effect execution, including identity, authority, bounds and cleanup checks. [2] Define the dispatcher as the sole canonical transition from validated+authorized operation request to concrete execution, with no model/tool/module bypass.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+      "field_path": "topics[0].operation_refs"
     },
     {
-      "child_topics": [],
-      "composed_topic_refs": [
-        "TOPIC_CORE_OPERATIONS",
-        "TOPIC_CORE_CAPABILITY_AUTHORITY",
-        "TOPIC_CORE_BOUNDED_OPERATION",
-        "TOPIC_CORE_ERRORS"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "id": "TOPIC_RUNTIME_DISPATCHER",
-      "member_refs": [
-        "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
-        "COMMAND_EXECUTION_EXPLICIT",
-        "RUNTIME_SEMANTICS_EXPLICIT",
-        "EXPLICIT_EXECUTION_BOUNDARY",
-        "GATE_D88DF3DE5F",
-        "GATE_D3EF75C316",
-        "GATE_B9E8F91BB5",
-        "GATE_0C818234B2",
-        "GATE_9BB74BD801",
-        "GATE_6",
-        "GATE_F62C97CEAB",
-        "GATE_69D203306A",
-        "GATE_7274F72105",
-        "GATE_18C83A2671",
-        "GATE_49616A8ACB",
-        "GATE_9E7EF207E7",
-        "GATE_37D7C2A8F9",
-        "GATE_6D15EB2343",
-        "GATE_78C030774E",
-        "GATE_73DA07BC94"
-      ],
-      "metadata": {},
-      "name": "Dispatcher",
-      "operation_refs": [
-        "OP_DISPATCH_RESOLVE",
-        "OP_DISPATCH_AUTHORIZE",
-        "OP_DISPATCH_EXECUTE"
-      ],
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME"
-      ],
-      "purpose": "Define the Core-owned execution boundary through which commands, tools, routines, runners, backend calls and external effects become actions.",
-      "relation_refs": []
+      "gap_id": "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_DISPATCHER",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_DISPATCHER",
+      "field_path": "topics[1].operation_refs"
     }
-  ]
+  ],
+  "prose": {
+    "notes": [
+      "Unlocked pending reconciliation against existing command/runtime contracts and whole-tree Contract Format 1.4 validation.",
+      "Unlocked until reconciled against the existing runtime contracts and repository-wide 1.4 traceability validation.",
+      "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation.",
+      "Reconciled from multiple active source definitions with the same canonical identity.",
+      "Source semantics were union-preserved; no source definition was selected by path, mtime, load order or newest-wins.",
+      "Reconciliation sources: runtime/command/00_Dispatch_Boundary.json, runtime/dispatch/00_Runtime_Dispatcher_Boundary.json, runtime/operation/03_Dispatcher_Boundary.json",
+      "Pass 4 repaired machine-significant duplicate-merge surfaces: references, invariants and hard gates remain separate records rather than concatenated scalar clauses."
+    ],
+    "summary": "Reconciled source purposes: [1] Define the single governed transition from validated command/operation request into runtime effect execution, including identity, authority, bounds and cleanup checks. [2] Define the Core-owned execution boundary through which commands, tools, routines, runners, backend calls and external effects become actions. [3] Define the dispatcher as the sole canonical transition from validated+authorized operation request to concrete execution, with no model/tool/module bypass."
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "authority": [],
+        "containment": [],
+        "dependencies": [],
+        "ownership": [],
+        "relations": []
+      },
+      "topics": [
+        {
+          "child_topics": [],
+          "composed_topic_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_RUNTIME_DISPATCHER_BOUNDARY",
+          "member_refs": [
+            "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+            "COMMAND_EXECUTION_EXPLICIT",
+            "RUNTIME_SEMANTICS_EXPLICIT",
+            "EXPLICIT_EXECUTION_BOUNDARY",
+            "GATE_D88DF3DE5F",
+            "GATE_D3EF75C316",
+            "GATE_B9E8F91BB5",
+            "GATE_0C818234B2",
+            "GATE_9BB74BD801",
+            "GATE_6",
+            "GATE_F62C97CEAB",
+            "GATE_69D203306A",
+            "GATE_7274F72105",
+            "GATE_18C83A2671",
+            "GATE_49616A8ACB",
+            "GATE_9E7EF207E7",
+            "GATE_37D7C2A8F9",
+            "GATE_6D15EB2343",
+            "GATE_78C030774E",
+            "GATE_73DA07BC94"
+          ],
+          "metadata": {},
+          "name": "Runtime Dispatcher Boundary",
+          "operation_refs": [
+            "OP_DISPATCH_RESOLVE",
+            "OP_DISPATCH_AUTHORIZE",
+            "OP_DISPATCH_EXECUTE"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_RUNTIME_COMMAND_REGISTRY",
+            "TOPIC_COMMAND_PARSING",
+            "TOPIC_RUNTIME",
+            "TOPIC_DISPATCH"
+          ],
+          "purpose": "Reconciled source clauses: [1] Define the single governed transition from validated command/operation request into runtime effect execution, including identity, authority, bounds and cleanup checks. [2] Define the dispatcher as the sole canonical transition from validated+authorized operation request to concrete execution, with no model/tool/module bypass.",
+          "relation_refs": []
+        },
+        {
+          "child_topics": [],
+          "composed_topic_refs": [
+            "TOPIC_CORE_OPERATIONS",
+            "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "TOPIC_CORE_BOUNDED_OPERATION",
+            "TOPIC_CORE_ERRORS"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "id": "TOPIC_RUNTIME_DISPATCHER",
+          "member_refs": [
+            "AIGMOS_RUNTIME_DISPATCHER_BOUNDARY_CONTRACT",
+            "COMMAND_EXECUTION_EXPLICIT",
+            "RUNTIME_SEMANTICS_EXPLICIT",
+            "EXPLICIT_EXECUTION_BOUNDARY",
+            "GATE_D88DF3DE5F",
+            "GATE_D3EF75C316",
+            "GATE_B9E8F91BB5",
+            "GATE_0C818234B2",
+            "GATE_9BB74BD801",
+            "GATE_6",
+            "GATE_F62C97CEAB",
+            "GATE_69D203306A",
+            "GATE_7274F72105",
+            "GATE_18C83A2671",
+            "GATE_49616A8ACB",
+            "GATE_9E7EF207E7",
+            "GATE_37D7C2A8F9",
+            "GATE_6D15EB2343",
+            "GATE_78C030774E",
+            "GATE_73DA07BC94"
+          ],
+          "metadata": {},
+          "name": "Dispatcher",
+          "operation_refs": [
+            "OP_DISPATCH_RESOLVE",
+            "OP_DISPATCH_AUTHORIZE",
+            "OP_DISPATCH_EXECUTE"
+          ],
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME"
+          ],
+          "purpose": "Define the Core-owned execution boundary through which commands, tools, routines, runners, backend calls and external effects become actions.",
+          "relation_refs": []
+        }
+      ],
+      "behavior": {
+        "events": [],
+        "flows": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "errors": [
+              "target unresolved",
+              "target ambiguous"
+            ],
+            "id": "OP_DISPATCH_RESOLVE",
+            "inputs": [
+              "explicit target ref",
+              "registry"
+            ],
+            "name": "Resolve dispatch target",
+            "outputs": [
+              "resolved executable semantic target"
+            ],
+            "side_effects": []
+          },
+          {
+            "errors": [
+              "authority denied",
+              "effect denied"
+            ],
+            "id": "OP_DISPATCH_AUTHORIZE",
+            "inputs": [
+              "target",
+              "context",
+              "declared effects"
+            ],
+            "name": "Validate dispatch authority and effects",
+            "outputs": [
+              "authorized dispatch"
+            ],
+            "side_effects": []
+          },
+          {
+            "errors": [
+              "execution failure",
+              "timeout"
+            ],
+            "id": "OP_DISPATCH_EXECUTE",
+            "inputs": [
+              "authorized dispatch"
+            ],
+            "name": "Execute bounded dispatch",
+            "outputs": [
+              "result or structured error"
+            ],
+            "side_effects": [
+              "only declared authorized effects"
+            ]
+          }
+        ],
+        "states": []
+      },
+      "semantics": {
+        "authority_rule": "Dispatcher evaluates required capability/AccessCore/assurance policy before effects.",
+        "binding_rule": "Dispatcher resolves exact operation→implementation binding.",
+        "bound_rule": "Timeout/retry/concurrency/resource bounds are attached before execution.",
+        "bypass_rule": "Reconciled source clauses: [1] Model/tool/payload/UI cannot directly execute effects around the dispatcher. [2] Tool, Routine, Trigger, Runner, UI, projection or model output may not bypass the dispatcher boundary.",
+        "cleanup_rule": "Reconciled source clauses: [1] Success/error/timeout/cancel converge on explicit cleanup. [2] Runtime slots/gates/resources are released on success, error, timeout and cancel.",
+        "default_rule": "Definitions and values are inert until explicit dispatch.",
+        "effect_rule": "All side effects cross this boundary or another explicitly equivalent canonical execution boundary.",
+        "execution_owner": "Core/runtime dispatch helpers",
+        "execution_rule": "Concrete execution gets a new execution identity.",
+        "failure_rule": "Unresolved implementation/binding hard-fails.",
+        "flow": [
+          "receive validated request",
+          "verify authorization decision",
+          "verify current operation/target binding",
+          "create execution identity",
+          "dispatch to exact implementation/backend",
+          "record dispatch evidence"
+        ],
+        "identity_rule": "Caller/session identity context is explicit.",
+        "input_rule": "Dispatcher accepts only a resolved canonical operation/command identity plus validated inputs/context.",
+        "model_rule": "Model output cannot directly call implementation code outside the dispatcher path.",
+        "recheck_rule": "Critical stale validation/authorization evidence may require re-evaluation before dispatch.",
+        "result_rule": "Returned result is inert data unless another explicit operation consumes it.",
+        "shell_rule": "Arbitrary shell/string execution is not a baseline dispatcher capability.",
+        "single_boundary_rule": "Effect-capable runtime execution crosses this dispatcher boundary.",
+        "tool_rule": "Tool/MCP results cannot directly trigger hidden secondary effects.",
+        "validation_order": [
+          "resolve target",
+          "validate inputs",
+          "validate capability",
+          "validate authority",
+          "validate effects",
+          "acquire applicable runtime gate/resource",
+          "execute bounded operation",
+          "cleanup",
+          "return structured result"
+        ]
+      }
+    }
+  }
 }

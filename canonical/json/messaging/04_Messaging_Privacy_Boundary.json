@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define the separation of discovery metadata, peer transport metadata, conversation membership and message payload exposure across Hello and messaging surfaces.",
   "scope": {
     "owns": [
@@ -22,64 +21,199 @@
       "transport cryptographic implementation"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT",
+      "name": "Messaging Privacy Boundary",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "layers": [
+              "discovery metadata",
+              "transport/session metadata",
+              "conversation governance",
+              "message envelope",
+              "message payload"
+            ],
+            "minimum_rule": "Each layer exposes only metadata required for its own responsibility.",
+            "hello_rule": "Hello service can observe only permitted bootstrap/discovery metadata, not normal message payload.",
+            "peer_rule": "Conversation peers receive payload according to conversation membership and messaging policy.",
+            "monitor_rule": "Operational monitors redact payload/content unless explicitly authorized for that surface.",
+            "identity_rule": "Identity references may be pseudonymous/limited according to owning IAM/privacy policy without breaking exact internal refs.",
+            "retention_rule": "Retention of message payload/history is explicit and separate from rendezvous-record TTL.",
+            "authority_rule": "Metadata visibility at one layer does not grant visibility at another."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_MSG_PRIVACY_BOUNDARY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_MESSAGING",
+            "child_ref": "TOPIC_MSG_PRIVACY_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_MSG_PRIVACY_BOUNDARY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_HELLO",
+            "child_ref": "TOPIC_MSG_PRIVACY_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MSG_PRIVACY_BOUNDARY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MSG_PRIVACY_BOUNDARY",
+            "child_ref": "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MSG_PRIVACY_BOUNDARY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MSG_PRIVACY_BOUNDARY",
+            "child_ref": "MESSAGING_PEER_GOVERNED",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MSG_PRIVACY_BOUNDARY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MSG_PRIVACY_BOUNDARY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MSG_PRIVACY_BOUNDARY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MSG_PRIVACY_BOUNDARY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MSG_PRIVACY_BOUNDARY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MSG_PRIVACY_BOUNDARY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MSG_PRIVACY_BOUNDARY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MSG_PRIVACY_BOUNDARY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_MSG_PRIVACY_BOUNDARY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_MSG_PRIVACY_BOUNDARY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/messaging/04_Messaging_Privacy_Boundary.json"
+      }
+    },
     {
       "id": "TOPIC_MSG_PRIVACY_BOUNDARY",
       "name": "Messaging Privacy Boundary",
-      "purpose": "Define the separation of discovery metadata, peer transport metadata, conversation membership and message payload exposure across Hello and messaging surfaces.",
-      "parent_topic_refs": [
-        "TOPIC_MESSAGING",
-        "TOPIC_HELLO"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT",
-        "MESSAGING_PEER_GOVERNED",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_MSG_PRIVACY_BOUNDARY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define the separation of discovery metadata, peer transport metadata, conversation membership and message payload exposure across Hello and messaging surfaces.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "layers": [
-      "discovery metadata",
-      "transport/session metadata",
-      "conversation governance",
-      "message envelope",
-      "message payload"
-    ],
-    "minimum_rule": "Each layer exposes only metadata required for its own responsibility.",
-    "hello_rule": "Hello service can observe only permitted bootstrap/discovery metadata, not normal message payload.",
-    "peer_rule": "Conversation peers receive payload according to conversation membership and messaging policy.",
-    "monitor_rule": "Operational monitors redact payload/content unless explicitly authorized for that surface.",
-    "identity_rule": "Identity references may be pseudonymous/limited according to owning IAM/privacy policy without breaking exact internal refs.",
-    "retention_rule": "Retention of message payload/history is explicit and separate from rendezvous-record TTL.",
-    "authority_rule": "Metadata visibility at one layer does not grant visibility at another."
-  },
   "constraints": {
     "invariants": [
       {
@@ -122,10 +256,80 @@
       "purpose": "Discovery metadata is isolated from payload."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define the separation of discovery metadata, peer transport metadata, conversation membership and message payload exposure across Hello and messaging surfaces.",
     "notes": [
       "Unlocked pending reconciliation against existing msg/WebRTC/Hello contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_MSG_PRIVACY_BOUNDARY",
+          "name": "Messaging Privacy Boundary",
+          "purpose": "Define the separation of discovery metadata, peer transport metadata, conversation membership and message payload exposure across Hello and messaging surfaces.",
+          "parent_topic_refs": [
+            "TOPIC_MESSAGING",
+            "TOPIC_HELLO"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_MSG_PRIVACY_BOUNDARY_CONTRACT",
+            "MESSAGING_PEER_GOVERNED",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "layers": [
+          "discovery metadata",
+          "transport/session metadata",
+          "conversation governance",
+          "message envelope",
+          "message payload"
+        ],
+        "minimum_rule": "Each layer exposes only metadata required for its own responsibility.",
+        "hello_rule": "Hello service can observe only permitted bootstrap/discovery metadata, not normal message payload.",
+        "peer_rule": "Conversation peers receive payload according to conversation membership and messaging policy.",
+        "monitor_rule": "Operational monitors redact payload/content unless explicitly authorized for that surface.",
+        "identity_rule": "Identity references may be pseudonymous/limited according to owning IAM/privacy policy without breaking exact internal refs.",
+        "retention_rule": "Retention of message payload/history is explicit and separate from rendezvous-record TTL.",
+        "authority_rule": "Metadata visibility at one layer does not grant visibility at another."
+      }
+    }
   }
 }

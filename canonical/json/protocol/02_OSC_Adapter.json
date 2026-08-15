@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_OSC_ADAPTER_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define OSC as an optional address/message adapter to explicitly bound canonical controls, events or data operations with schema/type validation.",
   "scope": {
     "owns": [
@@ -22,58 +21,207 @@
       "UI presentation"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_OSC_ADAPTER_CONTRACT",
+      "name": "OSC Adapter",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_OSC_ADAPTER_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "protocol": "OSC",
+            "address_rule": "OSC address maps explicitly to canonical target/operation identity.",
+            "argument_rule": "OSC arguments validate against declared target schema/types.",
+            "transport_rule": "UDP/TCP or other supported transport binding is explicit where applicable.",
+            "state_rule": "Listener runtime state is separate from OSC mapping definition.",
+            "authority_rule": "Receiving a syntactically valid OSC message does not imply authorization.",
+            "mapping_rule": "Wildcard/dynamic mappings, if supported, are explicitly bounded and cannot escape declared namespace."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_OSC_ADAPTER_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROTOCOL_OSC_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_PROTOCOL_ADAPTER",
+            "child_ref": "TOPIC_PROTOCOL_OSC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_OSC_ADAPTER_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROTOCOL_OSC_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_ADDRESSING",
+            "child_ref": "TOPIC_PROTOCOL_OSC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_OSC_ADAPTER_CONTRACT::LINK::TOPIC_PARENT_TOPIC_PROTOCOL_OSC_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_SCHEMA",
+            "child_ref": "TOPIC_PROTOCOL_OSC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_OSC_ADAPTER_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_OSC_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_OSC",
+            "child_ref": "AIGMOS_OSC_ADAPTER_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_OSC_ADAPTER_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_OSC_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_OSC",
+            "child_ref": "PROTOCOL_ADAPTER_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_OSC_ADAPTER_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_OSC_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_OSC",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_OSC_ADAPTER_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_OSC_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_OSC",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_OSC_ADAPTER_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_OSC_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_OSC",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_OSC_ADAPTER_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_OSC_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_OSC",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_OSC_ADAPTER_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_PROTOCOL_OSC_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_PROTOCOL_OSC",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/protocol/02_OSC_Adapter.json"
+      }
+    },
     {
       "id": "TOPIC_PROTOCOL_OSC",
       "name": "OSC Adapter",
-      "purpose": "Define OSC as an optional address/message adapter to explicitly bound canonical controls, events or data operations with schema/type validation.",
-      "parent_topic_refs": [
-        "TOPIC_PROTOCOL_ADAPTER",
-        "TOPIC_CORE_ADDRESSING",
-        "TOPIC_CORE_SCHEMA"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_OSC_ADAPTER_CONTRACT",
-        "PROTOCOL_ADAPTER_BOUNDARY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_PROTOCOL_OSC::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define OSC as an optional address/message adapter to explicitly bound canonical controls, events or data operations with schema/type validation.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "protocol": "OSC",
-    "address_rule": "OSC address maps explicitly to canonical target/operation identity.",
-    "argument_rule": "OSC arguments validate against declared target schema/types.",
-    "transport_rule": "UDP/TCP or other supported transport binding is explicit where applicable.",
-    "state_rule": "Listener runtime state is separate from OSC mapping definition.",
-    "authority_rule": "Receiving a syntactically valid OSC message does not imply authorization.",
-    "mapping_rule": "Wildcard/dynamic mappings, if supported, are explicitly bounded and cannot escape declared namespace."
-  },
   "constraints": {
     "invariants": [
       {
@@ -116,10 +264,74 @@
       "purpose": "OSC mappings resolve explicit canonical addresses."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define OSC as an optional address/message adapter to explicitly bound canonical controls, events or data operations with schema/type validation.",
     "notes": [
       "Unlocked pending reconciliation against REST/OSC/WebSocket/Expose protocol contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_PROTOCOL_OSC",
+          "name": "OSC Adapter",
+          "purpose": "Define OSC as an optional address/message adapter to explicitly bound canonical controls, events or data operations with schema/type validation.",
+          "parent_topic_refs": [
+            "TOPIC_PROTOCOL_ADAPTER",
+            "TOPIC_CORE_ADDRESSING",
+            "TOPIC_CORE_SCHEMA"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_OSC_ADAPTER_CONTRACT",
+            "PROTOCOL_ADAPTER_BOUNDARY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "protocol": "OSC",
+        "address_rule": "OSC address maps explicitly to canonical target/operation identity.",
+        "argument_rule": "OSC arguments validate against declared target schema/types.",
+        "transport_rule": "UDP/TCP or other supported transport binding is explicit where applicable.",
+        "state_rule": "Listener runtime state is separate from OSC mapping definition.",
+        "authority_rule": "Receiving a syntactically valid OSC message does not imply authorization.",
+        "mapping_rule": "Wildcard/dynamic mappings, if supported, are explicitly bounded and cannot escape declared namespace."
+      }
+    }
   }
 }

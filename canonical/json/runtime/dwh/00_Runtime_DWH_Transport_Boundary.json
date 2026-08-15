@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define the transport-only boundary for DWH peer exchange, keeping DWH semantic ownership, data authorization and schema resolution outside the WebRTC transport layer.",
   "scope": {
     "owns": [
@@ -22,124 +21,308 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT",
+      "name": "Runtime DWH Transport Boundary",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT::OPERATIONS::OP_DWH_TRANSPORT_VALIDATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_DWH_TRANSPORT_VALIDATE",
+            "name": "Validate DWH transport payload",
+            "inputs": [
+              "DWH payload",
+              "transport policy"
+            ],
+            "outputs": [
+              "validated transport payload"
+            ],
+            "errors": [
+              "unsupported payload type",
+              "size exceeded"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT::OPERATIONS::OP_DWH_TRANSPORT_SEND",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_DWH_TRANSPORT_SEND",
+            "name": "Send DWH payload",
+            "inputs": [
+              "validated payload",
+              "resolved peer/session"
+            ],
+            "outputs": [
+              "send result"
+            ],
+            "errors": [
+              "transport failure",
+              "timeout"
+            ],
+            "side_effects": [
+              "P2P transport interaction"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT::OPERATIONS::OP_DWH_TRANSPORT_RECEIVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_DWH_TRANSPORT_RECEIVE",
+            "name": "Receive DWH payload",
+            "inputs": [
+              "transport frame",
+              "origin metadata"
+            ],
+            "outputs": [
+              "validated inert DWH input"
+            ],
+            "errors": [
+              "payload invalid",
+              "origin invalid"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "payload_types": [
+              "text",
+              "binary_file"
+            ],
+            "transport": "WebRTC",
+            "transport_scope": "serialization, bounded transfer, origin/session metadata",
+            "does_not_define": [
+              "DWH schema semantics",
+              "remote authorization",
+              "origin data policy",
+              "output schema selection"
+            ],
+            "input_rule": "Received payload is inert input until DWH validates origin, scope and schema.",
+            "output_rule": "Transport sends already-authorized/resolved DWH output; transport does not choose what data may leave.",
+            "crypto_boundary": "Transport may carry encrypted/session-protected payloads according to the owning DWH security contract; transport framing itself is not authorization.",
+            "failure_rule": "Transport failure does not mutate DWH semantic state as if transfer succeeded."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_DWH_TRANSPORT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME_IO",
+            "child_ref": "TOPIC_RUNTIME_DWH_TRANSPORT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DWH_TRANSPORT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DWH_TRANSPORT",
+            "child_ref": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DWH_TRANSPORT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DWH_TRANSPORT",
+            "child_ref": "NETWORK_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DWH_TRANSPORT_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DWH_TRANSPORT",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DWH_TRANSPORT_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DWH_TRANSPORT",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DWH_TRANSPORT_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DWH_TRANSPORT",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DWH_TRANSPORT_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DWH_TRANSPORT",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DWH_TRANSPORT_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DWH_TRANSPORT",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_DWH_TRANSPORT_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_DWH_TRANSPORT",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_DWH_TRANSPORT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_DWH_TRANSPORT",
+            "child_ref": "TOPIC_RUNTIME_WEBRTC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_DWH_TRANSPORT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_DWH_TRANSPORT",
+            "child_ref": "TOPIC_CORE_VALUES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/dwh/00_Runtime_DWH_Transport_Boundary.json"
+      }
+    },
     {
       "id": "TOPIC_RUNTIME_DWH_TRANSPORT",
       "name": "DWH Transport",
-      "purpose": "Define the transport-only boundary for DWH peer exchange, keeping DWH semantic ownership, data authorization and schema resolution outside the WebRTC transport layer.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME_IO"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_RUNTIME_WEBRTC",
-        "TOPIC_CORE_VALUES"
-      ],
-      "member_refs": [
-        "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT",
-        "NETWORK_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_DWH_TRANSPORT_VALIDATE",
-        "OP_DWH_TRANSPORT_SEND",
-        "OP_DWH_TRANSPORT_RECEIVE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_DWH_TRANSPORT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define the transport-only boundary for DWH peer exchange, keeping DWH semantic ownership, data authorization and schema resolution outside the WebRTC transport layer.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_DWH_TRANSPORT_VALIDATE",
-        "name": "Validate DWH transport payload",
-        "inputs": [
-          "DWH payload",
-          "transport policy"
-        ],
-        "outputs": [
-          "validated transport payload"
-        ],
-        "errors": [
-          "unsupported payload type",
-          "size exceeded"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_DWH_TRANSPORT_SEND",
-        "name": "Send DWH payload",
-        "inputs": [
-          "validated payload",
-          "resolved peer/session"
-        ],
-        "outputs": [
-          "send result"
-        ],
-        "errors": [
-          "transport failure",
-          "timeout"
-        ],
-        "side_effects": [
-          "P2P transport interaction"
-        ]
-      },
-      {
-        "id": "OP_DWH_TRANSPORT_RECEIVE",
-        "name": "Receive DWH payload",
-        "inputs": [
-          "transport frame",
-          "origin metadata"
-        ],
-        "outputs": [
-          "validated inert DWH input"
-        ],
-        "errors": [
-          "payload invalid",
-          "origin invalid"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "payload_types": [
-      "text",
-      "binary_file"
-    ],
-    "transport": "WebRTC",
-    "transport_scope": "serialization, bounded transfer, origin/session metadata",
-    "does_not_define": [
-      "DWH schema semantics",
-      "remote authorization",
-      "origin data policy",
-      "output schema selection"
-    ],
-    "input_rule": "Received payload is inert input until DWH validates origin, scope and schema.",
-    "output_rule": "Transport sends already-authorized/resolved DWH output; transport does not choose what data may leave.",
-    "crypto_boundary": "Transport may carry encrypted/session-protected payloads according to the owning DWH security contract; transport framing itself is not authorization.",
-    "failure_rule": "Transport failure does not mutate DWH semantic state as if transfer succeeded."
-  },
   "constraints": {
     "invariants": [
       {
@@ -192,10 +375,150 @@
       "purpose": "Received transport payload remains inert until validated."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_DWH_TRANSPORT",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_DWH_TRANSPORT",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define the transport-only boundary for DWH peer exchange, keeping DWH semantic ownership, data authorization and schema resolution outside the WebRTC transport layer.",
     "notes": [
       "Unlocked until reconciled against DWH, messaging, transport and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RUNTIME_DWH_TRANSPORT",
+          "name": "DWH Transport",
+          "purpose": "Define the transport-only boundary for DWH peer exchange, keeping DWH semantic ownership, data authorization and schema resolution outside the WebRTC transport layer.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME_IO"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_RUNTIME_WEBRTC",
+            "TOPIC_CORE_VALUES"
+          ],
+          "member_refs": [
+            "AIGMOS_RUNTIME_DWH_TRANSPORT_BOUNDARY_CONTRACT",
+            "NETWORK_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_DWH_TRANSPORT_VALIDATE",
+            "OP_DWH_TRANSPORT_SEND",
+            "OP_DWH_TRANSPORT_RECEIVE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_DWH_TRANSPORT_VALIDATE",
+            "name": "Validate DWH transport payload",
+            "inputs": [
+              "DWH payload",
+              "transport policy"
+            ],
+            "outputs": [
+              "validated transport payload"
+            ],
+            "errors": [
+              "unsupported payload type",
+              "size exceeded"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_DWH_TRANSPORT_SEND",
+            "name": "Send DWH payload",
+            "inputs": [
+              "validated payload",
+              "resolved peer/session"
+            ],
+            "outputs": [
+              "send result"
+            ],
+            "errors": [
+              "transport failure",
+              "timeout"
+            ],
+            "side_effects": [
+              "P2P transport interaction"
+            ]
+          },
+          {
+            "id": "OP_DWH_TRANSPORT_RECEIVE",
+            "name": "Receive DWH payload",
+            "inputs": [
+              "transport frame",
+              "origin metadata"
+            ],
+            "outputs": [
+              "validated inert DWH input"
+            ],
+            "errors": [
+              "payload invalid",
+              "origin invalid"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "payload_types": [
+          "text",
+          "binary_file"
+        ],
+        "transport": "WebRTC",
+        "transport_scope": "serialization, bounded transfer, origin/session metadata",
+        "does_not_define": [
+          "DWH schema semantics",
+          "remote authorization",
+          "origin data policy",
+          "output schema selection"
+        ],
+        "input_rule": "Received payload is inert input until DWH validates origin, scope and schema.",
+        "output_rule": "Transport sends already-authorized/resolved DWH output; transport does not choose what data may leave.",
+        "crypto_boundary": "Transport may carry encrypted/session-protected payloads according to the owning DWH security contract; transport framing itself is not authorization.",
+        "failure_rule": "Transport failure does not mutate DWH semantic state as if transfer succeeded."
+      }
+    }
   }
 }

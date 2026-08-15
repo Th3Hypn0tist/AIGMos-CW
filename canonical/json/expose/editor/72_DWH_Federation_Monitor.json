@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define a read-only Expose monitor for federated sources, query plans, pushdown, source governance, consistency evidence and partial-result/failure state.",
   "scope": {
     "owns": [
@@ -22,68 +21,203 @@
       "transport implementation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT",
+      "name": "DWH Federation Monitor",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "views": [
+              "federated source registry",
+              "origin/endpoint/instance/schema refs",
+              "source availability/governance state",
+              "query plan/source fragments",
+              "pushdown decisions",
+              "cross-source joins/aggregations",
+              "revision/snapshot/watermark evidence",
+              "partial/completeness state",
+              "failures/timeouts"
+            ],
+            "readonly_rule": "Monitor is read-only by default.",
+            "identity_rule": "Source origin, endpoint, plan, query execution, source fragment and result identities remain distinct.",
+            "ownership_rule": "UI shows per-origin owners/governance instead of attributing data ownership to federation.",
+            "action_rule": "query/resync/retry/change-consistency/rebind-source operations invoke separate authorized canonical workflows.",
+            "authority_rule": "Viewing federated topology grants no source data authority.",
+            "graph_rule": "Visual source/plan edges correspond only to explicit refs.",
+            "failure_rule": "Partial, stale, denied and inconsistent states are visibly distinct."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_DWH_FEDERATION_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_EXPOSE_DWH_FEDERATION_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_DWH_FEDERATION_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_FEDERATION",
+            "child_ref": "TOPIC_EXPOSE_DWH_FEDERATION_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_DWH_FEDERATION_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_DWH_FEDERATION_MONITOR",
+            "child_ref": "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_DWH_FEDERATION_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_DWH_FEDERATION_MONITOR",
+            "child_ref": "FEDERATION_PRESERVES_ORIGIN",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_DWH_FEDERATION_MONITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_DWH_FEDERATION_MONITOR",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_DWH_FEDERATION_MONITOR_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_DWH_FEDERATION_MONITOR",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_DWH_FEDERATION_MONITOR_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_DWH_FEDERATION_MONITOR",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_DWH_FEDERATION_MONITOR_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_DWH_FEDERATION_MONITOR",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_DWH_FEDERATION_MONITOR_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_DWH_FEDERATION_MONITOR",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/editor/72_DWH_Federation_Monitor.json"
+      }
+    },
     {
       "id": "TOPIC_EXPOSE_DWH_FEDERATION_MONITOR",
       "name": "DWH Federation Monitor",
-      "purpose": "Define a read-only Expose monitor for federated sources, query plans, pushdown, source governance, consistency evidence and partial-result/failure state.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_FEDERATION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT",
-        "FEDERATION_PRESERVES_ORIGIN",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_DWH_FEDERATION_MONITOR::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define a read-only Expose monitor for federated sources, query plans, pushdown, source governance, consistency evidence and partial-result/failure state.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "views": [
-      "federated source registry",
-      "origin/endpoint/instance/schema refs",
-      "source availability/governance state",
-      "query plan/source fragments",
-      "pushdown decisions",
-      "cross-source joins/aggregations",
-      "revision/snapshot/watermark evidence",
-      "partial/completeness state",
-      "failures/timeouts"
-    ],
-    "readonly_rule": "Monitor is read-only by default.",
-    "identity_rule": "Source origin, endpoint, plan, query execution, source fragment and result identities remain distinct.",
-    "ownership_rule": "UI shows per-origin owners/governance instead of attributing data ownership to federation.",
-    "action_rule": "query/resync/retry/change-consistency/rebind-source operations invoke separate authorized canonical workflows.",
-    "authority_rule": "Viewing federated topology grants no source data authority.",
-    "graph_rule": "Visual source/plan edges correspond only to explicit refs.",
-    "failure_rule": "Partial, stale, denied and inconsistent states are visibly distinct."
-  },
   "constraints": {
     "invariants": [
       {
@@ -131,10 +265,84 @@
       "purpose": "Monitor exposes completeness/failure semantics."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define a read-only Expose monitor for federated sources, query plans, pushdown, source governance, consistency evidence and partial-result/failure state.",
     "notes": [
       "Unlocked pending reconciliation against DWH remote addressing, query, lineage, synchronization and AccessCore contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXPOSE_DWH_FEDERATION_MONITOR",
+          "name": "DWH Federation Monitor",
+          "purpose": "Define a read-only Expose monitor for federated sources, query plans, pushdown, source governance, consistency evidence and partial-result/failure state.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_FEDERATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_EXPOSE_DWH_FEDERATION_MONITOR_CONTRACT",
+            "FEDERATION_PRESERVES_ORIGIN",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "views": [
+          "federated source registry",
+          "origin/endpoint/instance/schema refs",
+          "source availability/governance state",
+          "query plan/source fragments",
+          "pushdown decisions",
+          "cross-source joins/aggregations",
+          "revision/snapshot/watermark evidence",
+          "partial/completeness state",
+          "failures/timeouts"
+        ],
+        "readonly_rule": "Monitor is read-only by default.",
+        "identity_rule": "Source origin, endpoint, plan, query execution, source fragment and result identities remain distinct.",
+        "ownership_rule": "UI shows per-origin owners/governance instead of attributing data ownership to federation.",
+        "action_rule": "query/resync/retry/change-consistency/rebind-source operations invoke separate authorized canonical workflows.",
+        "authority_rule": "Viewing federated topology grants no source data authority.",
+        "graph_rule": "Visual source/plan edges correspond only to explicit refs.",
+        "failure_rule": "Partial, stale, denied and inconsistent states are visibly distinct."
+      }
+    }
   }
 }

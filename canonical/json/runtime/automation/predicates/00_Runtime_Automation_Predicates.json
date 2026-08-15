@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define onchange, at and after as composable side-effect-free expression predicates with explicit per-trigger runtime timing/edge state and reset semantics.",
   "scope": {
     "owns": [
@@ -21,135 +20,333 @@
       "projection semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT",
+      "name": "Runtime Automation Predicates",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::OPERATIONS::OP_PREDICATE_EVALUATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_PREDICATE_EVALUATE",
+            "name": "Evaluate automation predicate",
+            "inputs": [
+              "predicate",
+              "current context",
+              "per-trigger runtime state"
+            ],
+            "outputs": [
+              "true | false"
+            ],
+            "errors": [
+              "predicate invalid"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::OPERATIONS::OP_AFTER_RESET",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_AFTER_RESET",
+            "name": "Reset after predicate timer",
+            "inputs": [
+              "Trigger runtime state",
+              "explicit reset cause"
+            ],
+            "outputs": [
+              "reset timing state"
+            ],
+            "errors": [],
+            "side_effects": [
+              "runtime timing state updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::OPERATIONS::OP_PREDICATE_EDGE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_PREDICATE_EDGE",
+            "name": "Detect predicate edge",
+            "inputs": [
+              "previous/current predicate state"
+            ],
+            "outputs": [
+              "edge occurrence"
+            ],
+            "errors": [],
+            "side_effects": [
+              "runtime edge state updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "predicate_system": "expression system",
+            "predicates": [
+              "onchange",
+              "at",
+              "after"
+            ],
+            "composable_with": [
+              "AND",
+              "OR",
+              "NOT",
+              "comparison predicates"
+            ],
+            "side_effect_free": true,
+            "bounded": true,
+            "edge_predicates": [
+              "onchange",
+              "at",
+              "after"
+            ],
+            "at_format": "compact right-aligned YYYYMMDDHHmmSS fields; omitted left fields are wildcards; seconds mandatory",
+            "at_timezone_source": "Core runtime timezone configuration",
+            "after_format": "same compact field sizing as at, interpreted as elapsed relative time",
+            "after_reset_required": true,
+            "after_reset_sources": [
+              "explicit reset command",
+              "state change",
+              "new packet",
+              "expression-driven reset"
+            ],
+            "timing_state_rule": "Per-trigger timing/edge state is runtime state, not definition data.",
+            "missed_edge_policy": "Owning runtime policy must be explicit."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_AUTOMATION_PREDICATES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME_AUTOMATION",
+            "child_ref": "TOPIC_RUNTIME_AUTOMATION_PREDICATES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_AUTOMATION_PREDICATES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_AUTOMATION_PREDICATES",
+            "child_ref": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_AUTOMATION_PREDICATES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_AUTOMATION_PREDICATES",
+            "child_ref": "AUTOMATION_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_AUTOMATION_PREDICATES_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_AUTOMATION_PREDICATES",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_AUTOMATION_PREDICATES_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_AUTOMATION_PREDICATES",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_AUTOMATION_PREDICATES_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_AUTOMATION_PREDICATES",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_AUTOMATION_PREDICATES_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_AUTOMATION_PREDICATES",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_AUTOMATION_PREDICATES_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_AUTOMATION_PREDICATES",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_AUTOMATION_PREDICATES_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_AUTOMATION_PREDICATES",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_AUTOMATION_PREDICATES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_AUTOMATION_PREDICATES",
+            "child_ref": "TOPIC_TRIGGER",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_AUTOMATION_PREDICATES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_AUTOMATION_PREDICATES",
+            "child_ref": "TOPIC_RUNTIME_DEFINITION_STATE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_AUTOMATION_PREDICATES_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_AUTOMATION_PREDICATES",
+            "child_ref": "TOPIC_CORE_BOUNDED_OPERATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/automation/predicates/00_Runtime_Automation_Predicates.json"
+      }
+    },
     {
       "id": "TOPIC_RUNTIME_AUTOMATION_PREDICATES",
       "name": "Automation Predicates",
-      "purpose": "Define onchange, at and after as composable side-effect-free expression predicates with explicit per-trigger runtime timing/edge state and reset semantics.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME_AUTOMATION"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_TRIGGER",
-        "TOPIC_RUNTIME_DEFINITION_STATE",
-        "TOPIC_CORE_BOUNDED_OPERATION"
-      ],
-      "member_refs": [
-        "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT",
-        "AUTOMATION_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_PREDICATE_EVALUATE",
-        "OP_AFTER_RESET",
-        "OP_PREDICATE_EDGE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_AUTOMATION_PREDICATES::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define onchange, at and after as composable side-effect-free expression predicates with explicit per-trigger runtime timing/edge state and reset semantics.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_PREDICATE_EVALUATE",
-        "name": "Evaluate automation predicate",
-        "inputs": [
-          "predicate",
-          "current context",
-          "per-trigger runtime state"
-        ],
-        "outputs": [
-          "true | false"
-        ],
-        "errors": [
-          "predicate invalid"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_AFTER_RESET",
-        "name": "Reset after predicate timer",
-        "inputs": [
-          "Trigger runtime state",
-          "explicit reset cause"
-        ],
-        "outputs": [
-          "reset timing state"
-        ],
-        "errors": [],
-        "side_effects": [
-          "runtime timing state updated"
-        ]
-      },
-      {
-        "id": "OP_PREDICATE_EDGE",
-        "name": "Detect predicate edge",
-        "inputs": [
-          "previous/current predicate state"
-        ],
-        "outputs": [
-          "edge occurrence"
-        ],
-        "errors": [],
-        "side_effects": [
-          "runtime edge state updated"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "predicate_system": "expression system",
-    "predicates": [
-      "onchange",
-      "at",
-      "after"
-    ],
-    "composable_with": [
-      "AND",
-      "OR",
-      "NOT",
-      "comparison predicates"
-    ],
-    "side_effect_free": true,
-    "bounded": true,
-    "edge_predicates": [
-      "onchange",
-      "at",
-      "after"
-    ],
-    "at_format": "compact right-aligned YYYYMMDDHHmmSS fields; omitted left fields are wildcards; seconds mandatory",
-    "at_timezone_source": "Core runtime timezone configuration",
-    "after_format": "same compact field sizing as at, interpreted as elapsed relative time",
-    "after_reset_required": true,
-    "after_reset_sources": [
-      "explicit reset command",
-      "state change",
-      "new packet",
-      "expression-driven reset"
-    ],
-    "timing_state_rule": "Per-trigger timing/edge state is runtime state, not definition data.",
-    "missed_edge_policy": "Owning runtime policy must be explicit."
-  },
   "constraints": {
     "invariants": [
       {
@@ -202,10 +399,161 @@
       "purpose": "Timing/edge state is runtime state."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_AUTOMATION_PREDICATES",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_AUTOMATION_PREDICATES",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define onchange, at and after as composable side-effect-free expression predicates with explicit per-trigger runtime timing/edge state and reset semantics.",
     "notes": [
       "Unlocked until reconciled against the existing automation/runtime contracts and repository-wide 1.4 traceability validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RUNTIME_AUTOMATION_PREDICATES",
+          "name": "Automation Predicates",
+          "purpose": "Define onchange, at and after as composable side-effect-free expression predicates with explicit per-trigger runtime timing/edge state and reset semantics.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME_AUTOMATION"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_TRIGGER",
+            "TOPIC_RUNTIME_DEFINITION_STATE",
+            "TOPIC_CORE_BOUNDED_OPERATION"
+          ],
+          "member_refs": [
+            "AIGMOS_RUNTIME_AUTOMATION_PREDICATE_CONTRACT",
+            "AUTOMATION_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_PREDICATE_EVALUATE",
+            "OP_AFTER_RESET",
+            "OP_PREDICATE_EDGE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_PREDICATE_EVALUATE",
+            "name": "Evaluate automation predicate",
+            "inputs": [
+              "predicate",
+              "current context",
+              "per-trigger runtime state"
+            ],
+            "outputs": [
+              "true | false"
+            ],
+            "errors": [
+              "predicate invalid"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_AFTER_RESET",
+            "name": "Reset after predicate timer",
+            "inputs": [
+              "Trigger runtime state",
+              "explicit reset cause"
+            ],
+            "outputs": [
+              "reset timing state"
+            ],
+            "errors": [],
+            "side_effects": [
+              "runtime timing state updated"
+            ]
+          },
+          {
+            "id": "OP_PREDICATE_EDGE",
+            "name": "Detect predicate edge",
+            "inputs": [
+              "previous/current predicate state"
+            ],
+            "outputs": [
+              "edge occurrence"
+            ],
+            "errors": [],
+            "side_effects": [
+              "runtime edge state updated"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "predicate_system": "expression system",
+        "predicates": [
+          "onchange",
+          "at",
+          "after"
+        ],
+        "composable_with": [
+          "AND",
+          "OR",
+          "NOT",
+          "comparison predicates"
+        ],
+        "side_effect_free": true,
+        "bounded": true,
+        "edge_predicates": [
+          "onchange",
+          "at",
+          "after"
+        ],
+        "at_format": "compact right-aligned YYYYMMDDHHmmSS fields; omitted left fields are wildcards; seconds mandatory",
+        "at_timezone_source": "Core runtime timezone configuration",
+        "after_format": "same compact field sizing as at, interpreted as elapsed relative time",
+        "after_reset_required": true,
+        "after_reset_sources": [
+          "explicit reset command",
+          "state change",
+          "new packet",
+          "expression-driven reset"
+        ],
+        "timing_state_rule": "Per-trigger timing/edge state is runtime state, not definition data.",
+        "missed_edge_policy": "Owning runtime policy must be explicit."
+      }
+    }
   }
 }

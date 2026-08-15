@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define deterministic validation that every canonical node is reachable through one or more Topics or explicitly represented as outsider, including inherited and composed Topic resolution.",
   "scope": {
     "owns": [
@@ -21,97 +20,287 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT",
+      "name": "Topic Coverage Validation",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT::OPERATIONS::OP_TOPIC_COVERAGE_SCAN",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_TOPIC_COVERAGE_SCAN",
+            "name": "Scan Topic coverage",
+            "inputs": [
+              "canonical graph"
+            ],
+            "outputs": [
+              "covered nodes",
+              "outsiders",
+              "invalid nodes"
+            ],
+            "errors": [
+              "graph unresolved"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT::OPERATIONS::OP_TOPIC_COVERAGE_VALIDATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_TOPIC_COVERAGE_VALIDATE",
+            "name": "Validate Topic graph",
+            "inputs": [
+              "Topic graph",
+              "canonical graph"
+            ],
+            "outputs": [
+              "coverage report"
+            ],
+            "errors": [
+              "unclassified node",
+              "unresolved Topic ref",
+              "invalid Topic cycle"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "coverage_rule": "Every machine-significant canonical node resolves to >=1 Topic or explicit outsider.",
+            "multi_topic_rule": "All memberships are preserved; validation never chooses a single preferred Topic unless a separate rule requires it.",
+            "inheritance_rule": "Inherited memberships are included in coverage resolution.",
+            "composition_rule": "Composed Topic components remain recursively traceable.",
+            "reference_rule": "All Topic/member/parent/component refs resolve exactly.",
+            "report_rule": "Validation reports direct membership, inherited membership, composed membership and outsider state separately."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_TOPIC_VALIDATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_TOPIC_SYSTEM",
+            "child_ref": "TOPIC_TOPIC_VALIDATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_TOPIC_VALIDATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_VALIDATION",
+            "child_ref": "TOPIC_TOPIC_VALIDATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_VALIDATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_VALIDATION",
+            "child_ref": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_VALIDATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_VALIDATION",
+            "child_ref": "TOPIC_GRAPH_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_VALIDATION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_VALIDATION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_VALIDATION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_VALIDATION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_VALIDATION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_VALIDATION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_VALIDATION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_VALIDATION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_TOPIC_VALIDATION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_TOPIC_VALIDATION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_TOPIC_VALIDATION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_TOPIC_VALIDATION",
+            "child_ref": "TOPIC_TOPIC_INHERITANCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_TOPIC_VALIDATION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_TOPIC_VALIDATION",
+            "child_ref": "TOPIC_TOPIC_COMPOSITION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_TOPIC_VALIDATION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_TOPIC_VALIDATION",
+            "child_ref": "TOPIC_TOPIC_OUTSIDER",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/topics/04_Topic_Coverage_Validation.json"
+      }
+    },
     {
       "id": "TOPIC_TOPIC_VALIDATION",
       "name": "Topic Validation",
-      "purpose": "Define deterministic validation that every canonical node is reachable through one or more Topics or explicitly represented as outsider, including inherited and composed Topic resolution.",
-      "parent_topic_refs": [
-        "TOPIC_TOPIC_SYSTEM",
-        "TOPIC_CORE_VALIDATION"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_TOPIC_INHERITANCE",
-        "TOPIC_TOPIC_COMPOSITION",
-        "TOPIC_TOPIC_OUTSIDER"
-      ],
-      "member_refs": [
-        "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT",
-        "TOPIC_GRAPH_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_TOPIC_COVERAGE_SCAN",
-        "OP_TOPIC_COVERAGE_VALIDATE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_TOPIC_VALIDATION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define deterministic validation that every canonical node is reachable through one or more Topics or explicitly represented as outsider, including inherited and composed Topic resolution.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_TOPIC_COVERAGE_SCAN",
-        "name": "Scan Topic coverage",
-        "inputs": [
-          "canonical graph"
-        ],
-        "outputs": [
-          "covered nodes",
-          "outsiders",
-          "invalid nodes"
-        ],
-        "errors": [
-          "graph unresolved"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_TOPIC_COVERAGE_VALIDATE",
-        "name": "Validate Topic graph",
-        "inputs": [
-          "Topic graph",
-          "canonical graph"
-        ],
-        "outputs": [
-          "coverage report"
-        ],
-        "errors": [
-          "unclassified node",
-          "unresolved Topic ref",
-          "invalid Topic cycle"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "coverage_rule": "Every machine-significant canonical node resolves to >=1 Topic or explicit outsider.",
-    "multi_topic_rule": "All memberships are preserved; validation never chooses a single preferred Topic unless a separate rule requires it.",
-    "inheritance_rule": "Inherited memberships are included in coverage resolution.",
-    "composition_rule": "Composed Topic components remain recursively traceable.",
-    "reference_rule": "All Topic/member/parent/component refs resolve exactly.",
-    "report_rule": "Validation reports direct membership, inherited membership, composed membership and outsider state separately."
-  },
   "constraints": {
     "invariants": [
       {
@@ -159,10 +348,123 @@
       "purpose": "Explicit outsider state satisfies visible classification requirement."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_TOPIC_VALIDATION",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_TOPIC_VALIDATION",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define deterministic validation that every canonical node is reachable through one or more Topics or explicitly represented as outsider, including inherited and composed Topic resolution.",
     "notes": [
       "Unlocked until reconciled against the assembled 1.4 Topic graph and repository-wide validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_TOPIC_VALIDATION",
+          "name": "Topic Validation",
+          "purpose": "Define deterministic validation that every canonical node is reachable through one or more Topics or explicitly represented as outsider, including inherited and composed Topic resolution.",
+          "parent_topic_refs": [
+            "TOPIC_TOPIC_SYSTEM",
+            "TOPIC_CORE_VALIDATION"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_TOPIC_INHERITANCE",
+            "TOPIC_TOPIC_COMPOSITION",
+            "TOPIC_TOPIC_OUTSIDER"
+          ],
+          "member_refs": [
+            "AIGMOS_TOPIC_COVERAGE_VALIDATION_CONTRACT",
+            "TOPIC_GRAPH_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_TOPIC_COVERAGE_SCAN",
+            "OP_TOPIC_COVERAGE_VALIDATE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_TOPIC_COVERAGE_SCAN",
+            "name": "Scan Topic coverage",
+            "inputs": [
+              "canonical graph"
+            ],
+            "outputs": [
+              "covered nodes",
+              "outsiders",
+              "invalid nodes"
+            ],
+            "errors": [
+              "graph unresolved"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_TOPIC_COVERAGE_VALIDATE",
+            "name": "Validate Topic graph",
+            "inputs": [
+              "Topic graph",
+              "canonical graph"
+            ],
+            "outputs": [
+              "coverage report"
+            ],
+            "errors": [
+              "unclassified node",
+              "unresolved Topic ref",
+              "invalid Topic cycle"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "coverage_rule": "Every machine-significant canonical node resolves to >=1 Topic or explicit outsider.",
+        "multi_topic_rule": "All memberships are preserved; validation never chooses a single preferred Topic unless a separate rule requires it.",
+        "inheritance_rule": "Inherited memberships are included in coverage resolution.",
+        "composition_rule": "Composed Topic components remain recursively traceable.",
+        "reference_rule": "All Topic/member/parent/component refs resolve exactly.",
+        "report_rule": "Validation reports direct membership, inherited membership, composed membership and outsider state separately."
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_SECURE_SESSION_LIFECYCLE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define bounded secure transport session lifecycle from configured peer through signaling, handshake, protected channel readiness, active exchange, expiry/cancel/error and cleanup.",
   "scope": {
     "owns": [
@@ -22,68 +21,203 @@
       "AccessCore authorization policy"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_SECURE_SESSION_LIFECYCLE_CONTRACT",
+      "name": "Secure Session Lifecycle",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_SECURE_SESSION_LIFECYCLE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "states": [
+              "configured",
+              "discovering",
+              "signaling",
+              "handshaking",
+              "secure_ready",
+              "active",
+              "expiring",
+              "closed",
+              "failed"
+            ],
+            "transition_rule": "State transitions are explicit and observable.",
+            "ready_rule": "Application payload is accepted only after required handshake/protection state reaches secure_ready/active.",
+            "timeout_rule": "Discovery/signaling/handshake/session idle/expiry limits are explicit and finite.",
+            "cleanup_rule": "All terminal paths release transient signaling/channel/session-key resources.",
+            "identity_rule": "Session lifecycle state never redefines peer semantic identity.",
+            "reauth_rule": "Transport session renewal does not replace IAM/AccessCore reauthentication where resource policy requires it.",
+            "failure_rule": "Failure never silently downgrades to an unprotected channel."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_SECURE_SESSION_LIFECYCLE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_SECURE_SESSION_LIFECYCLE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_NETWORK",
+            "child_ref": "TOPIC_SECURE_SESSION_LIFECYCLE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_SECURE_SESSION_LIFECYCLE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_SECURE_SESSION_LIFECYCLE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH_BOUNDARY",
+            "child_ref": "TOPIC_SECURE_SESSION_LIFECYCLE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_SECURE_SESSION_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SECURE_SESSION_LIFECYCLE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SECURE_SESSION_LIFECYCLE",
+            "child_ref": "AIGMOS_SECURE_SESSION_LIFECYCLE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_SECURE_SESSION_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SECURE_SESSION_LIFECYCLE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SECURE_SESSION_LIFECYCLE",
+            "child_ref": "TRANSPORT_SECURITY_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_SECURE_SESSION_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SECURE_SESSION_LIFECYCLE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SECURE_SESSION_LIFECYCLE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_SECURE_SESSION_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SECURE_SESSION_LIFECYCLE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SECURE_SESSION_LIFECYCLE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_SECURE_SESSION_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SECURE_SESSION_LIFECYCLE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SECURE_SESSION_LIFECYCLE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_SECURE_SESSION_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SECURE_SESSION_LIFECYCLE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SECURE_SESSION_LIFECYCLE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_SECURE_SESSION_LIFECYCLE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_SECURE_SESSION_LIFECYCLE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_SECURE_SESSION_LIFECYCLE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/transport/04_Secure_Session_Lifecycle.json"
+      }
+    },
     {
       "id": "TOPIC_SECURE_SESSION_LIFECYCLE",
       "name": "Secure Session Lifecycle",
-      "purpose": "Define bounded secure transport session lifecycle from configured peer through signaling, handshake, protected channel readiness, active exchange, expiry/cancel/error and cleanup.",
-      "parent_topic_refs": [
-        "TOPIC_RUNTIME_NETWORK",
-        "TOPIC_DWH_BOUNDARY"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_SECURE_SESSION_LIFECYCLE_CONTRACT",
-        "TRANSPORT_SECURITY_SEPARATION",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_SECURE_SESSION_LIFECYCLE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define bounded secure transport session lifecycle from configured peer through signaling, handshake, protected channel readiness, active exchange, expiry/cancel/error and cleanup.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "states": [
-      "configured",
-      "discovering",
-      "signaling",
-      "handshaking",
-      "secure_ready",
-      "active",
-      "expiring",
-      "closed",
-      "failed"
-    ],
-    "transition_rule": "State transitions are explicit and observable.",
-    "ready_rule": "Application payload is accepted only after required handshake/protection state reaches secure_ready/active.",
-    "timeout_rule": "Discovery/signaling/handshake/session idle/expiry limits are explicit and finite.",
-    "cleanup_rule": "All terminal paths release transient signaling/channel/session-key resources.",
-    "identity_rule": "Session lifecycle state never redefines peer semantic identity.",
-    "reauth_rule": "Transport session renewal does not replace IAM/AccessCore reauthentication where resource policy requires it.",
-    "failure_rule": "Failure never silently downgrades to an unprotected channel."
-  },
   "constraints": {
     "invariants": [
       {
@@ -131,10 +265,84 @@
       "purpose": "Lifecycle owns session-key/protection cleanup."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define bounded secure transport session lifecycle from configured peer through signaling, handshake, protected channel readiness, active exchange, expiry/cancel/error and cleanup.",
     "notes": [
       "Unlocked pending reconciliation against existing WebRTC/PGP/rendezvous contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_SECURE_SESSION_LIFECYCLE",
+          "name": "Secure Session Lifecycle",
+          "purpose": "Define bounded secure transport session lifecycle from configured peer through signaling, handshake, protected channel readiness, active exchange, expiry/cancel/error and cleanup.",
+          "parent_topic_refs": [
+            "TOPIC_RUNTIME_NETWORK",
+            "TOPIC_DWH_BOUNDARY"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_SECURE_SESSION_LIFECYCLE_CONTRACT",
+            "TRANSPORT_SECURITY_SEPARATION",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "states": [
+          "configured",
+          "discovering",
+          "signaling",
+          "handshaking",
+          "secure_ready",
+          "active",
+          "expiring",
+          "closed",
+          "failed"
+        ],
+        "transition_rule": "State transitions are explicit and observable.",
+        "ready_rule": "Application payload is accepted only after required handshake/protection state reaches secure_ready/active.",
+        "timeout_rule": "Discovery/signaling/handshake/session idle/expiry limits are explicit and finite.",
+        "cleanup_rule": "All terminal paths release transient signaling/channel/session-key resources.",
+        "identity_rule": "Session lifecycle state never redefines peer semantic identity.",
+        "reauth_rule": "Transport session renewal does not replace IAM/AccessCore reauthentication where resource policy requires it.",
+        "failure_rule": "Failure never silently downgrades to an unprotected channel."
+      }
+    }
   }
 }

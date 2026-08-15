@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_IAM_ASSURANCE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define IAM assurance levels and authentication semantics separately from authorization so identity proof strength never implicitly creates resource rights.",
   "scope": {
     "owns": [
@@ -22,119 +21,303 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_IAM_ASSURANCE_CONTRACT",
+      "name": "IAM Assurance",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_IAM_ASSURANCE_CONTRACT::OPERATIONS::OP_IAM_IDENTIFY",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_IAM_IDENTIFY",
+            "name": "Resolve identity",
+            "inputs": [
+              "presented identity credentials/context"
+            ],
+            "outputs": [
+              "resolved identity"
+            ],
+            "errors": [
+              "identity unresolved",
+              "identity ambiguous"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_ASSURANCE_CONTRACT::OPERATIONS::OP_IAM_AUTHENTICATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_IAM_AUTHENTICATE",
+            "name": "Authenticate identity",
+            "inputs": [
+              "resolved identity",
+              "allowed authentication method"
+            ],
+            "outputs": [
+              "authenticated identity",
+              "assurance level"
+            ],
+            "errors": [
+              "authentication failed",
+              "method unavailable"
+            ],
+            "side_effects": [
+              "authentication runtime state updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_ASSURANCE_CONTRACT::OPERATIONS::OP_IAM_VALIDATE_ASSURANCE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_IAM_VALIDATE_ASSURANCE",
+            "name": "Validate assurance requirement",
+            "inputs": [
+              "current assurance",
+              "required assurance"
+            ],
+            "outputs": [
+              "sufficient | insufficient"
+            ],
+            "errors": [],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_ASSURANCE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "levels": [
+              "none",
+              "light",
+              "medium",
+              "strong"
+            ],
+            "ordering": "none < light < medium < strong",
+            "light": "username + password",
+            "medium": "username + password + 2FA",
+            "strong": "shell-only assurance boundary",
+            "separation_rule": "Assurance proves identity strength; it does not grant authorization.",
+            "resource_rule": "A resource may require a minimum assurance level in addition to authorization.",
+            "remote_rule": "Remote assurance mapping is customer/remote-policy defined and not inferred from transport strength.",
+            "session_rule": "Assurance state is runtime/session state with explicit lifetime."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_ASSURANCE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_IAM_ASSURANCE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "TOPIC_IAM_ASSURANCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_ASSURANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IAM_ASSURANCE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IAM_ASSURANCE",
+            "child_ref": "AIGMOS_IAM_ASSURANCE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_ASSURANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IAM_ASSURANCE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IAM_ASSURANCE",
+            "child_ref": "GOVERNANCE_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_ASSURANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IAM_ASSURANCE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IAM_ASSURANCE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_ASSURANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IAM_ASSURANCE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IAM_ASSURANCE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_ASSURANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IAM_ASSURANCE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IAM_ASSURANCE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_ASSURANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IAM_ASSURANCE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IAM_ASSURANCE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_ASSURANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IAM_ASSURANCE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IAM_ASSURANCE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_ASSURANCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_IAM_ASSURANCE_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_IAM_ASSURANCE",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_ASSURANCE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_IAM_ASSURANCE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_IAM_ASSURANCE",
+            "child_ref": "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_IAM_ASSURANCE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_IAM_ASSURANCE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_IAM_ASSURANCE",
+            "child_ref": "TOPIC_RUNTIME_DEFINITION_STATE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/governance/iam/00_IAM_Assurance.json"
+      }
+    },
     {
       "id": "TOPIC_IAM_ASSURANCE",
       "name": "IAM Assurance",
-      "purpose": "Define IAM assurance levels and authentication semantics separately from authorization so identity proof strength never implicitly creates resource rights.",
-      "parent_topic_refs": [
-        "TOPIC_CORE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_CAPABILITY_AUTHORITY",
-        "TOPIC_RUNTIME_DEFINITION_STATE"
-      ],
-      "member_refs": [
-        "AIGMOS_IAM_ASSURANCE_CONTRACT",
-        "GOVERNANCE_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_IAM_IDENTIFY",
-        "OP_IAM_AUTHENTICATE",
-        "OP_IAM_VALIDATE_ASSURANCE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_IAM_ASSURANCE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define IAM assurance levels and authentication semantics separately from authorization so identity proof strength never implicitly creates resource rights.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_IAM_IDENTIFY",
-        "name": "Resolve identity",
-        "inputs": [
-          "presented identity credentials/context"
-        ],
-        "outputs": [
-          "resolved identity"
-        ],
-        "errors": [
-          "identity unresolved",
-          "identity ambiguous"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_IAM_AUTHENTICATE",
-        "name": "Authenticate identity",
-        "inputs": [
-          "resolved identity",
-          "allowed authentication method"
-        ],
-        "outputs": [
-          "authenticated identity",
-          "assurance level"
-        ],
-        "errors": [
-          "authentication failed",
-          "method unavailable"
-        ],
-        "side_effects": [
-          "authentication runtime state updated"
-        ]
-      },
-      {
-        "id": "OP_IAM_VALIDATE_ASSURANCE",
-        "name": "Validate assurance requirement",
-        "inputs": [
-          "current assurance",
-          "required assurance"
-        ],
-        "outputs": [
-          "sufficient | insufficient"
-        ],
-        "errors": [],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "levels": [
-      "none",
-      "light",
-      "medium",
-      "strong"
-    ],
-    "ordering": "none < light < medium < strong",
-    "light": "username + password",
-    "medium": "username + password + 2FA",
-    "strong": "shell-only assurance boundary",
-    "separation_rule": "Assurance proves identity strength; it does not grant authorization.",
-    "resource_rule": "A resource may require a minimum assurance level in addition to authorization.",
-    "remote_rule": "Remote assurance mapping is customer/remote-policy defined and not inferred from transport strength.",
-    "session_rule": "Assurance state is runtime/session state with explicit lifetime."
-  },
   "constraints": {
     "invariants": [
       {
@@ -187,10 +370,145 @@
       "purpose": "Assurance/session state is runtime state."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_IAM_ASSURANCE_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_IAM_ASSURANCE",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_IAM_ASSURANCE",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define IAM assurance levels and authentication semantics separately from authorization so identity proof strength never implicitly creates resource rights.",
     "notes": [
       "Unlocked until reconciled against existing IAM/AC/DWH contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_IAM_ASSURANCE",
+          "name": "IAM Assurance",
+          "purpose": "Define IAM assurance levels and authentication semantics separately from authorization so identity proof strength never implicitly creates resource rights.",
+          "parent_topic_refs": [
+            "TOPIC_CORE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_CAPABILITY_AUTHORITY",
+            "TOPIC_RUNTIME_DEFINITION_STATE"
+          ],
+          "member_refs": [
+            "AIGMOS_IAM_ASSURANCE_CONTRACT",
+            "GOVERNANCE_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_IAM_IDENTIFY",
+            "OP_IAM_AUTHENTICATE",
+            "OP_IAM_VALIDATE_ASSURANCE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_IAM_IDENTIFY",
+            "name": "Resolve identity",
+            "inputs": [
+              "presented identity credentials/context"
+            ],
+            "outputs": [
+              "resolved identity"
+            ],
+            "errors": [
+              "identity unresolved",
+              "identity ambiguous"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_IAM_AUTHENTICATE",
+            "name": "Authenticate identity",
+            "inputs": [
+              "resolved identity",
+              "allowed authentication method"
+            ],
+            "outputs": [
+              "authenticated identity",
+              "assurance level"
+            ],
+            "errors": [
+              "authentication failed",
+              "method unavailable"
+            ],
+            "side_effects": [
+              "authentication runtime state updated"
+            ]
+          },
+          {
+            "id": "OP_IAM_VALIDATE_ASSURANCE",
+            "name": "Validate assurance requirement",
+            "inputs": [
+              "current assurance",
+              "required assurance"
+            ],
+            "outputs": [
+              "sufficient | insufficient"
+            ],
+            "errors": [],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "levels": [
+          "none",
+          "light",
+          "medium",
+          "strong"
+        ],
+        "ordering": "none < light < medium < strong",
+        "light": "username + password",
+        "medium": "username + password + 2FA",
+        "strong": "shell-only assurance boundary",
+        "separation_rule": "Assurance proves identity strength; it does not grant authorization.",
+        "resource_rule": "A resource may require a minimum assurance level in addition to authorization.",
+        "remote_rule": "Remote assurance mapping is customer/remote-policy defined and not inferred from transport strength.",
+        "session_rule": "Assurance state is runtime/session state with explicit lifetime."
+      }
+    }
   }
 }

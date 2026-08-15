@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define MetaModules as explicit semantic/compositional web app or feature modules whose meaning is independent from nanoCMS placement and which receive no privileged runtime class.",
   "scope": {
     "owns": [
@@ -21,99 +20,261 @@
       "unrelated domain semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT",
+      "name": "MetaModule Semantics",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT::OPERATIONS::OP_METAMODULE_DEFINE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_METAMODULE_DEFINE",
+            "name": "Define MetaModule",
+            "inputs": [
+              "module identity",
+              "owned semantics",
+              "composition refs"
+            ],
+            "outputs": [
+              "MetaModule definition"
+            ],
+            "errors": [
+              "identity collision",
+              "invalid composition"
+            ],
+            "side_effects": [
+              "MetaModule registry updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT::OPERATIONS::OP_METAMODULE_COMPOSE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_METAMODULE_COMPOSE",
+            "name": "Compose MetaModule",
+            "inputs": [
+              "existing semantic refs",
+              "operations",
+              "views"
+            ],
+            "outputs": [
+              "composed module surface"
+            ],
+            "errors": [
+              "ref unresolved",
+              "semantic ownership conflict"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "role": "semantic/compositional feature module",
+            "placement_rule": "nanoCMS controls where a MetaModule appears; MetaModule owns what it means.",
+            "runtime_rule": "MetaModule is not a privileged runtime class.",
+            "composition_rule": "MetaModule reuses existing operations, schemas, Topics and views by explicit composition.",
+            "editor_rule": "Editors, monitors and domain views are ordinary MetaModules, not special architectural classes.",
+            "authority_rule": "MetaModule visibility/placement does not grant AccessCore/runtime authority.",
+            "identity_rule": "MetaModule identity is stable independent of page/route placement."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT::LINK::TOPIC_PARENT_TOPIC_METAMODULE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "TOPIC_METAMODULE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_METAMODULE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_METAMODULE",
+            "child_ref": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_METAMODULE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_METAMODULE",
+            "child_ref": "EXPOSE_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_METAMODULE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_METAMODULE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_METAMODULE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_METAMODULE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_METAMODULE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_METAMODULE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_METAMODULE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_METAMODULE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_METAMODULE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_METAMODULE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_METAMODULE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_METAMODULE",
+            "child_ref": "TOPIC_EXPOSE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_METAMODULE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_METAMODULE",
+            "child_ref": "TOPIC_CORE_STRUCTURAL_CLOSURE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/meta/00_MetaModule_Semantics.json"
+      }
+    },
     {
       "id": "TOPIC_METAMODULE",
       "name": "MetaModule",
-      "purpose": "Define MetaModules as explicit semantic/compositional web app or feature modules whose meaning is independent from nanoCMS placement and which receive no privileged runtime class.",
-      "parent_topic_refs": [
-        "TOPIC_CORE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_EXPOSE",
-        "TOPIC_CORE_STRUCTURAL_CLOSURE"
-      ],
-      "member_refs": [
-        "AIGMOS_METAMODULE_SEMANTICS_CONTRACT",
-        "EXPOSE_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_METAMODULE_DEFINE",
-        "OP_METAMODULE_COMPOSE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_METAMODULE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define MetaModules as explicit semantic/compositional web app or feature modules whose meaning is independent from nanoCMS placement and which receive no privileged runtime class.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_METAMODULE_DEFINE",
-        "name": "Define MetaModule",
-        "inputs": [
-          "module identity",
-          "owned semantics",
-          "composition refs"
-        ],
-        "outputs": [
-          "MetaModule definition"
-        ],
-        "errors": [
-          "identity collision",
-          "invalid composition"
-        ],
-        "side_effects": [
-          "MetaModule registry updated"
-        ]
-      },
-      {
-        "id": "OP_METAMODULE_COMPOSE",
-        "name": "Compose MetaModule",
-        "inputs": [
-          "existing semantic refs",
-          "operations",
-          "views"
-        ],
-        "outputs": [
-          "composed module surface"
-        ],
-        "errors": [
-          "ref unresolved",
-          "semantic ownership conflict"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "role": "semantic/compositional feature module",
-    "placement_rule": "nanoCMS controls where a MetaModule appears; MetaModule owns what it means.",
-    "runtime_rule": "MetaModule is not a privileged runtime class.",
-    "composition_rule": "MetaModule reuses existing operations, schemas, Topics and views by explicit composition.",
-    "editor_rule": "Editors, monitors and domain views are ordinary MetaModules, not special architectural classes.",
-    "authority_rule": "MetaModule visibility/placement does not grant AccessCore/runtime authority.",
-    "identity_rule": "MetaModule identity is stable independent of page/route placement."
-  },
   "constraints": {
     "invariants": [
       {
@@ -156,10 +317,125 @@
       "purpose": "nanoCMS owns placement, not MetaModule meaning."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_METAMODULE_SEMANTICS_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_METAMODULE",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_METAMODULE",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define MetaModules as explicit semantic/compositional web app or feature modules whose meaning is independent from nanoCMS placement and which receive no privileged runtime class.",
     "notes": [
       "Unlocked until reconciled against existing Expose/nanoCMS/Meta contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_METAMODULE",
+          "name": "MetaModule",
+          "purpose": "Define MetaModules as explicit semantic/compositional web app or feature modules whose meaning is independent from nanoCMS placement and which receive no privileged runtime class.",
+          "parent_topic_refs": [
+            "TOPIC_CORE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_EXPOSE",
+            "TOPIC_CORE_STRUCTURAL_CLOSURE"
+          ],
+          "member_refs": [
+            "AIGMOS_METAMODULE_SEMANTICS_CONTRACT",
+            "EXPOSE_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_METAMODULE_DEFINE",
+            "OP_METAMODULE_COMPOSE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_METAMODULE_DEFINE",
+            "name": "Define MetaModule",
+            "inputs": [
+              "module identity",
+              "owned semantics",
+              "composition refs"
+            ],
+            "outputs": [
+              "MetaModule definition"
+            ],
+            "errors": [
+              "identity collision",
+              "invalid composition"
+            ],
+            "side_effects": [
+              "MetaModule registry updated"
+            ]
+          },
+          {
+            "id": "OP_METAMODULE_COMPOSE",
+            "name": "Compose MetaModule",
+            "inputs": [
+              "existing semantic refs",
+              "operations",
+              "views"
+            ],
+            "outputs": [
+              "composed module surface"
+            ],
+            "errors": [
+              "ref unresolved",
+              "semantic ownership conflict"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "role": "semantic/compositional feature module",
+        "placement_rule": "nanoCMS controls where a MetaModule appears; MetaModule owns what it means.",
+        "runtime_rule": "MetaModule is not a privileged runtime class.",
+        "composition_rule": "MetaModule reuses existing operations, schemas, Topics and views by explicit composition.",
+        "editor_rule": "Editors, monitors and domain views are ordinary MetaModules, not special architectural classes.",
+        "authority_rule": "MetaModule visibility/placement does not grant AccessCore/runtime authority.",
+        "identity_rule": "MetaModule identity is stable independent of page/route placement."
+      }
+    }
   }
 }

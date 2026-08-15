@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define Editor monitors as read-only projections over canonical/runtime observability surfaces such as site map, Trigger/Event/Runner activity, DWH and q activity.",
   "scope": {
     "owns": [
@@ -21,98 +20,274 @@
       "unrelated domain semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT",
+      "name": "Expose Monitors",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT::OPERATIONS::OP_MONITOR_PROJECT",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_MONITOR_PROJECT",
+            "name": "Project monitor view",
+            "inputs": [
+              "canonical/runtime trace refs",
+              "monitor type"
+            ],
+            "outputs": [
+              "read-only monitor model"
+            ],
+            "errors": [
+              "source unavailable"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT::OPERATIONS::OP_MONITOR_TRACE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_MONITOR_TRACE",
+            "name": "Trace monitored item",
+            "inputs": [
+              "selected identity/event/flow"
+            ],
+            "outputs": [
+              "provenance-backed trace"
+            ],
+            "errors": [
+              "trace unavailable"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "initial_monitors": [
+              "site map",
+              "Trigger/Event/Runner",
+              "DWH",
+              "q activity"
+            ],
+            "read_only_rule": "Monitor is observation/projection by default.",
+            "source_rule": "Monitor data comes from explicit canonical/runtime state and trace surfaces.",
+            "authority_rule": "Observing a resource does not grant control authority.",
+            "trace_rule": "Displayed activity retains identity/provenance where available.",
+            "projection_rule": "Filtering/sorting/layout are monitor presentation semantics only.",
+            "action_rule": "Any control action exposed alongside a monitor invokes a separate explicit canonical operation."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_MONITORS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE_EDITOR",
+            "child_ref": "TOPIC_EXPOSE_MONITORS",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MONITORS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MONITORS",
+            "child_ref": "AIGMOS_EXPOSE_MONITOR_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MONITORS_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MONITORS",
+            "child_ref": "EDITOR_TOOL_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MONITORS_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MONITORS",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MONITORS_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MONITORS",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MONITORS_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MONITORS",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MONITORS_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MONITORS",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_MONITORS_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_MONITORS",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_MONITORS_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_MONITORS",
+            "child_ref": "TOPIC_EXPOSE_EDITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_MONITORS_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_MONITORS",
+            "child_ref": "TOPIC_CORE_TRACEABILITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_MONITOR_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_MONITORS_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE_MONITORS",
+            "child_ref": "TOPIC_CORE_PROJECTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/editor/07_Monitors.json"
+      }
+    },
     {
       "id": "TOPIC_EXPOSE_MONITORS",
       "name": "Monitors",
-      "purpose": "Define Editor monitors as read-only projections over canonical/runtime observability surfaces such as site map, Trigger/Event/Runner activity, DWH and q activity.",
-      "parent_topic_refs": [
-        "TOPIC_EXPOSE_EDITOR"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_EXPOSE_EDITOR",
-        "TOPIC_CORE_TRACEABILITY",
-        "TOPIC_CORE_PROJECTION"
-      ],
-      "member_refs": [
-        "AIGMOS_EXPOSE_MONITOR_CONTRACT",
-        "EDITOR_TOOL_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_MONITOR_PROJECT",
-        "OP_MONITOR_TRACE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_MONITORS::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define Editor monitors as read-only projections over canonical/runtime observability surfaces such as site map, Trigger/Event/Runner activity, DWH and q activity.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_MONITOR_PROJECT",
-        "name": "Project monitor view",
-        "inputs": [
-          "canonical/runtime trace refs",
-          "monitor type"
-        ],
-        "outputs": [
-          "read-only monitor model"
-        ],
-        "errors": [
-          "source unavailable"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_MONITOR_TRACE",
-        "name": "Trace monitored item",
-        "inputs": [
-          "selected identity/event/flow"
-        ],
-        "outputs": [
-          "provenance-backed trace"
-        ],
-        "errors": [
-          "trace unavailable"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "initial_monitors": [
-      "site map",
-      "Trigger/Event/Runner",
-      "DWH",
-      "q activity"
-    ],
-    "read_only_rule": "Monitor is observation/projection by default.",
-    "source_rule": "Monitor data comes from explicit canonical/runtime state and trace surfaces.",
-    "authority_rule": "Observing a resource does not grant control authority.",
-    "trace_rule": "Displayed activity retains identity/provenance where available.",
-    "projection_rule": "Filtering/sorting/layout are monitor presentation semantics only.",
-    "action_rule": "Any control action exposed alongside a monitor invokes a separate explicit canonical operation."
-  },
   "constraints": {
     "invariants": [
       {
@@ -160,10 +335,124 @@
       "purpose": "Monitors are derived views."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_EXPOSE_MONITOR_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_EXPOSE_MONITORS",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_EXPOSE_MONITORS",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define Editor monitors as read-only projections over canonical/runtime observability surfaces such as site map, Trigger/Event/Runner activity, DWH and q activity.",
     "notes": [
       "Unlocked until reconciled against existing Expose Editor contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXPOSE_MONITORS",
+          "name": "Monitors",
+          "purpose": "Define Editor monitors as read-only projections over canonical/runtime observability surfaces such as site map, Trigger/Event/Runner activity, DWH and q activity.",
+          "parent_topic_refs": [
+            "TOPIC_EXPOSE_EDITOR"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_EXPOSE_EDITOR",
+            "TOPIC_CORE_TRACEABILITY",
+            "TOPIC_CORE_PROJECTION"
+          ],
+          "member_refs": [
+            "AIGMOS_EXPOSE_MONITOR_CONTRACT",
+            "EDITOR_TOOL_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_MONITOR_PROJECT",
+            "OP_MONITOR_TRACE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_MONITOR_PROJECT",
+            "name": "Project monitor view",
+            "inputs": [
+              "canonical/runtime trace refs",
+              "monitor type"
+            ],
+            "outputs": [
+              "read-only monitor model"
+            ],
+            "errors": [
+              "source unavailable"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_MONITOR_TRACE",
+            "name": "Trace monitored item",
+            "inputs": [
+              "selected identity/event/flow"
+            ],
+            "outputs": [
+              "provenance-backed trace"
+            ],
+            "errors": [
+              "trace unavailable"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "initial_monitors": [
+          "site map",
+          "Trigger/Event/Runner",
+          "DWH",
+          "q activity"
+        ],
+        "read_only_rule": "Monitor is observation/projection by default.",
+        "source_rule": "Monitor data comes from explicit canonical/runtime state and trace surfaces.",
+        "authority_rule": "Observing a resource does not grant control authority.",
+        "trace_rule": "Displayed activity retains identity/provenance where available.",
+        "projection_rule": "Filtering/sorting/layout are monitor presentation semantics only.",
+        "action_rule": "Any control action exposed alongside a monitor invokes a separate explicit canonical operation."
+      }
+    }
   }
 }

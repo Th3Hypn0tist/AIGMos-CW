@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define consistent DWH snapshots/checkpoints as explicit captured state identities over exact data scopes and revisions, separate from live data and runtime activation snapshots.",
   "scope": {
     "owns": [
@@ -22,58 +21,193 @@
       "storage-engine implementation internals"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT",
+      "name": "DWH Snapshot and Checkpoint",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "snapshot_rule": "Each DWH snapshot/checkpoint has an explicit artifact/state identity.",
+            "scope_rule": "Captured instance/schema/data scopes are explicit.",
+            "revision_rule": "Snapshot records exact included revision/watermark/state boundary.",
+            "consistency_rule": "Consistency level/profile is explicit, e.g. atomic point-in-time, transaction-consistent or other declared profile.",
+            "live_rule": "Snapshot is immutable captured evidence and not the live mutable data identity.",
+            "runtime_rule": "DWH data snapshot identity is distinct from canonical/runtime configuration snapshot identity.",
+            "lineage_rule": "Snapshot retains source scope and creation provenance.",
+            "restore_rule": "Possessing a snapshot does not restore or activate it automatically."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_SNAPSHOT_CHECKPOINT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_SNAPSHOT_CHECKPOINT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_SNAPSHOT_CHECKPOINT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_PERSISTENCE_RECOVERY",
+            "child_ref": "TOPIC_DWH_SNAPSHOT_CHECKPOINT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_SNAPSHOT_CHECKPOINT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_SNAPSHOT_CHECKPOINT",
+            "child_ref": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_SNAPSHOT_CHECKPOINT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_SNAPSHOT_CHECKPOINT",
+            "child_ref": "PERSISTENCE_NONIDENTITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_SNAPSHOT_CHECKPOINT_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_SNAPSHOT_CHECKPOINT",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_SNAPSHOT_CHECKPOINT_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_SNAPSHOT_CHECKPOINT",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_SNAPSHOT_CHECKPOINT_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_SNAPSHOT_CHECKPOINT",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_SNAPSHOT_CHECKPOINT_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_SNAPSHOT_CHECKPOINT",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_SNAPSHOT_CHECKPOINT_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_SNAPSHOT_CHECKPOINT",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/persistence/02_Snapshot_Checkpoint.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_SNAPSHOT_CHECKPOINT",
       "name": "DWH Snapshot and Checkpoint",
-      "purpose": "Define consistent DWH snapshots/checkpoints as explicit captured state identities over exact data scopes and revisions, separate from live data and runtime activation snapshots.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_PERSISTENCE_RECOVERY"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT",
-        "PERSISTENCE_NONIDENTITY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_SNAPSHOT_CHECKPOINT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define consistent DWH snapshots/checkpoints as explicit captured state identities over exact data scopes and revisions, separate from live data and runtime activation snapshots.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "snapshot_rule": "Each DWH snapshot/checkpoint has an explicit artifact/state identity.",
-    "scope_rule": "Captured instance/schema/data scopes are explicit.",
-    "revision_rule": "Snapshot records exact included revision/watermark/state boundary.",
-    "consistency_rule": "Consistency level/profile is explicit, e.g. atomic point-in-time, transaction-consistent or other declared profile.",
-    "live_rule": "Snapshot is immutable captured evidence and not the live mutable data identity.",
-    "runtime_rule": "DWH data snapshot identity is distinct from canonical/runtime configuration snapshot identity.",
-    "lineage_rule": "Snapshot retains source scope and creation provenance.",
-    "restore_rule": "Possessing a snapshot does not restore or activate it automatically."
-  },
   "constraints": {
     "invariants": [
       {
@@ -121,10 +255,74 @@
       "purpose": "Data and runtime configuration snapshots remain separate."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define consistent DWH snapshots/checkpoints as explicit captured state identities over exact data scopes and revisions, separate from live data and runtime activation snapshots.",
     "notes": [
       "Unlocked pending reconciliation against DWH mutation, runtime snapshot, repository acceptance and retention contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_SNAPSHOT_CHECKPOINT",
+          "name": "DWH Snapshot and Checkpoint",
+          "purpose": "Define consistent DWH snapshots/checkpoints as explicit captured state identities over exact data scopes and revisions, separate from live data and runtime activation snapshots.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_PERSISTENCE_RECOVERY"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_SNAPSHOT_CHECKPOINT_CONTRACT",
+            "PERSISTENCE_NONIDENTITY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "snapshot_rule": "Each DWH snapshot/checkpoint has an explicit artifact/state identity.",
+        "scope_rule": "Captured instance/schema/data scopes are explicit.",
+        "revision_rule": "Snapshot records exact included revision/watermark/state boundary.",
+        "consistency_rule": "Consistency level/profile is explicit, e.g. atomic point-in-time, transaction-consistent or other declared profile.",
+        "live_rule": "Snapshot is immutable captured evidence and not the live mutable data identity.",
+        "runtime_rule": "DWH data snapshot identity is distinct from canonical/runtime configuration snapshot identity.",
+        "lineage_rule": "Snapshot retains source scope and creation provenance.",
+        "restore_rule": "Possessing a snapshot does not restore or activate it automatically."
+      }
+    }
   }
 }

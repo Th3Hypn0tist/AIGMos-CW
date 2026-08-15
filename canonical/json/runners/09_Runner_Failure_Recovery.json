@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define deterministic Runner failure, retry, cancellation and compensation semantics without erasing prior execution evidence or silently continuing across hard failures.",
   "scope": {
     "owns": [
@@ -22,67 +21,202 @@
       "domain operation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT",
+      "name": "Runner Failure and Recovery",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "states": [
+              "pending",
+              "running",
+              "completed",
+              "failed",
+              "cancelled",
+              "skipped",
+              "compensating",
+              "compensated"
+            ],
+            "failure_rule": "Hard-failed step stops dependent execution unless explicit recovery policy says otherwise.",
+            "retry_rule": "Retry policy is explicit and bounded; each attempt has distinct evidence.",
+            "cancel_rule": "Cancellation is explicit and propagates according to dependency policy.",
+            "compensation_rule": "Compensation is an explicit operation/step, not deletion of prior effects/evidence.",
+            "resume_rule": "Resume identifies exact prior execution/checkpoint and applicable policy.",
+            "event_rule": "Failure/retry/cancel/compensation transitions may emit explicit Events.",
+            "trace_rule": "Original failure evidence remains immutable/traceable."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNNER_FAILURE_RECOVERY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNNERS",
+            "child_ref": "TOPIC_RUNNER_FAILURE_RECOVERY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNNER_FAILURE_RECOVERY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXECUTION_TRACE",
+            "child_ref": "TOPIC_RUNNER_FAILURE_RECOVERY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_FAILURE_RECOVERY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_FAILURE_RECOVERY",
+            "child_ref": "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_FAILURE_RECOVERY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_FAILURE_RECOVERY",
+            "child_ref": "RUNNER_EXECUTION_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_FAILURE_RECOVERY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_FAILURE_RECOVERY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_FAILURE_RECOVERY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_FAILURE_RECOVERY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_FAILURE_RECOVERY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_FAILURE_RECOVERY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_FAILURE_RECOVERY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_FAILURE_RECOVERY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNNER_FAILURE_RECOVERY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNNER_FAILURE_RECOVERY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runners/09_Runner_Failure_Recovery.json"
+      }
+    },
     {
       "id": "TOPIC_RUNNER_FAILURE_RECOVERY",
       "name": "Runner Failure and Recovery",
-      "purpose": "Define deterministic Runner failure, retry, cancellation and compensation semantics without erasing prior execution evidence or silently continuing across hard failures.",
-      "parent_topic_refs": [
-        "TOPIC_RUNNERS",
-        "TOPIC_EXECUTION_TRACE"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT",
-        "RUNNER_EXECUTION_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNNER_FAILURE_RECOVERY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define deterministic Runner failure, retry, cancellation and compensation semantics without erasing prior execution evidence or silently continuing across hard failures.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "states": [
-      "pending",
-      "running",
-      "completed",
-      "failed",
-      "cancelled",
-      "skipped",
-      "compensating",
-      "compensated"
-    ],
-    "failure_rule": "Hard-failed step stops dependent execution unless explicit recovery policy says otherwise.",
-    "retry_rule": "Retry policy is explicit and bounded; each attempt has distinct evidence.",
-    "cancel_rule": "Cancellation is explicit and propagates according to dependency policy.",
-    "compensation_rule": "Compensation is an explicit operation/step, not deletion of prior effects/evidence.",
-    "resume_rule": "Resume identifies exact prior execution/checkpoint and applicable policy.",
-    "event_rule": "Failure/retry/cancel/compensation transitions may emit explicit Events.",
-    "trace_rule": "Original failure evidence remains immutable/traceable."
-  },
   "constraints": {
     "invariants": [
       {
@@ -130,10 +264,83 @@
       "purpose": "Retries/reentry remain bounded."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define deterministic Runner failure, retry, cancellation and compensation semantics without erasing prior execution evidence or silently continuing across hard failures.",
     "notes": [
       "Unlocked pending reconciliation against Routine/Runner, Event/Trigger causality and command dispatch contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RUNNER_FAILURE_RECOVERY",
+          "name": "Runner Failure and Recovery",
+          "purpose": "Define deterministic Runner failure, retry, cancellation and compensation semantics without erasing prior execution evidence or silently continuing across hard failures.",
+          "parent_topic_refs": [
+            "TOPIC_RUNNERS",
+            "TOPIC_EXECUTION_TRACE"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_RUNNER_FAILURE_RECOVERY_CONTRACT",
+            "RUNNER_EXECUTION_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "states": [
+          "pending",
+          "running",
+          "completed",
+          "failed",
+          "cancelled",
+          "skipped",
+          "compensating",
+          "compensated"
+        ],
+        "failure_rule": "Hard-failed step stops dependent execution unless explicit recovery policy says otherwise.",
+        "retry_rule": "Retry policy is explicit and bounded; each attempt has distinct evidence.",
+        "cancel_rule": "Cancellation is explicit and propagates according to dependency policy.",
+        "compensation_rule": "Compensation is an explicit operation/step, not deletion of prior effects/evidence.",
+        "resume_rule": "Resume identifies exact prior execution/checkpoint and applicable policy.",
+        "event_rule": "Failure/retry/cancel/compensation transitions may emit explicit Events.",
+        "trace_rule": "Original failure evidence remains immutable/traceable."
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define a read-only Expose monitor for user/system libraries, discovery findings, install plans, dependency closure, installed-artifact registry and lifecycle state.",
   "scope": {
     "owns": [
@@ -22,113 +21,256 @@
       "runtime business semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT",
+      "name": "Library and Install Monitor",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "views": [
+              "user/system library roots",
+              "discovered artifacts",
+              "duplicate/source conflicts",
+              "install order/plan",
+              "dependency validation",
+              "installed registry",
+              "integrity/certification refs",
+              "enabled/running separation"
+            ],
+            "readonly_rule": "Monitor is read-only by default.",
+            "identity_rule": "Physical artifact, package, canonical module/resource and runtime instance identities remain distinct.",
+            "action_rule": "Install/remove/validate/enable/start operations invoke separate authorized canonical workflows.",
+            "authority_rule": "Viewing artifacts grants no install/load/execute authority.",
+            "trace_rule": "Every installed/error state retains source/package/dependency refs.",
+            "layout_rule": "Visual order never establishes install/source precedence.",
+            "failure_rule": "Missing/incompatible dependencies are shown explicitly with deterministic remediation where known."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_LIBRARY",
+            "child_ref": "TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_INSTALLATION",
+            "child_ref": "TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR",
+            "child_ref": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR",
+            "child_ref": "LIBRARY_INSTALL_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/editor/60_Library_Install_Monitor.json"
+      }
+    },
     {
       "id": "TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR",
       "name": "Library and Install Monitor",
-      "purpose": "Define a read-only Expose monitor for user/system libraries, discovery findings, install plans, dependency closure, installed-artifact registry and lifecycle state.",
-      "parent_topic_refs": [
-        "TOPIC_LIBRARY",
-        "TOPIC_INSTALLATION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT",
-        "LIBRARY_INSTALL_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define a read-only Expose monitor for user/system libraries, discovery findings, install plans, dependency closure, installed-artifact registry and lifecycle state.",
+            "metadata": {}
+          }
+        }
+      ]
     },
     {
       "id": "TOPIC_INSTALLATION",
       "name": "Installation",
-      "purpose": "Define grouping-only parent Topic identity TOPIC_INSTALLATION already referenced by 6 existing canonical child Topic reference occurrence(s).",
-      "parent_topic_refs": [],
-      "composed_topic_refs": [],
-      "member_refs": [],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {
-        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
-        "referencing_child_occurrences": 6,
-        "distinct_child_topics": 6,
-        "host_contract_ref": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT",
-        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
-        "placement_nonsemantic": true,
-        "ownership_nontransfer": true,
-        "new_parent_edges_added": 0
-      }
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_INSTALLATION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define grouping-only parent Topic identity TOPIC_INSTALLATION already referenced by 6 existing canonical child Topic reference occurrence(s).",
+            "metadata": {
+              "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+              "referencing_child_occurrences": 6,
+              "distinct_child_topics": 6,
+              "host_contract_ref": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT",
+              "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+              "placement_nonsemantic": true,
+              "ownership_nontransfer": true,
+              "new_parent_edges_added": 0
+            }
+          }
+        }
+      ]
     },
     {
       "id": "TOPIC_LIBRARY",
       "name": "Library",
-      "purpose": "Define grouping-only parent Topic identity TOPIC_LIBRARY already referenced by 6 existing canonical child Topic reference occurrence(s).",
-      "parent_topic_refs": [],
-      "composed_topic_refs": [],
-      "member_refs": [],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {
-        "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
-        "referencing_child_occurrences": 6,
-        "distinct_child_topics": 6,
-        "host_contract_ref": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT",
-        "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
-        "placement_nonsemantic": true,
-        "ownership_nontransfer": true,
-        "new_parent_edges_added": 0
-      }
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_LIBRARY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define grouping-only parent Topic identity TOPIC_LIBRARY already referenced by 6 existing canonical child Topic reference occurrence(s).",
+            "metadata": {
+              "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+              "referencing_child_occurrences": 6,
+              "distinct_child_topics": 6,
+              "host_contract_ref": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT",
+              "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+              "placement_nonsemantic": true,
+              "ownership_nontransfer": true,
+              "new_parent_edges_added": 0
+            }
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "views": [
-      "user/system library roots",
-      "discovered artifacts",
-      "duplicate/source conflicts",
-      "install order/plan",
-      "dependency validation",
-      "installed registry",
-      "integrity/certification refs",
-      "enabled/running separation"
-    ],
-    "readonly_rule": "Monitor is read-only by default.",
-    "identity_rule": "Physical artifact, package, canonical module/resource and runtime instance identities remain distinct.",
-    "action_rule": "Install/remove/validate/enable/start operations invoke separate authorized canonical workflows.",
-    "authority_rule": "Viewing artifacts grants no install/load/execute authority.",
-    "trace_rule": "Every installed/error state retains source/package/dependency refs.",
-    "layout_rule": "Visual order never establishes install/source precedence.",
-    "failure_rule": "Missing/incompatible dependencies are shown explicitly with deterministic remediation where known."
-  },
   "constraints": {
     "invariants": [
       {
@@ -176,6 +318,7 @@
       "purpose": "Monitor exposes dependency closure."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define a read-only Expose monitor for user/system libraries, discovery findings, install plans, dependency closure, installed-artifact registry and lifecycle state.",
     "notes": [
@@ -183,5 +326,123 @@
       "Pass 6 hosts grouping-only Topic TOPIC_INSTALLATION solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership.",
       "Pass 6 hosts grouping-only Topic TOPIC_LIBRARY solely to close an explicit existing parent_topic_ref; storage placement does not create semantic ownership."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXPOSE_LIBRARY_INSTALL_MONITOR",
+          "name": "Library and Install Monitor",
+          "purpose": "Define a read-only Expose monitor for user/system libraries, discovery findings, install plans, dependency closure, installed-artifact registry and lifecycle state.",
+          "parent_topic_refs": [
+            "TOPIC_LIBRARY",
+            "TOPIC_INSTALLATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT",
+            "LIBRARY_INSTALL_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        },
+        {
+          "id": "TOPIC_INSTALLATION",
+          "name": "Installation",
+          "purpose": "Define grouping-only parent Topic identity TOPIC_INSTALLATION already referenced by 6 existing canonical child Topic reference occurrence(s).",
+          "parent_topic_refs": [],
+          "composed_topic_refs": [],
+          "member_refs": [],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {
+            "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+            "referencing_child_occurrences": 6,
+            "distinct_child_topics": 6,
+            "host_contract_ref": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT",
+            "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+            "placement_nonsemantic": true,
+            "ownership_nontransfer": true,
+            "new_parent_edges_added": 0
+          }
+        },
+        {
+          "id": "TOPIC_LIBRARY",
+          "name": "Library",
+          "purpose": "Define grouping-only parent Topic identity TOPIC_LIBRARY already referenced by 6 existing canonical child Topic reference occurrence(s).",
+          "parent_topic_refs": [],
+          "composed_topic_refs": [],
+          "member_refs": [],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {
+            "reconciliation_origin": "materialized_from_existing_parent_topic_refs",
+            "referencing_child_occurrences": 6,
+            "distinct_child_topics": 6,
+            "host_contract_ref": "AIGMOS_EXPOSE_LIBRARY_INSTALL_MONITOR_CONTRACT",
+            "host_selection_rule": "storage-only: direct child contract with most references; lexical canonical-id tie-break",
+            "placement_nonsemantic": true,
+            "ownership_nontransfer": true,
+            "new_parent_edges_added": 0
+          }
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "views": [
+          "user/system library roots",
+          "discovered artifacts",
+          "duplicate/source conflicts",
+          "install order/plan",
+          "dependency validation",
+          "installed registry",
+          "integrity/certification refs",
+          "enabled/running separation"
+        ],
+        "readonly_rule": "Monitor is read-only by default.",
+        "identity_rule": "Physical artifact, package, canonical module/resource and runtime instance identities remain distinct.",
+        "action_rule": "Install/remove/validate/enable/start operations invoke separate authorized canonical workflows.",
+        "authority_rule": "Viewing artifacts grants no install/load/execute authority.",
+        "trace_rule": "Every installed/error state retains source/package/dependency refs.",
+        "layout_rule": "Visual order never establishes install/source precedence.",
+        "failure_rule": "Missing/incompatible dependencies are shown explicitly with deterministic remediation where known."
+      }
+    }
   }
 }

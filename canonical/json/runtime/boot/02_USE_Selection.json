@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_BOOT_USE_SELECTION_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define `use`/`user` selection semantics so when a restrictive selection list is present, only explicitly listed components plus valid required closure are candidates for activation.",
   "scope": {
     "owns": [
@@ -22,61 +21,196 @@
       "component runtime implementation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_BOOT_USE_SELECTION_CONTRACT",
+      "name": "Boot USE Selection",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_BOOT_USE_SELECTION_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "selectors": [
+              "use",
+              "user"
+            ],
+            "restrictive_rule": "If a restrictive `use` or `user` selection is present, unlisted optional components are excluded.",
+            "identity_rule": "Selections resolve exact component/capability identities.",
+            "group_rule": "Named groups/presets, if used, expand through explicit declared membership.",
+            "unknown_rule": "Unknown selectors hard-fail rather than fuzzy-match.",
+            "duplicate_rule": "Duplicate selectors normalize deterministically without creating duplicate runtime identities.",
+            "closure_rule": "Required dependency closure is validated separately and does not imply broad auto-enable.",
+            "authority_rule": "USE selection controls availability, not AccessCore authorization."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_BOOT_USE_SELECTION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_BOOT_USE_SELECTION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_BOOT_PROFILE",
+            "child_ref": "TOPIC_BOOT_USE_SELECTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_BOOT_USE_SELECTION_CONTRACT::LINK::TOPIC_PARENT_TOPIC_BOOT_USE_SELECTION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_ACTIVATION",
+            "child_ref": "TOPIC_BOOT_USE_SELECTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_BOOT_USE_SELECTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BOOT_USE_SELECTION_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BOOT_USE_SELECTION",
+            "child_ref": "AIGMOS_BOOT_USE_SELECTION_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_BOOT_USE_SELECTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BOOT_USE_SELECTION_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BOOT_USE_SELECTION",
+            "child_ref": "BOOT_PROFILE_EXPLICIT_SELECTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_BOOT_USE_SELECTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BOOT_USE_SELECTION_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BOOT_USE_SELECTION",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_BOOT_USE_SELECTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BOOT_USE_SELECTION_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BOOT_USE_SELECTION",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_BOOT_USE_SELECTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BOOT_USE_SELECTION_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BOOT_USE_SELECTION",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_BOOT_USE_SELECTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BOOT_USE_SELECTION_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BOOT_USE_SELECTION",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_BOOT_USE_SELECTION_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_BOOT_USE_SELECTION_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_BOOT_USE_SELECTION",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/boot/02_USE_Selection.json"
+      }
+    },
     {
       "id": "TOPIC_BOOT_USE_SELECTION",
       "name": "Boot USE Selection",
-      "purpose": "Define `use`/`user` selection semantics so when a restrictive selection list is present, only explicitly listed components plus valid required closure are candidates for activation.",
-      "parent_topic_refs": [
-        "TOPIC_BOOT_PROFILE",
-        "TOPIC_RUNTIME_ACTIVATION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_BOOT_USE_SELECTION_CONTRACT",
-        "BOOT_PROFILE_EXPLICIT_SELECTION",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_BOOT_USE_SELECTION::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define `use`/`user` selection semantics so when a restrictive selection list is present, only explicitly listed components plus valid required closure are candidates for activation.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "selectors": [
-      "use",
-      "user"
-    ],
-    "restrictive_rule": "If a restrictive `use` or `user` selection is present, unlisted optional components are excluded.",
-    "identity_rule": "Selections resolve exact component/capability identities.",
-    "group_rule": "Named groups/presets, if used, expand through explicit declared membership.",
-    "unknown_rule": "Unknown selectors hard-fail rather than fuzzy-match.",
-    "duplicate_rule": "Duplicate selectors normalize deterministically without creating duplicate runtime identities.",
-    "closure_rule": "Required dependency closure is validated separately and does not imply broad auto-enable.",
-    "authority_rule": "USE selection controls availability, not AccessCore authorization."
-  },
   "constraints": {
     "invariants": [
       {
@@ -119,10 +253,77 @@
       "purpose": "USE adds explicit capabilities from zero baseline."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define `use`/`user` selection semantics so when a restrictive selection list is present, only explicitly listed components plus valid required closure are candidates for activation.",
     "notes": [
       "Unlocked pending reconciliation against runtime activation, install dependency and instance configuration contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_BOOT_USE_SELECTION",
+          "name": "Boot USE Selection",
+          "purpose": "Define `use`/`user` selection semantics so when a restrictive selection list is present, only explicitly listed components plus valid required closure are candidates for activation.",
+          "parent_topic_refs": [
+            "TOPIC_BOOT_PROFILE",
+            "TOPIC_RUNTIME_ACTIVATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_BOOT_USE_SELECTION_CONTRACT",
+            "BOOT_PROFILE_EXPLICIT_SELECTION",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "selectors": [
+          "use",
+          "user"
+        ],
+        "restrictive_rule": "If a restrictive `use` or `user` selection is present, unlisted optional components are excluded.",
+        "identity_rule": "Selections resolve exact component/capability identities.",
+        "group_rule": "Named groups/presets, if used, expand through explicit declared membership.",
+        "unknown_rule": "Unknown selectors hard-fail rather than fuzzy-match.",
+        "duplicate_rule": "Duplicate selectors normalize deterministically without creating duplicate runtime identities.",
+        "closure_rule": "Required dependency closure is validated separately and does not imply broad auto-enable.",
+        "authority_rule": "USE selection controls availability, not AccessCore authorization."
+      }
+    }
   }
 }

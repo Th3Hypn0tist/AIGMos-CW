@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define explicit transaction boundaries for multi-write operations so all-or-nothing requirements, ordering and rollback behavior are declared rather than storage-engine assumptions.",
   "scope": {
     "owns": [
@@ -22,58 +21,193 @@
       "storage-engine implementation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT",
+      "name": "DWH Transaction and Atomicity",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "transaction_rule": "A multi-write operation declares whether it requires atomic transaction semantics.",
+            "identity_rule": "Each transaction has a distinct runtime transaction identity.",
+            "members_rule": "Transaction member writes reference exact write execution/target identities.",
+            "atomic_rule": "For atomic transactions, either the accepted mutation set commits as one unit or no member becomes accepted state.",
+            "ordering_rule": "Member ordering/dependencies are explicit where semantically relevant.",
+            "rollback_rule": "Rollback restores pre-transaction accepted state according to the transaction profile and does not erase execution/audit evidence.",
+            "external_rule": "Effects outside the transactional store are not claimed atomic unless an explicit distributed/compensation contract supports them.",
+            "failure_rule": "Partial commit in an atomic profile is a hard failure requiring explicit recovery state."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_TRANSACTION_ATOMICITY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_TRANSACTION_ATOMICITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_TRANSACTION_ATOMICITY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_MUTATION",
+            "child_ref": "TOPIC_DWH_TRANSACTION_ATOMICITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TRANSACTION_ATOMICITY_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TRANSACTION_ATOMICITY",
+            "child_ref": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TRANSACTION_ATOMICITY_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TRANSACTION_ATOMICITY",
+            "child_ref": "DWH_MUTATION_EXACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TRANSACTION_ATOMICITY_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TRANSACTION_ATOMICITY",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TRANSACTION_ATOMICITY_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TRANSACTION_ATOMICITY",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TRANSACTION_ATOMICITY_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TRANSACTION_ATOMICITY",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TRANSACTION_ATOMICITY_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TRANSACTION_ATOMICITY",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_TRANSACTION_ATOMICITY_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_TRANSACTION_ATOMICITY",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/write/02_Transaction_Atomicity.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_TRANSACTION_ATOMICITY",
       "name": "DWH Transaction and Atomicity",
-      "purpose": "Define explicit transaction boundaries for multi-write operations so all-or-nothing requirements, ordering and rollback behavior are declared rather than storage-engine assumptions.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_MUTATION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT",
-        "DWH_MUTATION_EXACT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_TRANSACTION_ATOMICITY::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define explicit transaction boundaries for multi-write operations so all-or-nothing requirements, ordering and rollback behavior are declared rather than storage-engine assumptions.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "transaction_rule": "A multi-write operation declares whether it requires atomic transaction semantics.",
-    "identity_rule": "Each transaction has a distinct runtime transaction identity.",
-    "members_rule": "Transaction member writes reference exact write execution/target identities.",
-    "atomic_rule": "For atomic transactions, either the accepted mutation set commits as one unit or no member becomes accepted state.",
-    "ordering_rule": "Member ordering/dependencies are explicit where semantically relevant.",
-    "rollback_rule": "Rollback restores pre-transaction accepted state according to the transaction profile and does not erase execution/audit evidence.",
-    "external_rule": "Effects outside the transactional store are not claimed atomic unless an explicit distributed/compensation contract supports them.",
-    "failure_rule": "Partial commit in an atomic profile is a hard failure requiring explicit recovery state."
-  },
   "constraints": {
     "invariants": [
       {
@@ -116,10 +250,74 @@
       "purpose": "Transactions group explicit writes."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define explicit transaction boundaries for multi-write operations so all-or-nothing requirements, ordering and rollback behavior are declared rather than storage-engine assumptions.",
     "notes": [
       "Unlocked pending reconciliation against DWH schema binding, lineage, AccessCore and canonical change-boundary contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_TRANSACTION_ATOMICITY",
+          "name": "DWH Transaction and Atomicity",
+          "purpose": "Define explicit transaction boundaries for multi-write operations so all-or-nothing requirements, ordering and rollback behavior are declared rather than storage-engine assumptions.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_MUTATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_TRANSACTION_ATOMICITY_CONTRACT",
+            "DWH_MUTATION_EXACT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "transaction_rule": "A multi-write operation declares whether it requires atomic transaction semantics.",
+        "identity_rule": "Each transaction has a distinct runtime transaction identity.",
+        "members_rule": "Transaction member writes reference exact write execution/target identities.",
+        "atomic_rule": "For atomic transactions, either the accepted mutation set commits as one unit or no member becomes accepted state.",
+        "ordering_rule": "Member ordering/dependencies are explicit where semantically relevant.",
+        "rollback_rule": "Rollback restores pre-transaction accepted state according to the transaction profile and does not erase execution/audit evidence.",
+        "external_rule": "Effects outside the transactional store are not claimed atomic unless an explicit distributed/compensation contract supports them.",
+        "failure_rule": "Partial commit in an atomic profile is a hard failure requiring explicit recovery state."
+      }
+    }
   }
 }

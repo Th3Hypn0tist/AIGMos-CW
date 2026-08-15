@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNTIME_RELOAD_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define reload as an explicit runtime lifecycle operation that re-resolves the intended accepted snapshot/configuration without treating filesystem changes as automatically active.",
   "scope": {
     "owns": [
@@ -22,57 +21,192 @@
       "AccessCore policy ownership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_RELOAD_CONTRACT",
+      "name": "Runtime Reload",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_RELOAD_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "reload_rule": "Reload is explicit; repository/file changes alone do not mutate live runtime semantics.",
+            "target_rule": "Reload target is the configured/current accepted snapshot or an explicitly named accepted snapshot according to operation semantics.",
+            "config_rule": "Applicable instance configuration is re-read through its canonical owner/binding.",
+            "dependency_rule": "Dependencies are revalidated; missing required dependencies hard-fail.",
+            "atomic_rule": "Reload commits a coherent new runtime state or preserves prior coherent state.",
+            "ac_rule": "`reload ac` activates/reloads AccessCore according to AC lifecycle contract; it is not a generic authorization bypass.",
+            "trace_rule": "Reload records old/new active snapshot/config refs and result."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_RELOAD_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_RELOAD_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME_ACTIVATION",
+            "child_ref": "TOPIC_RUNTIME_RELOAD",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_RELOAD_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_RELOAD_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_REPOSITORY_ACCEPTANCE",
+            "child_ref": "TOPIC_RUNTIME_RELOAD",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_RELOAD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_RELOAD_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_RELOAD",
+            "child_ref": "AIGMOS_RUNTIME_RELOAD_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_RELOAD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_RELOAD_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_RELOAD",
+            "child_ref": "ACCEPTANCE_ACTIVATION_SEPARATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_RELOAD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_RELOAD_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_RELOAD",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_RELOAD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_RELOAD_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_RELOAD",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_RELOAD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_RELOAD_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_RELOAD",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_RELOAD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_RELOAD_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_RELOAD",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_RELOAD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_RELOAD_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_RELOAD",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/02_Runtime_Reload.json"
+      }
+    },
     {
       "id": "TOPIC_RUNTIME_RELOAD",
       "name": "Runtime Reload",
-      "purpose": "Define reload as an explicit runtime lifecycle operation that re-resolves the intended accepted snapshot/configuration without treating filesystem changes as automatically active.",
-      "parent_topic_refs": [
-        "TOPIC_RUNTIME_ACTIVATION",
-        "TOPIC_REPOSITORY_ACCEPTANCE"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_RUNTIME_RELOAD_CONTRACT",
-        "ACCEPTANCE_ACTIVATION_SEPARATION",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_RELOAD::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define reload as an explicit runtime lifecycle operation that re-resolves the intended accepted snapshot/configuration without treating filesystem changes as automatically active.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "reload_rule": "Reload is explicit; repository/file changes alone do not mutate live runtime semantics.",
-    "target_rule": "Reload target is the configured/current accepted snapshot or an explicitly named accepted snapshot according to operation semantics.",
-    "config_rule": "Applicable instance configuration is re-read through its canonical owner/binding.",
-    "dependency_rule": "Dependencies are revalidated; missing required dependencies hard-fail.",
-    "atomic_rule": "Reload commits a coherent new runtime state or preserves prior coherent state.",
-    "ac_rule": "`reload ac` activates/reloads AccessCore according to AC lifecycle contract; it is not a generic authorization bypass.",
-    "trace_rule": "Reload records old/new active snapshot/config refs and result."
-  },
   "constraints": {
     "invariants": [
       {
@@ -115,10 +249,73 @@
       "purpose": "Reload follows the same coherent activation boundary."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define reload as an explicit runtime lifecycle operation that re-resolves the intended accepted snapshot/configuration without treating filesystem changes as automatically active.",
     "notes": [
       "Unlocked pending reconciliation against runtime lifecycle, repository acceptance and boot-profile contracts."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RUNTIME_RELOAD",
+          "name": "Runtime Reload",
+          "purpose": "Define reload as an explicit runtime lifecycle operation that re-resolves the intended accepted snapshot/configuration without treating filesystem changes as automatically active.",
+          "parent_topic_refs": [
+            "TOPIC_RUNTIME_ACTIVATION",
+            "TOPIC_REPOSITORY_ACCEPTANCE"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_RUNTIME_RELOAD_CONTRACT",
+            "ACCEPTANCE_ACTIVATION_SEPARATION",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "reload_rule": "Reload is explicit; repository/file changes alone do not mutate live runtime semantics.",
+        "target_rule": "Reload target is the configured/current accepted snapshot or an explicitly named accepted snapshot according to operation semantics.",
+        "config_rule": "Applicable instance configuration is re-read through its canonical owner/binding.",
+        "dependency_rule": "Dependencies are revalidated; missing required dependencies hard-fail.",
+        "atomic_rule": "Reload commits a coherent new runtime state or preserves prior coherent state.",
+        "ac_rule": "`reload ac` activates/reloads AccessCore according to AC lifecycle contract; it is not a generic authorization bypass.",
+        "trace_rule": "Reload records old/new active snapshot/config refs and result."
+      }
+    }
   }
 }

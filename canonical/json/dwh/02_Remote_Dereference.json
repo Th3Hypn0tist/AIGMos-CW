@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DWH_REMOTE_DEREFERENCE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define governed remote dereference through the DWH remote marker/address path, e.g. `#DWH:>warehouse:lights`, rather than direct external endpoint access when AccessCore is active.",
   "scope": {
     "owns": [
@@ -22,58 +21,193 @@
       "transport identity"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DWH_REMOTE_DEREFERENCE_CONTRACT",
+      "name": "DWH Remote Dereference",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DWH_REMOTE_DEREFERENCE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "marker": ">",
+            "example": "#DWH:>warehouse:lights",
+            "resolution_rule": "Remote marker resolves an explicit EXT endpoint identity and declared remote data binding.",
+            "ac_rule": "With AccessCore active, governed remote dereference passes through DWH and remote authorization evaluation.",
+            "direct_rule": "Direct `$EXT` dereference is disallowed for governed data access while AC is active.",
+            "identity_rule": "Remote object/data identity remains owned by its origin/remote schema.",
+            "readonly_rule": "Read-only external defaults remain enforced unless explicit remote mutation policy exists.",
+            "failure_rule": "Unresolved endpoint/binding/authorization fails closed."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_DEREFERENCE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_REMOTE_DEREFERENCE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DWH",
+            "child_ref": "TOPIC_DWH_REMOTE_DEREFERENCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_DEREFERENCE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DWH_REMOTE_DEREFERENCE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_REMOTE_DATA",
+            "child_ref": "TOPIC_DWH_REMOTE_DEREFERENCE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_DEREFERENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_DEREFERENCE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_DEREFERENCE",
+            "child_ref": "AIGMOS_DWH_REMOTE_DEREFERENCE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_DEREFERENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_DEREFERENCE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_DEREFERENCE",
+            "child_ref": "DWH_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_DEREFERENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_DEREFERENCE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_DEREFERENCE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_DEREFERENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_DEREFERENCE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_DEREFERENCE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_DEREFERENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_DEREFERENCE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_DEREFERENCE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_DEREFERENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_DEREFERENCE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_DEREFERENCE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DWH_REMOTE_DEREFERENCE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DWH_REMOTE_DEREFERENCE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DWH_REMOTE_DEREFERENCE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/dwh/02_Remote_Dereference.json"
+      }
+    },
     {
       "id": "TOPIC_DWH_REMOTE_DEREFERENCE",
       "name": "DWH Remote Dereference",
-      "purpose": "Define governed remote dereference through the DWH remote marker/address path, e.g. `#DWH:>warehouse:lights`, rather than direct external endpoint access when AccessCore is active.",
-      "parent_topic_refs": [
-        "TOPIC_DWH",
-        "TOPIC_REMOTE_DATA"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DWH_REMOTE_DEREFERENCE_CONTRACT",
-        "DWH_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DWH_REMOTE_DEREFERENCE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define governed remote dereference through the DWH remote marker/address path, e.g. `#DWH:>warehouse:lights`, rather than direct external endpoint access when AccessCore is active.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "marker": ">",
-    "example": "#DWH:>warehouse:lights",
-    "resolution_rule": "Remote marker resolves an explicit EXT endpoint identity and declared remote data binding.",
-    "ac_rule": "With AccessCore active, governed remote dereference passes through DWH and remote authorization evaluation.",
-    "direct_rule": "Direct `$EXT` dereference is disallowed for governed data access while AC is active.",
-    "identity_rule": "Remote object/data identity remains owned by its origin/remote schema.",
-    "readonly_rule": "Read-only external defaults remain enforced unless explicit remote mutation policy exists.",
-    "failure_rule": "Unresolved endpoint/binding/authorization fails closed."
-  },
   "constraints": {
     "invariants": [
       {
@@ -121,10 +255,74 @@
       "purpose": "Remote target evaluates authorization."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define governed remote dereference through the DWH remote marker/address path, e.g. `#DWH:>warehouse:lights`, rather than direct external endpoint access when AccessCore is active.",
     "notes": [
       "Unlocked pending reconciliation against existing DWH/EXT/WebRTC/AccessCore contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DWH_REMOTE_DEREFERENCE",
+          "name": "DWH Remote Dereference",
+          "purpose": "Define governed remote dereference through the DWH remote marker/address path, e.g. `#DWH:>warehouse:lights`, rather than direct external endpoint access when AccessCore is active.",
+          "parent_topic_refs": [
+            "TOPIC_DWH",
+            "TOPIC_REMOTE_DATA"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DWH_REMOTE_DEREFERENCE_CONTRACT",
+            "DWH_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "marker": ">",
+        "example": "#DWH:>warehouse:lights",
+        "resolution_rule": "Remote marker resolves an explicit EXT endpoint identity and declared remote data binding.",
+        "ac_rule": "With AccessCore active, governed remote dereference passes through DWH and remote authorization evaluation.",
+        "direct_rule": "Direct `$EXT` dereference is disallowed for governed data access while AC is active.",
+        "identity_rule": "Remote object/data identity remains owned by its origin/remote schema.",
+        "readonly_rule": "Read-only external defaults remain enforced unless explicit remote mutation policy exists.",
+        "failure_rule": "Unresolved endpoint/binding/authorization fails closed."
+      }
+    }
   }
 }

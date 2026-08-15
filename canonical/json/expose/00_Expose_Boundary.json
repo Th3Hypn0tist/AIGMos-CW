@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define Expose as the human/web-facing architecture over existing AIGMos canonical/runtime semantics, without creating a parallel backend or privileged execution path.",
   "scope": {
     "owns": [
@@ -21,105 +20,281 @@
       "unrelated domain semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT",
+      "name": "Expose Boundary",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT::OPERATIONS::OP_EXPOSE_PROJECT",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_EXPOSE_PROJECT",
+            "name": "Project canonical semantics to human-facing surface",
+            "inputs": [
+              "canonical/runtime refs",
+              "Expose view composition"
+            ],
+            "outputs": [
+              "human-facing projection"
+            ],
+            "errors": [
+              "source unresolved"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT::OPERATIONS::OP_EXPOSE_INVOKE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_EXPOSE_INVOKE",
+            "name": "Invoke canonical operation from Expose",
+            "inputs": [
+              "operation_ref",
+              "validated UI input"
+            ],
+            "outputs": [
+              "canonical operation result"
+            ],
+            "errors": [
+              "authority denied",
+              "operation unresolved"
+            ],
+            "side_effects": [
+              "only effects of invoked operation"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "scope": [
+              "Web Base",
+              "Elements",
+              "nanoCMS",
+              "MetaModules",
+              "Editor",
+              "assets/style",
+              "web-facing protocol bindings"
+            ],
+            "backend_rule": "Expose is not a parallel backend/runtime.",
+            "read_rule": "Reads are projections over canonical/runtime sources.",
+            "write_rule": "Writes invoke explicit canonical operations owned elsewhere.",
+            "authority_rule": "UI visibility or control presence does not grant authority.",
+            "protocol_rule": "REST/OSC/WebSocket/web bindings expose existing operations and data; they do not redefine semantics.",
+            "meta_visibility_rule": "Meta is not under Expose unless a MetaModule has an exposed human-facing surface."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE",
+            "child_ref": "TOPIC_EXPOSE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "EXPOSE_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_CORE_PROJECTION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_RUNTIME_EXP",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_EXPOSE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_RUNTIME_REST",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[2]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/00_Expose_Boundary.json"
+      }
+    },
     {
       "id": "TOPIC_EXPOSE",
       "name": "Expose",
-      "purpose": "Define Expose as the human/web-facing architecture over existing AIGMos canonical/runtime semantics, without creating a parallel backend or privileged execution path.",
-      "parent_topic_refs": [
-        "TOPIC_CORE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_PROJECTION",
-        "TOPIC_RUNTIME_EXP",
-        "TOPIC_RUNTIME_REST"
-      ],
-      "member_refs": [
-        "AIGMOS_EXPOSE_BOUNDARY_CONTRACT",
-        "EXPOSE_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_EXPOSE_PROJECT",
-        "OP_EXPOSE_INVOKE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define Expose as the human/web-facing architecture over existing AIGMos canonical/runtime semantics, without creating a parallel backend or privileged execution path.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_EXPOSE_PROJECT",
-        "name": "Project canonical semantics to human-facing surface",
-        "inputs": [
-          "canonical/runtime refs",
-          "Expose view composition"
-        ],
-        "outputs": [
-          "human-facing projection"
-        ],
-        "errors": [
-          "source unresolved"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_EXPOSE_INVOKE",
-        "name": "Invoke canonical operation from Expose",
-        "inputs": [
-          "operation_ref",
-          "validated UI input"
-        ],
-        "outputs": [
-          "canonical operation result"
-        ],
-        "errors": [
-          "authority denied",
-          "operation unresolved"
-        ],
-        "side_effects": [
-          "only effects of invoked operation"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "scope": [
-      "Web Base",
-      "Elements",
-      "nanoCMS",
-      "MetaModules",
-      "Editor",
-      "assets/style",
-      "web-facing protocol bindings"
-    ],
-    "backend_rule": "Expose is not a parallel backend/runtime.",
-    "read_rule": "Reads are projections over canonical/runtime sources.",
-    "write_rule": "Writes invoke explicit canonical operations owned elsewhere.",
-    "authority_rule": "UI visibility or control presence does not grant authority.",
-    "protocol_rule": "REST/OSC/WebSocket/web bindings expose existing operations and data; they do not redefine semantics.",
-    "meta_visibility_rule": "Meta is not under Expose unless a MetaModule has an exposed human-facing surface."
-  },
   "constraints": {
     "invariants": [
       {
@@ -167,10 +342,131 @@
       "purpose": "UserModule exposure reuses canonical runtime surfaces."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_EXPOSE_BOUNDARY_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_EXPOSE",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_EXPOSE",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define Expose as the human/web-facing architecture over existing AIGMos canonical/runtime semantics, without creating a parallel backend or privileged execution path.",
     "notes": [
       "Unlocked until reconciled against existing Expose/nanoCMS/Meta contracts and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXPOSE",
+          "name": "Expose",
+          "purpose": "Define Expose as the human/web-facing architecture over existing AIGMos canonical/runtime semantics, without creating a parallel backend or privileged execution path.",
+          "parent_topic_refs": [
+            "TOPIC_CORE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_PROJECTION",
+            "TOPIC_RUNTIME_EXP",
+            "TOPIC_RUNTIME_REST"
+          ],
+          "member_refs": [
+            "AIGMOS_EXPOSE_BOUNDARY_CONTRACT",
+            "EXPOSE_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_EXPOSE_PROJECT",
+            "OP_EXPOSE_INVOKE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_EXPOSE_PROJECT",
+            "name": "Project canonical semantics to human-facing surface",
+            "inputs": [
+              "canonical/runtime refs",
+              "Expose view composition"
+            ],
+            "outputs": [
+              "human-facing projection"
+            ],
+            "errors": [
+              "source unresolved"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_EXPOSE_INVOKE",
+            "name": "Invoke canonical operation from Expose",
+            "inputs": [
+              "operation_ref",
+              "validated UI input"
+            ],
+            "outputs": [
+              "canonical operation result"
+            ],
+            "errors": [
+              "authority denied",
+              "operation unresolved"
+            ],
+            "side_effects": [
+              "only effects of invoked operation"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "scope": [
+          "Web Base",
+          "Elements",
+          "nanoCMS",
+          "MetaModules",
+          "Editor",
+          "assets/style",
+          "web-facing protocol bindings"
+        ],
+        "backend_rule": "Expose is not a parallel backend/runtime.",
+        "read_rule": "Reads are projections over canonical/runtime sources.",
+        "write_rule": "Writes invoke explicit canonical operations owned elsewhere.",
+        "authority_rule": "UI visibility or control presence does not grant authority.",
+        "protocol_rule": "REST/OSC/WebSocket/web bindings expose existing operations and data; they do not redefine semantics.",
+        "meta_visibility_rule": "Meta is not under Expose unless a MetaModule has an exposed human-facing surface."
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define the immutable record that promotes one approved canonical snapshot to a named/versioned release while preserving approval, evidence, predecessor and distribution references.",
   "scope": {
     "owns": [
@@ -22,62 +21,183 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT",
+      "name": "Canonical Release Record",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "required": [
+              "release_id",
+              "release_version",
+              "snapshot_ref",
+              "approval_ref",
+              "evidence_ref",
+              "released_at"
+            ],
+            "predecessor_rule": "Release records predecessor release/snapshot when applicable.",
+            "version_rule": "Release version labels the released snapshot; it does not redefine contract identities.",
+            "distribution_rule": "Release may reference one or more physical distribution packages/hashes.",
+            "immutability_rule": "Published release record is immutable; correction creates a superseding record/release according to policy.",
+            "authority_rule": "Release publication does not grant runtime authority."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RELEASE_RECORD_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RELEASE_SNAPSHOT",
+            "child_ref": "TOPIC_RELEASE_RECORD",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RELEASE_RECORD_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DISTRIBUTION_PACKAGE",
+            "child_ref": "TOPIC_RELEASE_RECORD",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RELEASE_RECORD_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RELEASE_RECORD",
+            "child_ref": "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RELEASE_RECORD_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RELEASE_RECORD",
+            "child_ref": "RELEASE_TRACEABILITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RELEASE_RECORD_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RELEASE_RECORD",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RELEASE_RECORD_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RELEASE_RECORD",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RELEASE_RECORD_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RELEASE_RECORD",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RELEASE_RECORD_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RELEASE_RECORD",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/release/01_Release_Record.json"
+      }
+    },
     {
       "id": "TOPIC_RELEASE_RECORD",
       "name": "Canonical Release Record",
-      "purpose": "Define the immutable record that promotes one approved canonical snapshot to a named/versioned release while preserving approval, evidence, predecessor and distribution references.",
-      "parent_topic_refs": [
-        "TOPIC_RELEASE_SNAPSHOT",
-        "TOPIC_DISTRIBUTION_PACKAGE"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT",
-        "RELEASE_TRACEABILITY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RELEASE_RECORD::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define the immutable record that promotes one approved canonical snapshot to a named/versioned release while preserving approval, evidence, predecessor and distribution references.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "required": [
-      "release_id",
-      "release_version",
-      "snapshot_ref",
-      "approval_ref",
-      "evidence_ref",
-      "released_at"
-    ],
-    "predecessor_rule": "Release records predecessor release/snapshot when applicable.",
-    "version_rule": "Release version labels the released snapshot; it does not redefine contract identities.",
-    "distribution_rule": "Release may reference one or more physical distribution packages/hashes.",
-    "immutability_rule": "Published release record is immutable; correction creates a superseding record/release according to policy.",
-    "authority_rule": "Release publication does not grant runtime authority."
-  },
   "constraints": {
     "invariants": [
       {
@@ -120,10 +240,78 @@
       "purpose": "Snapshot must be explicitly approved."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define the immutable record that promotes one approved canonical snapshot to a named/versioned release while preserving approval, evidence, predecessor and distribution references.",
     "notes": [
       "Unlocked pending reconciliation against the assembled 1.4 release/migration tree and whole-tree validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RELEASE_RECORD",
+          "name": "Canonical Release Record",
+          "purpose": "Define the immutable record that promotes one approved canonical snapshot to a named/versioned release while preserving approval, evidence, predecessor and distribution references.",
+          "parent_topic_refs": [
+            "TOPIC_RELEASE_SNAPSHOT",
+            "TOPIC_DISTRIBUTION_PACKAGE"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_CANONICAL_RELEASE_RECORD_CONTRACT",
+            "RELEASE_TRACEABILITY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "required": [
+          "release_id",
+          "release_version",
+          "snapshot_ref",
+          "approval_ref",
+          "evidence_ref",
+          "released_at"
+        ],
+        "predecessor_rule": "Release records predecessor release/snapshot when applicable.",
+        "version_rule": "Release version labels the released snapshot; it does not redefine contract identities.",
+        "distribution_rule": "Release may reference one or more physical distribution packages/hashes.",
+        "immutability_rule": "Published release record is immutable; correction creates a superseding record/release according to policy.",
+        "authority_rule": "Release publication does not grant runtime authority."
+      }
+    }
   }
 }

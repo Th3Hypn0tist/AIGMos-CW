@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define alias-scoped q/qc/qt runtime queue identity, FIFO semantics and explicit q priority without conflating queue order with generic canonical array ordering.",
   "scope": {
     "owns": [
@@ -21,114 +20,284 @@
       "projection semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT",
+      "name": "Runtime Queue Profiles",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT::OPERATIONS::OP_QUEUE_RESOLVE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_QUEUE_RESOLVE",
+            "name": "Resolve queue identity",
+            "inputs": [
+              "resolved backend alias",
+              "queue profile"
+            ],
+            "outputs": [
+              "queue identity"
+            ],
+            "errors": [
+              "queue profile unresolved"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT::OPERATIONS::OP_QUEUE_ENQUEUE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_QUEUE_ENQUEUE",
+            "name": "Enqueue job",
+            "inputs": [
+              "validated job",
+              "queue identity",
+              "priority semantics"
+            ],
+            "outputs": [
+              "queued job"
+            ],
+            "errors": [
+              "queue full"
+            ],
+            "side_effects": [
+              "queue state updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT::OPERATIONS::OP_QUEUE_SCHEDULE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_QUEUE_SCHEDULE",
+            "name": "Schedule next queue job",
+            "inputs": [
+              "queue state"
+            ],
+            "outputs": [
+              "next job"
+            ],
+            "errors": [],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "queue_key": "resolved backend alias",
+            "default_members": [
+              "q",
+              "qc",
+              "qt"
+            ],
+            "same_alias_share_queue": true,
+            "different_aliases_independent": true,
+            "ordering": "FIFO except explicit q non-preemptive priority within the same queue",
+            "q_priority": "q may be selected ahead of waiting qc/qt jobs but does not preempt a job already executing",
+            "tool_loop_default_max_rounds": 3,
+            "canonical_ordering_boundary": "Queue scheduling order is runtime semantic state, not JSON-array ordering semantics."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_QUEUE_PROFILES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME_QUEUE",
+            "child_ref": "TOPIC_RUNTIME_QUEUE_PROFILES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_QUEUE_PROFILES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_QUEUE_PROFILES",
+            "child_ref": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_QUEUE_PROFILES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_QUEUE_PROFILES",
+            "child_ref": "RUNTIME_SEMANTICS_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_QUEUE_PROFILES_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_QUEUE_PROFILES",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_QUEUE_PROFILES_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_QUEUE_PROFILES",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_QUEUE_PROFILES_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_QUEUE_PROFILES",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_QUEUE_PROFILES_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_QUEUE_PROFILES",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_QUEUE_PROFILES_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_QUEUE_PROFILES",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_QUEUE_PROFILES_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_QUEUE_PROFILES",
+            "child_ref": "TOPIC_CORE_ORDERING",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_QUEUE_PROFILES_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_QUEUE_PROFILES",
+            "child_ref": "TOPIC_CORE_BOUNDED_OPERATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/queue/00_Runtime_Queue_Profiles.json"
+      }
+    },
     {
       "id": "TOPIC_RUNTIME_QUEUE_PROFILES",
       "name": "Queue Profiles",
-      "purpose": "Define alias-scoped q/qc/qt runtime queue identity, FIFO semantics and explicit q priority without conflating queue order with generic canonical array ordering.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME_QUEUE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_ORDERING",
-        "TOPIC_CORE_BOUNDED_OPERATION"
-      ],
-      "member_refs": [
-        "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT",
-        "RUNTIME_SEMANTICS_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_QUEUE_RESOLVE",
-        "OP_QUEUE_ENQUEUE",
-        "OP_QUEUE_SCHEDULE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_QUEUE_PROFILES::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define alias-scoped q/qc/qt runtime queue identity, FIFO semantics and explicit q priority without conflating queue order with generic canonical array ordering.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_QUEUE_RESOLVE",
-        "name": "Resolve queue identity",
-        "inputs": [
-          "resolved backend alias",
-          "queue profile"
-        ],
-        "outputs": [
-          "queue identity"
-        ],
-        "errors": [
-          "queue profile unresolved"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_QUEUE_ENQUEUE",
-        "name": "Enqueue job",
-        "inputs": [
-          "validated job",
-          "queue identity",
-          "priority semantics"
-        ],
-        "outputs": [
-          "queued job"
-        ],
-        "errors": [
-          "queue full"
-        ],
-        "side_effects": [
-          "queue state updated"
-        ]
-      },
-      {
-        "id": "OP_QUEUE_SCHEDULE",
-        "name": "Schedule next queue job",
-        "inputs": [
-          "queue state"
-        ],
-        "outputs": [
-          "next job"
-        ],
-        "errors": [],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "queue_key": "resolved backend alias",
-    "default_members": [
-      "q",
-      "qc",
-      "qt"
-    ],
-    "same_alias_share_queue": true,
-    "different_aliases_independent": true,
-    "ordering": "FIFO except explicit q non-preemptive priority within the same queue",
-    "q_priority": "q may be selected ahead of waiting qc/qt jobs but does not preempt a job already executing",
-    "tool_loop_default_max_rounds": 3,
-    "canonical_ordering_boundary": "Queue scheduling order is runtime semantic state, not JSON-array ordering semantics."
-  },
   "constraints": {
     "invariants": [
       {
@@ -176,10 +345,140 @@
       "purpose": "Queue depth/tool loops are bounded."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_QUEUE_PROFILES",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_QUEUE_PROFILES",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define alias-scoped q/qc/qt runtime queue identity, FIFO semantics and explicit q priority without conflating queue order with generic canonical array ordering.",
     "notes": [
       "Unlocked until reconciled against the existing runtime contracts and repository-wide 1.4 traceability validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RUNTIME_QUEUE_PROFILES",
+          "name": "Queue Profiles",
+          "purpose": "Define alias-scoped q/qc/qt runtime queue identity, FIFO semantics and explicit q priority without conflating queue order with generic canonical array ordering.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME_QUEUE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_ORDERING",
+            "TOPIC_CORE_BOUNDED_OPERATION"
+          ],
+          "member_refs": [
+            "AIGMOS_RUNTIME_QUEUE_PROFILE_CONTRACT",
+            "RUNTIME_SEMANTICS_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_QUEUE_RESOLVE",
+            "OP_QUEUE_ENQUEUE",
+            "OP_QUEUE_SCHEDULE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_QUEUE_RESOLVE",
+            "name": "Resolve queue identity",
+            "inputs": [
+              "resolved backend alias",
+              "queue profile"
+            ],
+            "outputs": [
+              "queue identity"
+            ],
+            "errors": [
+              "queue profile unresolved"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_QUEUE_ENQUEUE",
+            "name": "Enqueue job",
+            "inputs": [
+              "validated job",
+              "queue identity",
+              "priority semantics"
+            ],
+            "outputs": [
+              "queued job"
+            ],
+            "errors": [
+              "queue full"
+            ],
+            "side_effects": [
+              "queue state updated"
+            ]
+          },
+          {
+            "id": "OP_QUEUE_SCHEDULE",
+            "name": "Schedule next queue job",
+            "inputs": [
+              "queue state"
+            ],
+            "outputs": [
+              "next job"
+            ],
+            "errors": [],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "queue_key": "resolved backend alias",
+        "default_members": [
+          "q",
+          "qc",
+          "qt"
+        ],
+        "same_alias_share_queue": true,
+        "different_aliases_independent": true,
+        "ordering": "FIFO except explicit q non-preemptive priority within the same queue",
+        "q_priority": "q may be selected ahead of waiting qc/qt jobs but does not preempt a job already executing",
+        "tool_loop_default_max_rounds": 3,
+        "canonical_ordering_boundary": "Queue scheduling order is runtime semantic state, not JSON-array ordering semantics."
+      }
+    }
   }
 }

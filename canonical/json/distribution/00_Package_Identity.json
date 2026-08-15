@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define distributable canonical packages as explicit immutable snapshots of selected canonical identities and physical source artifacts, without using archive filenames or paths as semantic identity.",
   "scope": {
     "owns": [
@@ -22,91 +21,226 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT",
+      "name": "Distribution Package Identity",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT::OPERATIONS::OP_PACKAGE_BUILD",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_PACKAGE_BUILD",
+            "name": "Build canonical package",
+            "inputs": [
+              "explicit canonical source set",
+              "package metadata"
+            ],
+            "outputs": [
+              "package artifact"
+            ],
+            "errors": [
+              "source unresolved",
+              "duplicate member"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT::OPERATIONS::OP_PACKAGE_VALIDATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_PACKAGE_VALIDATE",
+            "name": "Validate package contents",
+            "inputs": [
+              "package",
+              "repository manifest"
+            ],
+            "outputs": [
+              "valid package membership"
+            ],
+            "errors": [
+              "missing member",
+              "unexpected active member"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "package_rule": "Package identity is explicit metadata separate from archive filename.",
+            "membership_rule": "Package membership is explicit and traceable to canonical identities/source artifacts.",
+            "snapshot_rule": "A package represents a specific assembled snapshot.",
+            "source_rule": "Packaging does not change semantic ownership/source roles.",
+            "path_rule": "Archive path and filename are storage/distribution details only.",
+            "rebuild_rule": "Rebuilding the same semantic package must produce an explicitly comparable package manifest."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT::LINK::TOPIC_PARENT_TOPIC_DISTRIBUTION_PACKAGE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_REPOSITORY_MANIFEST",
+            "child_ref": "TOPIC_DISTRIBUTION_PACKAGE",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DISTRIBUTION_PACKAGE_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DISTRIBUTION_PACKAGE",
+            "child_ref": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DISTRIBUTION_PACKAGE_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DISTRIBUTION_PACKAGE",
+            "child_ref": "DISTRIBUTION_NONAUTHORITY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DISTRIBUTION_PACKAGE_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DISTRIBUTION_PACKAGE",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DISTRIBUTION_PACKAGE_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DISTRIBUTION_PACKAGE",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DISTRIBUTION_PACKAGE_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DISTRIBUTION_PACKAGE",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DISTRIBUTION_PACKAGE_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DISTRIBUTION_PACKAGE",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_DISTRIBUTION_PACKAGE_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_DISTRIBUTION_PACKAGE",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/distribution/00_Package_Identity.json"
+      }
+    },
     {
       "id": "TOPIC_DISTRIBUTION_PACKAGE",
       "name": "Package Identity",
-      "purpose": "Define distributable canonical packages as explicit immutable snapshots of selected canonical identities and physical source artifacts, without using archive filenames or paths as semantic identity.",
-      "parent_topic_refs": [
-        "TOPIC_REPOSITORY_MANIFEST"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT",
-        "DISTRIBUTION_NONAUTHORITY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_PACKAGE_BUILD",
-        "OP_PACKAGE_VALIDATE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_DISTRIBUTION_PACKAGE::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define distributable canonical packages as explicit immutable snapshots of selected canonical identities and physical source artifacts, without using archive filenames or paths as semantic identity.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_PACKAGE_BUILD",
-        "name": "Build canonical package",
-        "inputs": [
-          "explicit canonical source set",
-          "package metadata"
-        ],
-        "outputs": [
-          "package artifact"
-        ],
-        "errors": [
-          "source unresolved",
-          "duplicate member"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_PACKAGE_VALIDATE",
-        "name": "Validate package contents",
-        "inputs": [
-          "package",
-          "repository manifest"
-        ],
-        "outputs": [
-          "valid package membership"
-        ],
-        "errors": [
-          "missing member",
-          "unexpected active member"
-        ],
-        "side_effects": []
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "package_rule": "Package identity is explicit metadata separate from archive filename.",
-    "membership_rule": "Package membership is explicit and traceable to canonical identities/source artifacts.",
-    "snapshot_rule": "A package represents a specific assembled snapshot.",
-    "source_rule": "Packaging does not change semantic ownership/source roles.",
-    "path_rule": "Archive path and filename are storage/distribution details only.",
-    "rebuild_rule": "Rebuilding the same semantic package must produce an explicitly comparable package manifest."
-  },
   "constraints": {
     "invariants": [
       {
@@ -149,10 +283,117 @@
       "purpose": "Package membership derives from explicit repository inventory."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_DISTRIBUTION_PACKAGE",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_DISTRIBUTION_PACKAGE",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define distributable canonical packages as explicit immutable snapshots of selected canonical identities and physical source artifacts, without using archive filenames or paths as semantic identity.",
     "notes": [
       "Unlocked until reconciled against the assembled 1.4 tree and distribution/certification validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_DISTRIBUTION_PACKAGE",
+          "name": "Package Identity",
+          "purpose": "Define distributable canonical packages as explicit immutable snapshots of selected canonical identities and physical source artifacts, without using archive filenames or paths as semantic identity.",
+          "parent_topic_refs": [
+            "TOPIC_REPOSITORY_MANIFEST"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_DISTRIBUTION_PACKAGE_IDENTITY_CONTRACT",
+            "DISTRIBUTION_NONAUTHORITY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_PACKAGE_BUILD",
+            "OP_PACKAGE_VALIDATE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_PACKAGE_BUILD",
+            "name": "Build canonical package",
+            "inputs": [
+              "explicit canonical source set",
+              "package metadata"
+            ],
+            "outputs": [
+              "package artifact"
+            ],
+            "errors": [
+              "source unresolved",
+              "duplicate member"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_PACKAGE_VALIDATE",
+            "name": "Validate package contents",
+            "inputs": [
+              "package",
+              "repository manifest"
+            ],
+            "outputs": [
+              "valid package membership"
+            ],
+            "errors": [
+              "missing member",
+              "unexpected active member"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "package_rule": "Package identity is explicit metadata separate from archive filename.",
+        "membership_rule": "Package membership is explicit and traceable to canonical identities/source artifacts.",
+        "snapshot_rule": "A package represents a specific assembled snapshot.",
+        "source_rule": "Packaging does not change semantic ownership/source roles.",
+        "path_rule": "Archive path and filename are storage/distribution details only.",
+        "rebuild_rule": "Rebuilding the same semantic package must produce an explicitly comparable package manifest."
+      }
+    }
   }
 }

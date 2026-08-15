@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define deterministic fallback when a requested translation is missing, while keeping fallback behavior visible and preventing silent substitution of machine identifiers as UI text.",
   "scope": {
     "owns": [
@@ -22,61 +21,196 @@
       "domain semantics outside label presentation"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT",
+      "name": "Localization Fallback",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "fallback_order": [
+              "requested language",
+              "configured fallback language",
+              "source label text"
+            ],
+            "default_fallback": "en where configured as UI fallback; exact deployment policy remains explicit",
+            "missing_rule": "Missing translation is detectable and reportable.",
+            "identifier_rule": "Canonical machine IDs/commands are not used as fallback UI text unless the UI explicitly requests raw identifier display.",
+            "runtime_rule": "Fallback affects presentation only.",
+            "trace_rule": "Rendered localized value can report which fallback level produced it.",
+            "lock_rule": "Required production localization completeness may be a release gate per product/deployment policy."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT::LINK::TOPIC_PARENT_TOPIC_LOCALIZATION_FALLBACK_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_LOCALIZATION_FALLBACK",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT::LINK::TOPIC_PARENT_TOPIC_LOCALIZATION_FALLBACK_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_DOCUMENTATION_HUMAN",
+            "child_ref": "TOPIC_LOCALIZATION_FALLBACK",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LOCALIZATION_FALLBACK_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LOCALIZATION_FALLBACK",
+            "child_ref": "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LOCALIZATION_FALLBACK_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LOCALIZATION_FALLBACK",
+            "child_ref": "LOCALIZATION_PRESENTATION_ONLY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LOCALIZATION_FALLBACK_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LOCALIZATION_FALLBACK",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LOCALIZATION_FALLBACK_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LOCALIZATION_FALLBACK",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LOCALIZATION_FALLBACK_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LOCALIZATION_FALLBACK",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LOCALIZATION_FALLBACK_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LOCALIZATION_FALLBACK",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_LOCALIZATION_FALLBACK_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_LOCALIZATION_FALLBACK",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/localization/03_Localization_Fallback.json"
+      }
+    },
     {
       "id": "TOPIC_LOCALIZATION_FALLBACK",
       "name": "Localization Fallback",
-      "purpose": "Define deterministic fallback when a requested translation is missing, while keeping fallback behavior visible and preventing silent substitution of machine identifiers as UI text.",
-      "parent_topic_refs": [
-        "TOPIC_EXPOSE",
-        "TOPIC_DOCUMENTATION_HUMAN"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT",
-        "LOCALIZATION_PRESENTATION_ONLY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_LOCALIZATION_FALLBACK::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define deterministic fallback when a requested translation is missing, while keeping fallback behavior visible and preventing silent substitution of machine identifiers as UI text.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "fallback_order": [
-      "requested language",
-      "configured fallback language",
-      "source label text"
-    ],
-    "default_fallback": "en where configured as UI fallback; exact deployment policy remains explicit",
-    "missing_rule": "Missing translation is detectable and reportable.",
-    "identifier_rule": "Canonical machine IDs/commands are not used as fallback UI text unless the UI explicitly requests raw identifier display.",
-    "runtime_rule": "Fallback affects presentation only.",
-    "trace_rule": "Rendered localized value can report which fallback level produced it.",
-    "lock_rule": "Required production localization completeness may be a release gate per product/deployment policy."
-  },
   "constraints": {
     "invariants": [
       {
@@ -119,10 +253,77 @@
       "purpose": "Fallback resolves missing pack entries."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define deterministic fallback when a requested translation is missing, while keeping fallback behavior visible and preventing silent substitution of machine identifiers as UI text.",
     "notes": [
       "Unlocked pending reconciliation against Expose/UI label contracts and whole-tree Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_LOCALIZATION_FALLBACK",
+          "name": "Localization Fallback",
+          "purpose": "Define deterministic fallback when a requested translation is missing, while keeping fallback behavior visible and preventing silent substitution of machine identifiers as UI text.",
+          "parent_topic_refs": [
+            "TOPIC_EXPOSE",
+            "TOPIC_DOCUMENTATION_HUMAN"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_LOCALIZATION_FALLBACK_CONTRACT",
+            "LOCALIZATION_PRESENTATION_ONLY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "fallback_order": [
+          "requested language",
+          "configured fallback language",
+          "source label text"
+        ],
+        "default_fallback": "en where configured as UI fallback; exact deployment policy remains explicit",
+        "missing_rule": "Missing translation is detectable and reportable.",
+        "identifier_rule": "Canonical machine IDs/commands are not used as fallback UI text unless the UI explicitly requests raw identifier display.",
+        "runtime_rule": "Fallback affects presentation only.",
+        "trace_rule": "Rendered localized value can report which fallback level produced it.",
+        "lock_rule": "Required production localization completeness may be a release gate per product/deployment policy."
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNTIME_EVENT_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define Event as the exclusive @ automation occurrence primitive: inert event identity and payload with explicit cause/provenance, never authority and never implicit command execution.",
   "scope": {
     "owns": [
@@ -21,89 +20,123 @@
       "projection semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_EVENT_CREATE",
-        "name": "Create inert Event occurrence",
-        "inputs": [
-          "event identity",
-          "validated payload",
-          "cause_ref"
-        ],
-        "outputs": [
-          "Event occurrence"
-        ],
-        "errors": [
-          "payload invalid"
-        ],
-        "side_effects": []
-      },
-      {
-        "id": "OP_EVENT_EMIT",
-        "name": "Emit Event",
-        "inputs": [
-          "Event occurrence"
-        ],
-        "outputs": [
-          "published Event occurrence"
-        ],
-        "errors": [
-          "event channel unavailable"
-        ],
-        "side_effects": [
-          "Event stream/state updated"
-        ]
-      },
-      {
-        "id": "OP_EVENT_ROUTE",
-        "name": "Resolve explicit Event bindings",
-        "inputs": [
-          "Event occurrence",
-          "declared bindings"
-        ],
-        "outputs": [
-          "dispatch requests"
-        ],
-        "errors": [
-          "binding unresolved"
-        ],
-        "side_effects": []
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_EVENT_CONTRACT",
+      "name": "Runtime Event",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_EVENT_CONTRACT::OPERATIONS::OP_EVENT_CREATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_EVENT_CREATE",
+            "name": "Create inert Event occurrence",
+            "inputs": [
+              "event identity",
+              "validated payload",
+              "cause_ref"
+            ],
+            "outputs": [
+              "Event occurrence"
+            ],
+            "errors": [
+              "payload invalid"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EVENT_CONTRACT::OPERATIONS::OP_EVENT_EMIT",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_EVENT_EMIT",
+            "name": "Emit Event",
+            "inputs": [
+              "Event occurrence"
+            ],
+            "outputs": [
+              "published Event occurrence"
+            ],
+            "errors": [
+              "event channel unavailable"
+            ],
+            "side_effects": [
+              "Event stream/state updated"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EVENT_CONTRACT::OPERATIONS::OP_EVENT_ROUTE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_EVENT_ROUTE",
+            "name": "Resolve explicit Event bindings",
+            "inputs": [
+              "Event occurrence",
+              "declared bindings"
+            ],
+            "outputs": [
+              "dispatch requests"
+            ],
+            "errors": [
+              "binding unresolved"
+            ],
+            "side_effects": []
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_EVENT_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "sigil": "@",
+            "exclusive_semantics": true,
+            "payload_rule": "Event payload is inert data.",
+            "authority_rule": "Event payload cannot grant capability or authority.",
+            "dispatch_rule": "Event occurrence does not itself execute a command or Routine; explicit bindings produce dispatcher requests.",
+            "required_fields": [
+              "event_id",
+              "timestamp",
+              "cause_ref"
+            ],
+            "optional_fields": [
+              "source_ref",
+              "trigger_ref",
+              "dedup_key"
+            ],
+            "payload_bound_rule": "Event payload size is bounded.",
+            "provenance_rule": "Event retains cause/source provenance."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/automation/event/00_Runtime_Event.json"
       }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "sigil": "@",
-    "exclusive_semantics": true,
-    "payload_rule": "Event payload is inert data.",
-    "authority_rule": "Event payload cannot grant capability or authority.",
-    "dispatch_rule": "Event occurrence does not itself execute a command or Routine; explicit bindings produce dispatcher requests.",
-    "required_fields": [
-      "event_id",
-      "timestamp",
-      "cause_ref"
-    ],
-    "optional_fields": [
-      "source_ref",
-      "trigger_ref",
-      "dedup_key"
-    ],
-    "payload_bound_rule": "Event payload size is bounded.",
-    "provenance_rule": "Event retains cause/source provenance."
-  },
+    }
+  ],
   "constraints": {
     "invariants": [
       {
@@ -156,10 +189,105 @@
       "purpose": "Event routing produces explicit dispatch requests."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define Event as the exclusive @ automation occurrence primitive: inert event identity and payload with explicit cause/provenance, never authority and never implicit command execution.",
     "notes": [
       "Unlocked until reconciled against the existing automation/runtime contracts and repository-wide 1.4 traceability validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_EVENT_CREATE",
+            "name": "Create inert Event occurrence",
+            "inputs": [
+              "event identity",
+              "validated payload",
+              "cause_ref"
+            ],
+            "outputs": [
+              "Event occurrence"
+            ],
+            "errors": [
+              "payload invalid"
+            ],
+            "side_effects": []
+          },
+          {
+            "id": "OP_EVENT_EMIT",
+            "name": "Emit Event",
+            "inputs": [
+              "Event occurrence"
+            ],
+            "outputs": [
+              "published Event occurrence"
+            ],
+            "errors": [
+              "event channel unavailable"
+            ],
+            "side_effects": [
+              "Event stream/state updated"
+            ]
+          },
+          {
+            "id": "OP_EVENT_ROUTE",
+            "name": "Resolve explicit Event bindings",
+            "inputs": [
+              "Event occurrence",
+              "declared bindings"
+            ],
+            "outputs": [
+              "dispatch requests"
+            ],
+            "errors": [
+              "binding unresolved"
+            ],
+            "side_effects": []
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "sigil": "@",
+        "exclusive_semantics": true,
+        "payload_rule": "Event payload is inert data.",
+        "authority_rule": "Event payload cannot grant capability or authority.",
+        "dispatch_rule": "Event occurrence does not itself execute a command or Routine; explicit bindings produce dispatcher requests.",
+        "required_fields": [
+          "event_id",
+          "timestamp",
+          "cause_ref"
+        ],
+        "optional_fields": [
+          "source_ref",
+          "trigger_ref",
+          "dedup_key"
+        ],
+        "payload_bound_rule": "Event payload size is bounded.",
+        "provenance_rule": "Event retains cause/source provenance."
+      }
+    }
   }
 }

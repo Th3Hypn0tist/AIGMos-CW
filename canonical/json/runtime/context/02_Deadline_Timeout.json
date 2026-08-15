@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXECUTION_DEADLINE_TIMEOUT_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define request/execution deadlines separately from component-local timeout measurements, with explicit propagation and termination semantics.",
   "scope": {
     "owns": [
@@ -21,58 +20,193 @@
       "AccessCore policy ownership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXECUTION_DEADLINE_TIMEOUT_CONTRACT",
+      "name": "Execution Deadline and Timeout",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXECUTION_DEADLINE_TIMEOUT_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "deadline_rule": "Absolute/relative deadline and clock profile are explicit.",
+            "timeout_rule": "Local timeout derives from exact execution profile and remaining deadline where applicable.",
+            "propagation_rule": "Child call deadline never silently exceeds parent deadline unless explicitly detached.",
+            "result_rule": "Deadline exceeded is distinct from operation failure/success.",
+            "effect_rule": "Timeout does not prove external effect absence.",
+            "cleanup_rule": "Timeout triggers explicit cancellation/cleanup policy.",
+            "retry_rule": "Retry policy consumes remaining overall budget.",
+            "authority_rule": "Deadline has no authorization semantics."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_DEADLINE_TIMEOUT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXECUTION_DEADLINE_TIMEOUT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_RUNTIME",
+            "child_ref": "TOPIC_EXECUTION_DEADLINE_TIMEOUT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_DEADLINE_TIMEOUT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXECUTION_DEADLINE_TIMEOUT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CONTEXT",
+            "child_ref": "TOPIC_EXECUTION_DEADLINE_TIMEOUT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_DEADLINE_TIMEOUT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXECUTION_DEADLINE_TIMEOUT_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXECUTION_DEADLINE_TIMEOUT",
+            "child_ref": "AIGMOS_EXECUTION_DEADLINE_TIMEOUT_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_DEADLINE_TIMEOUT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXECUTION_DEADLINE_TIMEOUT_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXECUTION_DEADLINE_TIMEOUT",
+            "child_ref": "EXPLICIT_EXECUTION_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_DEADLINE_TIMEOUT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXECUTION_DEADLINE_TIMEOUT_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXECUTION_DEADLINE_TIMEOUT",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_DEADLINE_TIMEOUT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXECUTION_DEADLINE_TIMEOUT_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXECUTION_DEADLINE_TIMEOUT",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_DEADLINE_TIMEOUT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXECUTION_DEADLINE_TIMEOUT_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXECUTION_DEADLINE_TIMEOUT",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_DEADLINE_TIMEOUT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXECUTION_DEADLINE_TIMEOUT_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXECUTION_DEADLINE_TIMEOUT",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXECUTION_DEADLINE_TIMEOUT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXECUTION_DEADLINE_TIMEOUT_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXECUTION_DEADLINE_TIMEOUT",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/context/02_Deadline_Timeout.json"
+      }
+    },
     {
       "id": "TOPIC_EXECUTION_DEADLINE_TIMEOUT",
       "name": "Execution Deadline and Timeout",
-      "purpose": "Define request/execution deadlines separately from component-local timeout measurements, with explicit propagation and termination semantics.",
-      "parent_topic_refs": [
-        "TOPIC_RUNTIME",
-        "TOPIC_CONTEXT"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_EXECUTION_DEADLINE_TIMEOUT_CONTRACT",
-        "EXPLICIT_EXECUTION_BOUNDARY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXECUTION_DEADLINE_TIMEOUT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define request/execution deadlines separately from component-local timeout measurements, with explicit propagation and termination semantics.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "deadline_rule": "Absolute/relative deadline and clock profile are explicit.",
-    "timeout_rule": "Local timeout derives from exact execution profile and remaining deadline where applicable.",
-    "propagation_rule": "Child call deadline never silently exceeds parent deadline unless explicitly detached.",
-    "result_rule": "Deadline exceeded is distinct from operation failure/success.",
-    "effect_rule": "Timeout does not prove external effect absence.",
-    "cleanup_rule": "Timeout triggers explicit cancellation/cleanup policy.",
-    "retry_rule": "Retry policy consumes remaining overall budget.",
-    "authority_rule": "Deadline has no authorization semantics."
-  },
   "constraints": {
     "invariants": [
       {
@@ -115,10 +249,74 @@
       "purpose": "Timeout uses explicit cancellation semantics."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define request/execution deadlines separately from component-local timeout measurements, with explicit propagation and termination semantics.",
     "notes": [
       "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXECUTION_DEADLINE_TIMEOUT",
+          "name": "Execution Deadline and Timeout",
+          "purpose": "Define request/execution deadlines separately from component-local timeout measurements, with explicit propagation and termination semantics.",
+          "parent_topic_refs": [
+            "TOPIC_RUNTIME",
+            "TOPIC_CONTEXT"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_EXECUTION_DEADLINE_TIMEOUT_CONTRACT",
+            "EXPLICIT_EXECUTION_BOUNDARY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "deadline_rule": "Absolute/relative deadline and clock profile are explicit.",
+        "timeout_rule": "Local timeout derives from exact execution profile and remaining deadline where applicable.",
+        "propagation_rule": "Child call deadline never silently exceeds parent deadline unless explicitly detached.",
+        "result_rule": "Deadline exceeded is distinct from operation failure/success.",
+        "effect_rule": "Timeout does not prove external effect absence.",
+        "cleanup_rule": "Timeout triggers explicit cancellation/cleanup policy.",
+        "retry_rule": "Retry policy consumes remaining overall budget.",
+        "authority_rule": "Deadline has no authorization semantics."
+      }
+    }
   }
 }

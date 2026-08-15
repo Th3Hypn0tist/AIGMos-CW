@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define an Expose view/editor boundary for accepted configuration, candidate edits, validation/diff, apply/reload status and rollback history.",
   "scope": {
     "owns": [
@@ -21,66 +20,201 @@
       "AccessCore policy ownership"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT",
+      "name": "Configuration Monitor and Editor Boundary",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "views": [
+              "accepted config revision",
+              "candidate edit buffer",
+              "semantic diff",
+              "validation findings",
+              "dependency/secret refs",
+              "reload/restart impact",
+              "accepted vs live state",
+              "rollback history"
+            ],
+            "candidate_rule": "Editing remains candidate-only until explicit authorized apply.",
+            "identity_rule": "Config schema/field, candidate, accepted revision, runtime instance and secret identities remain distinct.",
+            "action_rule": "validate/apply/reload/rollback operations use separate authorized workflows.",
+            "authority_rule": "Viewing/editing candidate does not grant apply/reload authority.",
+            "secret_rule": "Secret values are never rendered; only safe secret refs/metadata.",
+            "failure_rule": "Accepted-but-not-live, partial-reload and rollback-failed states are explicit."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_CONFIGURATION_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_EXPOSE",
+            "child_ref": "TOPIC_EXPOSE_CONFIGURATION_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT::LINK::TOPIC_PARENT_TOPIC_EXPOSE_CONFIGURATION_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CONFIGURATION",
+            "child_ref": "TOPIC_EXPOSE_CONFIGURATION_MONITOR",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_CONFIGURATION_MONITOR_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_CONFIGURATION_MONITOR",
+            "child_ref": "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_CONFIGURATION_MONITOR_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_CONFIGURATION_MONITOR",
+            "child_ref": "EXPLICIT_IDENTITY_AND_BOUNDARY",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_CONFIGURATION_MONITOR_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_CONFIGURATION_MONITOR",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_CONFIGURATION_MONITOR_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_CONFIGURATION_MONITOR",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_CONFIGURATION_MONITOR_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_CONFIGURATION_MONITOR",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_CONFIGURATION_MONITOR_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_CONFIGURATION_MONITOR",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_EXPOSE_CONFIGURATION_MONITOR_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_EXPOSE_CONFIGURATION_MONITOR",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/expose/editor/88_Configuration_Monitor.json"
+      }
+    },
     {
       "id": "TOPIC_EXPOSE_CONFIGURATION_MONITOR",
       "name": "Configuration Monitor and Editor Boundary",
-      "purpose": "Define an Expose view/editor boundary for accepted configuration, candidate edits, validation/diff, apply/reload status and rollback history.",
-      "parent_topic_refs": [
-        "TOPIC_EXPOSE",
-        "TOPIC_CONFIGURATION"
-      ],
-      "composed_topic_refs": [],
-      "member_refs": [
-        "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT",
-        "EXPLICIT_IDENTITY_AND_BOUNDARY",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5"
-      ],
-      "relation_refs": [],
-      "operation_refs": [],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_EXPOSE_CONFIGURATION_MONITOR::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define an Expose view/editor boundary for accepted configuration, candidate edits, validation/diff, apply/reload status and rollback history.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "views": [
-      "accepted config revision",
-      "candidate edit buffer",
-      "semantic diff",
-      "validation findings",
-      "dependency/secret refs",
-      "reload/restart impact",
-      "accepted vs live state",
-      "rollback history"
-    ],
-    "candidate_rule": "Editing remains candidate-only until explicit authorized apply.",
-    "identity_rule": "Config schema/field, candidate, accepted revision, runtime instance and secret identities remain distinct.",
-    "action_rule": "validate/apply/reload/rollback operations use separate authorized workflows.",
-    "authority_rule": "Viewing/editing candidate does not grant apply/reload authority.",
-    "secret_rule": "Secret values are never rendered; only safe secret refs/metadata.",
-    "failure_rule": "Accepted-but-not-live, partial-reload and rollback-failed states are explicit."
-  },
   "constraints": {
     "invariants": [
       {
@@ -128,10 +262,82 @@
       "purpose": "Apply/reload is explicit."
     }
   ],
+  "gaps": [],
   "prose": {
     "summary": "Define an Expose view/editor boundary for accepted configuration, candidate edits, validation/diff, apply/reload status and rollback history.",
     "notes": [
       "Unlocked pending whole-tree reconciliation and Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_EXPOSE_CONFIGURATION_MONITOR",
+          "name": "Configuration Monitor and Editor Boundary",
+          "purpose": "Define an Expose view/editor boundary for accepted configuration, candidate edits, validation/diff, apply/reload status and rollback history.",
+          "parent_topic_refs": [
+            "TOPIC_EXPOSE",
+            "TOPIC_CONFIGURATION"
+          ],
+          "composed_topic_refs": [],
+          "member_refs": [
+            "AIGMOS_EXPOSE_CONFIGURATION_MONITOR_CONTRACT",
+            "EXPLICIT_IDENTITY_AND_BOUNDARY",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5"
+          ],
+          "relation_refs": [],
+          "operation_refs": [],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "views": [
+          "accepted config revision",
+          "candidate edit buffer",
+          "semantic diff",
+          "validation findings",
+          "dependency/secret refs",
+          "reload/restart impact",
+          "accepted vs live state",
+          "rollback history"
+        ],
+        "candidate_rule": "Editing remains candidate-only until explicit authorized apply.",
+        "identity_rule": "Config schema/field, candidate, accepted revision, runtime instance and secret identities remain distinct.",
+        "action_rule": "validate/apply/reload/rollback operations use separate authorized workflows.",
+        "authority_rule": "Viewing/editing candidate does not grant apply/reload authority.",
+        "secret_rule": "Secret values are never rendered; only safe secret refs/metadata.",
+        "failure_rule": "Accepted-but-not-live, partial-reload and rollback-failed states are explicit."
+      }
+    }
   }
 }

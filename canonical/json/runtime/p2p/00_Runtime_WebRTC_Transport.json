@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "2.0"
   },
   "identity": {
     "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT",
@@ -9,8 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
-  "source_role": "definition",
+  "status": "unlocked",
   "purpose": "Define WebRTC as the peer-to-peer transport for DWH/messaging payload channels, with signaling separated from payload transport and all session/channel state tracked as runtime state.",
   "scope": {
     "owns": [
@@ -22,118 +21,302 @@
       "presentation semantics"
     ]
   },
-  "members": [],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": []
-  },
-  "topics": [
+  "entities": [
+    {
+      "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT",
+      "name": "Runtime WebRTC Transport",
+      "entity_type_ref": "canonical_contract",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT::OPERATIONS::OP_WEBRTC_SESSION_CREATE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_WEBRTC_SESSION_CREATE",
+            "name": "Create WebRTC session",
+            "inputs": [
+              "peer bootstrap metadata",
+              "transport policy"
+            ],
+            "outputs": [
+              "tracked WebRTC session"
+            ],
+            "errors": [
+              "signaling failure",
+              "peer unavailable"
+            ],
+            "side_effects": [
+              "runtime transport state created"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT::OPERATIONS::OP_WEBRTC_CHANNEL_OPEN",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_WEBRTC_CHANNEL_OPEN",
+            "name": "Open WebRTC data channel",
+            "inputs": [
+              "tracked session",
+              "channel policy"
+            ],
+            "outputs": [
+              "bounded data channel"
+            ],
+            "errors": [
+              "channel failure"
+            ],
+            "side_effects": [
+              "runtime channel state created"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT::OPERATIONS::OP_WEBRTC_SESSION_CLOSE",
+          "property_type_ref": "aigmos_operation",
+          "ruleset_ref": "AIGMOS_RULESET_OPERATION",
+          "status": "unlocked",
+          "value": {
+            "id": "OP_WEBRTC_SESSION_CLOSE",
+            "name": "Close WebRTC session",
+            "inputs": [
+              "tracked session",
+              "reason"
+            ],
+            "outputs": [
+              "closed session"
+            ],
+            "errors": [
+              "cleanup failure"
+            ],
+            "side_effects": [
+              "runtime transport state removed"
+            ]
+          },
+          "metadata": {
+            "migration_source_path": "behavior.operations[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "transport": "WebRTC",
+            "payload_path": "peer-to-peer after session establishment",
+            "signaling_rule": "Signaling/rendezvous exchanges bootstrap/session metadata only; application payloads are not relayed through signaling by default.",
+            "state_rule": "Peer/session/channel state is runtime state, not canonical identity.",
+            "identity_rule": "Peer semantic identity is separate from transient ICE/session/connection identifiers.",
+            "bound_rule": "Session establishment, channels and payload sizes are bounded.",
+            "cleanup_rule": "close/error/timeout releases session/channel state.",
+            "authority_rule": "Successful transport establishment does not grant remote data or operation authority."
+          },
+          "metadata": {
+            "migration_source_path": "semantics"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_PARENT_TOPIC_RUNTIME_WEBRTC_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_PARENT",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_parent",
+            "parent_ref": "TOPIC_CORE_RUNTIME_IO",
+            "child_ref": "TOPIC_RUNTIME_WEBRTC",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].parent_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_WEBRTC_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_WEBRTC",
+            "child_ref": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_WEBRTC_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_WEBRTC",
+            "child_ref": "NETWORK_BOUNDARY_EXPLICIT",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[1]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_WEBRTC_2",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_WEBRTC",
+            "child_ref": "GATE_1",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[2]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_WEBRTC_3",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_WEBRTC",
+            "child_ref": "GATE_2",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[3]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_WEBRTC_4",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_WEBRTC",
+            "child_ref": "GATE_3",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[4]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_WEBRTC_5",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_WEBRTC",
+            "child_ref": "GATE_4",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[5]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_WEBRTC_6",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_WEBRTC",
+            "child_ref": "GATE_5",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[6]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_MEMBER_TOPIC_RUNTIME_WEBRTC_7",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_MEMBER",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_member",
+            "parent_ref": "TOPIC_RUNTIME_WEBRTC",
+            "child_ref": "GATE_6",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].member_refs[7]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_WEBRTC_0",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_WEBRTC",
+            "child_ref": "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[0]"
+          }
+        },
+        {
+          "id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT::LINK::TOPIC_COMPOSE_TOPIC_RUNTIME_WEBRTC_1",
+          "property_type_ref": "link",
+          "ruleset_ref": "RULESET_LINK_TOPIC_COMPOSITION",
+          "status": "unlocked",
+          "value": {
+            "link_type_ref": "topic_composition",
+            "parent_ref": "TOPIC_RUNTIME_WEBRTC",
+            "child_ref": "TOPIC_RUNTIME_CANCELLATION",
+            "properties": {}
+          },
+          "metadata": {
+            "migration_source_path": "topics[0].composed_topic_refs[1]"
+          }
+        }
+      ],
+      "metadata": {
+        "legacy_identity_version": "1.0",
+        "legacy_source_role": "definition",
+        "migration_source_file": "canonical/json/runtime/p2p/00_Runtime_WebRTC_Transport.json"
+      }
+    },
     {
       "id": "TOPIC_RUNTIME_WEBRTC",
       "name": "WebRTC",
-      "purpose": "Define WebRTC as the peer-to-peer transport for DWH/messaging payload channels, with signaling separated from payload transport and all session/channel state tracked as runtime state.",
-      "parent_topic_refs": [
-        "TOPIC_CORE_RUNTIME_IO"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_RUNTIME_EXTERNAL_SERVICES",
-        "TOPIC_RUNTIME_CANCELLATION"
-      ],
-      "member_refs": [
-        "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT",
-        "NETWORK_BOUNDARY_EXPLICIT",
-        "GATE_1",
-        "GATE_2",
-        "GATE_3",
-        "GATE_4",
-        "GATE_5",
-        "GATE_6"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_WEBRTC_SESSION_CREATE",
-        "OP_WEBRTC_CHANNEL_OPEN",
-        "OP_WEBRTC_SESSION_CLOSE"
-      ],
-      "event_refs": [],
-      "flow_refs": [],
-      "child_topics": [],
-      "metadata": {}
+      "entity_type_ref": "topic",
+      "status": "unlocked",
+      "properties": [
+        {
+          "id": "TOPIC_RUNTIME_WEBRTC::PROPERTY::SEMANTICS",
+          "property_type_ref": "aigmos_semantics",
+          "ruleset_ref": "AIGMOS_RULESET_SEMANTICS",
+          "status": "unlocked",
+          "value": {
+            "purpose": "Define WebRTC as the peer-to-peer transport for DWH/messaging payload channels, with signaling separated from payload transport and all session/channel state tracked as runtime state.",
+            "metadata": {}
+          }
+        }
+      ]
     }
   ],
-  "behavior": {
-    "states": [],
-    "interfaces": [],
-    "operations": [
-      {
-        "id": "OP_WEBRTC_SESSION_CREATE",
-        "name": "Create WebRTC session",
-        "inputs": [
-          "peer bootstrap metadata",
-          "transport policy"
-        ],
-        "outputs": [
-          "tracked WebRTC session"
-        ],
-        "errors": [
-          "signaling failure",
-          "peer unavailable"
-        ],
-        "side_effects": [
-          "runtime transport state created"
-        ]
-      },
-      {
-        "id": "OP_WEBRTC_CHANNEL_OPEN",
-        "name": "Open WebRTC data channel",
-        "inputs": [
-          "tracked session",
-          "channel policy"
-        ],
-        "outputs": [
-          "bounded data channel"
-        ],
-        "errors": [
-          "channel failure"
-        ],
-        "side_effects": [
-          "runtime channel state created"
-        ]
-      },
-      {
-        "id": "OP_WEBRTC_SESSION_CLOSE",
-        "name": "Close WebRTC session",
-        "inputs": [
-          "tracked session",
-          "reason"
-        ],
-        "outputs": [
-          "closed session"
-        ],
-        "errors": [
-          "cleanup failure"
-        ],
-        "side_effects": [
-          "runtime transport state removed"
-        ]
-      }
-    ],
-    "events": [],
-    "flows": []
-  },
-  "semantics": {
-    "transport": "WebRTC",
-    "payload_path": "peer-to-peer after session establishment",
-    "signaling_rule": "Signaling/rendezvous exchanges bootstrap/session metadata only; application payloads are not relayed through signaling by default.",
-    "state_rule": "Peer/session/channel state is runtime state, not canonical identity.",
-    "identity_rule": "Peer semantic identity is separate from transient ICE/session/connection identifiers.",
-    "bound_rule": "Session establishment, channels and payload sizes are bounded.",
-    "cleanup_rule": "close/error/timeout releases session/channel state.",
-    "authority_rule": "Successful transport establishment does not grant remote data or operation authority."
-  },
   "constraints": {
     "invariants": [
       {
@@ -186,10 +369,144 @@
       "purpose": "Transport sessions cleanup on terminal paths."
     }
   ],
+  "gaps": [
+    {
+      "gap_id": "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT::GAP::TOPIC_operation_refs_TOPIC_RUNTIME_WEBRTC",
+      "type": "legacy_topic_reference_mapping_unresolved",
+      "status": "open",
+      "severity": "required",
+      "description": "Legacy Topic field operation_refs is preserved in migration evidence; CCF 2.0 does not justify inventing a Link specialization for it.",
+      "entity_ref": "TOPIC_RUNTIME_WEBRTC",
+      "field_path": "topics[0].operation_refs"
+    }
+  ],
   "prose": {
     "summary": "Define WebRTC as the peer-to-peer transport for DWH/messaging payload channels, with signaling separated from payload transport and all session/channel state tracked as runtime state.",
     "notes": [
       "Unlocked until reconciled against DWH, messaging, transport and repository-wide Contract Format 1.4 validation."
     ]
+  },
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "2.0",
+      "status_after_migration": "unlocked",
+      "semantic_guessing": false,
+      "legacy_parallel_authority_preserved": false
+    },
+    "migration_legacy_non_authoritative": {
+      "members": [],
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": []
+      },
+      "topics": [
+        {
+          "id": "TOPIC_RUNTIME_WEBRTC",
+          "name": "WebRTC",
+          "purpose": "Define WebRTC as the peer-to-peer transport for DWH/messaging payload channels, with signaling separated from payload transport and all session/channel state tracked as runtime state.",
+          "parent_topic_refs": [
+            "TOPIC_CORE_RUNTIME_IO"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_RUNTIME_EXTERNAL_SERVICES",
+            "TOPIC_RUNTIME_CANCELLATION"
+          ],
+          "member_refs": [
+            "AIGMOS_RUNTIME_WEBRTC_TRANSPORT_CONTRACT",
+            "NETWORK_BOUNDARY_EXPLICIT",
+            "GATE_1",
+            "GATE_2",
+            "GATE_3",
+            "GATE_4",
+            "GATE_5",
+            "GATE_6"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_WEBRTC_SESSION_CREATE",
+            "OP_WEBRTC_CHANNEL_OPEN",
+            "OP_WEBRTC_SESSION_CLOSE"
+          ],
+          "event_refs": [],
+          "flow_refs": [],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ],
+      "behavior": {
+        "states": [],
+        "interfaces": [],
+        "operations": [
+          {
+            "id": "OP_WEBRTC_SESSION_CREATE",
+            "name": "Create WebRTC session",
+            "inputs": [
+              "peer bootstrap metadata",
+              "transport policy"
+            ],
+            "outputs": [
+              "tracked WebRTC session"
+            ],
+            "errors": [
+              "signaling failure",
+              "peer unavailable"
+            ],
+            "side_effects": [
+              "runtime transport state created"
+            ]
+          },
+          {
+            "id": "OP_WEBRTC_CHANNEL_OPEN",
+            "name": "Open WebRTC data channel",
+            "inputs": [
+              "tracked session",
+              "channel policy"
+            ],
+            "outputs": [
+              "bounded data channel"
+            ],
+            "errors": [
+              "channel failure"
+            ],
+            "side_effects": [
+              "runtime channel state created"
+            ]
+          },
+          {
+            "id": "OP_WEBRTC_SESSION_CLOSE",
+            "name": "Close WebRTC session",
+            "inputs": [
+              "tracked session",
+              "reason"
+            ],
+            "outputs": [
+              "closed session"
+            ],
+            "errors": [
+              "cleanup failure"
+            ],
+            "side_effects": [
+              "runtime transport state removed"
+            ]
+          }
+        ],
+        "events": [],
+        "flows": []
+      },
+      "semantics": {
+        "transport": "WebRTC",
+        "payload_path": "peer-to-peer after session establishment",
+        "signaling_rule": "Signaling/rendezvous exchanges bootstrap/session metadata only; application payloads are not relayed through signaling by default.",
+        "state_rule": "Peer/session/channel state is runtime state, not canonical identity.",
+        "identity_rule": "Peer semantic identity is separate from transient ICE/session/connection identifiers.",
+        "bound_rule": "Session establishment, channels and payload sizes are bounded.",
+        "cleanup_rule": "close/error/timeout releases session/channel state.",
+        "authority_rule": "Successful transport establishment does not grant remote data or operation authority."
+      }
+    }
   }
 }

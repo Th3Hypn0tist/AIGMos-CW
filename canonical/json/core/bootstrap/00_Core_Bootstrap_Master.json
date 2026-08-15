@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "1.6"
   },
   "identity": {
     "id": "AIGMOS_CORE_BOOTSTRAP_MASTER_CONTRACT",
@@ -9,7 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
+  "status": "unlocked",
   "source_role": "definition",
   "purpose": "Define the deterministic bootstrap sequence from Contract Format to Master to active canonical roots without inferring authority from filesystem placement.",
   "scope": {
@@ -327,88 +327,16 @@
         "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
         "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
       }
-    }
-  ],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": [
-      {
-        "id": "DEP_CANONICAL_READER",
-        "source_ref": "AIGMOS_CORE_BOOTSTRAP_MASTER_CONTRACT",
-        "target_ref": "AIGMOS_CORE_CANONICAL_READER_CONTRACT",
-        "dependency_type": "bootstrap_consumer_dependency",
-        "required": true
-      },
-      {
-        "id": "DEP_IDENTITY_RESOLUTION",
-        "source_ref": "AIGMOS_CORE_BOOTSTRAP_MASTER_CONTRACT",
-        "target_ref": "AIGMOS_CORE_CANONICAL_IDENTITY_RESOLUTION_CONTRACT",
-        "dependency_type": "bootstrap_resolution_dependency",
-        "required": true
-      }
-    ]
-  },
-  "topics": [
+    },
     {
       "id": "TOPIC_CORE_BOOTSTRAP",
       "name": "Bootstrap",
-      "purpose": "Group deterministic canonical bootstrap and Master discovery semantics.",
-      "parent_topic_refs": [
-        "TOPIC_CORE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_IDENTITY_RESOLUTION",
-        "TOPIC_CORE_CANONICAL_READER"
-      ],
-      "member_refs": [
-        "AIGMOS_CORE_BOOTSTRAP_MASTER_CONTRACT",
-        "DEP_CANONICAL_READER",
-        "DEP_IDENTITY_RESOLUTION",
-        "IF_CANONICAL_BOOTSTRAP",
-        "MASTER_EXPLICIT_ROOTS",
-        "FILESYSTEM_NOT_BOOTSTRAP_AUTHORITY",
-        "GATE_MASTER_PATH_GUESS",
-        "GATE_ROOT_BY_FILE_PRESENCE",
-        "GATE_AMBIGUOUS_MASTER",
-        "GATE_UNRESOLVED_ACTIVE_ROOT",
-        "GATE_BOOTSTRAP_FALLBACK_GUESS",
-        "FSYM_A553754D0D9EC5823F82",
-        "FSYM_7F615A76DBCE3EDCBD2D",
-        "FSYM_4C171595A1673A1B7139",
-        "FSYM_B4EA3725AD01EB2C49ED",
-        "FSYM_402543B01E7A463ABC50",
-        "FSYM_FAE141396C206C115EFA",
-        "FSYM_7583522B6152ACDBCC51",
-        "FSYM_068E8924FA3A6DF40178",
-        "FSYM_319F3A0426BCEB03C91E",
-        "FSYM_5FF20C64926418DFDB9C",
-        "FSYM_07F314FEE27F024A7A10",
-        "FSYM_005BBE351BE8EDC97BFA",
-        "FSYM_B4C3CE8A3A96F12EB4B0",
-        "FSYM_16D84F51EC9317CA24F9",
-        "FSYM_D7787C60FA744ABAB850",
-        "FSYM_7E74A3D0A372DB693BA1",
-        "FSYM_E543706C6852BC2B2F18",
-        "FSYM_BBF2CB416143A943E356",
-        "FSYM_5095C1923CB56812EBA8",
-        "FSYM_9A88CCD526E7A1C28410"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_BOOTSTRAP_LOAD_FORMAT",
-        "OP_BOOTSTRAP_RESOLVE_MASTER",
-        "OP_BOOTSTRAP_READ_ACTIVE_ROOTS",
-        "OP_BOOTSTRAP_VALIDATE_ROOTS"
-      ],
-      "event_refs": [],
-      "flow_refs": [
-        "FLOW_CANONICAL_BOOTSTRAP"
-      ],
-      "child_topics": [],
-      "metadata": {}
+      "type": "topic",
+      "status": "unlocked",
+      "semantics": {
+        "purpose": "Group deterministic canonical bootstrap and Master discovery semantics.",
+        "metadata": {}
+      }
     }
   ],
   "behavior": {
@@ -687,5 +615,453 @@
       "Unlocked until the assembled review tree migrates the actual Master to 1.4 and reconciles its explicit active-root declarations.",
       "Pass 8 formalized previously free Flow actor/data/target/condition/payload/result/error tokens as exact owner-scoped member identities while preserving every source literal."
     ]
+  },
+  "maturity": "structured",
+  "links": [
+    {
+      "id": "DEP_CANONICAL_READER",
+      "type_ref": "dependency",
+      "source_ref": "AIGMOS_CORE_BOOTSTRAP_MASTER_CONTRACT",
+      "target_ref": "AIGMOS_CORE_CANONICAL_READER_CONTRACT",
+      "status": "unlocked",
+      "properties": {
+        "dependency_type": "bootstrap_consumer_dependency",
+        "required": true
+      },
+      "maturity": "typed"
+    },
+    {
+      "id": "DEP_IDENTITY_RESOLUTION",
+      "type_ref": "dependency",
+      "source_ref": "AIGMOS_CORE_BOOTSTRAP_MASTER_CONTRACT",
+      "target_ref": "AIGMOS_CORE_CANONICAL_IDENTITY_RESOLUTION_CONTRACT",
+      "status": "unlocked",
+      "properties": {
+        "dependency_type": "bootstrap_resolution_dependency",
+        "required": true
+      },
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_PARENT_TOPIC_CORE_BOOTSTRAP_0",
+      "type_ref": "topic_parent",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "TOPIC_CORE",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_0",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "AIGMOS_CORE_BOOTSTRAP_MASTER_CONTRACT",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_1",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "DEP_CANONICAL_READER",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_2",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "DEP_IDENTITY_RESOLUTION",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_3",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "IF_CANONICAL_BOOTSTRAP",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_4",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "MASTER_EXPLICIT_ROOTS",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_5",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FILESYSTEM_NOT_BOOTSTRAP_AUTHORITY",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_6",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "GATE_MASTER_PATH_GUESS",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_7",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "GATE_ROOT_BY_FILE_PRESENCE",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_8",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "GATE_AMBIGUOUS_MASTER",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_9",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "GATE_UNRESOLVED_ACTIVE_ROOT",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_10",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "GATE_BOOTSTRAP_FALLBACK_GUESS",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_11",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_A553754D0D9EC5823F82",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_12",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_7F615A76DBCE3EDCBD2D",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_13",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_4C171595A1673A1B7139",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_14",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_B4EA3725AD01EB2C49ED",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_15",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_402543B01E7A463ABC50",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_16",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_FAE141396C206C115EFA",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_17",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_7583522B6152ACDBCC51",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_18",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_068E8924FA3A6DF40178",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_19",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_319F3A0426BCEB03C91E",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_20",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_5FF20C64926418DFDB9C",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_21",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_07F314FEE27F024A7A10",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_22",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_005BBE351BE8EDC97BFA",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_23",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_B4C3CE8A3A96F12EB4B0",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_24",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_16D84F51EC9317CA24F9",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_25",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_D7787C60FA744ABAB850",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_26",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_7E74A3D0A372DB693BA1",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_27",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_E543706C6852BC2B2F18",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_28",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_BBF2CB416143A943E356",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_29",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_5095C1923CB56812EBA8",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_BOOTSTRAP_30",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "FSYM_9A88CCD526E7A1C28410",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_COMPOSE_TOPIC_CORE_BOOTSTRAP_0",
+      "type_ref": "topic_composition",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "TOPIC_CORE_IDENTITY_RESOLUTION",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_COMPOSE_TOPIC_CORE_BOOTSTRAP_1",
+      "type_ref": "topic_composition",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "target_ref": "TOPIC_CORE_CANONICAL_READER",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    }
+  ],
+  "gaps": [
+    {
+      "gap_id": "MIG16_TOPIC_OPERATION_REFS_TOPIC_CORE_BOOTSTRAP",
+      "type": "legacy_topic_trace_mapping_unresolved",
+      "status": "open",
+      "severity": "blocking",
+      "description": "Legacy Topic field operation_refs contains identity connections but Canonical Contract Format 1.6 does not define a normative migration Link Type for this field. The values are preserved only in non-authoritative migration metadata.",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "field_path": "topics[0].operation_refs"
+    },
+    {
+      "gap_id": "MIG16_TOPIC_FLOW_REFS_TOPIC_CORE_BOOTSTRAP",
+      "type": "legacy_topic_trace_mapping_unresolved",
+      "status": "open",
+      "severity": "blocking",
+      "description": "Legacy Topic field flow_refs contains identity connections but Canonical Contract Format 1.6 does not define a normative migration Link Type for this field. The values are preserved only in non-authoritative migration metadata.",
+      "source_ref": "TOPIC_CORE_BOOTSTRAP",
+      "field_path": "topics[0].flow_refs"
+    }
+  ],
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "1.6",
+      "migration_kind": "serialization_and_progressive_formalization",
+      "lock_state_after_migration": "unlocked",
+      "legacy_structure_preserved_as_authority": false,
+      "legacy_topics_preserved_as_authority": false,
+      "note": "Only mappings explicitly defined by Canonical Contract Format 1.6 were promoted to typed Links."
+    },
+    "migration_legacy_non_authoritative": {
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": [
+          {
+            "id": "DEP_CANONICAL_READER",
+            "source_ref": "AIGMOS_CORE_BOOTSTRAP_MASTER_CONTRACT",
+            "target_ref": "AIGMOS_CORE_CANONICAL_READER_CONTRACT",
+            "dependency_type": "bootstrap_consumer_dependency",
+            "required": true
+          },
+          {
+            "id": "DEP_IDENTITY_RESOLUTION",
+            "source_ref": "AIGMOS_CORE_BOOTSTRAP_MASTER_CONTRACT",
+            "target_ref": "AIGMOS_CORE_CANONICAL_IDENTITY_RESOLUTION_CONTRACT",
+            "dependency_type": "bootstrap_resolution_dependency",
+            "required": true
+          }
+        ]
+      },
+      "topics": [
+        {
+          "id": "TOPIC_CORE_BOOTSTRAP",
+          "name": "Bootstrap",
+          "purpose": "Group deterministic canonical bootstrap and Master discovery semantics.",
+          "parent_topic_refs": [
+            "TOPIC_CORE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_IDENTITY_RESOLUTION",
+            "TOPIC_CORE_CANONICAL_READER"
+          ],
+          "member_refs": [
+            "AIGMOS_CORE_BOOTSTRAP_MASTER_CONTRACT",
+            "DEP_CANONICAL_READER",
+            "DEP_IDENTITY_RESOLUTION",
+            "IF_CANONICAL_BOOTSTRAP",
+            "MASTER_EXPLICIT_ROOTS",
+            "FILESYSTEM_NOT_BOOTSTRAP_AUTHORITY",
+            "GATE_MASTER_PATH_GUESS",
+            "GATE_ROOT_BY_FILE_PRESENCE",
+            "GATE_AMBIGUOUS_MASTER",
+            "GATE_UNRESOLVED_ACTIVE_ROOT",
+            "GATE_BOOTSTRAP_FALLBACK_GUESS",
+            "FSYM_A553754D0D9EC5823F82",
+            "FSYM_7F615A76DBCE3EDCBD2D",
+            "FSYM_4C171595A1673A1B7139",
+            "FSYM_B4EA3725AD01EB2C49ED",
+            "FSYM_402543B01E7A463ABC50",
+            "FSYM_FAE141396C206C115EFA",
+            "FSYM_7583522B6152ACDBCC51",
+            "FSYM_068E8924FA3A6DF40178",
+            "FSYM_319F3A0426BCEB03C91E",
+            "FSYM_5FF20C64926418DFDB9C",
+            "FSYM_07F314FEE27F024A7A10",
+            "FSYM_005BBE351BE8EDC97BFA",
+            "FSYM_B4C3CE8A3A96F12EB4B0",
+            "FSYM_16D84F51EC9317CA24F9",
+            "FSYM_D7787C60FA744ABAB850",
+            "FSYM_7E74A3D0A372DB693BA1",
+            "FSYM_E543706C6852BC2B2F18",
+            "FSYM_BBF2CB416143A943E356",
+            "FSYM_5095C1923CB56812EBA8",
+            "FSYM_9A88CCD526E7A1C28410"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_BOOTSTRAP_LOAD_FORMAT",
+            "OP_BOOTSTRAP_RESOLVE_MASTER",
+            "OP_BOOTSTRAP_READ_ACTIVE_ROOTS",
+            "OP_BOOTSTRAP_VALIDATE_ROOTS"
+          ],
+          "event_refs": [],
+          "flow_refs": [
+            "FLOW_CANONICAL_BOOTSTRAP"
+          ],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ]
+    }
   }
 }

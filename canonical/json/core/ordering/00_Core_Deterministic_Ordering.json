@@ -1,7 +1,7 @@
 {
   "format": {
-    "contract_format": "AIGMOS_CANONICAL_CONTRACT",
-    "format_version": "1.4"
+    "contract_format": "CANONICAL_CONTRACT",
+    "format_version": "1.6"
   },
   "identity": {
     "id": "AIGMOS_CORE_DETERMINISTIC_ORDERING_CONTRACT",
@@ -9,7 +9,7 @@
     "type": "canonical_contract",
     "version": "1.0"
   },
-  "status": "locked",
+  "status": "unlocked",
   "source_role": "definition",
   "purpose": "Define when ordering is semantically meaningful in canonical data and prohibit accidental semantics from JSON array order, filesystem order, Topic order, projection order or renderer position.",
   "scope": {
@@ -282,84 +282,16 @@
         "authority_rule": "A Flow symbol is descriptive/causal model data only and never grants runtime authority, capability, ownership or execution permission.",
         "scope_rule": "Identity is scoped semantically to the defining contract; identical source literals in another contract or another Flow-ref role are not automatically the same semantic identity."
       }
-    }
-  ],
-  "structure": {
-    "containment": [],
-    "relations": [],
-    "ownership": [],
-    "authority": [],
-    "dependencies": [
-      {
-        "id": "DEP_CAUSALITY",
-        "source_ref": "AIGMOS_CORE_DETERMINISTIC_ORDERING_CONTRACT",
-        "target_ref": "AIGMOS_CORE_EXPLICIT_CAUSALITY_CONTRACT",
-        "dependency_type": "semantic_boundary_dependency",
-        "required": true
-      },
-      {
-        "id": "DEP_NORMALIZED_MODEL",
-        "source_ref": "AIGMOS_CORE_DETERMINISTIC_ORDERING_CONTRACT",
-        "target_ref": "AIGMOS_CORE_NORMALIZED_SEMANTIC_MODEL_CONTRACT",
-        "dependency_type": "normalization_dependency",
-        "required": true
-      }
-    ]
-  },
-  "topics": [
+    },
     {
       "id": "TOPIC_CORE_ORDERING",
       "name": "Ordering",
-      "purpose": "Group explicit ordering semantics and non-ordering guarantees for canonical collections and flows.",
-      "parent_topic_refs": [
-        "TOPIC_CORE"
-      ],
-      "composed_topic_refs": [
-        "TOPIC_CORE_CAUSALITY",
-        "TOPIC_CORE_NORMALIZATION"
-      ],
-      "member_refs": [
-        "AIGMOS_CORE_DETERMINISTIC_ORDERING_CONTRACT",
-        "DEP_CAUSALITY",
-        "DEP_NORMALIZED_MODEL",
-        "ORDER_EXPLICIT_WHEN_SEMANTIC",
-        "UNORDERED_REORDER_EQUIVALENT",
-        "GATE_ARRAY_POSITION_AS_EXECUTION",
-        "GATE_TOPIC_ORDER_AS_PRIORITY",
-        "GATE_FILENAME_ORDER_AS_SEMANTICS",
-        "GATE_PROJECTION_ORDER_FEEDBACK",
-        "GATE_ORDERED_WITHOUT_RULE",
-        "FSYM_C6E8C4231D4C2A74B04C",
-        "FSYM_04D4613B9A63C53E7593",
-        "FSYM_019003744236A5E7946A",
-        "FSYM_3893013C38215E9A5115",
-        "FSYM_1F6FD03597F600F41714",
-        "FSYM_C170676EF2A85BAD8CCA",
-        "FSYM_1A92A5AEC1F4D3AB82B9",
-        "FSYM_B2DCE2A958007B213F67",
-        "FSYM_71177A902F8EA7625481",
-        "FSYM_A9A8AC08FFD9F94A2491",
-        "FSYM_6F00A2E836F0CFA3BF4F",
-        "FSYM_8FBD90EBF264C9A0B5B0",
-        "FSYM_E1E3FFA53D9A267A860F",
-        "FSYM_BE888C5F4BB2A05EA969",
-        "FSYM_7166CADDD743DCF00FC7",
-        "FSYM_AF36AFE5C0BE688EFE85",
-        "FSYM_B11AE43BFC55D43CFB59"
-      ],
-      "relation_refs": [],
-      "operation_refs": [
-        "OP_ORDER_CLASSIFY_COLLECTION",
-        "OP_ORDER_NORMALIZE_UNORDERED",
-        "OP_ORDER_VALIDATE_ORDERED",
-        "OP_ORDER_VALIDATE_NON_INFERENCE"
-      ],
-      "event_refs": [],
-      "flow_refs": [
-        "FLOW_ORDERING_VALIDATION"
-      ],
-      "child_topics": [],
-      "metadata": {}
+      "type": "topic",
+      "status": "unlocked",
+      "semantics": {
+        "purpose": "Group explicit ordering semantics and non-ordering guarantees for canonical collections and flows.",
+        "metadata": {}
+      }
     }
   ],
   "behavior": {
@@ -586,5 +518,413 @@
       "Unlocked until all 1.4 collection fields are checked for explicit ordering applicability.",
       "Pass 8 formalized previously free Flow actor/data/target/condition/payload/result/error tokens as exact owner-scoped member identities while preserving every source literal."
     ]
+  },
+  "maturity": "structured",
+  "links": [
+    {
+      "id": "DEP_CAUSALITY",
+      "type_ref": "dependency",
+      "source_ref": "AIGMOS_CORE_DETERMINISTIC_ORDERING_CONTRACT",
+      "target_ref": "AIGMOS_CORE_EXPLICIT_CAUSALITY_CONTRACT",
+      "status": "unlocked",
+      "properties": {
+        "dependency_type": "semantic_boundary_dependency",
+        "required": true
+      },
+      "maturity": "typed"
+    },
+    {
+      "id": "DEP_NORMALIZED_MODEL",
+      "type_ref": "dependency",
+      "source_ref": "AIGMOS_CORE_DETERMINISTIC_ORDERING_CONTRACT",
+      "target_ref": "AIGMOS_CORE_NORMALIZED_SEMANTIC_MODEL_CONTRACT",
+      "status": "unlocked",
+      "properties": {
+        "dependency_type": "normalization_dependency",
+        "required": true
+      },
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_PARENT_TOPIC_CORE_ORDERING_0",
+      "type_ref": "topic_parent",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "TOPIC_CORE",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_0",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "AIGMOS_CORE_DETERMINISTIC_ORDERING_CONTRACT",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_1",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "DEP_CAUSALITY",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_2",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "DEP_NORMALIZED_MODEL",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_3",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "ORDER_EXPLICIT_WHEN_SEMANTIC",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_4",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "UNORDERED_REORDER_EQUIVALENT",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_5",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "GATE_ARRAY_POSITION_AS_EXECUTION",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_6",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "GATE_TOPIC_ORDER_AS_PRIORITY",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_7",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "GATE_FILENAME_ORDER_AS_SEMANTICS",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_8",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "GATE_PROJECTION_ORDER_FEEDBACK",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_9",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "GATE_ORDERED_WITHOUT_RULE",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_10",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_C6E8C4231D4C2A74B04C",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_11",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_04D4613B9A63C53E7593",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_12",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_019003744236A5E7946A",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_13",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_3893013C38215E9A5115",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_14",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_1F6FD03597F600F41714",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_15",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_C170676EF2A85BAD8CCA",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_16",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_1A92A5AEC1F4D3AB82B9",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_17",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_B2DCE2A958007B213F67",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_18",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_71177A902F8EA7625481",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_19",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_A9A8AC08FFD9F94A2491",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_20",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_6F00A2E836F0CFA3BF4F",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_21",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_8FBD90EBF264C9A0B5B0",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_22",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_E1E3FFA53D9A267A860F",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_23",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_BE888C5F4BB2A05EA969",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_24",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_7166CADDD743DCF00FC7",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_25",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_AF36AFE5C0BE688EFE85",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_MEMBER_TOPIC_CORE_ORDERING_26",
+      "type_ref": "topic_member",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "FSYM_B11AE43BFC55D43CFB59",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_COMPOSE_TOPIC_CORE_ORDERING_0",
+      "type_ref": "topic_composition",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "TOPIC_CORE_CAUSALITY",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    },
+    {
+      "id": "MIG16_TOPIC_COMPOSE_TOPIC_CORE_ORDERING_1",
+      "type_ref": "topic_composition",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "target_ref": "TOPIC_CORE_NORMALIZATION",
+      "status": "unlocked",
+      "properties": {},
+      "maturity": "typed"
+    }
+  ],
+  "gaps": [
+    {
+      "gap_id": "MIG16_TOPIC_OPERATION_REFS_TOPIC_CORE_ORDERING",
+      "type": "legacy_topic_trace_mapping_unresolved",
+      "status": "open",
+      "severity": "blocking",
+      "description": "Legacy Topic field operation_refs contains identity connections but Canonical Contract Format 1.6 does not define a normative migration Link Type for this field. The values are preserved only in non-authoritative migration metadata.",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "field_path": "topics[0].operation_refs"
+    },
+    {
+      "gap_id": "MIG16_TOPIC_FLOW_REFS_TOPIC_CORE_ORDERING",
+      "type": "legacy_topic_trace_mapping_unresolved",
+      "status": "open",
+      "severity": "blocking",
+      "description": "Legacy Topic field flow_refs contains identity connections but Canonical Contract Format 1.6 does not define a normative migration Link Type for this field. The values are preserved only in non-authoritative migration metadata.",
+      "source_ref": "TOPIC_CORE_ORDERING",
+      "field_path": "topics[0].flow_refs"
+    }
+  ],
+  "metadata": {
+    "migration": {
+      "from_format_version": "1.4",
+      "to_format_version": "1.6",
+      "migration_kind": "serialization_and_progressive_formalization",
+      "lock_state_after_migration": "unlocked",
+      "legacy_structure_preserved_as_authority": false,
+      "legacy_topics_preserved_as_authority": false,
+      "note": "Only mappings explicitly defined by Canonical Contract Format 1.6 were promoted to typed Links."
+    },
+    "migration_legacy_non_authoritative": {
+      "structure": {
+        "containment": [],
+        "relations": [],
+        "ownership": [],
+        "authority": [],
+        "dependencies": [
+          {
+            "id": "DEP_CAUSALITY",
+            "source_ref": "AIGMOS_CORE_DETERMINISTIC_ORDERING_CONTRACT",
+            "target_ref": "AIGMOS_CORE_EXPLICIT_CAUSALITY_CONTRACT",
+            "dependency_type": "semantic_boundary_dependency",
+            "required": true
+          },
+          {
+            "id": "DEP_NORMALIZED_MODEL",
+            "source_ref": "AIGMOS_CORE_DETERMINISTIC_ORDERING_CONTRACT",
+            "target_ref": "AIGMOS_CORE_NORMALIZED_SEMANTIC_MODEL_CONTRACT",
+            "dependency_type": "normalization_dependency",
+            "required": true
+          }
+        ]
+      },
+      "topics": [
+        {
+          "id": "TOPIC_CORE_ORDERING",
+          "name": "Ordering",
+          "purpose": "Group explicit ordering semantics and non-ordering guarantees for canonical collections and flows.",
+          "parent_topic_refs": [
+            "TOPIC_CORE"
+          ],
+          "composed_topic_refs": [
+            "TOPIC_CORE_CAUSALITY",
+            "TOPIC_CORE_NORMALIZATION"
+          ],
+          "member_refs": [
+            "AIGMOS_CORE_DETERMINISTIC_ORDERING_CONTRACT",
+            "DEP_CAUSALITY",
+            "DEP_NORMALIZED_MODEL",
+            "ORDER_EXPLICIT_WHEN_SEMANTIC",
+            "UNORDERED_REORDER_EQUIVALENT",
+            "GATE_ARRAY_POSITION_AS_EXECUTION",
+            "GATE_TOPIC_ORDER_AS_PRIORITY",
+            "GATE_FILENAME_ORDER_AS_SEMANTICS",
+            "GATE_PROJECTION_ORDER_FEEDBACK",
+            "GATE_ORDERED_WITHOUT_RULE",
+            "FSYM_C6E8C4231D4C2A74B04C",
+            "FSYM_04D4613B9A63C53E7593",
+            "FSYM_019003744236A5E7946A",
+            "FSYM_3893013C38215E9A5115",
+            "FSYM_1F6FD03597F600F41714",
+            "FSYM_C170676EF2A85BAD8CCA",
+            "FSYM_1A92A5AEC1F4D3AB82B9",
+            "FSYM_B2DCE2A958007B213F67",
+            "FSYM_71177A902F8EA7625481",
+            "FSYM_A9A8AC08FFD9F94A2491",
+            "FSYM_6F00A2E836F0CFA3BF4F",
+            "FSYM_8FBD90EBF264C9A0B5B0",
+            "FSYM_E1E3FFA53D9A267A860F",
+            "FSYM_BE888C5F4BB2A05EA969",
+            "FSYM_7166CADDD743DCF00FC7",
+            "FSYM_AF36AFE5C0BE688EFE85",
+            "FSYM_B11AE43BFC55D43CFB59"
+          ],
+          "relation_refs": [],
+          "operation_refs": [
+            "OP_ORDER_CLASSIFY_COLLECTION",
+            "OP_ORDER_NORMALIZE_UNORDERED",
+            "OP_ORDER_VALIDATE_ORDERED",
+            "OP_ORDER_VALIDATE_NON_INFERENCE"
+          ],
+          "event_refs": [],
+          "flow_refs": [
+            "FLOW_ORDERING_VALIDATION"
+          ],
+          "child_topics": [],
+          "metadata": {}
+        }
+      ]
+    }
   }
 }

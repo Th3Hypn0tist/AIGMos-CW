@@ -1,0 +1,151 @@
+{
+  "name": "Canonical Contract Format",
+  "type": "canonical_contract_format",
+  "version": "1.6.0",
+  "status": "locked",
+  "release": {
+    "state": "final",
+    "delta_from": "1.5.0-candidate",
+    "change_class": "non_breaking_semantic_clarification",
+    "semantic_delta": [
+      "links[] is an unbounded collection with no Canonical Contract Format maximum item count.",
+      "CW/profile compliance is defined by satisfaction of the required semantic minimum, not by limiting the total number of Links.",
+      "Additional Links may exist without bound beyond the required minimum, while every locked Link still MUST satisfy its referenced Link Type and all applicable semantic constraints.",
+      "Per-Link-Type or semantic cardinality constraints remain valid; unbounded total links[] cardinality does not weaken rules such as single primary architecture placement."
+    ]
+  },
+  "position": 0,
+  "purpose": "Define a representation-independent canonical semantic contract model for general systems modeling. The format provides explicit identity, architecture placement, typed semantic links, behavior, constraints, gaps, lifecycle, profiles and deterministic validation without semantic guessing.",
+  "bootstrap": {
+    "role": "format_root",
+    "order": [
+      "Canonical Contract Format",
+      "one active Master / boundary registry when a model has a shared architecture root",
+      "all active canonical contracts and registries"
+    ],
+    "rule": "This contract is the format root. Every active canonical artifact MUST conform to the current format and every required profile before it may be locked."
+  },
+  "representation": {
+    "semantic_standard": "Canonical Contract semantic model",
+    "current_serialization": "JSON",
+    "rule": "JSON is a serialization and data-structuring format only. JSON is NOT the semantic standard.",
+    "representation_independence": true,
+    "lossless_targets": [
+      "JSON",
+      "YAML",
+      "CBOR",
+      "relational representation",
+      "graph representation",
+      "binary representation",
+      "visual editor representation",
+      "other lossless representations"
+    ],
+    "round_trip_goal": "representation A -> normalized canonical semantic model -> representation B MUST preserve semantic identity and every required machine-significant meaning."
+  },
+  "fundamental_rules": [
+    {"id":"CF_NO_SEMANTIC_GUESSING","rule":"Active semantics MUST NOT be inferred from prose, filenames, directory placement, naming convention, array position, indentation, visual placement, implementation behavior, framework convention or domain-specific heuristics."},
+    {"id":"CF_IDENTITY_IS_EXPLICIT","rule":"Every machine-significant semantic identity MUST have an explicit stable identity."},
+    {"id":"CF_ONE_IDENTITY_ONE_ACTIVE_DEFINITION","rule":"One active semantic identity MUST resolve to exactly one active authoritative definition."},
+    {"id":"CF_ARCHITECTURE_IS_DATA","rule":"Canonical architecture root, primary placement and architectural kind MUST be explicit structured data when architecture is applicable."},
+    {"id":"CF_ONE_PRIMARY_ARCHITECTURE_PLACEMENT","rule":"An identity participating in the canonical architecture tree MUST have exactly one primary architecture placement unless an explicit unresolved gap states that placement is not yet known."},
+    {"id":"CF_EVERY_SEMANTIC_CONNECTION_IS_A_LINK","rule":"Every machine-significant connection between canonical identities MUST be represented as an explicit typed Link."},
+    {"id":"CF_LINK_COLLECTION_IS_UNBOUNDED","rule":"The canonical links[] collection MUST have no format-level maximum cardinality. A conforming model MAY contain any number of additional Links beyond the minimum required by the current format and applicable profiles."},
+    {"id":"CF_LINK_TYPE_IS_EXPLICIT","rule":"Every Link MUST reference an explicitly defined Link Type. A type label without machine-readable semantics MUST NOT be treated as canonical meaning."},
+    {"id":"CF_OPEN_VOCABULARY_EXPLICIT_SEMANTICS","rule":"The Link Type vocabulary is extensible without a fixed upper bound, but every active Link Type MUST have explicit semantics and validation rules."},
+    {"id":"CF_DEFINED_MINIMUM_UNLIMITED_EXTENSION","rule":"Profiles MAY require a defined minimum set of Link Types, properties and cardinalities. Satisfying those requirements defines the required semantic floor; it MUST NOT impose a maximum on the total number of Links in links[]. Additional Links MAY be present without bound."},
+    {"id":"CF_TOPIC_IS_GROUPING_NOT_ARCHITECTURE","rule":"Topic membership, parentage or composition MUST NOT imply canonical architecture placement."},
+    {"id":"CF_CONTAINMENT_NOT_OWNERSHIP","rule":"Containment MUST NOT imply ownership."},
+    {"id":"CF_OWNERSHIP_NOT_AUTHORITY","rule":"Ownership MUST NOT imply runtime, policy or approval authority."},
+    {"id":"CF_AUTHORITY_NOT_DEPENDENCY","rule":"Authority MUST NOT imply dependency."},
+    {"id":"CF_DEPENDENCY_NOT_CAUSALITY","rule":"Dependency MUST NOT imply execution order or causality."},
+    {"id":"CF_SURFACE_NOT_AUTHORITY","rule":"Exposure, visibility or external contact MUST NOT imply ownership or authority."},
+    {"id":"CF_CAUSALITY_IS_DATA","rule":"Execution order, branching, continuation and causality that matter to system behavior MUST be explicit structured flow data."},
+    {"id":"CF_VISUAL_POSITION_NOT_SEMANTICS","rule":"Visual position, canvas placement and renderer ordering MUST NOT define canonical semantics."},
+    {"id":"CF_UNKNOWN_NOT_INVENTED","rule":"Unknown or missing semantics MUST remain explicit gaps and MUST NOT be invented by a consumer."},
+    {"id":"CF_PROGRESSIVE_FORMALIZATION","rule":"Canonical modeling MAY begin loosely while unlocked. The same identities and Links MAY be progressively refined toward typed, validated and locked semantics without requiring migration to a different semantic model."},
+    {"id":"CF_ROUND_TRIP","rule":"A valid canonical model MUST survive representation -> normalized canonical semantic model -> representation without semantic invention or loss."}
+  ],
+  "lifecycle": {
+    "status_values":["unlocked","locked","superseded","deprecated"],
+    "unlocked":"Active semantics exist but may still be incomplete, unresolved, under design, or not yet validated against the current format and applicable profiles.",
+    "locked":"The artifact has passed the current format, applicable profile requirements, deterministic reference resolution, semantic closure and all applicable hard gates.",
+    "superseded":"Historical definition replaced by another active definition.",
+    "deprecated":"Retained for history or compatibility but not active for new canonical work.",
+    "transition":"unlocked -> validate -> locked",
+    "format_migration":"A breaking format or profile change MUST unlock every affected active artifact until individually revalidated."
+  },
+  "maturity": {
+    "purpose":"Describe progressive formalization independently from lifecycle authority.",
+    "values":["idea","suggestion","unresolved","structured","typed","complete","validated"],
+    "rule":"maturity is descriptive and MUST NOT replace status. Only status=locked grants locked canonical authority."
+  },
+  "contract_shape": {
+    "required":["format","identity","status","source_role","purpose","scope","members","links","behavior","semantics","constraints","references","gaps","prose"],
+    "optional":["maturity","profiles","architecture","link_types","implementation","metadata"],
+    "format":{"required":["contract_format","format_version"],"contract_format":"CANONICAL_CONTRACT","format_version":"1.6"},
+    "identity":{"required":["id","name","type","version"],"rule":"id is the stable semantic identity and MUST originate from explicit structured identity data, never only from a path, filename, display name or inferred convention."},
+    "source_role":{"values":["definition","membership_registry","boundary_master","architecture_registry","link_type_registry","profile_registry","reconciliation","historical_or_migration","derived_projection"],"rule":"The source role limits what semantic authority the artifact may own."},
+    "scope":{"required":["owns","does_not_own"],"rule":"Scope declares semantic responsibility boundaries and MUST NOT be inferred from links or placement."},
+    "members":{"item_required":["id","name","type","status","semantics"],"rule":"members defines semantic identities owned inside this contract. External identities are referenced by Links or references and MUST NOT be silently redefined."},
+    "links":{"item_required":["id","type_ref","source_ref","target_ref","status","properties"],"item_optional":["maturity","gap_ref","provenance","metadata"],"rule":"links is the universal serialization for machine-significant identity-to-identity semantic connections. Semantic distinctions are carried by type_ref and the referenced Link Type contract.","collection_cardinality":{"min":0,"max":null,"meaning":"unbounded"},"compliance_rule":"Format and profile requirements select the Links that MUST exist and validate. They define a required minimum semantic set, not a closed list of all Links that MAY exist.","additional_links_rule":"Additional Links beyond the required minimum MAY exist without bound. Every locked additional Link MUST still resolve its type_ref and satisfy its Link Type contract.","semantic_cardinality_rule":"The unbounded total size of links[] does not override semantic cardinality constraints on a specific Link Type, source_ref, target_ref, architecture placement or applicable profile rule."},
+    "link_types":{"item_required":["id","name","kind","directional","source_role","target_role","required_properties","semantics"],"item_optional":["allowed_properties","inverse_type_ref","symmetric","transitive","cardinality","constraints","prose","metadata"],"kind_value":"link_type","rule":"Every active non-core custom Link Type MUST resolve to exactly one active Link Type definition. Core Link Types MAY be resolved from this format root or from an authoritative core Link Type registry."},
+    "profiles":{"item_required":["id","name","applies_to","required_links"],"item_optional":["required_fields","required_semantics","required_behavior","allowed_additional_link_types","hard_gates","metadata"],"required_links_shape":{"<type_ref>":{"min":"non-negative integer","max":"non-negative integer or null for unbounded","required_properties":"optional list of property names"}},"rule":"Profiles define minimum semantic completeness for a modeled kind or use case. required_links identifies semantic obligations that MUST be satisfied; it does not close or bound the total links[] collection. Additional valid Links MAY exist without bound.","total_links_cardinality_rule":"A profile MUST NOT define a maximum cardinality for the total links[] collection. It MAY define semantic cardinality for particular required Link Types where that cardinality is part of the modeled meaning."},
+    "architecture":{"required_when_role_is_architecture_registry_or_boundary_master":["root_ref"],"optional":["name","description","metadata"],"placement_rule":"Primary placement is represented by architecture_parent Links. architecture.root_ref identifies the canonical root."},
+    "behavior":{"required":["states","interfaces","operations","events","flows"],"state_required":["id","name"],"interface_required":["id","name","direction","input","output","errors"],"operation_required":["id","name","inputs","outputs","errors","side_effects"],"event_required":["id","name","payload"],"flow_required":["id","owner_ref","name","flow_type","entry_refs","exit_refs","steps","metadata"],"flow_step_required":["id","actor_ref","action_ref","data_ref","target_ref","cause_ref","condition_ref","payload_ref","result_refs","error_refs","next_step_refs","subflow_refs","resume_ref"],"flow_rules":["Execution causality MUST come from explicit flow data.","Dependency MUST NOT define execution order.","Architecture placement MUST NOT define execution order.","Containment MUST NOT define execution order.","Ownership MUST NOT define execution order.","Authority MUST NOT define execution order.","Topic membership MUST NOT define execution order.","Visual ordering MUST NOT define execution order.","Branches MUST carry explicit conditions and continuations.","Reusable subflows SHOULD be referenced rather than duplicated.","Return or resume after a subflow MUST be explicit where continuation matters.","A flow MUST NOT itself grant runtime authority."]},
+    "semantics":{"type":"object","rule":"Contract-specific structured semantics that are not identity, typed links, behavior, constraints, references, gaps or prose live here. A semantic value whose meaning is a relation to another canonical identity MUST use an explicit Link or reference rather than a hidden name/path.","round_trip_rule":"Contract-specific structured semantic data MUST be preserved losslessly."},
+    "constraints":{"required":["invariants","hard_gates"],"invariant_required":["id","rule"],"hard_gate_required":["id","condition","result"],"hard_gate_result":"hard_fail"},
+    "references":{"item_required":["id","target_ref","purpose"],"rule":"A reference indicates semantic addressability but does not itself create a typed semantic connection. Every active target_ref MUST resolve deterministically."},
+    "gaps":{"item_required":["gap_id","type","status"],"item_optional":["target_ref","source_ref","link_ref","field_path","severity","description","resolution_hint","metadata"],"status_values":["open","resolved","accepted_unknown"],"rule":"A gap records unknown, unresolved or incomplete semantics without inventing an answer."},
+    "prose":{"required":["summary","notes"],"rule":"Prose may explain semantics but MUST NOT be the only carrier of a machine-significant identity, placement, typed connection, authority, behavioral or causal fact."}
+  },
+  "core_link_types": [
+    {"id":"architecture_parent","name":"Architecture parent","kind":"link_type","directional":true,"source_role":"architecture_child","target_role":"architecture_parent","required_properties":[],"semantics":"Defines the single primary canonical architecture placement of source_ref under target_ref.","constraints":["At most one active locked architecture_parent Link per source_ref within one architecture registry.","The canonical root MUST NOT have an architecture_parent Link.","Cycles are forbidden unless an applicable profile explicitly defines a legal recursive architecture model."]},
+    {"id":"containment","name":"Containment","kind":"link_type","directional":true,"source_role":"container","target_role":"contained","required_properties":["relation_type"],"semantics":"States that target_ref is structurally contained by source_ref."},
+    {"id":"relation","name":"Relation","kind":"link_type","directional":true,"source_role":"relation_source","target_role":"relation_target","required_properties":["relation_type","direction"],"semantics":"Represents a typed semantic relation without implying containment, ownership, authority or dependency."},
+    {"id":"ownership","name":"Ownership","kind":"link_type","directional":true,"source_role":"owner","target_role":"owned","required_properties":["ownership_type"],"semantics":"Declares semantic responsibility or lifecycle ownership."},
+    {"id":"authority","name":"Authority","kind":"link_type","directional":true,"source_role":"authority","target_role":"governed_target","required_properties":["authority_type","scope"],"semantics":"Declares explicit decision, authorization, approval or mutation authority."},
+    {"id":"dependency","name":"Dependency","kind":"link_type","directional":true,"source_role":"dependent","target_role":"dependency","required_properties":["dependency_type","required"],"semantics":"Declares that source_ref requires or optionally depends on target_ref."},
+    {"id":"topic_parent","name":"Topic parent","kind":"link_type","directional":true,"source_role":"child_topic","target_role":"parent_topic","required_properties":[],"semantics":"Defines Topic grouping hierarchy only and MUST NOT define architecture placement."},
+    {"id":"topic_member","name":"Topic member","kind":"link_type","directional":true,"source_role":"topic","target_role":"member","required_properties":[],"semantics":"Adds target_ref to the semantic grouping context of source_ref Topic."},
+    {"id":"topic_composition","name":"Topic composition","kind":"link_type","directional":true,"source_role":"composing_topic","target_role":"composed_topic","required_properties":[],"semantics":"Composes an existing Topic surface by reference without copying or reinterpreting its semantics."},
+    {"id":"surface","name":"Surface","kind":"link_type","directional":true,"source_role":"semantic_owner_or_component","target_role":"surface","required_properties":["surface_type","direction"],"semantics":"Declares an explicit contact or exposure surface without granting ownership or authority."},
+    {"id":"implementation_binding","name":"Implementation binding","kind":"link_type","directional":true,"source_role":"canonical_semantic_identity","target_role":"implementation_identity","required_properties":["binding_type"],"semantics":"Maps canonical semantics to an implementation artifact without redefining the canonical identity."}
+  ],
+  "extension_link_type_rule":{"allowed":true,"maximum_custom_types":null,"requirements":["Custom Link Type id MUST resolve uniquely.","Custom Link Type semantics MUST be machine-readable.","Directionality and endpoint roles MUST be explicit.","Required properties MUST be explicit.","Locked Links MUST satisfy the referenced Link Type contract.","A custom Link Type MUST NOT silently redefine a core Link Type."],"example":{"id":"scheduled_after","name":"Scheduled after","kind":"link_type","directional":true,"source_role":"successor","target_role":"predecessor","required_properties":["lag"],"semantics":"Declares schedule precedence between two project identities."},"link_instance_cardinality":{"maximum_total_links":null,"rule":"The number of Link instances in links[] is unbounded independently of the number of Link Types."}},
+  "progressive_formalization":{"enabled":true,"rule":"Loose design data MAY exist while unlocked. Generic or unresolved Links MUST remain explicitly non-locked until their type and required properties are known.","generic_link_type":{"id":"related_to","status":"unlocked_only","semantics":"Represents that a possible semantic connection is known to exist while its stronger type is not yet specified. It MUST NOT satisfy a profile requirement for a more specific Link Type."},"unresolved_link_rule":"If the existence of a connection is known but its semantic type is unknown, the model MUST retain an unlocked Link and an explicit gap rather than infer a type.","refinement_rule":"An unlocked Link MAY retain its stable id while type_ref and required properties are refined, provided history preserves the change and no locked semantic claim is silently rewritten."},
+  "architecture_model":{"root_rule":"A shared canonical architecture MUST declare exactly one root_ref.","placement_link_type":"architecture_parent","kind_rule":"Architectural kind is a property or explicit semantic identity independent from architecture_parent placement.","topic_rule":"Topic Links MUST NOT be used to synthesize architecture placement.","surface_rule":"Surface Links MUST NOT create architecture placement.","unknown_rule":"Unknown placement MUST be represented as an explicit gap.","closure_checks":["root resolves","all architecture_parent endpoints resolve","all required architectural kinds resolve","primary placement is unique","required nodes are reachable from root","unreachable nodes are explicit gaps","illegal cycles are rejected","no filesystem/path inference is required","no Topic-as-placement inference is required","surface refs resolve"]},
+  "profile_model":{"principle":"Profiles make CW usable across domains without changing the core format. They define the required semantic minimum for compliance while the canonical links[] collection remains unbounded.","examples":["software_system","software_component","project","organization","production_process","business_process","ship_design","infrastructure_network","knowledge_model"],"project_profile_extension_candidate":{"time_schedule_semantics":["start","end","duration","deadline","milestone","calendar","resource_availability","dependency_lag","recurrence","planned_vs_actual"],"candidate_link_types":["scheduled_after","blocks","allocated_to","approved_by","delivers"]}},
+  "reference_resolution":{"zero_active_matches":"hard_fail","one_active_match":"valid","multiple_active_matches":"hard_fail","forbidden_inputs":["filename similarity","directory placement","display aliases without explicit alias authority","prose interpretation","renderer position","canvas position","implementation imports","context guessing","domain-specific heuristics"]},
+  "canonicalization":{"encoding":"UTF-8","duplicate_json_keys":"hard_fail","array_order_default":"non_semantic","ordered_array_rule":"If array order carries semantics, its owning field MUST explicitly declare ordered=true.","required_empty_dimensions":"Required dimensions remain present as empty arrays or objects when applicable but empty. Absence MUST NOT silently mean not applicable.","inert_semantic_values":["null","boolean","finite number","string","array","object"]},
+  "round_trip":{"forward":"representation -> normalized canonical semantic model MUST preserve every active identity, typed Link, Link Type, architecture root, profile requirement, behavior record, flow, semantic value, invariant, hard gate, gap and reference.","reverse":"normalized canonical semantic model -> representation MUST invent nothing, drop nothing and preserve identity, Link type, endpoint direction, properties, architecture placement, causal links and contract-specific semantic values.","equivalence":"Whitespace, key order and non-semantic serialization details may differ; canonical semantic meaning may not."},
+  "traceability":{"reverse_trace":"Any canonical identity SHOULD be queryable for incoming typed Links, producing flows, ownership, authority, architecture placement, Topic contexts, surfaces and implementation bindings.","forward_trace":"Any canonical identity SHOULD be queryable for outgoing typed Links, consumed dependencies, behavior and explicit consequences.","generic_consumer_rule":"A generic consumer MUST reconstruct significant semantics from canonical data and registered Link Type contracts without embedded domain-specific guessing."},
+  "validator":{"required_operations":["validate_shape","resolve_identities","resolve_link_types","resolve_references","validate_links","validate_profiles","materialize_architecture","materialize_link_indexes","materialize_behavior","materialize_flows","validate_no_semantic_guessing","validate_architecture_closure","validate_reference_closure","validate_link_closure","validate_behavior_closure","validate_flow_closure","validate_reverse_traceability","validate_round_trip","validate_hard_gates","lock_eligible"],"failure_output":["error_id","artifact_identity_or_file","field_path_when_applicable","link_id_when_applicable","type_ref_when_applicable","profile_id_when_applicable","gate_id","failure_class_when_applicable","explanation"],"lock_rule":"lock_eligible=true permits unlocked -> locked. Otherwise the artifact MUST remain unlocked."},
+  "hard_gates": [
+    {"id":"CF_MISSING_REQUIRED_FIELD","condition":"A required format field or required profile field is absent.","result":"hard_fail"},
+    {"id":"CF_AMBIGUOUS_IDENTITY","condition":"One semantic identity has multiple active authoritative definitions.","result":"hard_fail"},
+    {"id":"CF_UNRESOLVED_REFERENCE","condition":"An active locked reference resolves to zero active identities.","result":"hard_fail"},
+    {"id":"CF_AMBIGUOUS_REFERENCE","condition":"An active reference resolves to multiple active identities.","result":"hard_fail"},
+    {"id":"CF_UNKNOWN_LINK_TYPE","condition":"A locked Link type_ref does not resolve to exactly one active Link Type definition.","result":"hard_fail"},
+    {"id":"CF_LINK_REQUIRED_PROPERTY_MISSING","condition":"A locked Link omits a property required by its Link Type.","result":"hard_fail"},
+    {"id":"CF_PROFILE_REQUIRED_LINK_MISSING","condition":"An identity subject to a profile does not satisfy a required Link Type cardinality.","result":"hard_fail"},
+    {"id":"CF_ARCH_ROOT_UNRESOLVED","condition":"A declared canonical architecture root does not resolve.","result":"hard_fail"},
+    {"id":"CF_ARCH_PARENT_UNRESOLVED","condition":"A locked architecture_parent Link contains an unresolved endpoint.","result":"hard_fail"},
+    {"id":"CF_ARCH_MULTIPLE_PRIMARY_PLACEMENTS","condition":"One identity has more than one active locked primary architecture_parent Link in one architecture.","result":"hard_fail"},
+    {"id":"CF_ARCH_ILLEGAL_CYCLE","condition":"Canonical architecture contains a cycle not explicitly permitted by an applicable profile.","result":"hard_fail"},
+    {"id":"CF_ARCH_PATH_INFERENCE","condition":"Architecture placement depends on filesystem path, filename, naming convention or visual placement.","result":"hard_fail"},
+    {"id":"CF_ARCH_TOPIC_INFERENCE","condition":"Topic membership or Topic hierarchy is used as canonical architecture placement.","result":"hard_fail"},
+    {"id":"CF_PROSE_ONLY_SEMANTICS","condition":"A machine-significant fact required for reconstruction exists only in prose.","result":"hard_fail"},
+    {"id":"CF_IMPLICIT_AUTHORITY","condition":"Authority must be inferred from containment, ownership, dependency, Topic membership, visibility or relation presence.","result":"hard_fail"},
+    {"id":"CF_IMPLICIT_CAUSALITY","condition":"Execution order, branching, continuation or causality must be inferred from Links other than explicit flow semantics, from visual order, or from prose.","result":"hard_fail"},
+    {"id":"CF_HIDDEN_SEMANTIC_LINK","condition":"A machine-significant identity-to-identity semantic connection exists only inside an opaque semantic value or prose instead of an explicit Link/reference/behavior record.","result":"hard_fail"},
+    {"id":"CF_SEMANTIC_GUESS_REQUIRED","condition":"A generic consumer requires project-specific or domain-specific heuristic interpretation to reconstruct required active semantics.","result":"hard_fail"},
+    {"id":"CF_ROUND_TRIP_LOSS","condition":"Representation -> canonical semantic model -> representation changes active semantic meaning.","result":"hard_fail"},
+    {"id":"CF_TOTAL_LINK_COLLECTION_BOUNDED","condition":"A format rule or profile attempts to define a finite maximum number of total Link instances permitted in links[].","result":"hard_fail"}
+  ],
+  "migration": {
+    "from_pre_1_5":{"rule":"Migration changes serialization, not semantic meaning.","mappings":{"structure.containment[]":"links[type_ref=containment]","structure.relations[]":"links[type_ref=relation]","structure.ownership[]":"links[type_ref=ownership]","structure.authority[]":"links[type_ref=authority]","structure.dependencies[]":"links[type_ref=dependency]","topics[].parent_topic_refs[]":"links[type_ref=topic_parent]","topics[].member_refs[]":"links[type_ref=topic_member]","topics[].composed_topic_refs[]":"links[type_ref=topic_composition]","architecture.nodes[].parent_ref":"links[type_ref=architecture_parent]"},"no_dual_truth":true,"rule_after_migration":"Once a semantic connection has migrated to links[], an independent legacy field MUST NOT remain active as a second authority."},
+    "from_1_5_candidate":{"change_class":"non_breaking_semantic_clarification","rule":"CW 1.6 preserves the 1.5 candidate serialization and typed-Link semantics. The normative change is explicit unbounded total links[] cardinality plus minimum-based compliance.","required_action":["Update format_version to 1.6 when adopting this format.","Revalidate required profile minima and all locked Link Type contracts.","Do not remove valid additional Links merely because they are not part of the required minimum."],"no_dual_truth":true}
+  },
+  "general_use":{"scope":"generic systems modeling","principle":"The core format defines identity, explicit typed semantic connections, deterministic validation and progressive formalization. Profiles define the semantic minimum required for compliance. The links[] collection itself is unbounded, and domain-specific semantics are added through profiles, custom Link Types, behavior and constraints.","supported_modeling_classes":["software architecture","software behavior","projects and planning","organizations","business processes","production systems","physical system architecture","infrastructure","knowledge systems","other domains expressible through explicit identities and typed semantic connections"],"tooling_model":{"canonical_contract":"what the modeled system means","design_tools":"controlled editors of the canonical model","projection_tools":"read and project canonical semantics without inventing them","generated_artifacts":"derived outputs that MUST NOT become parallel semantic authorities unless explicitly promoted"}},
+  "release_invariants":["The serialized schema is the accepted CW 1.6 format.","The core Link Type set is authoritative for CW 1.6.","The profile schema defines minimum semantic completeness rather than a closed Link set.","The total links[] collection is unbounded.","Architecture root and primary placement rules remain explicit and deterministic.","Progressive formalization remains supported while unlocked.","Migration from previous structure/topic fields remains defined without dual truth.","Reference and Link Type resolution remain deterministic.","Round-trip preservation remains mandatory.","Generic consumers MUST reconstruct required canonical semantics without project-specific or domain-specific guessing.","All applicable hard gates MUST pass before an artifact may be locked."]
+}

@@ -1,0 +1,174 @@
+name: CW 2.0 migration
+
+on:
+  push:
+    branches:
+      - cw-2.0-migration
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: ${{ !contains(github.event.head_commit.message, '[cw20-migrated]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Fetch locked standards
+        run: |
+          curl --fail --silent --show-error --location \
+            https://aigm.fi/format/Canonical_Contract_Format.json \
+            -o Canonical_Contract_Format.json
+          curl --fail --silent --show-error --location \
+            https://aigm.fi/format/Canonical_Wireframe_Dependency_Rules.json \
+            -o Canonical_Wireframe_Dependency_Rules.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          expected = {
+              'Canonical_Contract_Format.json': ('2.0.0', 'locked'),
+              'Canonical_Wireframe_Dependency_Rules.json': ('2.0.0', 'locked'),
+          }
+          for name, (version, status) in expected.items():
+              d = json.loads(Path(name).read_text(encoding='utf-8'))
+              assert d.get('version') == version, (name, d.get('version'))
+              assert d.get('status') == status, (name, d.get('status'))
+              print(f'{name}: {version} {status}')
+          PY
+
+      - name: Run deterministic CCF 2.0 migration
+        run: python tools/migrate_aigmos_cw_to_2_0.py
+
+      - name: Validate migrated JSON and no legacy authority
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          files = sorted(Path('canonical/json').rglob('*.json'))
+          bad = []
+          statuses = {}
+          entity_count = 0
+          property_count = 0
+          link_count = 0
+          event_count = 0
+          effect_count = 0
+
+          for p in files:
+              d = json.loads(p.read_text(encoding='utf-8'))
+              if d.get('format', {}).get('format_version') != '2.0':
+                  bad.append(f'{p}: format_version')
+              if d.get('status') != 'unlocked':
+                  bad.append(f'{p}: status={d.get("status")}')
+              if 'links' in d or 'behavior' in d or 'structure' in d or 'topics' in d:
+                  bad.append(f'{p}: legacy top-level authority present')
+              statuses[d.get('status')] = statuses.get(d.get('status'), 0) + 1
+              for e in d.get('entities', []):
+                  entity_count += 1
+                  for prop in e.get('properties', []):
+                      property_count += 1
+                      pt = prop.get('property_type_ref')
+                      link_count += pt == 'link'
+                      event_count += pt == 'event'
+                      effect_count += pt == 'effect'
+
+          if bad:
+              raise SystemExit('\n'.join(bad[:100]))
+
+          print(f'JSON syntax OK: {len(files)} canonical files')
+          print(f'entities={entity_count} properties={property_count} links={link_count} events={event_count} effects={effect_count}')
+          print(f'statuses={statuses}')
+          PY
+
+      - name: Validate canonical identity namespace
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          seen = {}
+          collisions = []
+          for p in sorted(Path('canonical/json').rglob('*.json')):
+              d = json.loads(p.read_text(encoding='utf-8'))
+              for e in d.get('entities', []):
+                  for kind, ident in [('Entity', e.get('id'))]:
+                      if ident in seen:
+                          collisions.append((ident, seen[ident], (str(p), kind)))
+                      else:
+                          seen[ident] = (str(p), kind)
+                  for prop in e.get('properties', []):
+                      ident = prop.get('id')
+                      if ident in seen:
+                          collisions.append((ident, seen[ident], (str(p), 'Property')))
+                      else:
+                          seen[ident] = (str(p), 'Property')
+          if collisions:
+              print('Canonical identity collisions:')
+              for row in collisions[:100]:
+                  print(row)
+              raise SystemExit(1)
+          print(f'Canonical identity namespace OK: {len(seen)} identities')
+          PY
+
+      - name: Validate link endpoint closure
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          docs = []
+          ids = set()
+          for p in sorted(Path('canonical/json').rglob('*.json')):
+              d = json.loads(p.read_text(encoding='utf-8'))
+              docs.append((p, d))
+              for e in d.get('entities', []):
+                  ids.add(e.get('id'))
+                  ids.update(prop.get('id') for prop in e.get('properties', []))
+
+          unresolved = []
+          for p, d in docs:
+              for e in d.get('entities', []):
+                  for prop in e.get('properties', []):
+                      if prop.get('property_type_ref') != 'link':
+                          continue
+                      v = prop.get('value', {})
+                      for endpoint in ('parent_ref', 'child_ref'):
+                          ref = v.get(endpoint)
+                          if ref and ref not in ids:
+                              unresolved.append((str(p), prop.get('id'), endpoint, ref))
+
+          report = {
+              'unresolved_link_endpoint_count': len(unresolved),
+              'examples': unresolved[:200],
+              'note': 'Unresolved endpoints are migration closure work; they remain unlocked and are not guessed.'
+          }
+          Path('cw20-link-closure-report.json').write_text(json.dumps(report, indent=2) + '\n')
+          print(json.dumps(report, indent=2))
+          PY
+
+      - name: Commit migration result
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No migration changes to commit."
+            exit 0
+          fi
+          git config user.name "AIGMos CW migration"
+          git config user.email "actions@users.noreply.github.com"
+          git add canonical/json \
+            Canonical_Contract_Format.json \
+            Canonical_Wireframe_Dependency_Rules.json \
+            AIGMos_Dependency_Rules_v2.0.0-migration.json \
+            cw20-migration-report.json \
+            cw20-link-closure-report.json
+          git commit -m "Migrate AIGMos canonical tree to CCF/CW-DR 2.0 unlocked [cw20-migrated]"
+          git push

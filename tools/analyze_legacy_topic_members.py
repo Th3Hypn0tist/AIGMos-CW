@@ -12,10 +12,14 @@ REPORT = ROOT / "cw20-legacy-topic-member-analysis.json"
 
 
 def load_docs() -> list[tuple[Path, dict[str, Any]]]:
-    docs = []
-    for p in sorted(CANONICAL.rglob("*.json")):
-        docs.append((p, json.loads(p.read_text(encoding="utf-8"))))
-    return docs
+    return [(p, json.loads(p.read_text(encoding="utf-8"))) for p in sorted(CANONICAL.rglob("*.json"))]
+
+
+def add_identity(kinds, locations, ident, kind, rel):
+    if not ident:
+        return
+    kinds[ident].add(kind)
+    locations[ident].append({"kind": kind, "file": rel})
 
 
 def collect_declared_identities(docs):
@@ -25,38 +29,37 @@ def collect_declared_identities(docs):
     for p, d in docs:
         rel = str(p.relative_to(ROOT))
         identity = d.get("identity", {}) or {}
-        if identity.get("id"):
-            kinds[identity["id"]].add("contract")
-            locations[identity["id"]].append({"kind": "contract", "file": rel})
+        add_identity(kinds, locations, identity.get("id"), "contract", rel)
 
         for e in d.get("entities", []) or []:
             eid = e.get("id")
-            if eid:
-                kinds[eid].add("entity")
-                if e.get("entity_type_ref"):
-                    kinds[eid].add(f"entity:{e['entity_type_ref']}")
-                locations[eid].append({"kind": "entity", "file": rel})
+            add_identity(kinds, locations, eid, "entity", rel)
+            if eid and e.get("entity_type_ref"):
+                add_identity(kinds, locations, eid, f"entity:{e['entity_type_ref']}", rel)
             for prop in e.get("properties", []) or []:
                 pid = prop.get("id")
-                if pid:
-                    kinds[pid].add("property")
-                    if prop.get("property_type_ref"):
-                        kinds[pid].add(f"property:{prop['property_type_ref']}")
-                    locations[pid].append({"kind": "property", "file": rel})
+                add_identity(kinds, locations, pid, "property", rel)
+                if pid and prop.get("property_type_ref"):
+                    add_identity(kinds, locations, pid, f"property:{prop['property_type_ref']}", rel)
 
         constraints = d.get("constraints", {}) or {}
         for inv in constraints.get("invariants", []) or []:
-            iid = inv.get("id")
-            if iid:
-                kinds[iid].add("invariant")
-                locations[iid].append({"kind": "invariant", "file": rel})
+            add_identity(kinds, locations, inv.get("id"), "invariant", rel)
         for gate in constraints.get("hard_gates", []) or []:
-            gid = gate.get("id")
-            if gid:
-                kinds[gid].add("hard_gate")
-                locations[gid].append({"kind": "hard_gate", "file": rel})
+            add_identity(kinds, locations, gate.get("id"), "hard_gate", rel)
 
         legacy = (d.get("metadata", {}) or {}).get("migration_legacy_non_authoritative", {}) or {}
+
+        # Legacy members[] was itself an explicit identity table. Classify it exactly by declared type.
+        # This catches flow symbols and relation symbols that were Topic members but are not CCF 2.0 Entities/Properties.
+        for member in legacy.get("members", []) or []:
+            if not isinstance(member, dict):
+                continue
+            mid = member.get("id")
+            mtype = member.get("type") or "unspecified"
+            add_identity(kinds, locations, mid, "legacy_member", rel)
+            add_identity(kinds, locations, mid, f"legacy_member:{mtype}", rel)
+
         behavior = legacy.get("behavior", {}) or {}
         for field, kind in [
             ("operations", "operation"),
@@ -66,12 +69,17 @@ def collect_declared_identities(docs):
             ("interfaces", "interface"),
         ]:
             for obj in behavior.get(field, []) or []:
-                oid = obj.get("id") if isinstance(obj, dict) else None
-                if oid:
-                    kinds[oid].add(kind)
-                    locations[oid].append({"kind": kind, "file": rel})
+                add_identity(kinds, locations, obj.get("id") if isinstance(obj, dict) else None, kind, rel)
 
-        # Also support the direct legacy fields when present on main-style source docs.
+        # Also support direct legacy fields if the analyzer is run against a legacy source tree.
+        for member in d.get("members", []) or []:
+            if not isinstance(member, dict):
+                continue
+            mid = member.get("id")
+            mtype = member.get("type") or "unspecified"
+            add_identity(kinds, locations, mid, "legacy_member", rel)
+            add_identity(kinds, locations, mid, f"legacy_member:{mtype}", rel)
+
         behavior2 = d.get("behavior", {}) or {}
         for field, kind in [
             ("operations", "operation"),
@@ -81,10 +89,7 @@ def collect_declared_identities(docs):
             ("interfaces", "interface"),
         ]:
             for obj in behavior2.get(field, []) or []:
-                oid = obj.get("id") if isinstance(obj, dict) else None
-                if oid:
-                    kinds[oid].add(kind)
-                    locations[oid].append({"kind": kind, "file": rel})
+                add_identity(kinds, locations, obj.get("id") if isinstance(obj, dict) else None, kind, rel)
 
     return kinds, locations
 
@@ -95,12 +100,27 @@ def legacy_topics_for_doc(d: dict[str, Any]) -> list[dict[str, Any]]:
     topics = legacy.get("topics")
     if isinstance(topics, list):
         return topics
-
-    # Some 2.0 migration artifacts preserve the entire old source under another key.
     for key in ("legacy_topics", "topics"):
         if isinstance(meta.get(key), list):
             return meta[key]
     return []
+
+
+def choose_category(kinds: list[str]) -> str:
+    primary_order = [
+        "contract", "entity:topic", "invariant", "hard_gate",
+        "operation", "event", "flow", "state", "interface",
+        "property", "entity"
+    ]
+    for k in primary_order:
+        if k in kinds:
+            return k
+    legacy_typed = sorted(k for k in kinds if k.startswith("legacy_member:"))
+    if legacy_typed:
+        return legacy_typed[0]
+    if "legacy_member" in kinds:
+        return "legacy_member"
+    return kinds[0]
 
 
 def main() -> int:
@@ -115,83 +135,54 @@ def main() -> int:
 
     for p, d in docs:
         rel = str(p.relative_to(ROOT))
-        topics = legacy_topics_for_doc(d)
-        for ti, topic in enumerate(topics):
+        for ti, topic in enumerate(legacy_topics_for_doc(d)):
             topic_id = topic.get("id", f"<topic:{ti}>")
             for field in (
-                "member_refs",
-                "parent_topic_refs",
-                "composed_topic_refs",
-                "relation_refs",
-                "operation_refs",
-                "event_refs",
-                "flow_refs",
-                "child_topics",
+                "member_refs", "parent_topic_refs", "composed_topic_refs",
+                "relation_refs", "operation_refs", "event_refs", "flow_refs", "child_topics",
             ):
                 for ri, ref in enumerate(topic.get(field, []) or []):
-                    if isinstance(ref, dict):
-                        ref_id = ref.get("id") or ref.get("ref")
-                    else:
-                        ref_id = ref
+                    ref_id = (ref.get("id") or ref.get("ref")) if isinstance(ref, dict) else ref
                     if not ref_id:
                         continue
                     ks = sorted(kinds.get(ref_id, set()))
                     if not ks:
                         category = "unresolved"
-                        unresolved.append({
-                            "file": rel,
-                            "topic_id": topic_id,
-                            "field": field,
-                            "index": ri,
-                            "ref": ref_id,
-                        })
+                        unresolved.append({"file": rel, "topic_id": topic_id, "field": field, "index": ri, "ref": ref_id})
                     else:
-                        primary_order = [
-                            "contract", "entity:topic", "invariant", "hard_gate",
-                            "operation", "event", "flow", "state", "interface",
-                            "property", "entity"
-                        ]
-                        category = next((x for x in primary_order if x in ks), ks[0])
+                        category = choose_category(ks)
                         if len(ks) > 1:
                             multi_kind.append({"ref": ref_id, "kinds": ks, "locations": locations.get(ref_id, [])})
-
                     category_counts[category] += 1
                     field_counts[field] += 1
                     records.append({
-                        "file": rel,
-                        "topic_id": topic_id,
-                        "field": field,
-                        "index": ri,
-                        "ref": ref_id,
-                        "resolved_kinds": ks,
-                        "category": category,
+                        "file": rel, "topic_id": topic_id, "field": field, "index": ri,
+                        "ref": ref_id, "resolved_kinds": ks, "category": category,
                     })
 
-    # Special view specifically for member_refs, which are the refs that produced most migration closure gaps.
     member_records = [r for r in records if r["field"] == "member_refs"]
     member_counts = Counter(r["category"] for r in member_records)
 
+    bycat = defaultdict(list)
+    for r in member_records:
+        if len(bycat[r["category"]]) < 100:
+            bycat[r["category"]].append(r)
+
     report = {
         "analysis": "Legacy Topic reference semantic classification",
-        "source": "preserved legacy Topic fields plus explicit identities in the canonical repository",
-        "method": "Exact ID matching only; no semantic guessing from names.",
+        "source": "preserved legacy Topic fields, legacy members[], behavior identities, constraints and current canonical identities",
+        "method": "Exact ID matching and declared legacy type only; no semantic guessing from names.",
         "total_topic_reference_records": len(records),
         "total_member_refs": len(member_records),
         "all_reference_categories": dict(category_counts.most_common()),
         "member_ref_categories": dict(member_counts.most_common()),
         "field_counts": dict(field_counts.most_common()),
         "unresolved_count": len(unresolved),
-        "unresolved_examples": unresolved[:500],
+        "unresolved_examples": unresolved[:1000],
         "multi_kind_count": len(multi_kind),
-        "multi_kind_examples": multi_kind[:200],
-        "member_ref_examples_by_category": {},
+        "multi_kind_examples": multi_kind[:300],
+        "member_ref_examples_by_category": dict(bycat),
     }
-
-    bycat = defaultdict(list)
-    for r in member_records:
-        if len(bycat[r["category"]]) < 50:
-            bycat[r["category"]].append(r)
-    report["member_ref_examples_by_category"] = dict(bycat)
 
     REPORT.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps({

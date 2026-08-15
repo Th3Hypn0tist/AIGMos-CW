@@ -27,31 +27,84 @@ jobs:
       - name: Analyze legacy Topic references
         run: python tools/analyze_legacy_topic_members.py
 
-      - name: Validate report
+      - name: Validate owner-scoped classification
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          p = Path('cw20-legacy-topic-member-analysis.json')
-          d = json.loads(p.read_text(encoding='utf-8'))
+          d = json.loads(Path('cw20-legacy-topic-member-analysis.json').read_text(encoding='utf-8'))
           assert d['total_member_refs'] > 0
+          assert d['member_unresolved_count'] == 0, d['member_unresolved_examples'][:20]
+          assert d['member_ambiguous_count'] == 0, d['member_ambiguous_examples'][:20]
           print(json.dumps({
               'total_member_refs': d['total_member_refs'],
               'member_ref_categories': d['member_ref_categories'],
-              'unresolved_count': d['unresolved_count'],
-              'multi_kind_count': d['multi_kind_count'],
+              'member_unresolved_count': d['member_unresolved_count'],
+              'member_ambiguous_count': d['member_ambiguous_count'],
           }, indent=2))
           PY
 
-      - name: Commit report
+      - name: Migrate Topic trace surfaces by declared semantic kind
+        run: python tools/migrate_legacy_topic_trace_surfaces.py
+
+      - name: Validate semantic Topic migration
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path('cw20-topic-trace-migration-report.json').read_text(encoding='utf-8'))
+          assert report['unresolved_count'] == 0, report['unresolved_examples'][:20]
+          assert report['ambiguous_count'] == 0, report['ambiguous_examples'][:20]
+
+          dr = json.loads(Path('AIGMos_Dependency_Rules_v2.0.0-migration.json').read_text(encoding='utf-8'))
+          rule_ids = {r['id'] for r in dr.get('rules', [])}
+          direct = set((dr.get('ruleset', {}) or {}).get('direct_rule_refs', []))
+          assert rule_ids == direct
+          assert any(r.get('kind') == 'hard_gate' for r in dr.get('rules', []))
+          assert any(r.get('kind') == 'invariant' for r in dr.get('rules', []))
+          assert any(x.get('id') == 'AIGMOS_RULESET_FLOW_SYMBOL' for x in dr.get('property_rulesets', []))
+
+          ids = set()
+          links = []
+          bad_topic_member_gaps = []
+          for p in sorted(Path('canonical/json').rglob('*.json')):
+              d = json.loads(p.read_text(encoding='utf-8'))
+              for e in d.get('entities', []):
+                  ids.add(e.get('id'))
+                  for prop in e.get('properties', []):
+                      ids.add(prop.get('id'))
+                      if prop.get('property_type_ref') == 'link':
+                          links.append((p, prop))
+              for g in d.get('gaps', []):
+                  if g.get('type') == 'unresolved_link_endpoint' and '::LINK::TOPIC_MEMBER_' in str(g.get('property_ref', '')):
+                      bad_topic_member_gaps.append((str(p), g.get('gap_id')))
+
+          unresolved_links = []
+          for p, prop in links:
+              v = prop.get('value', {}) or {}
+              for field in ('parent_ref', 'child_ref'):
+                  ref = v.get(field)
+                  if ref and ref not in ids:
+                      unresolved_links.append((str(p), prop.get('id'), field, ref))
+
+          assert not bad_topic_member_gaps, bad_topic_member_gaps[:20]
+          assert not unresolved_links, unresolved_links[:20]
+          print(json.dumps(report, indent=2))
+          PY
+
+      - name: Commit semantic Topic migration
         run: |
           if [ -z "$(git status --porcelain)" ]; then
-            echo "No analysis changes to commit."
+            echo "No Topic migration changes to commit."
             exit 0
           fi
           git config user.name "AIGMos CW analysis"
           git config user.email "actions@users.noreply.github.com"
-          git add cw20-legacy-topic-member-analysis.json
-          git commit -m "Classify legacy Topic member semantics [topic-analysis]"
+          git add canonical/json \
+            AIGMos_Dependency_Rules_v2.0.0-migration.json \
+            cw20-legacy-topic-member-analysis.json \
+            cw20-topic-trace-migration-report.json
+          git commit -m "Migrate Topic trace surfaces semantically [topic-analysis]"
           git pull --rebase origin cw-2.0-topic-analysis
           git push

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
@@ -11,184 +12,214 @@ CANONICAL = ROOT / "canonical" / "json"
 REPORT = ROOT / "cw20-legacy-topic-member-analysis.json"
 
 
+def sid(value: Any) -> str:
+    return re.sub(r"[^A-Za-z0-9_.:-]+", "_", str(value or "UNKNOWN"))
+
+
+def qid(owner: str, kind: str, local: Any) -> str:
+    return f"{sid(owner)}::{kind}::{sid(local)}"
+
+
 def load_docs() -> list[tuple[Path, dict[str, Any]]]:
     return [(p, json.loads(p.read_text(encoding="utf-8"))) for p in sorted(CANONICAL.rglob("*.json"))]
 
 
-def add_identity(kinds, locations, ident, kind, rel):
-    if not ident:
-        return
-    kinds[ident].add(kind)
-    locations[ident].append({"kind": kind, "file": rel})
-
-
-def collect_declared_identities(docs):
-    kinds: dict[str, set[str]] = defaultdict(set)
-    locations: dict[str, list[dict[str, str]]] = defaultdict(list)
-
-    for p, d in docs:
-        rel = str(p.relative_to(ROOT))
-        identity = d.get("identity", {}) or {}
-        add_identity(kinds, locations, identity.get("id"), "contract", rel)
-
-        for e in d.get("entities", []) or []:
-            eid = e.get("id")
-            add_identity(kinds, locations, eid, "entity", rel)
-            if eid and e.get("entity_type_ref"):
-                add_identity(kinds, locations, eid, f"entity:{e['entity_type_ref']}", rel)
-            for prop in e.get("properties", []) or []:
-                pid = prop.get("id")
-                add_identity(kinds, locations, pid, "property", rel)
-                if pid and prop.get("property_type_ref"):
-                    add_identity(kinds, locations, pid, f"property:{prop['property_type_ref']}", rel)
-
-        constraints = d.get("constraints", {}) or {}
-        for inv in constraints.get("invariants", []) or []:
-            add_identity(kinds, locations, inv.get("id"), "invariant", rel)
-        for gate in constraints.get("hard_gates", []) or []:
-            add_identity(kinds, locations, gate.get("id"), "hard_gate", rel)
-
-        legacy = (d.get("metadata", {}) or {}).get("migration_legacy_non_authoritative", {}) or {}
-
-        # Legacy members[] was itself an explicit identity table. Classify it exactly by declared type.
-        # This catches flow symbols and relation symbols that were Topic members but are not CCF 2.0 Entities/Properties.
-        for member in legacy.get("members", []) or []:
-            if not isinstance(member, dict):
-                continue
-            mid = member.get("id")
-            mtype = member.get("type") or "unspecified"
-            add_identity(kinds, locations, mid, "legacy_member", rel)
-            add_identity(kinds, locations, mid, f"legacy_member:{mtype}", rel)
-
-        behavior = legacy.get("behavior", {}) or {}
-        for field, kind in [
-            ("operations", "operation"),
-            ("events", "event"),
-            ("flows", "flow"),
-            ("states", "state"),
-            ("interfaces", "interface"),
-        ]:
-            for obj in behavior.get(field, []) or []:
-                add_identity(kinds, locations, obj.get("id") if isinstance(obj, dict) else None, kind, rel)
-
-        # Also support direct legacy fields if the analyzer is run against a legacy source tree.
-        for member in d.get("members", []) or []:
-            if not isinstance(member, dict):
-                continue
-            mid = member.get("id")
-            mtype = member.get("type") or "unspecified"
-            add_identity(kinds, locations, mid, "legacy_member", rel)
-            add_identity(kinds, locations, mid, f"legacy_member:{mtype}", rel)
-
-        behavior2 = d.get("behavior", {}) or {}
-        for field, kind in [
-            ("operations", "operation"),
-            ("events", "event"),
-            ("flows", "flow"),
-            ("states", "state"),
-            ("interfaces", "interface"),
-        ]:
-            for obj in behavior2.get(field, []) or []:
-                add_identity(kinds, locations, obj.get("id") if isinstance(obj, dict) else None, kind, rel)
-
-    return kinds, locations
+def legacy_for_doc(d: dict[str, Any]) -> dict[str, Any]:
+    return ((d.get("metadata", {}) or {}).get("migration_legacy_non_authoritative", {}) or {})
 
 
 def legacy_topics_for_doc(d: dict[str, Any]) -> list[dict[str, Any]]:
-    meta = d.get("metadata", {}) or {}
-    legacy = meta.get("migration_legacy_non_authoritative", {}) or {}
-    topics = legacy.get("topics")
-    if isinstance(topics, list):
-        return topics
-    for key in ("legacy_topics", "topics"):
-        if isinstance(meta.get(key), list):
-            return meta[key]
+    legacy = legacy_for_doc(d)
+    if isinstance(legacy.get("topics"), list):
+        return legacy["topics"]
     return []
 
 
-def choose_category(kinds: list[str]) -> str:
-    primary_order = [
-        "contract", "entity:topic", "invariant", "hard_gate",
-        "operation", "event", "flow", "state", "interface",
-        "property", "entity"
-    ]
-    for k in primary_order:
-        if k in kinds:
-            return k
-    legacy_typed = sorted(k for k in kinds if k.startswith("legacy_member:"))
-    if legacy_typed:
-        return legacy_typed[0]
-    if "legacy_member" in kinds:
-        return "legacy_member"
-    return kinds[0]
+def legacy_behavior_for_doc(d: dict[str, Any]) -> dict[str, Any]:
+    legacy = legacy_for_doc(d)
+    return legacy.get("behavior", {}) or {}
+
+
+def local_index(d: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
+    """Index only identities declared by the owning legacy contract.
+
+    Legacy Topic member_refs were owner-scoped trace membership. Repeated ids such as
+    GATE_1 therefore MUST be resolved against the same contract before any global lookup.
+    """
+    owner = (d.get("identity", {}) or {}).get("id", "UNKNOWN")
+    legacy = legacy_for_doc(d)
+    idx: dict[str, list[dict[str, Any]]] = defaultdict(list)
+
+    constraints = d.get("constraints", {}) or {}
+    for inv in constraints.get("invariants", []) or []:
+        if inv.get("id"):
+            idx[inv["id"]].append({
+                "kind": "invariant",
+                "canonical_target_ref": qid(owner, "RULE::INVARIANT", inv["id"]),
+            })
+    for gate in constraints.get("hard_gates", []) or []:
+        if gate.get("id"):
+            idx[gate["id"]].append({
+                "kind": "hard_gate",
+                "canonical_target_ref": qid(owner, "RULE::HARD_GATE", gate["id"]),
+            })
+
+    for member in legacy.get("members", []) or []:
+        if not isinstance(member, dict) or not member.get("id"):
+            continue
+        mtype = member.get("type") or "unspecified"
+        idx[member["id"]].append({
+            "kind": f"legacy_member:{mtype}",
+            "canonical_target_ref": qid(owner, "FLOW_SYMBOL", member["id"]),
+        })
+
+    behavior = legacy_behavior_for_doc(d)
+    behavior_map = {
+        "operations": ("operation", "OPERATIONS"),
+        "events": ("event", "EVENT"),
+        "flows": ("flow", "FLOWS"),
+        "states": ("state", "STATES"),
+        "interfaces": ("interface", "INTERFACES"),
+    }
+    for field, (kind, qkind) in behavior_map.items():
+        for obj in behavior.get(field, []) or []:
+            if isinstance(obj, dict) and obj.get("id"):
+                idx[obj["id"]].append({
+                    "kind": kind,
+                    "canonical_target_ref": qid(owner, qkind, obj["id"]),
+                })
+
+    structure = legacy.get("structure", {}) or {}
+    for field in ("containment", "relations", "ownership", "authority", "dependencies"):
+        for i, edge in enumerate(structure.get(field, []) or []):
+            if not isinstance(edge, dict):
+                continue
+            edge_id = edge.get("id")
+            if edge_id:
+                idx[edge_id].append({
+                    "kind": f"structural_link:{field}",
+                    "canonical_target_ref": qid(owner, "LINK", edge_id),
+                })
+
+    return idx
+
+
+def global_contract_and_topic_index(docs: list[tuple[Path, dict[str, Any]]]) -> dict[str, list[dict[str, Any]]]:
+    idx: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for p, d in docs:
+        rel = str(p.relative_to(ROOT))
+        cid = (d.get("identity", {}) or {}).get("id")
+        if cid:
+            idx[cid].append({"kind": "contract", "canonical_target_ref": cid, "file": rel})
+        for e in d.get("entities", []) or []:
+            if e.get("id") and e.get("entity_type_ref") == "topic":
+                idx[e["id"]].append({"kind": "topic", "canonical_target_ref": e["id"], "file": rel})
+    return idx
+
+
+def resolve_member(ref_id: str, local: dict[str, list[dict[str, Any]]], global_idx: dict[str, list[dict[str, Any]]]) -> dict[str, Any]:
+    candidates = local.get(ref_id, [])
+    if len(candidates) == 1:
+        return {"resolution": "local_exact", **candidates[0]}
+    if len(candidates) > 1:
+        return {"resolution": "ambiguous_local", "kind": "ambiguous", "candidates": candidates}
+
+    globals_ = global_idx.get(ref_id, [])
+    unique = {(x["kind"], x["canonical_target_ref"]) for x in globals_}
+    if len(unique) == 1:
+        kind, target = next(iter(unique))
+        return {"resolution": "global_exact", "kind": kind, "canonical_target_ref": target}
+    if len(unique) > 1:
+        return {"resolution": "ambiguous_global", "kind": "ambiguous", "candidates": globals_}
+    return {"resolution": "unresolved", "kind": "unresolved"}
 
 
 def main() -> int:
     docs = load_docs()
-    kinds, locations = collect_declared_identities(docs)
+    global_idx = global_contract_and_topic_index(docs)
 
-    records = []
-    category_counts = Counter()
+    records: list[dict[str, Any]] = []
+    member_counts = Counter()
+    resolution_counts = Counter()
+    unresolved: list[dict[str, Any]] = []
+    ambiguous: list[dict[str, Any]] = []
     field_counts = Counter()
-    unresolved = []
-    multi_kind = []
 
     for p, d in docs:
         rel = str(p.relative_to(ROOT))
+        owner = (d.get("identity", {}) or {}).get("id", p.stem)
+        local = local_index(d)
         for ti, topic in enumerate(legacy_topics_for_doc(d)):
             topic_id = topic.get("id", f"<topic:{ti}>")
             for field in (
                 "member_refs", "parent_topic_refs", "composed_topic_refs",
                 "relation_refs", "operation_refs", "event_refs", "flow_refs", "child_topics",
             ):
-                for ri, ref in enumerate(topic.get(field, []) or []):
-                    ref_id = (ref.get("id") or ref.get("ref")) if isinstance(ref, dict) else ref
+                for ri, raw in enumerate(topic.get(field, []) or []):
+                    ref_id = (raw.get("id") or raw.get("ref")) if isinstance(raw, dict) else raw
                     if not ref_id:
                         continue
-                    ks = sorted(kinds.get(ref_id, set()))
-                    if not ks:
-                        category = "unresolved"
-                        unresolved.append({"file": rel, "topic_id": topic_id, "field": field, "index": ri, "ref": ref_id})
-                    else:
-                        category = choose_category(ks)
-                        if len(ks) > 1:
-                            multi_kind.append({"ref": ref_id, "kinds": ks, "locations": locations.get(ref_id, [])})
-                    category_counts[category] += 1
                     field_counts[field] += 1
-                    records.append({
-                        "file": rel, "topic_id": topic_id, "field": field, "index": ri,
-                        "ref": ref_id, "resolved_kinds": ks, "category": category,
-                    })
+                    if field == "member_refs":
+                        resolved = resolve_member(str(ref_id), local, global_idx)
+                    else:
+                        # Non-member Topic fields retain their own explicit field semantics.
+                        # Classify only by exact global/local identity; do not reinterpret them as member semantics.
+                        resolved = resolve_member(str(ref_id), local, global_idx)
+                    record = {
+                        "file": rel,
+                        "owner_contract_ref": owner,
+                        "topic_id": topic_id,
+                        "field": field,
+                        "index": ri,
+                        "ref": ref_id,
+                        **resolved,
+                    }
+                    records.append(record)
+                    resolution_counts[resolved["resolution"]] += 1
+                    if field == "member_refs":
+                        member_counts[resolved["kind"]] += 1
+                    if resolved["resolution"] == "unresolved":
+                        unresolved.append(record)
+                    elif resolved["resolution"].startswith("ambiguous"):
+                        ambiguous.append(record)
 
     member_records = [r for r in records if r["field"] == "member_refs"]
-    member_counts = Counter(r["category"] for r in member_records)
+    member_unresolved = [r for r in member_records if r["resolution"] == "unresolved"]
+    member_ambiguous = [r for r in member_records if r["resolution"].startswith("ambiguous")]
 
-    bycat = defaultdict(list)
+    bycat: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for r in member_records:
-        if len(bycat[r["category"]]) < 100:
-            bycat[r["category"]].append(r)
+        if len(bycat[r["kind"]]) < 100:
+            bycat[r["kind"]].append(r)
 
     report = {
-        "analysis": "Legacy Topic reference semantic classification",
-        "source": "preserved legacy Topic fields, legacy members[], behavior identities, constraints and current canonical identities",
-        "method": "Exact ID matching and declared legacy type only; no semantic guessing from names.",
+        "analysis": "Legacy Topic reference owner-scoped semantic classification",
+        "source": "preserved legacy Topic fields plus declarations in each owning contract",
+        "method": (
+            "Resolve Topic member_refs against declarations in the same legacy contract first; "
+            "only then resolve globally unique contract/topic identities. No name-based semantic guessing."
+        ),
         "total_topic_reference_records": len(records),
         "total_member_refs": len(member_records),
-        "all_reference_categories": dict(category_counts.most_common()),
         "member_ref_categories": dict(member_counts.most_common()),
+        "resolution_counts": dict(resolution_counts.most_common()),
         "field_counts": dict(field_counts.most_common()),
-        "unresolved_count": len(unresolved),
-        "unresolved_examples": unresolved[:1000],
-        "multi_kind_count": len(multi_kind),
-        "multi_kind_examples": multi_kind[:300],
+        "member_unresolved_count": len(member_unresolved),
+        "member_ambiguous_count": len(member_ambiguous),
+        "all_unresolved_count": len(unresolved),
+        "all_ambiguous_count": len(ambiguous),
+        "member_unresolved_examples": member_unresolved[:500],
+        "member_ambiguous_examples": member_ambiguous[:500],
+        "all_unresolved_examples": unresolved[:500],
         "member_ref_examples_by_category": dict(bycat),
     }
-
     REPORT.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps({
         "total_member_refs": len(member_records),
         "member_ref_categories": dict(member_counts.most_common()),
-        "unresolved_count": len(unresolved),
+        "member_unresolved_count": len(member_unresolved),
+        "member_ambiguous_count": len(member_ambiguous),
         "result": "ok",
     }, indent=2))
     return 0
